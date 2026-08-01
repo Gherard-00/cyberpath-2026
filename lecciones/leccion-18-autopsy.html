@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +26,7 @@
                 y generar reportes completos. En esta lección aprenderás a usarla paso a paso para una investigación real.
             </p>
         </div>
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es">¿Qué es Autopsy?</a></li>
                 <li><a href="#instalacion">Instalación y requisitos</a></li>
@@ -44,7 +44,7 @@
             </ol>
         </div>
 
-        <div class="lesson-section" id="que-es"><h2><span class="section-icon">🔍</span> 1. ¿Qué es Autopsy?</h2>
+        <div class="lesson-section" id="que-es"><h2>1. ¿Qué es Autopsy?</h2>
             <p class="lesson-text"><strong>Autopsy</strong> es una plataforma forense de código abierto construida sobre <strong>The Sleuth Kit (TSK)</strong>. Proporciona una GUI para hacer análisis de discos que de otra forma requerirían muchos comandos de terminal.</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Característica</th><th>Descripción</th></tr></thead>
                 <tbody>
@@ -58,7 +58,7 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="instalacion"><h2><span class="section-icon">💻</span> 2. Instalación y requisitos</h2>
+        <div class="lesson-section" id="instalacion"><h2>2. Instalación y requisitos</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Instalación</span></div>
                 <pre><code><span style="color:#546e7a"># Windows: Descargar el instalador MSI desde autopsy.com</span>
 <span style="color:#546e7a"># Se instala con JDK incluido</span>
@@ -73,8 +73,8 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="crear-caso"><h2><span class="section-icon">📁</span> 3. Crear un caso forense</h2>
-            <div class="lesson-callout"><strong>📌 Pasos para crear un caso:</strong>
+        <div class="lesson-section" id="crear-caso"><h2>3. Crear un caso forense</h2>
+            <div class="lesson-callout"><strong>Pasos para crear un caso:</strong>
                 <ol>
                     <li>Abrir Autopsy → <strong>New Case</strong></li>
                     <li><strong>Case Name</strong>: Nombre descriptivo (ej: "Caso-2026-001-Ransomware-Contabilidad")</li>
@@ -87,21 +87,21 @@
             <p class="lesson-text">Autopsy creará una estructura de directorios para el caso con subcarpetas para módulos, exportaciones y la base de datos SQLite del caso.</p>
         </div>
 
-        <div class="lesson-section" id="cargar-imagen"><h2><span class="section-icon">📀</span> 4. Cargar una imagen de disco</h2>
-            <div class="lesson-callout"><strong>📌 Agregar la evidencia:</strong>
+        <div class="lesson-section" id="cargar-imagen"><h2>4. Cargar una imagen de disco</h2>
+            <div class="lesson-callout"><strong>Agregar la evidencia:</strong>
                 <ol>
                     <li>En el caso creado → <strong>Add Data Source</strong></li>
                     <li>Seleccionar tipo: <strong>Disk Image or VM File</strong></li>
                     <li>Navegar hasta tu imagen forense (.E01, .raw, .dd)</li>
                     <li>Seleccionar <strong>Ingest Modules</strong> a ejecutar:
                         <ul>
-                            <li>✅ <strong>Hash Lookup</strong> — comparar archivos con NSRL (archivos conocidos buenos)</li>
-                            <li>✅ <strong>File Type Identification</strong> — identificar archivos por su firma</li>
-                            <li>✅ <strong>Recent Activity</strong> — extraer artefactos del sistema</li>
-                            <li>✅ <strong>Keyword Search</strong> — buscar términos configurados</li>
-                            <li>✅ <strong>Email Parser</strong> — extraer emails</li>
-                            <li>✅ <strong>Extension Mismatch Detector</strong> — archivo .jpg que realmente es .exe</li>
-                            <li>✅ <strong>PhotoRec Carver</strong> — recuperar archivos borrados</li>
+                            <li><strong>Hash Lookup</strong> — comparar archivos con NSRL (archivos conocidos buenos)</li>
+                            <li><strong>File Type Identification</strong> — identificar archivos por su firma</li>
+                            <li><strong>Recent Activity</strong> — extraer artefactos del sistema</li>
+                            <li><strong>Keyword Search</strong> — buscar términos configurados</li>
+                            <li><strong>Email Parser</strong> — extraer emails</li>
+                            <li><strong>Extension Mismatch Detector</strong> — archivo .jpg que realmente es .exe</li>
+                            <li><strong>PhotoRec Carver</strong> — recuperar archivos borrados</li>
                         </ul>
                     </li>
                     <li>Click <strong>Next</strong> → Autopsy comienza a procesar</li>
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="navegacion"><h2><span class="section-icon">🗂️</span> 5. Navegar el sistema de archivos</h2>
+        <div class="lesson-section" id="navegacion"><h2>5. Navegar el sistema de archivos</h2>
             <p class="lesson-text">Una vez procesada la imagen, puedes navegar el sistema de archivos como si fuera un explorador:</p>
             <div class="lesson-callout"><strong>Panel izquierdo — Árbol de navegación:</strong>
                 <ul>
@@ -119,7 +119,7 @@
                     <li><strong>Tags</strong>: Archivos que has etiquetado manualmente</li>
                 </ul>
             </div>
-            <div class="lesson-callout"><strong>📌 Rutas importantes a revisar en Windows:</strong>
+            <div class="lesson-callout"><strong>Rutas importantes a revisar en Windows:</strong>
                 <ul>
                     <li><code>C:\Users\[usuario]\Desktop\</code> — Archivos en el escritorio</li>
                     <li><code>C:\Users\[usuario]\Downloads\</code> — Descargas recientes</li>
@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="archivos-borrados"><h2><span class="section-icon">🗑️</span> 6. Recuperar archivos borrados</h2>
+        <div class="lesson-section" id="archivos-borrados"><h2>6. Recuperar archivos borrados</h2>
             <p class="lesson-text">Cuando borras un archivo, Windows solo marca el espacio como "disponible" pero los datos siguen ahí hasta que se sobreescriben. Autopsy puede recuperarlos de dos formas:</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Método</th><th>Descripción</th><th>Dónde en Autopsy</th></tr></thead>
                 <tbody>
@@ -142,7 +142,7 @@
             <p class="lesson-text">Para exportar un archivo recuperado: clic derecho → <strong>Extract File(s)</strong></p>
         </div>
 
-        <div class="lesson-section" id="artefactos"><h2><span class="section-icon">🏷️</span> 7. Artefactos de Windows</h2>
+        <div class="lesson-section" id="artefactos"><h2>7. Artefactos de Windows</h2>
             <p class="lesson-text">Autopsy extrae automáticamente artefactos forenses de Windows:</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Artefacto</th><th>Qué revela</th><th>Ubicación</th></tr></thead>
                 <tbody>
@@ -159,9 +159,9 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="web"><h2><span class="section-icon">🌐</span> 8. Artefactos web</h2>
+        <div class="lesson-section" id="web"><h2>8. Artefactos web</h2>
             <p class="lesson-text">Autopsy extrae automáticamente el historial de navegación, descargas, cookies y bookmarks de los navegadores instalados:</p>
-            <div class="lesson-callout"><strong>📌 En Results → Extracted Content:</strong>
+            <div class="lesson-callout"><strong>En Results → Extracted Content:</strong>
                 <ul>
                     <li><strong>Web History</strong>: URLs visitadas con timestamps</li>
                     <li><strong>Web Downloads</strong>: Archivos descargados + URL de origen</li>
@@ -173,8 +173,8 @@
             <p class="lesson-text">Esto es <strong>oro</strong> en una investigación: si alguien buscó "how to delete evidence" o "ransomware tutorial" justo antes del incidente, es evidencia directa de intención.</p>
         </div>
 
-        <div class="lesson-section" id="keywords"><h2><span class="section-icon">🔑</span> 9. Búsqueda por palabras clave</h2>
-            <div class="lesson-callout"><strong>📌 Cómo buscar:</strong>
+        <div class="lesson-section" id="keywords"><h2>9. Búsqueda por palabras clave</h2>
+            <div class="lesson-callout"><strong>Cómo buscar:</strong>
                 <ol>
                     <li>Panel superior → <strong>Keyword Search</strong></li>
                     <li>Escribir término: "confidencial", "password", una dirección email</li>
@@ -186,9 +186,9 @@
             <p class="lesson-text">También puedes crear <strong>listas de keywords</strong> personalizadas antes del ingest para buscar múltiples términos automáticamente (ej: lista de dominios C2 conocidos, nombres de empleados sospechosos).</p>
         </div>
 
-        <div class="lesson-section" id="timeline"><h2><span class="section-icon">📅</span> 10. Construir un timeline</h2>
+        <div class="lesson-section" id="timeline"><h2>10. Construir un timeline</h2>
             <p class="lesson-text">El <strong>timeline</strong> es la herramienta más poderosa de un analista forense. Combina TODOS los timestamps (creación, modificación, acceso, eliminación) de todos los archivos en una vista cronológica.</p>
-            <div class="lesson-callout"><strong>📌 En Autopsy:</strong>
+            <div class="lesson-callout"><strong>En Autopsy:</strong>
                 <ol>
                     <li>Menú → <strong>Timeline</strong> (o Tools → Timeline)</li>
                     <li>Seleccionar rango de fechas del incidente</li>
@@ -199,8 +199,8 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="hashing"><h2><span class="section-icon">#️⃣</span> 11. Hash analysis e identificación de malware</h2>
-            <div class="lesson-callout"><strong>📌 Comparación con NSRL y hash sets:</strong>
+        <div class="lesson-section" id="hashing"><h2>11. Hash analysis e identificación de malware</h2>
+            <div class="lesson-callout"><strong>Comparación con NSRL y hash sets:</strong>
                 <ul>
                     <li><strong>NSRL (National Software Reference Library)</strong>: Base de datos de hashes de archivos conocidos legítimos (Windows, Office, etc.)</li>
                     <li>Archivos cuyos hashes coinciden con NSRL → <strong>Known good</strong> → los ignoras</li>
@@ -211,8 +211,8 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="reporte"><h2><span class="section-icon">📄</span> 12. Generar el reporte forense</h2>
-            <div class="lesson-callout"><strong>📌 Generar reporte en Autopsy:</strong>
+        <div class="lesson-section" id="reporte"><h2>12. Generar el reporte forense</h2>
+            <div class="lesson-callout"><strong>Generar reporte en Autopsy:</strong>
                 <ol>
                     <li>Etiquetar todos los hallazgos relevantes con <strong>Tags</strong> (clic derecho → Add Tag)</li>
                     <li>Menú → <strong>Generate Report</strong></li>
@@ -223,8 +223,8 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 13. Práctica</h2>
-            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+        <div class="lesson-section" id="practica"><h2>13. Práctica</h2>
+            <div class="practice-box"><h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Puedes crear un caso forense en Autopsy</li>
                     <li>Sabes cargar una imagen de disco y configurar los módulos de ingest</li>

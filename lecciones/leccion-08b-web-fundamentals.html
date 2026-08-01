@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
             </p>
         </div>
 
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#como-funciona">¿Cómo funciona una aplicación web?</a></li>
                 <li><a href="#html-css-js">HTML, CSS y JavaScript: los tres pilares</a></li>
@@ -40,7 +40,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="como-funciona">
-            <h2><span class="section-icon">🌐</span> 1. ¿Cómo funciona una aplicación web?</h2>
+            <h2>1. ¿Cómo funciona una aplicación web?</h2>
             <p class="lesson-text">
                 Una <strong>aplicación web</strong> no es un programa que instalas en tu PC — vive en un servidor remoto y tú la 
                 usas a través del navegador. Cada vez que abres Facebook, Gmail o tu banco online, tu navegador se conecta 
@@ -48,7 +48,6 @@
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">🍽️</span>
                 <h4>Analogía: El restaurante</h4>
                 <p>
                     Una app web funciona como un <strong>restaurante</strong>:
@@ -82,7 +81,7 @@
 
         <!-- SECTION 2 -->
         <div class="lesson-section" id="html-css-js">
-            <h2><span class="section-icon">📄</span> 2. HTML, CSS y JavaScript: los tres pilares</h2>
+            <h2>2. HTML, CSS y JavaScript: los tres pilares</h2>
             <p class="lesson-text">
                 Todo lo que ves en tu navegador está construido con tres tecnologías que trabajan juntas:
             </p>
@@ -132,7 +131,7 @@ console.log(document.cookie);
             </div>
 
             <div class="concept-box">
-                <h4>💡 Clave para entender XSS</h4>
+                <h4>Clave para entender XSS</h4>
                 <p>
                     <strong>Cross-Site Scripting (XSS)</strong> funciona porque el atacante logra que su código JavaScript 
                     se ejecute en el navegador de la víctima. Si la app web no sanitiza los datos, un atacante puede 
@@ -143,7 +142,7 @@ console.log(document.cookie);
 
         <!-- SECTION 3 -->
         <div class="lesson-section" id="http-detalle">
-            <h2><span class="section-icon">📡</span> 3. HTTP en detalle: métodos, headers y cookies</h2>
+            <h2>3. HTTP en detalle: métodos, headers y cookies</h2>
             <p class="lesson-text">
                 <strong>HTTP (HyperText Transfer Protocol)</strong> es el idioma que hablan el navegador y el servidor. 
                 Cada interacción es una <strong>petición</strong> (request) y una <strong>respuesta</strong> (response).
@@ -188,7 +187,7 @@ console.log(document.cookie);
 
         <!-- SECTION 4 -->
         <div class="lesson-section" id="bases-datos">
-            <h2><span class="section-icon">🗄️</span> 4. Bases de datos relacionales y SQL</h2>
+            <h2>4. Bases de datos relacionales y SQL</h2>
             <p class="lesson-text">
                 La mayoría de aplicaciones web guardan información en <strong>bases de datos relacionales</strong>: 
                 tablas con filas y columnas, como una hoja de Excel muy poderosa. <strong>SQL (Structured Query Language)</strong> 
@@ -196,7 +195,6 @@ console.log(document.cookie);
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">📋</span>
                 <h4>Analogía: La base de datos es un archivo de Excel</h4>
                 <p>
                     Imagina una hoja de Excel llamada <strong>"usuarios"</strong> con columnas: id, nombre, email, password_hash. 
@@ -249,7 +247,7 @@ query = "SELECT * FROM users WHERE username='" + user_input + "' AND password='"
 SELECT * FROM users WHERE username='<span style="color:#ff5252">admin' OR '1'='1' --</span>' AND password=''
 <span style="color:#546e7a"># '1'='1' siempre es verdadero → el atacante entra como admin</span>
 
-<span style="color:#00e676">✅ CÓDIGO SEGURO (parametrizado):</span>
+<span style="color:#00e676">CÓDIGO SEGURO (parametrizado):</span>
 query = "SELECT * FROM users WHERE username = %s AND password = %s"
 cursor.execute(query, (user_input, pass_input))
 <span style="color:#546e7a"># Los parámetros se tratan como DATOS, nunca como código SQL</span></code></pre>
@@ -258,7 +256,7 @@ cursor.execute(query, (user_input, pass_input))
 
         <!-- SECTION 5 -->
         <div class="lesson-section" id="flujo-completo">
-            <h2><span class="section-icon">🔄</span> 5. El flujo completo: del formulario a la base de datos</h2>
+            <h2>5. El flujo completo: del formulario a la base de datos</h2>
             <p class="lesson-text">
                 Ahora que conoces cada pieza, veamos cómo se conectan en un escenario real: 
                 <strong>un usuario hace login en una aplicación web</strong>.
@@ -301,10 +299,10 @@ cursor.execute(query, (user_input, pass_input))
 
         <!-- SECTION 6: Practice -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 6. Práctica</h2>
+            <h2>6. Práctica</h2>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Antes de pasar a Web Hacking (Lección 09), asegúrate de poder responder:</p>
                 <ul>
                     <li>¿Cuál es la diferencia entre frontend y backend?</li>

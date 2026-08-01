@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -48,7 +48,7 @@
 
         <!-- Table of Contents -->
         <div class="lesson-toc">
-            <h3>📋 Contenido de esta lección</h3>
+            <h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es-red">¿Qué es una red de computadoras?</a></li>
                 <li><a href="#modelo-osi">El modelo OSI y TCP/IP: las capas de la red</a></li>
@@ -65,7 +65,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="que-es-red">
-            <h2><span class="section-icon">🌐</span> 1. ¿Qué es una red de computadoras?</h2>
+            <h2>1. ¿Qué es una red de computadoras?</h2>
 
             <p class="lesson-text">
                 Una <strong>red de computadoras</strong> es simplemente un grupo de dispositivos (computadoras, teléfonos, servidores, impresoras) 
@@ -74,7 +74,6 @@
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">📮</span>
                 <h4>Analogía: La red es como el sistema postal</h4>
                 <p>
                     Imagina que quieres enviar una carta a un amigo. Necesitas: <strong>su dirección</strong> (la dirección IP), 
@@ -130,7 +129,7 @@
 
         <!-- SECTION 2: OSI/TCP-IP -->
         <div class="lesson-section" id="modelo-osi">
-            <h2><span class="section-icon">📚</span> 2. El modelo OSI y TCP/IP: las capas de la red</h2>
+            <h2>2. El modelo OSI y TCP/IP: las capas de la red</h2>
 
             <p class="lesson-text">
                 Para que dos computadoras se comuniquen, los datos pasan por varias <strong>capas</strong>, cada una con una función específica.
@@ -139,7 +138,6 @@
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">📦</span>
                 <h4>Analogía: Las capas son como envolver un paquete</h4>
                 <p>
                     Imagina que quieres enviar un regalo. Primero lo envuelves en papel (capa de aplicación: los datos), 
@@ -197,7 +195,7 @@
             </div>
 
             <div class="concept-box">
-                <h4>💡 ¿Por qué importa esto para la ciberseguridad?</h4>
+                <h4>¿Por qué importa esto para la ciberseguridad?</h4>
                 <p>
                     Cada capa tiene sus propias vulnerabilidades. Un ataque puede ocurrir en la <strong>capa de aplicación</strong> 
                     (inyección SQL en una web), en la <strong>capa de transporte</strong> (un ataque SYN flood), en la <strong>capa de red</strong> 
@@ -209,7 +207,7 @@
 
         <!-- SECTION 3: IPs -->
         <div class="lesson-section" id="direcciones-ip">
-            <h2><span class="section-icon">🔢</span> 3. Direcciones IP: la dirección de cada computadora</h2>
+            <h2>3. Direcciones IP: la dirección de cada computadora</h2>
 
             <p class="lesson-text">
                 Cada dispositivo conectado a una red necesita una <strong>dirección IP</strong> (Internet Protocol) para poder recibir y enviar datos. 
@@ -273,7 +271,7 @@ Desglose:
             </div>
 
             <div class="concept-box">
-                <h4>💡 ¿Qué es NAT?</h4>
+                <h4>¿Qué es NAT?</h4>
                 <p>
                     <strong>NAT (Network Address Translation)</strong> es lo que hace tu router para que todos los dispositivos de tu casa 
                     compartan una sola IP pública. Tu computadora tiene IP privada <code>192.168.1.100</code>, pero cuando sale a Internet, 
@@ -285,7 +283,7 @@ Desglose:
 
         <!-- SECTION 4: Subnetting -->
         <div class="lesson-section" id="subnetting">
-            <h2><span class="section-icon">🧮</span> 4. Subnetting: dividir redes en segmentos</h2>
+            <h2>4. Subnetting: dividir redes en segmentos</h2>
 
             <p class="lesson-text">
                 <strong>Subnetting</strong> es dividir una red grande en redes más pequeñas (subredes). ¿Por qué? Por seguridad y organización. 
@@ -329,7 +327,7 @@ Rango utilizable: 192.168.1.1 hasta 192.168.1.254 (254 hosts)</code></pre>
 
         <!-- SECTION 5: Puertos -->
         <div class="lesson-section" id="puertos">
-            <h2><span class="section-icon">🚪</span> 5. Puertos: las puertas de cada servicio</h2>
+            <h2>5. Puertos: las puertas de cada servicio</h2>
 
             <p class="lesson-text">
                 Una dirección IP te lleva a una computadora, pero una computadora puede tener <strong>muchos servicios</strong> corriendo al mismo tiempo 
@@ -337,7 +335,6 @@ Rango utilizable: 192.168.1.1 hasta 192.168.1.254 (254 hosts)</code></pre>
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">🏢</span>
                 <h4>Analogía: Un edificio con departamentos</h4>
                 <p>
                     La <strong>dirección IP</strong> es la dirección del edificio (ej. "Av. Principal #456"). 
@@ -377,7 +374,7 @@ Rango utilizable: 192.168.1.1 hasta 192.168.1.254 (254 hosts)</code></pre>
             </div>
 
             <div class="concept-box">
-                <h4>💡 ¿Por qué es importante conocer los puertos?</h4>
+                <h4>¿Por qué es importante conocer los puertos?</h4>
                 <p>
                     Cuando haces un <strong>escaneo de puertos</strong> con Nmap (lo aprenderás en la Lección 8), estás buscando qué "puertas" 
                     están abiertas en un servidor. Cada puerto abierto es un posible <strong>vector de ataque</strong>. Por ejemplo, si encuentras 
@@ -389,7 +386,7 @@ Rango utilizable: 192.168.1.1 hasta 192.168.1.254 (254 hosts)</code></pre>
 
         <!-- SECTION 6: TCP vs UDP -->
         <div class="lesson-section" id="tcp-vs-udp">
-            <h2><span class="section-icon">🔄</span> 6. TCP vs UDP: dos formas de enviar datos</h2>
+            <h2>6. TCP vs UDP: dos formas de enviar datos</h2>
 
             <p class="lesson-text">
                 En la <strong>capa de transporte</strong>, hay dos protocolos principales para enviar datos: <strong>TCP</strong> y <strong>UDP</strong>.
@@ -468,7 +465,7 @@ Rango utilizable: 192.168.1.1 hasta 192.168.1.254 (254 hosts)</code></pre>
 
         <!-- SECTION 7: DNS -->
         <div class="lesson-section" id="dns">
-            <h2><span class="section-icon">📖</span> 7. DNS: traducir nombres a direcciones IP</h2>
+            <h2>7. DNS: traducir nombres a direcciones IP</h2>
 
             <p class="lesson-text">
                 Los humanos no recordamos números fácilmente. Es más fácil recordar <code>google.com</code> que <code>142.250.80.46</code>. 
@@ -506,7 +503,7 @@ Address: 142.250.80.46</code></pre>
             </div>
 
             <div class="concept-box">
-                <h4>💡 ¿Por qué DNS importa en ciberseguridad?</h4>
+                <h4>¿Por qué DNS importa en ciberseguridad?</h4>
                 <p>
                     El DNS es un <strong>objetivo frecuente de ataques</strong>: <strong>DNS Spoofing</strong> (envenenar el DNS para redirigir a sitios falsos), 
                     <strong>DNS Tunneling</strong> (esconder datos dentro de consultas DNS para exfiltrar información), y 
@@ -518,7 +515,7 @@ Address: 142.250.80.46</code></pre>
 
         <!-- SECTION 8: HTTP -->
         <div class="lesson-section" id="http">
-            <h2><span class="section-icon">🌍</span> 8. HTTP/HTTPS: cómo funciona la web</h2>
+            <h2>8. HTTP/HTTPS: cómo funciona la web</h2>
 
             <p class="lesson-text">
                 <strong>HTTP (HyperText Transfer Protocol)</strong> es el protocolo que usa tu navegador para comunicarse con los servidores web. 
@@ -580,7 +577,7 @@ Address: 142.250.80.46</code></pre>
 
         <!-- SECTION 9: Flujo completo -->
         <div class="lesson-section" id="flujo-completo">
-            <h2><span class="section-icon">🔗</span> 9. El flujo completo: qué pasa cuando visitas una web</h2>
+            <h2>9. El flujo completo: qué pasa cuando visitas una web</h2>
 
             <p class="lesson-text">
                 Ahora juntemos todo. Cuando escribes <code>https://seguridad.local</code> en tu navegador, esto es lo que pasa <strong>paso a paso</strong>:
@@ -624,7 +621,7 @@ Address: 142.250.80.46</code></pre>
 
         <!-- SECTION 10: Práctica -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 10. Práctica: ver todo esto en Wireshark</h2>
+            <h2>10. Práctica: ver todo esto en Wireshark</h2>
 
             <p class="lesson-text">
                 La mejor forma de entender las redes es <strong>ver los paquetes de datos reales</strong>. Wireshark es una herramienta 
@@ -679,7 +676,7 @@ Address: 142.250.80.46</code></pre>
             </div>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Antes de pasar a la siguiente lección, asegúrate de poder responder estas preguntas:</p>
                 <ul>
                     <li>¿Cuál es la diferencia entre IP pública e IP privada?</li>
@@ -704,7 +701,7 @@ Address: 142.250.80.46</code></pre>
             </div>
 
             <div style="text-align:center; margin: 1.5rem 0;">
-                <a href="cheatsheet-puertos.html" class="download-btn" target="_blank">📋 Cheatsheet: Puertos y Protocolos — Imprimir / PDF</a>
+                <a href="cheatsheet-puertos.html" class="download-btn" target="_blank">Cheatsheet: Puertos y Protocolos — Imprimir / PDF</a>
             </div>
 
             <!-- Quiz de evaluación -->

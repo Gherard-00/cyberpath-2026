@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +47,7 @@
 
         <!-- Table of Contents -->
         <div class="lesson-toc">
-            <h3>📋 Contenido de esta lección</h3>
+            <h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#por-que-python">¿Por qué Python en ciberseguridad?</a></li>
                 <li><a href="#fundamentos">Fundamentos: variables, tipos y operadores</a></li>
@@ -66,7 +66,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="por-que-python">
-            <h2><span class="section-icon">🐍</span> 1. ¿Por qué Python en ciberseguridad?</h2>
+            <h2>1. ¿Por qué Python en ciberseguridad?</h2>
 
             <p class="lesson-text">
                 Python es el lenguaje más usado en ciberseguridad por varias razones:
@@ -102,7 +102,7 @@ Python 3.11.6
 
         <!-- SECTION 2 -->
         <div class="lesson-section" id="fundamentos">
-            <h2><span class="section-icon">📐</span> 2. Fundamentos: variables, tipos y operadores</h2>
+            <h2>2. Fundamentos: variables, tipos y operadores</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header">
@@ -142,7 +142,7 @@ print(f"Escaneando {target}...")</code></pre>
 
         <!-- SECTION 3 -->
         <div class="lesson-section" id="control-flujo">
-            <h2><span class="section-icon">🔀</span> 3. Control de flujo: if, for, while</h2>
+            <h2>3. Control de flujo: if, for, while</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header">
@@ -182,7 +182,7 @@ max_intentos = 3
 while intentos < max_intentos:
     password = input("Contraseña: ")
     if password == "admin123":
-        print("✅ Acceso concedido")
+        print("Acceso concedido")
         break   <span style="color:#546e7a"># Salir del bucle</span>
     else:
         intentos += 1
@@ -198,7 +198,7 @@ if intentos == max_intentos:
 
         <!-- SECTION 4 -->
         <div class="lesson-section" id="funciones">
-            <h2><span class="section-icon">🧩</span> 4. Funciones: organiza tu código</h2>
+            <h2>4. Funciones: organiza tu código</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header">
@@ -221,7 +221,7 @@ puertos = [21, 22, 80, 443, 445, 3306]
 
 for puerto in puertos:
     if escanear_puerto(ip, puerto):
-        print(f"✅ Puerto {puerto} ABIERTO")
+        print(f"Puerto {puerto} ABIERTO")
     else:
         print(f"❌ Puerto {puerto} cerrado")
 
@@ -248,7 +248,7 @@ def clasificar_puerto(puerto):
 
         <!-- SECTION 5 -->
         <div class="lesson-section" id="strings">
-            <h2><span class="section-icon">📝</span> 5. Strings: manipulación de texto</h2>
+            <h2>5. Strings: manipulación de texto</h2>
 
             <p class="lesson-text">
                 En ciberseguridad trabajarás constantemente con texto: logs, hashes, URLs, IPs, respuestas HTTP. 
@@ -294,7 +294,7 @@ print(url.strip().startswith("https"))  <span style="color:#546e7a"># True</span
 
         <!-- SECTION 6 -->
         <div class="lesson-section" id="archivos">
-            <h2><span class="section-icon">💾</span> 6. Lectura y escritura de archivos</h2>
+            <h2>6. Lectura y escritura de archivos</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header">
@@ -338,7 +338,7 @@ print(f"Diccionario cargado: {len(passwords)} contraseñas")</code></pre>
 
         <!-- SECTION 7 -->
         <div class="lesson-section" id="listas-diccionarios">
-            <h2><span class="section-icon">📊</span> 7. Listas y diccionarios</h2>
+            <h2>7. Listas y diccionarios</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header">
@@ -388,7 +388,7 @@ for h in hallazgos:
 
         <!-- SECTION 8 -->
         <div class="lesson-section" id="modulos">
-            <h2><span class="section-icon">📚</span> 8. Módulos y pip: amplía tu arsenal</h2>
+            <h2>8. Módulos y pip: amplía tu arsenal</h2>
 
             <p class="lesson-text">
                 Python viene con muchos módulos integrados, y puedes instalar miles más con <strong>pip</strong> (el gestor de paquetes de Python).
@@ -446,7 +446,7 @@ print(f"SHA256: {hash_sha256}")
 
         <!-- SECTION 9 -->
         <div class="lesson-section" id="sockets">
-            <h2><span class="section-icon">🔌</span> 9. Sockets: conexiones de red con Python</h2>
+            <h2>9. Sockets: conexiones de red con Python</h2>
 
             <p class="lesson-text">
                 Un <strong>socket</strong> es un punto de comunicación entre dos máquinas a través de la red. 
@@ -496,9 +496,9 @@ puertos = [21, 22, 23, 25, 53, 80, 110, 443, 445, 993, 3306, 3389, 8080, 8443]
 for port in puertos:
     if scan_port(target, port):
         banner = banner_grab(target, port)
-        print(f"  ✅ Puerto {port:>5} ABIERTO  |  {banner[:60]}")
+        print(f"  Puerto {port:>5} ABIERTO  |  {banner[:60]}")
 
-print(f"\n✅ Escaneo completado: {datetime.now()}")</code></pre>
+print(f"\nEscaneo completado: {datetime.now()}")</code></pre>
                 <div class="explanation">
                     <p><strong>¡Este es un port scanner funcional!</strong> Pruébalo contra tu máquina Metasploitable en el laboratorio. <code>connect_ex()</code> retorna 0 si la conexión fue exitosa (puerto abierto) o un código de error si no. <code>banner_grab()</code> intenta leer la respuesta del servicio para identificarlo.</p>
                 </div>
@@ -507,7 +507,7 @@ print(f"\n✅ Escaneo completado: {datetime.now()}")</code></pre>
 
         <!-- SECTION 10 -->
         <div class="lesson-section" id="requests">
-            <h2><span class="section-icon">🌐</span> 10. Requests: interactuar con APIs y webs</h2>
+            <h2>10. Requests: interactuar con APIs y webs</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header">
@@ -530,7 +530,7 @@ login_data = {
 response = requests.post("http://target/login.php", data=login_data)
 
 if "Welcome" in response.text:
-    print("✅ Login exitoso!")
+    print("Login exitoso!")
 elif "Invalid" in response.text:
     print("❌ Credenciales incorrectas")
 
@@ -556,7 +556,7 @@ check_security_headers("https://google.com")</code></pre>
 
         <!-- SECTION 11 -->
         <div class="lesson-section" id="herramienta">
-            <h2><span class="section-icon">🛠️</span> 11. Proyecto: tu primera herramienta de hacking</h2>
+            <h2>11. Proyecto: tu primera herramienta de hacking</h2>
 
             <p class="lesson-text">
                 Vamos a combinar todo lo aprendido para crear un <strong>escáner de directorios web</strong> (similar a <code>gobuster</code> o <code>dirb</code>). 
@@ -606,7 +606,7 @@ def scan_directory(url, wordlist_path):
 
             <span style="color:#546e7a"># Si el código no es 404, lo encontramos</span>
             if response.status_code != 404:
-                print(f"  ✅ [{response.status_code}] {target_url}")
+                print(f"  [{response.status_code}] {target_url}")
                 encontrados += 1
 
         except requests.exceptions.RequestException:
@@ -641,7 +641,7 @@ if __name__ == "__main__":
 
         <!-- SECTION 12: Práctica -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 12. Práctica: retos de programación</h2>
+            <h2>12. Práctica: retos de programación</h2>
 
             <h3>Reto 1: Generador de hashes</h3>
             <div class="lesson-terminal">
@@ -685,7 +685,7 @@ if __name__ == "__main__":
             </div>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Antes de pasar a la siguiente lección, asegúrate de poder:</p>
                 <ul>
                     <li>Escribir un script de Python que use variables, condicionales y bucles</li>

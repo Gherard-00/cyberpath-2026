@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
             </p>
         </div>
 
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#por-que-windows">¿Por qué Windows importa en ciberseguridad?</a></li>
                 <li><a href="#estructura-dominio">Estructura de un dominio Windows</a></li>
@@ -41,7 +41,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="por-que-windows">
-            <h2><span class="section-icon">🪟</span> 1. ¿Por qué Windows importa en ciberseguridad?</h2>
+            <h2>1. ¿Por qué Windows importa en ciberseguridad?</h2>
             <p class="lesson-text">
                 Hasta ahora has trabajado casi exclusivamente con Linux. Pero en el mundo real, la gran mayoría de las 
                 <strong>redes corporativas</strong> corren sobre Windows. Los empleados usan Windows 10/11, los servidores corren 
@@ -49,7 +49,6 @@
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">🏢</span>
                 <h4>Analogía: La empresa como un edificio corporativo</h4>
                 <p>
                     Imagina una empresa como un <strong>edificio de oficinas</strong>. Cada empleado tiene una <strong>credencial (badge)</strong> 
@@ -77,14 +76,13 @@
 
         <!-- SECTION 2 -->
         <div class="lesson-section" id="estructura-dominio">
-            <h2><span class="section-icon">🌳</span> 2. Estructura de un dominio Windows</h2>
+            <h2>2. Estructura de un dominio Windows</h2>
             <p class="lesson-text">
                 Un <strong>dominio</strong> de Windows es un grupo de computadoras, usuarios y recursos administrados centralmente. 
                 Todos comparten la misma base de datos de seguridad.
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">🗺️</span>
                 <h4>Analogía: El organigrama de una multinacional</h4>
                 <p>
                     Un <strong>bosque (forest)</strong> es la multinacional completa. Dentro hay <strong>árboles (trees)</strong>, que son 
@@ -129,7 +127,7 @@
 
         <!-- SECTION 3 -->
         <div class="lesson-section" id="usuarios-grupos">
-            <h2><span class="section-icon">👥</span> 3. Usuarios, Grupos y Permisos</h2>
+            <h2>3. Usuarios, Grupos y Permisos</h2>
             <p class="lesson-text">
                 En Active Directory, cada persona, computadora y servicio es un <strong>objeto</strong> con un identificador único 
                 llamado <strong>SID (Security Identifier)</strong>. Los permisos se asignan a través de <strong>grupos</strong>.
@@ -185,14 +183,13 @@ S-1-5-21-...-<span style="color:#ff5252">519</span>  → Enterprise Admins</code
 
         <!-- SECTION 4 -->
         <div class="lesson-section" id="gpos">
-            <h2><span class="section-icon">📜</span> 4. Group Policy Objects (GPOs)</h2>
+            <h2>4. Group Policy Objects (GPOs)</h2>
             <p class="lesson-text">
                 Las <strong>GPOs</strong> son reglas que se aplican automáticamente a usuarios y computadoras del dominio. 
                 Son el mecanismo central de control en una red Windows.
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">📋</span>
                 <h4>Analogía: Las reglas del edificio</h4>
                 <p>
                     Las GPOs son como las <strong>políticas internas de la empresa</strong>: "todos deben cambiar su contraseña cada 90 días", 
@@ -213,7 +210,7 @@ S-1-5-21-...-<span style="color:#ff5252">519</span>  → Enterprise Admins</code
             </table></div>
 
             <div class="concept-box">
-                <h4>💡 Dato clave para pentesting</h4>
+                <h4>Dato clave para pentesting</h4>
                 <p>
                     Las GPOs se almacenan en la carpeta <code>\\dominio\SYSVOL</code>, accesible por cualquier usuario del dominio. 
                     A veces contienen contraseñas en texto plano en archivos XML (Group Policy Preferences) — una vulnerabilidad 
@@ -224,13 +221,12 @@ S-1-5-21-...-<span style="color:#ff5252">519</span>  → Enterprise Admins</code
 
         <!-- SECTION 5 -->
         <div class="lesson-section" id="domain-controller">
-            <h2><span class="section-icon">🖥️</span> 5. ¿Qué es un Domain Controller?</h2>
+            <h2>5. ¿Qué es un Domain Controller?</h2>
             <p class="lesson-text">
                 El <strong>Domain Controller (DC)</strong> es el servidor que gestiona TODO el dominio. Es el cerebro de Active Directory.
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">🏛️</span>
                 <h4>Analogía: El registro civil + la comisaría + el banco central</h4>
                 <p>
                     El Domain Controller es todo a la vez: el <strong>registro civil</strong> (sabe quién es cada persona), 
@@ -263,7 +259,7 @@ S-1-5-21-...-<span style="color:#ff5252">519</span>  → Enterprise Admins</code
 
         <!-- SECTION 6 -->
         <div class="lesson-section" id="herramientas">
-            <h2><span class="section-icon">🔧</span> 6. Herramientas de administración</h2>
+            <h2>6. Herramientas de administración</h2>
             <p class="lesson-text">
                 Conocer las herramientas de administración de Windows te permite entender qué hace un administrador legítimo — 
                 y cómo un atacante abusa de las mismas herramientas.
@@ -309,10 +305,10 @@ S-1-5-21-...-<span style="color:#ff5252">519</span>  → Enterprise Admins</code
 
         <!-- SECTION 7: Practice -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 7. Práctica</h2>
+            <h2>7. Práctica</h2>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Antes de pasar a los ataques de AD (Lección 13), asegúrate de poder responder:</p>
                 <ul>
                     <li>¿Qué es un dominio de Active Directory y qué diferencia tiene con una red sin dominio?</li>

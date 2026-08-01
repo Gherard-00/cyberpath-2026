@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,7 @@
         </div>
 
         <div class="lesson-toc">
-            <h3>📋 Contenido de esta lección</h3>
+            <h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es-cripto">¿Qué es la criptografía?</a></li>
                 <li><a href="#simetrico">Cifrado simétrico: una clave para todo</a></li>
@@ -55,7 +55,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="que-es-cripto">
-            <h2><span class="section-icon">🔐</span> 1. ¿Qué es la criptografía?</h2>
+            <h2>1. ¿Qué es la criptografía?</h2>
             <p class="lesson-text">
                 La criptografía transforma datos legibles (<strong>texto plano</strong>) en datos ilegibles (<strong>texto cifrado</strong>) 
                 usando un algoritmo y una <strong>clave</strong>. Solo quien tenga la clave correcta puede descifrar y leer los datos originales.
@@ -72,7 +72,7 @@ Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
 
         <!-- SECTION 2 -->
         <div class="lesson-section" id="simetrico">
-            <h2><span class="section-icon">🔑</span> 2. Cifrado simétrico: una clave para todo</h2>
+            <h2>2. Cifrado simétrico: una clave para todo</h2>
             <p class="lesson-text">
                 En el cifrado <strong>simétrico</strong>, se usa <strong>la misma clave</strong> para cifrar y descifrar. 
                 Es rápido y eficiente, pero tiene un problema: ¿cómo le envías la clave a la otra persona de forma segura?
@@ -81,9 +81,9 @@ Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
                 <table class="lesson-table">
                     <thead><tr><th>Algoritmo</th><th>Tamaño de clave</th><th>Estado</th><th>Uso</th></tr></thead>
                     <tbody>
-                        <tr><td><strong>AES-256</strong></td><td>256 bits</td><td>✅ Estándar actual</td><td>Cifrado de discos (BitLocker), VPNs, HTTPS</td></tr>
-                        <tr><td><strong>AES-128</strong></td><td>128 bits</td><td>✅ Seguro</td><td>WiFi (WPA2), muchas aplicaciones</td></tr>
-                        <tr><td><strong>ChaCha20</strong></td><td>256 bits</td><td>✅ Moderno</td><td>TLS 1.3, WireGuard VPN</td></tr>
+                        <tr><td><strong>AES-256</strong></td><td>256 bits</td><td>Estándar actual</td><td>Cifrado de discos (BitLocker), VPNs, HTTPS</td></tr>
+                        <tr><td><strong>AES-128</strong></td><td>128 bits</td><td>Seguro</td><td>WiFi (WPA2), muchas aplicaciones</td></tr>
+                        <tr><td><strong>ChaCha20</strong></td><td>256 bits</td><td>Moderno</td><td>TLS 1.3, WireGuard VPN</td></tr>
                         <tr><td><strong>DES</strong></td><td>56 bits</td><td>❌ Roto</td><td>Ya no se debe usar — clave demasiado corta</td></tr>
                         <tr><td><strong>3DES</strong></td><td>168 bits</td><td>⚠️ Obsoleto</td><td>Sistemas legacy, siendo reemplazado</td></tr>
                     </tbody>
@@ -108,7 +108,7 @@ Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
 
         <!-- SECTION 3 -->
         <div class="lesson-section" id="asimetrico">
-            <h2><span class="section-icon">🔑🔑</span> 3. Cifrado asimétrico: la magia de las dos claves</h2>
+            <h2>3. Cifrado asimétrico: la magia de las dos claves</h2>
             <p class="lesson-text">
                 El cifrado <strong>asimétrico</strong> usa <strong>dos claves</strong> que están matemáticamente relacionadas:
             </p>
@@ -118,7 +118,6 @@ Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
             </ul>
 
             <div class="analogy-box">
-                <span class="analogy-icon">📬</span>
                 <h4>Analogía: El buzón con candado</h4>
                 <p>
                     Tu <strong>clave pública</strong> es como un buzón abierto en la calle: cualquiera puede meter una carta (cifrar un mensaje). 
@@ -141,7 +140,7 @@ Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
 
         <!-- SECTION 4 -->
         <div class="lesson-section" id="hashes">
-            <h2><span class="section-icon">🔍</span> 4. Funciones hash: la huella digital de los datos</h2>
+            <h2>4. Funciones hash: la huella digital de los datos</h2>
             <p class="lesson-text">
                 Un <strong>hash</strong> es una función que toma cualquier cantidad de datos y produce una cadena de tamaño fijo. 
                 Es una <strong>"huella digital"</strong> del dato original: si cambias un solo bit, el hash cambia completamente.
@@ -183,9 +182,9 @@ a1b2c3d4...  kali-linux-2026.1.iso
                     <tbody>
                         <tr><td><strong>MD5</strong></td><td>128 bits</td><td>❌ Roto (colisiones)</td><td>Solo para checksums rápidos, NO para seguridad</td></tr>
                         <tr><td><strong>SHA-1</strong></td><td>160 bits</td><td>❌ Roto</td><td>Obsoleto, no usar para nada nuevo</td></tr>
-                        <tr><td><strong>SHA-256</strong></td><td>256 bits</td><td>✅ Estándar</td><td>Integridad de archivos, certificados, blockchain</td></tr>
-                        <tr><td><strong>SHA-512</strong></td><td>512 bits</td><td>✅ Seguro</td><td>Hashing de contraseñas en Linux (/etc/shadow)</td></tr>
-                        <tr><td><strong>bcrypt</strong></td><td>Variable</td><td>✅ Recomendado</td><td>Hashing de contraseñas (lento a propósito)</td></tr>
+                        <tr><td><strong>SHA-256</strong></td><td>256 bits</td><td>Estándar</td><td>Integridad de archivos, certificados, blockchain</td></tr>
+                        <tr><td><strong>SHA-512</strong></td><td>512 bits</td><td>Seguro</td><td>Hashing de contraseñas en Linux (/etc/shadow)</td></tr>
+                        <tr><td><strong>bcrypt</strong></td><td>Variable</td><td>Recomendado</td><td>Hashing de contraseñas (lento a propósito)</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -193,7 +192,7 @@ a1b2c3d4...  kali-linux-2026.1.iso
 
         <!-- SECTION 5 -->
         <div class="lesson-section" id="firmas">
-            <h2><span class="section-icon">✍️</span> 5. Firmas digitales y certificados</h2>
+            <h2>5. Firmas digitales y certificados</h2>
             <p class="lesson-text">
                 Una <strong>firma digital</strong> es la combinación de hash + cifrado asimétrico para garantizar que un mensaje es auténtico 
                 y no fue modificado. El emisor firma con su clave privada y cualquiera puede verificar con su clave pública.
@@ -207,11 +206,11 @@ a1b2c3d4...  kali-linux-2026.1.iso
     Firma Digital ──[Descifrar con clave PÚBLICA]──▶ Hash Original
     Documento     ──[Hash]──▶ Hash Calculado
     
-    ¿Hash Original == Hash Calculado?  →  ✅ Firma válida / ❌ Documento alterado
+    ¿Hash Original == Hash Calculado?  →  Firma válida / ❌ Documento alterado
                 </pre>
             </div>
             <div class="concept-box">
-                <h4>💡 Certificados digitales (SSL/TLS)</h4>
+                <h4>Certificados digitales (SSL/TLS)</h4>
                 <p>
                     Un <strong>certificado digital</strong> es un archivo que vincula una clave pública con la identidad de un servidor (ej: google.com). 
                     Es emitido por una <strong>Autoridad Certificadora (CA)</strong> de confianza (Let's Encrypt, DigiCert, etc.). 
@@ -223,7 +222,7 @@ a1b2c3d4...  kali-linux-2026.1.iso
 
         <!-- SECTION 6 -->
         <div class="lesson-section" id="tls">
-            <h2><span class="section-icon">🔒</span> 6. TLS/SSL: cómo HTTPS protege tu navegación</h2>
+            <h2>6. TLS/SSL: cómo HTTPS protege tu navegación</h2>
             <p class="lesson-text">
                 <strong>TLS (Transport Layer Security)</strong> es el protocolo que hace posible HTTPS. Combina cifrado simétrico, 
                 asimétrico y hashes para crear una conexión segura:
@@ -238,7 +237,7 @@ a1b2c3d4...  kali-linux-2026.1.iso
 
         <!-- SECTION 7 -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 7. Práctica: GPG y OpenSSL</h2>
+            <h2>7. Práctica: GPG y OpenSSL</h2>
 
             <h3>Ejercicio 1: Cifrado con GPG</h3>
             <div class="lesson-terminal">
@@ -281,7 +280,7 @@ datos.txt: FAILED  <span style="color:#546e7a">← ¡Detectó la modificación!<
             </div>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Asegúrate de poder responder:</p>
                 <ul>
                     <li>¿Cuál es la diferencia entre cifrado simétrico y asimétrico?</li>

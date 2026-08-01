@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +26,7 @@
                 En esta lección aprenderás a usar <strong>Volatility 3</strong> paso a paso.
             </p>
         </div>
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#por-que-ram">¿Por qué analizar la RAM?</a></li>
                 <li><a href="#captura">Cómo capturar la RAM</a></li>
@@ -43,8 +43,8 @@
             </ol>
         </div>
 
-        <div class="lesson-section" id="por-que-ram"><h2><span class="section-icon">🧠</span> 1. ¿Por qué analizar la RAM?</h2>
-            <div class="lesson-callout"><strong>📌 La RAM contiene evidencia que NO está en el disco:</strong>
+        <div class="lesson-section" id="por-que-ram"><h2>1. ¿Por qué analizar la RAM?</h2>
+            <div class="lesson-callout"><strong>La RAM contiene evidencia que NO está en el disco:</strong>
                 <ul>
                     <li><strong>Malware fileless</strong>: Código que solo existe en memoria, nunca toca el disco</li>
                     <li><strong>Procesos en ejecución</strong>: Qué programas estaban corriendo al momento del incidente</li>
@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="captura"><h2><span class="section-icon">📸</span> 2. Cómo capturar la RAM</h2>
+        <div class="lesson-section" id="captura"><h2>2. Cómo capturar la RAM</h2>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Herramienta</th><th>SO</th><th>Formato</th></tr></thead>
                 <tbody>
                     <tr><td><strong>DumpIt</strong></td><td>Windows</td><td>.raw</td></tr>
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="vol3-intro"><h2><span class="section-icon">🔧</span> 3. Introducción a Volatility 3</h2>
+        <div class="lesson-section" id="vol3-intro"><h2>3. Introducción a Volatility 3</h2>
             <p class="lesson-text"><strong>Volatility 3</strong> es la versión moderna del framework. Está escrito en Python 3 y tiene mejor rendimiento que Volatility 2.</p>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Instalación y uso básico</span></div>
                 <pre><code><span style="color:#546e7a"># Instalar Volatility 3 (ya viene en Kali Linux)</span>
@@ -101,7 +101,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="info"><h2><span class="section-icon">ℹ️</span> 4. Identificar el sistema operativo</h2>
+        <div class="lesson-section" id="info"><h2>4. Identificar el sistema operativo</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Información del sistema</span></div>
                 <pre><code><span style="color:#546e7a"># Información básica del dump</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.info
@@ -117,7 +117,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="procesos"><h2><span class="section-icon">⚙️</span> 5. Analizar procesos</h2>
+        <div class="lesson-section" id="procesos"><h2>5. Analizar procesos</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Análisis de procesos</span></div>
                 <pre><code><span style="color:#546e7a"># Listar todos los procesos</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.pslist
@@ -156,7 +156,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="dlls"><h2><span class="section-icon">📚</span> 6. DLLs y handles</h2>
+        <div class="lesson-section" id="dlls"><h2>6. DLLs y handles</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">DLLs y handles</span></div>
                 <pre><code><span style="color:#546e7a"># Listar DLLs cargadas por un proceso específico</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.dlllist --pid 6712
@@ -169,7 +169,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="red"><h2><span class="section-icon">🌐</span> 7. Conexiones de red</h2>
+        <div class="lesson-section" id="red"><h2>7. Conexiones de red</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Conexiones de red</span></div>
                 <pre><code><span style="color:#546e7a"># Ver todas las conexiones de red activas</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.netscan
@@ -183,7 +183,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="registros"><h2><span class="section-icon">📋</span> 8. Registro de Windows en RAM</h2>
+        <div class="lesson-section" id="registros"><h2>8. Registro de Windows en RAM</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Registry en RAM</span></div>
                 <pre><code><span style="color:#546e7a"># Listar hives del registro en memoria</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.registry.hivelist
@@ -198,7 +198,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="malware"><h2><span class="section-icon">🦠</span> 9. Detectar malware e inyección de código</h2>
+        <div class="lesson-section" id="malware"><h2>9. Detectar malware e inyección de código</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de malware</span></div>
                 <pre><code><span style="color:#546e7a"># Detectar inyección de código en procesos</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.malfind
@@ -217,7 +217,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="extraccion"><h2><span class="section-icon">📦</span> 10. Extraer archivos y strings</h2>
+        <div class="lesson-section" id="extraccion"><h2>10. Extraer archivos y strings</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Extracción</span></div>
                 <pre><code><span style="color:#546e7a"># Listar archivos en memoria</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.filescan | grep -i "sospechoso"
@@ -234,7 +234,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="timeline"><h2><span class="section-icon">📅</span> 11. Crear un timeline</h2>
+        <div class="lesson-section" id="timeline"><h2>11. Crear un timeline</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Timeline de eventos</span></div>
                 <pre><code><span style="color:#546e7a"># Crear timeline con todos los artefactos temporales</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw timeliner.Timeliner > timeline.csv
@@ -246,8 +246,8 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 12. Práctica</h2>
-            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+        <div class="lesson-section" id="practica"><h2>12. Práctica</h2>
+            <div class="practice-box"><h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Entiendes por qué la RAM es una fuente crítica de evidencia</li>
                     <li>Puedes capturar un dump de RAM con DumpIt o LiME</li>

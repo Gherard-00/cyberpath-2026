@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
                 forense completo que usarás en todas las lecciones siguientes.
             </p>
         </div>
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es">¿Qué es la informática forense?</a></li>
                 <li><a href="#principios">Principios fundamentales</a></li>
@@ -42,9 +42,9 @@
             </ol>
         </div>
 
-        <div class="lesson-section" id="que-es"><h2><span class="section-icon">🔬</span> 1. ¿Qué es la informática forense?</h2>
+        <div class="lesson-section" id="que-es"><h2>1. ¿Qué es la informática forense?</h2>
             <p class="lesson-text">La <strong>informática forense</strong> (digital forensics) es la disciplina que se encarga de <strong>identificar, preservar, analizar y presentar</strong> evidencia digital de forma que sea <strong>admisible en un proceso legal</strong>.</p>
-            <div class="lesson-callout"><strong>📌 Diferencia con incident response:</strong>
+            <div class="lesson-callout"><strong>Diferencia con incident response:</strong>
                 <ul>
                     <li><strong>Incident Response (IR)</strong>: Prioridad = contener y remediar el incidente RÁPIDO</li>
                     <li><strong>Digital Forensics</strong>: Prioridad = preservar evidencia y entender QUÉ pasó exactamente</li>
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="principios"><h2><span class="section-icon">⚖️</span> 2. Principios fundamentales</h2>
+        <div class="lesson-section" id="principios"><h2>2. Principios fundamentales</h2>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Principio</th><th>Descripción</th></tr></thead>
                 <tbody>
                     <tr><td><strong>No alterar la evidencia</strong></td><td>NUNCA trabajar directamente sobre el dispositivo original. Siempre crear una copia forense bit a bit.</td></tr>
@@ -65,12 +65,12 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="tipos-evidencia"><h2><span class="section-icon">💾</span> 3. Tipos de evidencia digital</h2>
+        <div class="lesson-section" id="tipos-evidencia"><h2>3. Tipos de evidencia digital</h2>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Tipo</th><th>Ejemplos</th><th>Volatilidad</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>Memoria RAM</strong></td><td>Procesos, conexiones de red, claves de cifrado, malware en ejecución</td><td>⚡ Muy alta — se pierde al apagar</td></tr>
+                    <tr><td><strong>Memoria RAM</strong></td><td>Procesos, conexiones de red, claves de cifrado, malware en ejecución</td><td>Muy alta — se pierde al apagar</td></tr>
                     <tr><td><strong>Disco duro / SSD</strong></td><td>Archivos, registros, logs del sistema, archivos borrados</td><td>🟢 Baja — persiste al apagar</td></tr>
-                    <tr><td><strong>Tráfico de red</strong></td><td>Capturas PCAP, logs de firewall, logs DNS</td><td>⚡ Alta — si no se captura, se pierde</td></tr>
+                    <tr><td><strong>Tráfico de red</strong></td><td>Capturas PCAP, logs de firewall, logs DNS</td><td>Alta — si no se captura, se pierde</td></tr>
                     <tr><td><strong>Logs</strong></td><td>Event logs de Windows, syslog, logs de aplicaciones</td><td>🟡 Media — pueden ser rotados o borrados</td></tr>
                     <tr><td><strong>Dispositivos móviles</strong></td><td>SMS, apps, geolocalización, fotos con EXIF</td><td>🟡 Media</td></tr>
                     <tr><td><strong>Nube</strong></td><td>Logs de AWS/Azure/GCP, correos, almacenamiento</td><td>🟡 Depende del proveedor</td></tr>
@@ -78,9 +78,9 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="cadena-custodia"><h2><span class="section-icon">🔗</span> 4. Cadena de custodia</h2>
+        <div class="lesson-section" id="cadena-custodia"><h2>4. Cadena de custodia</h2>
             <p class="lesson-text">La <strong>cadena de custodia</strong> es el registro documentado de quién ha tenido acceso a la evidencia desde que se recolectó hasta que se presenta en un tribunal.</p>
-            <div class="lesson-callout"><strong>📌 Un registro de custodia incluye:</strong>
+            <div class="lesson-callout"><strong>Un registro de custodia incluye:</strong>
                 <ul>
                     <li><strong>Fecha y hora</strong> de recolección</li>
                     <li><strong>Quién</strong> recolectó la evidencia (nombre, rol)</li>
@@ -93,7 +93,7 @@
             <p class="lesson-text">Si la cadena de custodia se rompe (alguien accedió sin registrar, la evidencia estuvo sin custodia), un juez puede <strong>invalidar toda la investigación</strong>.</p>
         </div>
 
-        <div class="lesson-section" id="orden-volatilidad"><h2><span class="section-icon">⏱️</span> 5. Orden de volatilidad</h2>
+        <div class="lesson-section" id="orden-volatilidad"><h2>5. Orden de volatilidad</h2>
             <p class="lesson-text">Cuando llegas a un incidente, debes recolectar evidencia en <strong>orden de volatilidad</strong> — primero lo que se pierde más rápido:</p>
             <div class="lesson-diagram"><pre>
     Orden de recolección (de más a menos volátil):
@@ -108,7 +108,7 @@
             </pre><p class="diagram-caption">RFC 3227: Guidelines for Evidence Collection — siempre recolectar de lo más volátil a lo menos</p></div>
         </div>
 
-        <div class="lesson-section" id="adquisicion"><h2><span class="section-icon">📀</span> 6. Adquisición de evidencia</h2>
+        <div class="lesson-section" id="adquisicion"><h2>6. Adquisición de evidencia</h2>
             <p class="lesson-text">La <strong>adquisición</strong> es crear una copia exacta (bit a bit) del dispositivo original. Hay dos tipos:</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Tipo</th><th>Descripción</th><th>Herramientas</th></tr></thead>
                 <tbody>
@@ -144,7 +144,7 @@ Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
             </div>
         </div>
 
-        <div class="lesson-section" id="integridad"><h2><span class="section-icon">🔐</span> 7. Integridad: hashes y verificación</h2>
+        <div class="lesson-section" id="integridad"><h2>7. Integridad: hashes y verificación</h2>
             <p class="lesson-text">Los <strong>hashes</strong> son la columna vertebral de la forense digital. Demuestran que la evidencia no ha sido alterada.</p>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Verificación de integridad</span></div>
                 <pre><code><span style="color:#546e7a"># Calcular hashes de la imagen forense</span>
@@ -154,14 +154,14 @@ Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
 <span style="color:#546e7a"># ANTES de analizar: verificar que el hash coincide</span>
 <span style="color:#00e676">$</span> sha256sum disco_imagen.raw
 <span style="color:#ffcc02">a1b2c3d4e5f6...  disco_imagen.raw</span>
-<span style="color:#546e7a"># ¿Coincide con el hash original? ✅ → Evidencia íntegra</span>
+<span style="color:#546e7a"># ¿Coincide con el hash original? → Evidencia íntegra</span>
 
 <span style="color:#546e7a"># Si el hash cambia → ❌ La evidencia fue modificada</span>
 <span style="color:#546e7a"># Esto invalida el análisis en un tribunal</span></code></pre>
             </div>
         </div>
 
-        <div class="lesson-section" id="proceso"><h2><span class="section-icon">📊</span> 8. El proceso forense completo</h2>
+        <div class="lesson-section" id="proceso"><h2>8. El proceso forense completo</h2>
             <div class="lesson-diagram"><pre>
     Proceso Forense (NIST SP 800-86):
     
@@ -179,7 +179,7 @@ Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
             </pre><p class="diagram-caption">Cada fase tiene sus reglas estrictas — saltarse una puede invalidar la investigación</p></div>
         </div>
 
-        <div class="lesson-section" id="herramientas"><h2><span class="section-icon">🧰</span> 9. Herramientas esenciales</h2>
+        <div class="lesson-section" id="herramientas"><h2>9. Herramientas esenciales</h2>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Herramienta</th><th>Tipo</th><th>Uso</th></tr></thead>
                 <tbody>
                     <tr><td><strong>FTK Imager</strong></td><td>Gratuita (Windows)</td><td>Adquisición de discos e imágenes forenses</td></tr>
@@ -194,8 +194,8 @@ Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
             </table></div>
         </div>
 
-        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 10. Práctica</h2>
-            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+        <div class="lesson-section" id="practica"><h2>10. Práctica</h2>
+            <div class="practice-box"><h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Entiendes qué es la informática forense y cuándo se aplica</li>
                     <li>Conoces los 5 principios fundamentales</li>

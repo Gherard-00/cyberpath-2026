@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
             </p>
         </div>
 
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es-cloud">¿Qué es "la nube" realmente?</a></li>
                 <li><a href="#responsabilidad">Modelo de responsabilidad compartida</a></li>
@@ -41,7 +41,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="que-es-cloud">
-            <h2><span class="section-icon">☁️</span> 1. ¿Qué es "la nube" realmente?</h2>
+            <h2>1. ¿Qué es "la nube" realmente?</h2>
             <p class="lesson-text">
                 "La nube" no es magia — son <strong>computadoras de otra persona</strong>. Específicamente, son centros de datos 
                 masivos operados por Amazon (AWS), Microsoft (Azure) o Google (GCP) que te alquilan servidores, bases de datos, 
@@ -49,7 +49,6 @@
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">🏨</span>
                 <h4>Analogía: Hotel vs. Casa propia</h4>
                 <p>
                     Tener tu propio servidor es como tener <strong>casa propia</strong>: tú controlas todo, pero también 
@@ -71,7 +70,7 @@
 
         <!-- SECTION 2 -->
         <div class="lesson-section" id="responsabilidad">
-            <h2><span class="section-icon">🤝</span> 2. Modelo de responsabilidad compartida</h2>
+            <h2>2. Modelo de responsabilidad compartida</h2>
             <p class="lesson-text">
                 Este es el concepto <strong>más importante</strong> de cloud security. Define quién es responsable de qué.
             </p>
@@ -108,14 +107,13 @@
 
         <!-- SECTION 3 -->
         <div class="lesson-section" id="iam">
-            <h2><span class="section-icon">🔑</span> 3. IAM: Identity and Access Management</h2>
+            <h2>3. IAM: Identity and Access Management</h2>
             <p class="lesson-text">
                 <strong>IAM</strong> es el sistema de control de acceso de la nube. Define <strong>quién</strong> puede hacer 
                 <strong>qué</strong> sobre <strong>qué recursos</strong>. Es el equivalente cloud de Active Directory.
             </p>
 
             <div class="analogy-box">
-                <span class="analogy-icon">🎫</span>
                 <h4>Analogía: El sistema de pases de un festival</h4>
                 <p>
                     IAM funciona como los <strong>pases de un festival de música</strong>: hay pases generales (acceso básico), 
@@ -147,7 +145,7 @@
     }]
 }
 
-<span style="color:#00e676">✅ SEGURO — Principio de mínimo privilegio:</span>
+<span style="color:#00e676">SEGURO — Principio de mínimo privilegio:</span>
 {
     "Version": "2012-10-17",
     "Statement": [{
@@ -170,7 +168,7 @@
 
         <!-- SECTION 4 -->
         <div class="lesson-section" id="storage">
-            <h2><span class="section-icon">📦</span> 4. Almacenamiento expuesto: el error #1 en la nube</h2>
+            <h2>4. Almacenamiento expuesto: el error #1 en la nube</h2>
             <p class="lesson-text">
                 El servicio de almacenamiento de objetos (AWS S3, Azure Blob Storage, Google Cloud Storage) es donde se guardan 
                 archivos: backups, logs, datos de usuarios, assets. El error más común es dejarlo <strong>público accidentalmente</strong>.
@@ -206,7 +204,7 @@
 
         <!-- SECTION 5 -->
         <div class="lesson-section" id="vectores">
-            <h2><span class="section-icon">⚔️</span> 5. Vectores de ataque comunes en la nube</h2>
+            <h2>5. Vectores de ataque comunes en la nube</h2>
 
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Ataque</th><th>Descripción</th><th>Cómo se previene</th></tr></thead>
                 <tbody>
@@ -220,7 +218,7 @@
             </table></div>
 
             <div class="concept-box">
-                <h4>💡 SSRF al servicio de metadata — El ataque más peligroso en la nube</h4>
+                <h4>SSRF al servicio de metadata — El ataque más peligroso en la nube</h4>
                 <p>
                     Cada instancia EC2/VM tiene acceso a un servicio de metadata en <code>http://169.254.169.254</code>. 
                     Si una aplicación web tiene <strong>SSRF</strong>, el atacante puede hacer que el servidor consulte esa 
@@ -233,7 +231,7 @@
 
         <!-- SECTION 6 -->
         <div class="lesson-section" id="herramientas">
-            <h2><span class="section-icon">🔧</span> 6. Herramientas de auditoría cloud</h2>
+            <h2>6. Herramientas de auditoría cloud</h2>
 
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Herramienta</th><th>Plataforma</th><th>Función</th></tr></thead>
                 <tbody>
@@ -269,10 +267,10 @@
 
         <!-- SECTION 7: Practice -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 7. Práctica</h2>
+            <h2>7. Práctica</h2>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Asegúrate de poder responder:</p>
                 <ul>
                     <li>¿Cuál es la diferencia entre IaaS, PaaS y SaaS?</li>

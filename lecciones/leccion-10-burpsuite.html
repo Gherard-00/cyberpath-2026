@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +30,7 @@
         </div>
 
         <div class="lesson-toc">
-            <h3>📋 Contenido de esta lección</h3>
+            <h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es">¿Qué es Burp Suite y cómo funciona?</a></li>
                 <li><a href="#configurar">Configuración inicial y proxy</a></li>
@@ -43,7 +43,7 @@
         </div>
 
         <div class="lesson-section" id="que-es">
-            <h2><span class="section-icon">🕷️</span> 1. ¿Qué es Burp Suite y cómo funciona?</h2>
+            <h2>1. ¿Qué es Burp Suite y cómo funciona?</h2>
             <p class="lesson-text">
                 Burp Suite actúa como un <strong>hombre en el medio (MitM)</strong> entre tu navegador y el servidor web. 
                 Todo el tráfico HTTP/HTTPS pasa por Burp, donde puedes inspeccionarlo, modificarlo y reenviarlo.
@@ -58,7 +58,7 @@
         </div>
 
         <div class="lesson-section" id="configurar">
-            <h2><span class="section-icon">⚙️</span> 2. Configuración inicial y proxy</h2>
+            <h2>2. Configuración inicial y proxy</h2>
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Configurar Burp Suite</span></div>
                 <pre><code><span style="color:#546e7a"># 1. Abrir Burp Suite</span>
@@ -79,7 +79,7 @@
         </div>
 
         <div class="lesson-section" id="proxy">
-            <h2><span class="section-icon">🔀</span> 3. Proxy: interceptar y modificar peticiones</h2>
+            <h2>3. Proxy: interceptar y modificar peticiones</h2>
             <p class="lesson-text">
                 Con Intercept activado, <strong>cada petición HTTP que hagas se pausa en Burp</strong>, mostrándote todo su contenido. 
                 Puedes leerla, modificarla y reenviarla.
@@ -107,7 +107,7 @@ username=admin&password=password&Login=Login
         </div>
 
         <div class="lesson-section" id="repeater">
-            <h2><span class="section-icon">🔁</span> 4. Repeater: probar manualmente</h2>
+            <h2>4. Repeater: probar manualmente</h2>
             <p class="lesson-text">
                 <strong>Repeater</strong> te permite enviar una petición una y otra vez, modificándola cada vez, 
                 y ver la respuesta del servidor al instante. Es perfecto para <strong>probar payloads de SQLi, XSS, IDOR</strong>, etc.
@@ -134,7 +134,7 @@ GET /api/user/profile?id=<span style="color:#ff5252">1 OR 1=1</span> HTTP/1.1</c
         </div>
 
         <div class="lesson-section" id="intruder">
-            <h2><span class="section-icon">⚔️</span> 5. Intruder: ataques automatizados</h2>
+            <h2>5. Intruder: ataques automatizados</h2>
             <p class="lesson-text">
                 <strong>Intruder</strong> automatiza ataques enviando muchas peticiones con diferentes payloads. 
                 Ideal para <strong>fuerza bruta, fuzzing y enumeración</strong>.
@@ -153,7 +153,7 @@ GET /api/user/profile?id=<span style="color:#ff5252">1 OR 1=1</span> HTTP/1.1</c
         </div>
 
         <div class="lesson-section" id="decoder">
-            <h2><span class="section-icon">🔤</span> 6. Decoder y Comparer</h2>
+            <h2>6. Decoder y Comparer</h2>
             <p class="lesson-text">
                 <strong>Decoder</strong> codifica/decodifica texto en varios formatos (Base64, URL encoding, HTML encoding, hex). 
                 <strong>Comparer</strong> compara dos respuestas para encontrar diferencias sutiles.
@@ -172,7 +172,7 @@ YWRtaW46cGFzc3dvcmQ=  →  admin:password
         </div>
 
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 7. Práctica: hackear DVWA con Burp</h2>
+            <h2>7. Práctica: hackear DVWA con Burp</h2>
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ejercicios</span></div>
                 <pre><code><span style="color:#546e7a"># 1. Configura Burp como proxy de tu navegador</span>
@@ -186,7 +186,7 @@ YWRtaW46cGFzc3dvcmQ=  →  admin:password
 <span style="color:#546e7a"># 6. Usa Repeater para probar XSS reflected en la página de búsqueda</span></code></pre>
             </div>
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Configuraste Burp Suite como proxy</li>
                     <li>Interceptaste y modificaste una petición HTTP</li>

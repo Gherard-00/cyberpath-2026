@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -46,7 +46,7 @@
         </div>
 
         <div class="lesson-toc">
-            <h3>📋 Contenido de esta lección</h3>
+            <h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#por-que-lab">¿Por qué necesitas un laboratorio virtual?</a></li>
                 <li><a href="#arquitectura">Arquitectura del laboratorio</a></li>
@@ -62,7 +62,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="por-que-lab">
-            <h2><span class="section-icon">🧪</span> 1. ¿Por qué necesitas un laboratorio virtual?</h2>
+            <h2>1. ¿Por qué necesitas un laboratorio virtual?</h2>
 
             <p class="lesson-text">
                 Un <strong>laboratorio virtual</strong> es un entorno controlado donde ejecutas máquinas virtuales (VMs) 
@@ -87,7 +87,7 @@
 
         <!-- SECTION 2 -->
         <div class="lesson-section" id="arquitectura">
-            <h2><span class="section-icon">🏗️</span> 2. Arquitectura del laboratorio</h2>
+            <h2>2. Arquitectura del laboratorio</h2>
 
             <p class="lesson-text">
                 Nuestro laboratorio tendrá esta estructura:
@@ -136,7 +136,7 @@
             </div>
 
             <div class="concept-box">
-                <h4>💡 ¿Qué es la virtualización?</h4>
+                <h4>¿Qué es la virtualización?</h4>
                 <p>
                     La <strong>virtualización</strong> te permite ejecutar un sistema operativo completo dentro de una ventana de tu computadora. 
                     El software de virtualización (VirtualBox, VMware) crea una "computadora virtual" con su propia CPU, RAM, disco y red — 
@@ -148,7 +148,7 @@
 
         <!-- SECTION 3 -->
         <div class="lesson-section" id="virtualbox">
-            <h2><span class="section-icon">📦</span> 3. Instalar y configurar VirtualBox</h2>
+            <h2>3. Instalar y configurar VirtualBox</h2>
 
             <p class="lesson-text">
                 <strong>VirtualBox</strong> es el software de virtualización que usaremos. Es gratuito, open source, y funciona en Windows, macOS y Linux.
@@ -184,7 +184,7 @@
 
         <!-- SECTION 4 -->
         <div class="lesson-section" id="kali">
-            <h2><span class="section-icon">🐉</span> 4. Instalar Kali Linux</h2>
+            <h2>4. Instalar Kali Linux</h2>
 
             <p class="lesson-text">
                 <strong>Kali Linux</strong> es la distribución de Linux diseñada para pentesting. Viene con +600 herramientas pre-instaladas. 
@@ -246,7 +246,7 @@ Credenciales por defecto:
 
         <!-- SECTION 5 -->
         <div class="lesson-section" id="metasploitable">
-            <h2><span class="section-icon">🎯</span> 5. Instalar Metasploitable 2</h2>
+            <h2>5. Instalar Metasploitable 2</h2>
 
             <p class="lesson-text">
                 <strong>Metasploitable 2</strong> es una máquina virtual intencionalmente vulnerable. Está diseñada para ser hackeada — 
@@ -280,7 +280,7 @@ Credenciales por defecto:
 
         <!-- SECTION 6 -->
         <div class="lesson-section" id="red-virtual">
-            <h2><span class="section-icon">🔗</span> 6. Configurar la red virtual aislada</h2>
+            <h2>6. Configurar la red virtual aislada</h2>
 
             <p class="lesson-text">
                 Para que Kali pueda "atacar" a Metasploitable, ambas máquinas deben estar en la <strong>misma red virtual</strong>. 
@@ -333,7 +333,7 @@ En Metasploitable:
 
         <!-- SECTION 7 -->
         <div class="lesson-section" id="verificar">
-            <h2><span class="section-icon">✅</span> 7. Verificar que todo funciona</h2>
+            <h2>7. Verificar que todo funciona</h2>
 
             <p class="lesson-text">
                 Una vez configurado todo, verifica la conectividad entre tus máquinas:
@@ -353,7 +353,7 @@ En Metasploitable:
 PING 10.0.2.15 (10.0.2.15) 56(84) bytes of data.
 64 bytes from 10.0.2.15: icmp_seq=1 ttl=64 time=0.523 ms
 64 bytes from 10.0.2.15: icmp_seq=2 ttl=64 time=0.421 ms
-<span style="color:#546e7a"># ✅ Si recibes respuesta, la red funciona</span>
+<span style="color:#546e7a"># Si recibes respuesta, la red funciona</span>
 
 <span style="color:#546e7a"># 3. Tu PRIMER escaneo real con Nmap</span>
 <span style="color:#00e676">$</span> nmap -sV 10.0.2.15
@@ -380,7 +380,7 @@ PORT     STATE SERVICE     VERSION
 
         <!-- SECTION 8 -->
         <div class="lesson-section" id="snapshots">
-            <h2><span class="section-icon">📸</span> 8. Snapshots: tu red de seguridad</h2>
+            <h2>8. Snapshots: tu red de seguridad</h2>
 
             <p class="lesson-text">
                 Las <strong>snapshots</strong> (instantáneas) guardan el estado completo de una VM en un momento dado. 
@@ -404,13 +404,13 @@ Restaurar una Snapshot:
 3. Selecciona la snapshot → "Restaurar"
 
 Snapshots recomendadas:
-✅ "Estado Limpio" — Justo después de instalar y actualizar
-✅ "Pre-Explotación" — Antes de un ejercicio de pentesting
-✅ "Laboratorio Funcional" — Cuando todo está configurado y verificado</code></pre>
+"Estado Limpio" — Justo después de instalar y actualizar
+"Pre-Explotación" — Antes de un ejercicio de pentesting
+"Laboratorio Funcional" — Cuando todo está configurado y verificado</code></pre>
             </div>
 
             <div class="concept-box">
-                <h4>💡 Buena práctica</h4>
+                <h4>Buena práctica</h4>
                 <p>
                     Antes de cada ejercicio de pentesting, <strong>toma una snapshot de tus VMs</strong>. Así, si algo sale mal 
                     (corrompes la VM, instalas malware por accidente, cambias configuraciones), puedes restaurar en 10 segundos 
@@ -421,7 +421,7 @@ Snapshots recomendadas:
 
         <!-- SECTION 9 -->
         <div class="lesson-section" id="extras">
-            <h2><span class="section-icon">🎮</span> 9. Máquinas adicionales para practicar</h2>
+            <h2>9. Máquinas adicionales para practicar</h2>
 
             <p class="lesson-text">
                 Además de Metasploitable, existen muchas plataformas y máquinas vulnerables para seguir practicando:
@@ -467,7 +467,7 @@ Snapshots recomendadas:
             </div>
 
             <div class="lab-checklist" id="lab-checklist">
-                <h4>📋 Checklist de Montaje del Laboratorio</h4>
+                <h4>Checklist de Montaje del Laboratorio</h4>
                 <p>Marca cada paso a medida que lo completes. Tu progreso se guarda automáticamente.</p>
                 <div class="checklist-items">
                     <label class="checklist-item">
@@ -508,7 +508,7 @@ Snapshots recomendadas:
             </div>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Antes de pasar a la siguiente fase, verifica que:</p>
                 <ul>
                     <li>VirtualBox está instalado y funcionando</li>

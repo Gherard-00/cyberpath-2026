@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -27,11 +27,11 @@
                 para mapear rutas de ataque.
             </p>
             <div class="concept-box" style="margin-top:1.25rem">
-                <h4>📋 Prerrequisito</h4>
+                <h4>Prerrequisito</h4>
                 <p>Esta lección asume que completaste la <strong><a href="leccion-13a-windows-ad-fundamentos.html" style="color:var(--accent-cyan)">Lección 13A: Fundamentos de Windows y AD</a></strong>, donde se explican dominios, usuarios, grupos, GPOs y Domain Controllers.</p>
             </div>
         </div>
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es-ad">¿Qué es Active Directory?</a></li>
                 <li><a href="#kerberos">Kerberos: cómo funciona la autenticación</a></li>
@@ -44,7 +44,7 @@
             </ol>
         </div>
 
-        <div class="lesson-section" id="que-es-ad"><h2><span class="section-icon">🏢</span> 1. ¿Qué es Active Directory?</h2>
+        <div class="lesson-section" id="que-es-ad"><h2>1. ¿Qué es Active Directory?</h2>
             <p class="lesson-text"><strong>Active Directory (AD)</strong> es el servicio de directorio de Microsoft que centraliza la gestión de usuarios, computadoras, permisos y políticas en una red corporativa. Es como la "guía telefónica" de la empresa pero mucho más poderosa.</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Concepto</th><th>Descripción</th></tr></thead>
                 <tbody>
@@ -58,7 +58,7 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="kerberos"><h2><span class="section-icon">🎫</span> 2. Kerberos: cómo funciona la autenticación</h2>
+        <div class="lesson-section" id="kerberos"><h2>2. Kerberos: cómo funciona la autenticación</h2>
             <p class="lesson-text"><strong>Kerberos</strong> es el protocolo de autenticación que usa AD. Funciona con "tickets" en lugar de enviar contraseñas por la red.</p>
             <div class="lesson-diagram"><pre>
     1. Usuario ──[contraseña]──▶ KDC (Domain Controller)
@@ -72,7 +72,7 @@
             </pre><p class="diagram-caption">Flujo simplificado de Kerberos: TGT → TGS → Acceso al recurso</p></div>
         </div>
 
-        <div class="lesson-section" id="enumeracion"><h2><span class="section-icon">🔍</span> 3. Enumeración de AD</h2>
+        <div class="lesson-section" id="enumeracion"><h2>3. Enumeración de AD</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Enumerar AD</span></div>
                 <pre><code><span style="color:#546e7a"># Enumerar usuarios del dominio</span>
 <span style="color:#00e676">$</span> crackmapexec smb DC_IP -u user -p pass --users
@@ -86,7 +86,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="kerberoasting"><h2><span class="section-icon">🔥</span> 4. Kerberoasting</h2>
+        <div class="lesson-section" id="kerberoasting"><h2>4. Kerberoasting</h2>
             <p class="lesson-text"><strong>Kerberoasting</strong> explota cuentas de servicio con SPN: solicitas un ticket de servicio (TGS) cifrado con la contraseña del servicio, y luego lo crackeas offline.</p>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Kerberoasting</span></div>
                 <pre><code><span style="color:#546e7a"># Extraer tickets TGS</span>
@@ -97,7 +97,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="pth"><h2><span class="section-icon">🔑</span> 5. Pass-the-Hash y Pass-the-Ticket</h2>
+        <div class="lesson-section" id="pth"><h2>5. Pass-the-Hash y Pass-the-Ticket</h2>
             <p class="lesson-text"><strong>Pass-the-Hash (PtH)</strong>: en lugar de crackear un hash NTLM, lo usas directamente para autenticarte. Windows acepta el hash como si fuera la contraseña.</p>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Pass-the-Hash</span></div>
                 <pre><code><span style="color:#546e7a"># Acceder con hash NTLM (sin conocer la contraseña)</span>
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="golden-ticket"><h2><span class="section-icon">🏆</span> 6. Golden Ticket y DCSync</h2>
+        <div class="lesson-section" id="golden-ticket"><h2>6. Golden Ticket y DCSync</h2>
             <p class="lesson-text"><strong>Golden Ticket</strong>: si obtienes el hash del usuario <code>krbtgt</code>, puedes crear tickets de Kerberos para CUALQUIER usuario, incluyendo Domain Admin. Es el ataque definitivo.</p>
             <p class="lesson-text"><strong>DCSync</strong>: simulas ser un Domain Controller y le pides al DC real que te envíe todos los hashes. Requiere privilegios de replicación.</p>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">DCSync</span></div>
@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="bloodhound"><h2><span class="section-icon">🐕</span> 7. BloodHound: mapear rutas de ataque</h2>
+        <div class="lesson-section" id="bloodhound"><h2>7. BloodHound: mapear rutas de ataque</h2>
             <p class="lesson-text"><strong>BloodHound</strong> analiza las relaciones de AD y visualiza rutas de ataque posibles en un grafo. Te muestra cómo escalar desde un usuario normal hasta Domain Admin.</p>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">BloodHound</span></div>
                 <pre><code><span style="color:#546e7a"># Recopilar datos con SharpHound</span>
@@ -134,8 +134,8 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 8. Práctica</h2>
-            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+        <div class="lesson-section" id="practica"><h2>8. Práctica</h2>
+            <div class="practice-box"><h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Entiendes qué es Active Directory y sus componentes</li>
                     <li>Puedes explicar el flujo de autenticación de Kerberos</li>

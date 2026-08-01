@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -40,7 +40,7 @@
         </div>
 
         <div class="lesson-toc">
-            <h3>📋 Contenido de esta lección</h3>
+            <h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#que-es-nmap">¿Qué es Nmap y por qué es esencial?</a></li>
                 <li><a href="#descubrimiento">Descubrimiento de hosts: ¿quién está vivo?</a></li>
@@ -57,7 +57,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="que-es-nmap">
-            <h2><span class="section-icon">🔍</span> 1. ¿Qué es Nmap y por qué es esencial?</h2>
+            <h2>1. ¿Qué es Nmap y por qué es esencial?</h2>
             <p class="lesson-text">
                 Nmap es un <strong>escáner de red</strong> open source creado por Gordon "Fyodor" Lyon. Es la herramienta de reconocimiento 
                 más usada en el mundo por pentesters, administradores de red y equipos de seguridad.
@@ -75,7 +75,7 @@
 
         <!-- SECTION 2 -->
         <div class="lesson-section" id="descubrimiento">
-            <h2><span class="section-icon">📡</span> 2. Descubrimiento de hosts: ¿quién está vivo?</h2>
+            <h2>2. Descubrimiento de hosts: ¿quién está vivo?</h2>
             <p class="lesson-text">
                 Antes de escanear puertos, necesitas saber qué hosts están activos en la red. Nmap ofrece varias técnicas:
             </p>
@@ -107,7 +107,7 @@
 
         <!-- SECTION 3 -->
         <div class="lesson-section" id="tipos-escaneo">
-            <h2><span class="section-icon">🚪</span> 3. Tipos de escaneo de puertos</h2>
+            <h2>3. Tipos de escaneo de puertos</h2>
 
             <div class="lesson-table-wrap">
                 <table class="lesson-table">
@@ -176,9 +176,9 @@
             </div>
 
             <div class="concept-box">
-                <h4>💡 ¿Qué significan los estados de los puertos?</h4>
+                <h4>¿Qué significan los estados de los puertos?</h4>
                 <p>
-                    <strong><code>open</code></strong> — El puerto está abierto y un servicio está escuchando. ✅ Vector de ataque potencial.<br>
+                    <strong><code>open</code></strong> — El puerto está abierto y un servicio está escuchando. Vector de ataque potencial.<br>
                     <strong><code>closed</code></strong> — El puerto es accesible pero no hay servicio escuchando.<br>
                     <strong><code>filtered</code></strong> — Un firewall está bloqueando el acceso. Nmap no puede determinar si está abierto o cerrado.<br>
                     <strong><code>open|filtered</code></strong> — Nmap no puede distinguir entre abierto y filtrado (común en escaneos UDP).
@@ -188,7 +188,7 @@
 
         <!-- SECTION 4 -->
         <div class="lesson-section" id="deteccion-servicios">
-            <h2><span class="section-icon">🏷️</span> 4. Detección de servicios y versiones</h2>
+            <h2>4. Detección de servicios y versiones</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de servicios</span></div>
@@ -221,7 +221,7 @@ PORT     STATE SERVICE     VERSION
 
         <!-- SECTION 5 -->
         <div class="lesson-section" id="deteccion-os">
-            <h2><span class="section-icon">💻</span> 5. Detección de sistema operativo</h2>
+            <h2>5. Detección de sistema operativo</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de SO</span></div>
@@ -241,7 +241,7 @@ Network Distance: 1 hop
 
         <!-- SECTION 6 -->
         <div class="lesson-section" id="nse">
-            <h2><span class="section-icon">📜</span> 6. Scripts NSE: el poder oculto de Nmap</h2>
+            <h2>6. Scripts NSE: el poder oculto de Nmap</h2>
             <p class="lesson-text">
                 <strong>NSE (Nmap Scripting Engine)</strong> es el sistema de scripts de Nmap. Contiene cientos de scripts para 
                 detectar vulnerabilidades, obtener información adicional y hasta explotar algunos fallos.
@@ -280,7 +280,7 @@ Network Distance: 1 hop
 
         <!-- SECTION 7 -->
         <div class="lesson-section" id="evasion">
-            <h2><span class="section-icon">🥷</span> 7. Técnicas de evasión y timing</h2>
+            <h2>7. Técnicas de evasión y timing</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Timing y evasión</span></div>
@@ -307,7 +307,7 @@ Network Distance: 1 hop
 
         <!-- SECTION 8 -->
         <div class="lesson-section" id="output">
-            <h2><span class="section-icon">📄</span> 8. Formatos de salida y reportes</h2>
+            <h2>8. Formatos de salida y reportes</h2>
 
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Guardar resultados</span></div>
@@ -331,7 +331,7 @@ Network Distance: 1 hop
 
         <!-- SECTION 9 -->
         <div class="lesson-section" id="cheatsheet">
-            <h2><span class="section-icon">📋</span> 9. Cheatsheet de comandos esenciales</h2>
+            <h2>9. Cheatsheet de comandos esenciales</h2>
 
             <div class="lesson-table-wrap">
                 <table class="lesson-table">
@@ -352,7 +352,7 @@ Network Distance: 1 hop
 
         <!-- SECTION 10 -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 10. Práctica: escanea tu laboratorio</h2>
+            <h2>10. Práctica: escanea tu laboratorio</h2>
 
             <h3>Ejercicio 1: Reconocimiento básico</h3>
             <div class="lesson-terminal">
@@ -377,7 +377,7 @@ Network Distance: 1 hop
             </div>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Asegúrate de poder:</p>
                 <ul>
                     <li>Hacer un ping sweep para descubrir hosts</li>

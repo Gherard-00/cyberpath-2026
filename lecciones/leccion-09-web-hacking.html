@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -29,13 +29,13 @@
                 web más críticas según OWASP</strong>, cómo funcionan, cómo explotarlas y cómo defenderse contra ellas.
             </p>
             <div class="concept-box" style="margin-top:1.25rem">
-                <h4>📋 Prerrequisito</h4>
+                <h4>Prerrequisito</h4>
                 <p>Esta lección asume que completaste la <strong><a href="leccion-08b-web-fundamentals.html" style="color:var(--accent-cyan)">Lección 08B: Fundamentos Web</a></strong>, donde se explican HTML, HTTP, cookies y SQL básico.</p>
             </div>
         </div>
 
         <div class="lesson-toc">
-            <h3>📋 Contenido de esta lección</h3>
+            <h3>Contenido de esta lección</h3>
             <ol>
                 <li><a href="#owasp">¿Qué es OWASP?</a></li>
                 <li><a href="#sqli">SQL Injection (SQLi)</a></li>
@@ -51,7 +51,7 @@
 
         <!-- SECTION 1 -->
         <div class="lesson-section" id="owasp">
-            <h2><span class="section-icon">🌐</span> 1. ¿Qué es OWASP?</h2>
+            <h2>1. ¿Qué es OWASP?</h2>
             <p class="lesson-text">
                 <strong>OWASP (Open Web Application Security Project)</strong> es una comunidad abierta que publica estándares, 
                 herramientas y guías de seguridad web. Su publicación más famosa es el <strong>OWASP Top 10</strong>: 
@@ -61,7 +61,7 @@
 
         <!-- SECTION 2: SQLi -->
         <div class="lesson-section" id="sqli">
-            <h2><span class="section-icon">💉</span> 2. SQL Injection (SQLi)</h2>
+            <h2>2. SQL Injection (SQLi)</h2>
             <p class="lesson-text">
                 La <strong>inyección SQL</strong> ocurre cuando un atacante puede insertar código SQL malicioso en un campo de entrada 
                 que la aplicación envía directamente a la base de datos sin validar.
@@ -100,7 +100,7 @@ SELECT * FROM users WHERE user='<span style="color:#ff5252">admin' OR '1'='1' --
 
         <!-- SECTION 3: XSS -->
         <div class="lesson-section" id="xss">
-            <h2><span class="section-icon">📝</span> 3. Cross-Site Scripting (XSS)</h2>
+            <h2>3. Cross-Site Scripting (XSS)</h2>
             <p class="lesson-text">
                 <strong>XSS</strong> ocurre cuando un atacante puede inyectar código JavaScript malicioso en una página web 
                 que otros usuarios verán. El código se ejecuta en el navegador de la víctima.
@@ -139,13 +139,12 @@ SELECT * FROM users WHERE user='<span style="color:#ff5252">admin' OR '1'='1' --
 
         <!-- SECTION 4: CSRF -->
         <div class="lesson-section" id="csrf">
-            <h2><span class="section-icon">🔄</span> 4. Cross-Site Request Forgery (CSRF)</h2>
+            <h2>4. Cross-Site Request Forgery (CSRF)</h2>
             <p class="lesson-text">
                 <strong>CSRF</strong> engaña al navegador de la víctima para que haga una petición a un sitio donde ya está autenticada, 
                 sin que ella lo sepa. El navegador envía automáticamente las cookies de sesión.
             </p>
             <div class="analogy-box">
-                <span class="analogy-icon">✉️</span>
                 <h4>Analogía: carta firmada sin leer</h4>
                 <p>
                     Imagina que alguien te da un documento para firmar y tú firmas sin leerlo. Resulta que era una transferencia bancaria. 
@@ -153,14 +152,14 @@ SELECT * FROM users WHERE user='<span style="color:#ff5252">admin' OR '1'='1' --
                 </p>
             </div>
             <div class="concept-box">
-                <h4>💡 Defensa contra CSRF</h4>
+                <h4>Defensa contra CSRF</h4>
                 <p>Usar <strong>tokens CSRF</strong>: cada formulario incluye un token secreto único que el servidor verifica. El atacante no puede conocer este token.</p>
             </div>
         </div>
 
         <!-- SECTION 5: IDOR -->
         <div class="lesson-section" id="idor">
-            <h2><span class="section-icon">🔓</span> 5. IDOR — Insecure Direct Object Reference</h2>
+            <h2>5. IDOR — Insecure Direct Object Reference</h2>
             <p class="lesson-text">
                 <strong>IDOR</strong> ocurre cuando una aplicación usa identificadores directos (IDs) para acceder a recursos 
                 sin verificar que el usuario tiene permiso.
@@ -185,7 +184,7 @@ https://api.com/v1/user/999/messages       <span style="color:#546e7a">← mensa
 
         <!-- SECTION 6: LFI/RFI -->
         <div class="lesson-section" id="lfi-rfi">
-            <h2><span class="section-icon">📂</span> 6. LFI / RFI — Inclusión de archivos</h2>
+            <h2>6. LFI / RFI — Inclusión de archivos</h2>
             <p class="lesson-text">
                 <strong>LFI (Local File Inclusion)</strong> permite leer archivos del servidor. <strong>RFI (Remote File Inclusion)</strong> 
                 permite incluir archivos externos (potencialmente maliciosos).
@@ -205,7 +204,7 @@ https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
 
         <!-- SECTION 7 -->
         <div class="lesson-section" id="auth">
-            <h2><span class="section-icon">🔑</span> 7. Autenticación rota</h2>
+            <h2>7. Autenticación rota</h2>
             <p class="lesson-text">Vulnerabilidades comunes en la autenticación:</p>
             <ul>
                 <li><strong>Credenciales por defecto:</strong> admin/admin, admin/password, root/toor.</li>
@@ -218,7 +217,7 @@ https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
 
         <!-- SECTION 8 -->
         <div class="lesson-section" id="otros">
-            <h2><span class="section-icon">📊</span> 8. Otras vulnerabilidades del OWASP Top 10</h2>
+            <h2>8. Otras vulnerabilidades del OWASP Top 10</h2>
             <div class="lesson-table-wrap">
                 <table class="lesson-table">
                     <thead><tr><th>Vulnerabilidad</th><th>Descripción</th></tr></thead>
@@ -235,7 +234,7 @@ https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
 
         <!-- SECTION 9 -->
         <div class="lesson-section" id="practica">
-            <h2><span class="section-icon">🏋️</span> 9. Práctica: DVWA y WebGoat</h2>
+            <h2>9. Práctica: DVWA y WebGoat</h2>
             <p class="lesson-text">
                 Para practicar hacking web de forma segura, usa estas aplicaciones vulnerables en tu laboratorio:
             </p>
@@ -247,7 +246,7 @@ https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
             </ul>
 
             <div class="practice-box">
-                <h4>✅ ¿Completaste esta lección?</h4>
+                <h4>¿Completaste esta lección?</h4>
                 <p>Asegúrate de poder:</p>
                 <ul>
                     <li>Explicar qué es SQL Injection y cómo funciona</li>
