@@ -32,7 +32,7 @@
 
     --gradient-primary: linear-gradient(135deg, #00e5ff, #b388ff);
     --gradient-hero: linear-gradient(135deg, #00e5ff 0%, #7c4dff 50%, #ff4081 100%);
-    --gradient-card: linear-gradient(145deg, rgba(20, 25, 41, 0.8), rgba(15, 20, 36, 0.9));
+    /* --gradient-card removed: was unused — H-20 */
 
     --border-color: rgba(255, 255, 255, 0.06);
     --border-glow: rgba(0, 229, 255, 0.2);
@@ -1550,7 +1550,7 @@ body {
 .footer-quote {
     font-style: italic;
     color: var(--accent-cyan);
-    font-size: 0.85rem !important;
+    font-size: 0.85rem;
     max-width: 700px;
     margin: 1rem auto 0;
     opacity: 0.8;
@@ -1763,6 +1763,13 @@ body {
     border-radius: 50px;
     margin-bottom: 1rem;
 }
+/* Phase badge color variants — H-10 */
+.lesson-phase-badge.phase-0 { background: var(--accent-green-dim); color: var(--accent-green); }
+.lesson-phase-badge.phase-1 { background: rgba(0, 176, 255, 0.15); color: #00b0ff; }
+.lesson-phase-badge.phase-2 { background: rgba(255, 171, 0, 0.15); color: #ffab00; }
+.lesson-phase-badge.phase-3 { background: rgba(255, 82, 82, 0.15); color: #ff5252; }
+.lesson-phase-badge.phase-4 { background: rgba(0, 176, 255, 0.15); color: #00b0ff; }
+.lesson-phase-badge.phase-5 { background: rgba(255, 215, 0, 0.15); color: #ffd700; }
 .lesson-hero h1 {
     font-family: var(--font-heading);
     font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -1897,11 +1904,11 @@ body {
     padding: 1.5rem;
     margin: 1.5rem 0;
 }
-.concept-box h4 {
+.lesson-section .concept-box h4 {
     font-family: var(--font-heading);
-    color: var(--accent-cyan) !important;
-    margin-top: 0 !important;
-    margin-bottom: 0.75rem !important;
+    color: var(--accent-cyan);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
 }
 .concept-box p {
     color: var(--text-secondary);
@@ -1923,9 +1930,9 @@ body {
     margin-bottom: 0.5rem;
     display: block;
 }
-.analogy-box h4 {
-    color: var(--accent-purple) !important;
-    margin-top: 0 !important;
+.lesson-section .analogy-box h4 {
+    color: var(--accent-purple);
+    margin-top: 0;
 }
 .analogy-box p {
     color: var(--text-secondary);
@@ -1942,9 +1949,9 @@ body {
     padding: 1.5rem;
     margin: 1.5rem 0;
 }
-.warning-box h4 {
-    color: var(--accent-red) !important;
-    margin-top: 0 !important;
+.lesson-section .warning-box h4 {
+    color: var(--accent-red);
+    margin-top: 0;
 }
 .warning-box p {
     color: var(--text-secondary);
@@ -1960,9 +1967,9 @@ body {
     padding: 1.5rem;
     margin: 1.5rem 0;
 }
-.practice-box h4 {
-    color: var(--accent-green) !important;
-    margin-top: 0 !important;
+.lesson-section .practice-box h4 {
+    color: var(--accent-green);
+    margin-top: 0;
 }
 
 /* Terminal in lessons */
@@ -1997,7 +2004,7 @@ body {
     font-family: var(--font-mono);
     font-size: 0.88rem;
     line-height: 1.7;
-    background: none !important;
+    background: none; /* Overrides generic code background via parent specificity */
     color: var(--text-primary);
     padding: 0;
 }
@@ -2016,7 +2023,7 @@ body {
 .lesson-terminal .explanation strong { color: var(--accent-cyan); }
 .lesson-terminal .explanation code {
     font-size: 0.82rem;
-    background: rgba(0, 229, 255, 0.08) !important;
+    background: rgba(0, 229, 255, 0.08);
     color: var(--accent-orange);
     padding: 0.1rem 0.3rem;
     border-radius: 3px;
@@ -2416,10 +2423,10 @@ body {
     padding: 1.5rem;
     margin: 1.5rem 0;
 }
-.external-labs h4 {
-    color: var(--accent-blue) !important;
-    margin-top: 0 !important;
-    margin-bottom: 0.75rem !important;
+.lesson-section .external-labs h4 {
+    color: var(--accent-blue);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
     font-family: var(--font-heading);
 }
 .external-labs ul {
@@ -2511,11 +2518,11 @@ body {
     padding: 1.5rem;
     margin: 1.5rem 0;
 }
-.lab-checklist h4 {
+.lesson-section .lab-checklist h4 {
     font-family: var(--font-heading);
-    color: var(--accent-cyan) !important;
-    margin-top: 0 !important;
-    margin-bottom: 1rem !important;
+    color: var(--accent-cyan);
+    margin-top: 0;
+    margin-bottom: 1rem;
 }
 .lab-checklist-item {
     display: flex;
