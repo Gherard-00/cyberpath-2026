@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 02: Aprende Linux desde cero — Terminal, sistema de archivos, permisos, procesos y Bash scripting para ciberseguridad.">
+    <title>Lección 02: Linux desde Cero — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <!-- Breadcrumb -->
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a>
+            <span>›</span>
+            <span>Fase 0</span>
+            <span>›</span>
+            <span>Lección 02</span>
+        </div>
+
+        <!-- Lesson Hero -->
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:var(--accent-green-dim);color:var(--accent-green)">Fase 0 — Cimientos</div>
+            <h1>Linux desde Cero — Tu sistema operativo de trabajo</h1>
+            <p class="lesson-intro">
+                En ciberseguridad, <strong>Linux es tu herramienta principal</strong>. Kali Linux, Parrot OS, las herramientas de pentesting, 
+                los servidores que atacarás y defenderás — todo corre en Linux. Si no dominas la terminal, no puedes hacer nada. 
+                En esta lección vas a aprender <strong>cómo funciona Linux, cómo moverte por el sistema de archivos, 
+                cómo manejar permisos, procesos, paquetes</strong> y cómo escribir tus primeros scripts en Bash. 
+                Todo explicado paso a paso con ejemplos reales.
+            </p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-linux">¿Qué es Linux y por qué se usa en ciberseguridad?</a></li>
+                <li><a href="#terminal">La terminal: tu herramienta principal</a></li>
+                <li><a href="#filesystem">El sistema de archivos de Linux</a></li>
+                <li><a href="#archivos">Manipulación de archivos y directorios</a></li>
+                <li><a href="#permisos">Permisos: quién puede hacer qué</a></li>
+                <li><a href="#usuarios">Usuarios y grupos</a></li>
+                <li><a href="#procesos">Procesos: programas en ejecución</a></li>
+                <li><a href="#paquetes">Gestión de paquetes: instalar y actualizar software</a></li>
+                <li><a href="#editores">Editores de texto: nano y vim</a></li>
+                <li><a href="#bash">Bash scripting: automatiza tu trabajo</a></li>
+                <li><a href="#practica">Práctica final: retos en la terminal</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="que-es-linux">
+            <h2><span class="section-icon">🐧</span> 1. ¿Qué es Linux y por qué se usa en ciberseguridad?</h2>
+
+            <p class="lesson-text">
+                <strong>Linux</strong> es un <strong>sistema operativo</strong> de código abierto (open source) creado en 1991 por Linus Torvalds. 
+                A diferencia de Windows o macOS, Linux es <strong>gratuito</strong>, cualquiera puede ver y modificar su código fuente, 
+                y existen cientos de versiones (llamadas <strong>distribuciones</strong> o "distros") adaptadas a diferentes necesidades.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🏗️</span>
+                <h4>Analogía: Linux es como los planos de un edificio que son públicos</h4>
+                <p>
+                    Imagina que los planos de un edificio fueran públicos: cualquier arquitecto podría construir su propia versión, 
+                    mejorarla, adaptarla a sus necesidades. Eso es Linux — un <strong>núcleo (kernel)</strong> que cualquiera puede tomar 
+                    y construir su propia versión del sistema operativo. Por eso existen Ubuntu, Fedora, Kali Linux, Arch Linux, etc.
+                </p>
+            </div>
+
+            <h3>¿Por qué Linux para ciberseguridad?</h3>
+            <ul>
+                <li><strong>Kali Linux</strong> viene con +600 herramientas de hacking pre-instaladas (Nmap, Metasploit, Burp Suite, Wireshark, etc.).</li>
+                <li><strong>La mayoría de servidores en Internet corren Linux</strong> (más del 90%). Si quieres atacar o defender servidores, necesitas entender Linux.</li>
+                <li><strong>Control total:</strong> puedes ver todos los procesos, archivos, conexiones de red, logs — nada se te esconde.</li>
+                <li><strong>La terminal es más poderosa que cualquier GUI:</strong> puedes automatizar tareas, crear herramientas, analizar datos masivos.</li>
+                <li><strong>Es gratuito y personalizable:</strong> no necesitas licencias ni pagar nada.</li>
+            </ul>
+
+            <h3>Distribuciones que usarás en este curso</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Distribución</th>
+                            <th>Basada en</th>
+                            <th>¿Para qué la usamos?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Kali Linux</strong></td>
+                            <td>Debian</td>
+                            <td>Tu distro principal de trabajo. Trae todas las herramientas de pentesting.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ubuntu Server</strong></td>
+                            <td>Debian</td>
+                            <td>Para montar servidores de práctica (laboratorio).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parrot OS</strong></td>
+                            <td>Debian</td>
+                            <td>Alternativa a Kali, más ligera. También tiene herramientas de pentesting.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Metasploitable</strong></td>
+                            <td>Ubuntu</td>
+                            <td>Máquina vulnerable a propósito. La usarás como objetivo de práctica.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Terminal -->
+        <div class="lesson-section" id="terminal">
+            <h2><span class="section-icon">💻</span> 2. La terminal: tu herramienta principal</h2>
+
+            <p class="lesson-text">
+                La <strong>terminal</strong> (también llamada <strong>shell</strong>, <strong>consola</strong> o <strong>línea de comandos</strong>) 
+                es donde escribes comandos de texto para decirle a Linux qué hacer. En lugar de hacer clic en iconos, 
+                <strong>escribes instrucciones</strong>. Parece intimidante al principio, pero una vez que la dominas, 
+                es infinitamente más rápida y poderosa que cualquier interfaz gráfica.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🎮</span>
+                <h4>Analogía: La terminal vs. la GUI</h4>
+                <p>
+                    Usar la <strong>GUI</strong> (interfaz gráfica) es como conducir un auto automático: fácil pero limitado. 
+                    Usar la <strong>terminal</strong> es como conducir un auto de carreras manual: necesitas aprender, 
+                    pero tienes <strong>control absoluto</strong> sobre todo. En ciberseguridad, necesitas el auto de carreras.
+                </p>
+            </div>
+
+            <h3>La estructura de un comando</h3>
+            <p class="lesson-text">Todos los comandos en Linux siguen esta estructura básica:</p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Anatomía de un comando Linux</span>
+                </div>
+                <pre><code><span style="color:#00e676">$</span> comando  -opciones  argumento
+
+<span style="color:#546e7a"># Ejemplo real:</span>
+<span style="color:#00e676">$</span> ls       -la        /etc
+
+<span style="color:#546e7a"># Desglose:</span>
+  ls       → el COMANDO: "listar archivos"
+  -la      → las OPCIONES: -l (formato largo) + -a (mostrar ocultos)
+  /etc     → el ARGUMENTO: "en el directorio /etc"</code></pre>
+                <div class="explanation">
+                    <p>El <strong><code>$</code></strong> (o <code>#</code> si eres root) es el <strong>prompt</strong>: indica que la terminal está lista para recibir un comando. No lo escribes tú — ya está ahí.</p>
+                </div>
+            </div>
+
+            <h3>Comandos esenciales que debes memorizar</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Comando</th>
+                            <th>¿Qué hace?</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>pwd</code></td><td>Muestra el directorio actual (Print Working Directory)</td><td><code>pwd</code> → <code>/home/kali</code></td></tr>
+                        <tr><td><code>ls</code></td><td>Lista los archivos del directorio actual</td><td><code>ls -la</code></td></tr>
+                        <tr><td><code>cd</code></td><td>Cambiar de directorio</td><td><code>cd /var/log</code></td></tr>
+                        <tr><td><code>cat</code></td><td>Mostrar el contenido de un archivo</td><td><code>cat /etc/passwd</code></td></tr>
+                        <tr><td><code>echo</code></td><td>Imprimir texto en la terminal</td><td><code>echo "Hola mundo"</code></td></tr>
+                        <tr><td><code>clear</code></td><td>Limpiar la pantalla de la terminal</td><td><code>clear</code></td></tr>
+                        <tr><td><code>whoami</code></td><td>Muestra tu nombre de usuario actual</td><td><code>whoami</code> → <code>kali</code></td></tr>
+                        <tr><td><code>id</code></td><td>Muestra tu ID de usuario, grupo y grupos</td><td><code>id</code></td></tr>
+                        <tr><td><code>uname -a</code></td><td>Información del sistema operativo y kernel</td><td><code>uname -a</code></td></tr>
+                        <tr><td><code>history</code></td><td>Muestra los comandos que has ejecutado antes</td><td><code>history</code></td></tr>
+                        <tr><td><code>man</code></td><td>Muestra el manual de un comando</td><td><code>man ls</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 Atajos de teclado imprescindibles</h4>
+                <p>
+                    <strong><code>Tab</code></strong> — Autocompleta nombres de archivos y comandos (ahorra MUCHO tiempo).<br>
+                    <strong><code>↑</code> / <code>↓</code></strong> — Navegar por el historial de comandos.<br>
+                    <strong><code>Ctrl + C</code></strong> — Cancelar el comando actual (útil si algo se queda colgado).<br>
+                    <strong><code>Ctrl + L</code></strong> — Limpiar la pantalla (igual que <code>clear</code>).<br>
+                    <strong><code>Ctrl + R</code></strong> — Buscar en el historial de comandos.<br>
+                    <strong><code>Ctrl + D</code></strong> — Cerrar la terminal / salir de una sesión.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Filesystem -->
+        <div class="lesson-section" id="filesystem">
+            <h2><span class="section-icon">📁</span> 3. El sistema de archivos de Linux</h2>
+
+            <p class="lesson-text">
+                En Windows, todo empieza en <code>C:\</code>. En Linux, todo empieza en <code>/</code> (la <strong>raíz</strong> o "root"). 
+                No hay letras de unidad. Todo — archivos, dispositivos, procesos — <strong>se representa como archivos</strong> dentro de una estructura de directorios.
+            </p>
+
+            <h3>La estructura de directorios de Linux</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Árbol de directorios principal</span>
+                </div>
+                <pre><code>/                     ← La raíz. TODO parte de aquí
+├── /bin              ← Comandos esenciales (ls, cat, cp, mv, rm...)
+├── /sbin             ← Comandos del sistema (solo root: iptables, fdisk...)
+├── /etc              ← Archivos de configuración del sistema
+│   ├── /etc/passwd   ← Lista de usuarios del sistema
+│   ├── /etc/shadow   ← Hashes de contraseñas (solo root puede leerlo)
+│   ├── /etc/hosts    ← Resolución local de nombres (como un DNS manual)
+│   └── /etc/ssh/     ← Configuración del servidor SSH
+├── /home             ← Directorios personales de cada usuario
+│   └── /home/kali    ← Tu directorio personal (~ es un atajo)
+├── /root             ← Directorio personal del usuario root
+├── /var              ← Datos variables: logs, caché, bases de datos
+│   └── /var/log      ← LOGS del sistema — fundamental en forense
+├── /tmp              ← Archivos temporales (se borran al reiniciar)
+├── /opt              ← Software de terceros instalado manualmente
+├── /dev              ← Dispositivos del sistema (discos, USB, etc.)
+├── /proc             ← Información de procesos en ejecución (virtual)
+└── /usr              ← Programas y utilidades del usuario
+    └── /usr/bin      ← Más comandos (python3, nmap, etc.)</code></pre>
+                <div class="explanation">
+                    <p><strong>Directorios clave para ciberseguridad:</strong> <code>/etc/passwd</code> y <code>/etc/shadow</code> (usuarios y contraseñas), <code>/var/log</code> (logs para forense), <code>/tmp</code> (atacantes dejan archivos aquí), <code>/proc</code> (información de procesos en vivo).</p>
+                </div>
+            </div>
+
+            <h3>Rutas absolutas vs. relativas</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Empieza con</th>
+                            <th>Ejemplo</th>
+                            <th>Significado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Absoluta</strong></td>
+                            <td><code>/</code></td>
+                            <td><code>/home/kali/tools/nmap.txt</code></td>
+                            <td>La ruta completa desde la raíz. Siempre funciona, no importa dónde estés.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Relativa</strong></td>
+                            <td>Sin <code>/</code></td>
+                            <td><code>tools/nmap.txt</code></td>
+                            <td>Relativa al directorio donde estás ahora. Si estás en <code>/home/kali</code>, es lo mismo que la absoluta.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Atajos de navegación</span>
+                </div>
+                <pre><code><span style="color:#00e676">$</span> cd ~          <span style="color:#546e7a"># Ir a tu directorio home (/home/kali)</span>
+<span style="color:#00e676">$</span> cd ..         <span style="color:#546e7a"># Subir un directorio (ir al padre)</span>
+<span style="color:#00e676">$</span> cd ../..      <span style="color:#546e7a"># Subir dos directorios</span>
+<span style="color:#00e676">$</span> cd -          <span style="color:#546e7a"># Volver al directorio anterior</span>
+<span style="color:#00e676">$</span> cd /          <span style="color:#546e7a"># Ir a la raíz</span></code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 4: Archivos -->
+        <div class="lesson-section" id="archivos">
+            <h2><span class="section-icon">📄</span> 4. Manipulación de archivos y directorios</h2>
+
+            <p class="lesson-text">
+                En Linux, casi todo lo que haces es <strong>crear, mover, copiar, borrar y buscar archivos</strong>. 
+                Estos son los comandos que usarás miles de veces:
+            </p>
+
+            <h3>Crear archivos y directorios</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Crear archivos y directorios</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Crear un archivo vacío</span>
+<span style="color:#00e676">$</span> touch notas.txt
+
+<span style="color:#546e7a"># Crear un archivo con contenido</span>
+<span style="color:#00e676">$</span> echo "Mi primera nota" > notas.txt
+
+<span style="color:#546e7a"># Agregar contenido sin borrar lo anterior (>>)</span>
+<span style="color:#00e676">$</span> echo "Segunda línea" >> notas.txt
+
+<span style="color:#546e7a"># Crear un directorio</span>
+<span style="color:#00e676">$</span> mkdir herramientas
+
+<span style="color:#546e7a"># Crear directorios anidados de una vez</span>
+<span style="color:#00e676">$</span> mkdir -p proyectos/pentesting/reportes</code></pre>
+                <div class="explanation">
+                    <p><strong>Importante:</strong> <code>></code> <strong>sobreescribe</strong> el archivo (cuidado, borra todo lo anterior). <code>>></code> <strong>agrega al final</strong> sin borrar nada. Esta es una diferencia crítica.</p>
+                </div>
+            </div>
+
+            <h3>Copiar, mover y renombrar</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Copiar y mover archivos</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Copiar un archivo</span>
+<span style="color:#00e676">$</span> cp notas.txt backup_notas.txt
+
+<span style="color:#546e7a"># Copiar un directorio completo (necesitas -r: recursive)</span>
+<span style="color:#00e676">$</span> cp -r herramientas/ backup_herramientas/
+
+<span style="color:#546e7a"># Mover un archivo a otro directorio</span>
+<span style="color:#00e676">$</span> mv notas.txt herramientas/
+
+<span style="color:#546e7a"># Renombrar un archivo (mv también sirve para renombrar)</span>
+<span style="color:#00e676">$</span> mv notas.txt apuntes.txt
+
+<span style="color:#546e7a"># Eliminar un archivo</span>
+<span style="color:#00e676">$</span> rm archivo.txt
+
+<span style="color:#546e7a"># Eliminar un directorio y todo su contenido</span>
+<span style="color:#00e676">$</span> rm -rf directorio/
+<span style="color:#ff5252"># ⚠️ CUIDADO: rm -rf no pide confirmación y no tiene papelera</span></code></pre>
+                <div class="explanation">
+                    <p><strong>⚠️ Nunca ejecutes <code>rm -rf /</code></strong> — borraría TODO el sistema. Es uno de los comandos más peligrosos que existen. Siempre verifica la ruta antes de usar <code>rm -rf</code>.</p>
+                </div>
+            </div>
+
+            <h3>Ver contenido de archivos</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Comando</th>
+                            <th>¿Qué hace?</th>
+                            <th>¿Cuándo usarlo?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>cat archivo</code></td><td>Muestra TODO el contenido de una vez</td><td>Archivos pequeños</td></tr>
+                        <tr><td><code>less archivo</code></td><td>Muestra contenido con scroll (q para salir)</td><td>Archivos grandes (logs)</td></tr>
+                        <tr><td><code>head -n 20 archivo</code></td><td>Muestra las primeras 20 líneas</td><td>Ver el inicio de un log</td></tr>
+                        <tr><td><code>tail -n 20 archivo</code></td><td>Muestra las últimas 20 líneas</td><td>Ver los eventos más recientes</td></tr>
+                        <tr><td><code>tail -f archivo</code></td><td>Muestra en tiempo real las nuevas líneas</td><td>Monitorear un log en vivo</td></tr>
+                        <tr><td><code>wc -l archivo</code></td><td>Cuenta las líneas del archivo</td><td>Saber el tamaño de un diccionario</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Buscar archivos y texto</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Buscar archivos y contenido</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Buscar un archivo por nombre en todo el sistema</span>
+<span style="color:#00e676">$</span> find / -name "passwd" 2>/dev/null
+
+<span style="color:#546e7a"># Buscar archivos por extensión</span>
+<span style="color:#00e676">$</span> find /home -name "*.txt"
+
+<span style="color:#546e7a"># Buscar archivos modificados en los últimos 7 días</span>
+<span style="color:#00e676">$</span> find /var/log -mtime -7
+
+<span style="color:#546e7a"># Buscar texto DENTRO de archivos (grep = Global Regular Expression Print)</span>
+<span style="color:#00e676">$</span> grep "error" /var/log/syslog
+
+<span style="color:#546e7a"># Buscar texto ignorando mayúsculas/minúsculas</span>
+<span style="color:#00e676">$</span> grep -i "password" /etc/config.txt
+
+<span style="color:#546e7a"># Buscar recursivamente en todos los archivos de un directorio</span>
+<span style="color:#00e676">$</span> grep -r "admin" /var/www/</code></pre>
+                <div class="explanation">
+                    <p><strong>¿Qué es <code>2>/dev/null</code>?</strong> Redirige los mensajes de error a la "nada". Cuando usas <code>find /</code> sin ser root, recibes muchos errores "permiso denegado" — con <code>2>/dev/null</code> los ocultas y solo ves los resultados útiles.</p>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 El Pipe ( | ) — Encadenar comandos</h4>
+                <p>
+                    El <strong>pipe</strong> <code>|</code> toma la salida de un comando y la pasa como entrada al siguiente. 
+                    Es una de las herramientas más poderosas de Linux:
+                </p>
+                <p>
+                    <code>cat /etc/passwd | grep "bash"</code> — Muestra solo los usuarios que usan bash como shell.<br>
+                    <code>ls -la | wc -l</code> — Cuenta cuántos archivos hay en el directorio.<br>
+                    <code>history | grep "nmap"</code> — Busca en tu historial todos los comandos que incluyen "nmap".<br>
+                    <code>cat access.log | sort | uniq -c | sort -rn | head</code> — Analiza un log: ordena, cuenta repetidos y muestra los más frecuentes.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 5: Permisos -->
+        <div class="lesson-section" id="permisos">
+            <h2><span class="section-icon">🔐</span> 5. Permisos: quién puede hacer qué</h2>
+
+            <p class="lesson-text">
+                En Linux, <strong>cada archivo y directorio tiene permisos</strong> que definen quién puede leerlo, escribirlo o ejecutarlo. 
+                Entender los permisos es <strong>absolutamente fundamental</strong> para la ciberseguridad: una mala configuración de permisos 
+                es una de las vulnerabilidades más comunes que encontrarás en pentesting.
+            </p>
+
+            <h3>Los tres tipos de permisos</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Permiso</th>
+                            <th>Letra</th>
+                            <th>Valor numérico</th>
+                            <th>En archivos</th>
+                            <th>En directorios</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Lectura</strong></td>
+                            <td><code>r</code></td>
+                            <td><code>4</code></td>
+                            <td>Puedes ver el contenido del archivo</td>
+                            <td>Puedes listar su contenido (<code>ls</code>)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Escritura</strong></td>
+                            <td><code>w</code></td>
+                            <td><code>2</code></td>
+                            <td>Puedes modificar el archivo</td>
+                            <td>Puedes crear/borrar archivos dentro</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ejecución</strong></td>
+                            <td><code>x</code></td>
+                            <td><code>1</code></td>
+                            <td>Puedes ejecutarlo como programa</td>
+                            <td>Puedes entrar al directorio (<code>cd</code>)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Cómo leer los permisos</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Interpretando ls -la</span>
+                </div>
+                <pre><code><span style="color:#00e676">$</span> ls -la /etc/passwd /etc/shadow
+
+-rw-r--r-- 1 root root  2847 Jul  9 10:30 /etc/passwd
+-rw-r----- 1 root shadow 1423 Jul  9 10:30 /etc/shadow
+
+<span style="color:#546e7a"># Desglose de "-rw-r--r--":</span>
+
+ -    rw-    r--    r--
+ │    │      │      │
+ │    │      │      └── Otros (everyone): solo lectura (r--)
+ │    │      └── Grupo: solo lectura (r--)
+ │    └── Propietario (root): lectura + escritura (rw-)
+ └── Tipo: - = archivo, d = directorio, l = enlace simbólico
+
+<span style="color:#546e7a"># /etc/passwd → Todos pueden LEER (por eso es rw-r--r--)</span>
+<span style="color:#546e7a"># /etc/shadow → Solo root y grupo shadow pueden leer (rw-r-----)</span>
+<span style="color:#546e7a"># Por eso /etc/shadow es más sensible: contiene los hashes</span></code></pre>
+                <div class="explanation">
+                    <p><strong>En ciberseguridad:</strong> <code>/etc/passwd</code> es legible por todos y contiene la lista de usuarios (pero NO las contraseñas). <code>/etc/shadow</code> contiene los <strong>hashes de las contraseñas</strong> y solo root puede leerlo. Si un atacante logra leer <code>/etc/shadow</code>, puede intentar crackear las contraseñas offline.</p>
+                </div>
+            </div>
+
+            <h3>Cambiar permisos: chmod</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">chmod — Cambiar permisos</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Forma numérica (la más usada en la práctica)</span>
+<span style="color:#546e7a"># Cada dígito = propietario + grupo + otros</span>
+<span style="color:#546e7a"># r=4, w=2, x=1 → se suman</span>
+
+<span style="color:#00e676">$</span> chmod 755 mi_script.sh
+<span style="color:#546e7a"># 7 = rwx (4+2+1) → propietario: todo</span>
+<span style="color:#546e7a"># 5 = r-x (4+0+1) → grupo: leer y ejecutar</span>
+<span style="color:#546e7a"># 5 = r-x (4+0+1) → otros: leer y ejecutar</span>
+
+<span style="color:#00e676">$</span> chmod 644 documento.txt
+<span style="color:#546e7a"># 6 = rw- → propietario: leer y escribir</span>
+<span style="color:#546e7a"># 4 = r-- → grupo: solo leer</span>
+<span style="color:#546e7a"># 4 = r-- → otros: solo leer</span>
+
+<span style="color:#00e676">$</span> chmod 600 clave_privada.pem
+<span style="color:#546e7a"># 6 = rw- → solo el propietario puede leer/escribir</span>
+<span style="color:#546e7a"># 0 = --- → nadie más tiene acceso</span>
+
+<span style="color:#546e7a"># Forma simbólica</span>
+<span style="color:#00e676">$</span> chmod +x script.sh       <span style="color:#546e7a"># Agregar permiso de ejecución para todos</span>
+<span style="color:#00e676">$</span> chmod u+x script.sh      <span style="color:#546e7a"># Solo para el propietario (u=user)</span>
+<span style="color:#00e676">$</span> chmod go-rw secreto.txt  <span style="color:#546e7a"># Quitar lectura y escritura a grupo y otros</span></code></pre>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ Permisos peligrosos — Lo que buscarás en pentesting</h4>
+                <p>
+                    <strong><code>chmod 777</code></strong> — Cualquiera puede leer, escribir y ejecutar. Si encuentras archivos con permisos 777, 
+                    es una mala configuración de seguridad.<br>
+                    <strong>Archivos SUID (<code>-rwsr-xr-x</code>):</strong> El bit <code>s</code> significa que el archivo se ejecuta con los privilegios del propietario (generalmente root). 
+                    Los archivos SUID mal configurados son uno de los principales vectores de <strong>escalada de privilegios</strong> en Linux.<br>
+                    Comando para buscar archivos SUID: <code>find / -perm -4000 2>/dev/null</code>
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6: Usuarios -->
+        <div class="lesson-section" id="usuarios">
+            <h2><span class="section-icon">👥</span> 6. Usuarios y grupos</h2>
+
+            <p class="lesson-text">
+                Linux es un sistema <strong>multiusuario</strong>: varias personas (o servicios) pueden usar el mismo sistema, 
+                cada uno con su propio nivel de acceso. Entender cómo funcionan los usuarios es crítico porque 
+                la <strong>escalada de privilegios</strong> (pasar de usuario normal a root) es una de las fases más importantes del pentesting.
+            </p>
+
+            <h3>Tipos de usuarios</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>UID</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>root</strong></td>
+                            <td><code>0</code></td>
+                            <td>El superusuario. Puede hacer CUALQUIER cosa. Es como el administrador de Windows pero aún más poderoso.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usuarios del sistema</strong></td>
+                            <td><code>1-999</code></td>
+                            <td>Creados automáticamente para servicios (apache, mysql, sshd). No son personas reales.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usuarios normales</strong></td>
+                            <td><code>1000+</code></td>
+                            <td>Personas reales que usan el sistema (kali, juan, etc.).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Comandos de gestión de usuarios</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Ver tu usuario actual</span>
+<span style="color:#00e676">$</span> whoami
+kali
+
+<span style="color:#546e7a"># Ver información detallada de tu usuario</span>
+<span style="color:#00e676">$</span> id
+uid=1000(kali) gid=1000(kali) groups=1000(kali),27(sudo)
+
+<span style="color:#546e7a"># Ver todos los usuarios del sistema</span>
+<span style="color:#00e676">$</span> cat /etc/passwd | cut -d: -f1
+
+<span style="color:#546e7a"># Ejecutar un comando como root (te pide contraseña)</span>
+<span style="color:#00e676">$</span> sudo apt update
+
+<span style="color:#546e7a"># Convertirte en root permanentemente</span>
+<span style="color:#00e676">$</span> sudo su -
+<span style="color:#ff5252">root@kali:~#</span>  <span style="color:#546e7a">← El prompt cambia a # cuando eres root</span>
+
+<span style="color:#546e7a"># Crear un nuevo usuario</span>
+<span style="color:#00e676">$</span> sudo adduser nuevo_usuario
+
+<span style="color:#546e7a"># Cambiar la contraseña de un usuario</span>
+<span style="color:#00e676">$</span> sudo passwd nuevo_usuario
+
+<span style="color:#546e7a"># Agregar un usuario al grupo sudo (darle poderes de root)</span>
+<span style="color:#00e676">$</span> sudo usermod -aG sudo nuevo_usuario</code></pre>
+                <div class="explanation">
+                    <p><strong><code>sudo</code></strong> significa "Super User DO" — ejecuta un comando con privilegios de root. Solo funciona si tu usuario pertenece al grupo <code>sudo</code>. En pentesting, si logras acceso a un usuario que está en el grupo sudo, prácticamente eres root.</p>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 El archivo /etc/passwd explicado</h4>
+                <p>Cada línea de <code>/etc/passwd</code> tiene esta estructura:</p>
+                <p><code>kali:x:1000:1000:Kali User:/home/kali:/bin/bash</code></p>
+                <p>
+                    <strong>kali</strong> → nombre de usuario<br>
+                    <strong>x</strong> → la contraseña está en /etc/shadow (antes se guardaba aquí, por eso el archivo se llama "passwd")<br>
+                    <strong>1000</strong> → UID (User ID)<br>
+                    <strong>1000</strong> → GID (Group ID)<br>
+                    <strong>Kali User</strong> → descripción/nombre completo<br>
+                    <strong>/home/kali</strong> → directorio home<br>
+                    <strong>/bin/bash</strong> → shell asignada (si dice <code>/bin/false</code> o <code>/usr/sbin/nologin</code>, el usuario no puede hacer login)
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 7: Procesos -->
+        <div class="lesson-section" id="procesos">
+            <h2><span class="section-icon">⚙️</span> 7. Procesos: programas en ejecución</h2>
+
+            <p class="lesson-text">
+                Cada programa que se ejecuta en Linux se convierte en un <strong>proceso</strong> con un número de identificación único 
+                llamado <strong>PID (Process ID)</strong>. Saber ver y controlar procesos es esencial: en forense digital necesitarás 
+                identificar procesos maliciosos, y en pentesting podrás ver qué servicios están corriendo.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Comandos para gestionar procesos</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Ver tus procesos actuales</span>
+<span style="color:#00e676">$</span> ps
+
+<span style="color:#546e7a"># Ver TODOS los procesos del sistema con detalles</span>
+<span style="color:#00e676">$</span> ps aux
+
+<span style="color:#546e7a"># Ver procesos en tiempo real (como el Task Manager de Windows)</span>
+<span style="color:#00e676">$</span> top
+<span style="color:#546e7a"># (o mejor aún, instala htop: sudo apt install htop)</span>
+<span style="color:#00e676">$</span> htop
+
+<span style="color:#546e7a"># Buscar un proceso específico</span>
+<span style="color:#00e676">$</span> ps aux | grep apache
+<span style="color:#546e7a"># root  1234  0.0  1.2  Apache2: httpd</span>
+
+<span style="color:#546e7a"># Matar un proceso por PID</span>
+<span style="color:#00e676">$</span> kill 1234
+
+<span style="color:#546e7a"># Matar un proceso a la fuerza (si no responde)</span>
+<span style="color:#00e676">$</span> kill -9 1234
+
+<span style="color:#546e7a"># Matar todos los procesos con ese nombre</span>
+<span style="color:#00e676">$</span> killall firefox
+
+<span style="color:#546e7a"># Ejecutar un comando en segundo plano</span>
+<span style="color:#00e676">$</span> nmap -sS 10.0.2.15 &
+<span style="color:#546e7a"># El & al final lo envía al background</span>
+
+<span style="color:#546e7a"># Ver trabajos en segundo plano</span>
+<span style="color:#00e676">$</span> jobs
+
+<span style="color:#546e7a"># Ver qué puertos están siendo usados por qué procesos</span>
+<span style="color:#00e676">$</span> ss -tulnp
+<span style="color:#546e7a"># Esto es MUY útil: te muestra qué servicios escuchan en qué puertos</span></code></pre>
+                <div class="explanation">
+                    <p><strong>En pentesting:</strong> <code>ps aux</code> te ayuda a descubrir qué servicios corren en una máquina comprometida. <code>ss -tulnp</code> te muestra qué puertos están abiertos y qué programa los usa. En forense, <code>ps</code> y <code>/proc</code> te ayudan a identificar procesos maliciosos o sospechosos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 8: Paquetes -->
+        <div class="lesson-section" id="paquetes">
+            <h2><span class="section-icon">📦</span> 8. Gestión de paquetes: instalar y actualizar software</h2>
+
+            <p class="lesson-text">
+                En Linux, el software se instala mediante un <strong>gestor de paquetes</strong> (package manager). 
+                Es como una tienda de apps pero desde la terminal. En Kali Linux (basado en Debian), el gestor principal es 
+                <strong>APT (Advanced Package Tool)</strong>.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Comandos APT esenciales</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Actualizar la lista de paquetes disponibles</span>
+<span style="color:#00e676">$</span> sudo apt update
+
+<span style="color:#546e7a"># Actualizar todos los paquetes instalados a su última versión</span>
+<span style="color:#00e676">$</span> sudo apt upgrade -y
+
+<span style="color:#546e7a"># Hacer ambas cosas de una vez</span>
+<span style="color:#00e676">$</span> sudo apt update && sudo apt upgrade -y
+
+<span style="color:#546e7a"># Instalar un programa</span>
+<span style="color:#00e676">$</span> sudo apt install nmap
+
+<span style="color:#546e7a"># Instalar varios programas a la vez</span>
+<span style="color:#00e676">$</span> sudo apt install nmap gobuster nikto
+
+<span style="color:#546e7a"># Desinstalar un programa</span>
+<span style="color:#00e676">$</span> sudo apt remove nmap
+
+<span style="color:#546e7a"># Buscar si un programa está disponible</span>
+<span style="color:#00e676">$</span> apt search wireshark
+
+<span style="color:#546e7a"># Ver información de un paquete</span>
+<span style="color:#00e676">$</span> apt show nmap
+
+<span style="color:#546e7a"># Limpiar paquetes que ya no se necesitan</span>
+<span style="color:#00e676">$</span> sudo apt autoremove</code></pre>
+                <div class="explanation">
+                    <p><strong><code>&&</code></strong> encadena dos comandos: el segundo solo se ejecuta si el primero fue exitoso. <strong><code>-y</code></strong> responde "sí" automáticamente a las confirmaciones. <strong>Siempre ejecuta <code>apt update</code> antes de <code>apt install</code></strong> para asegurarte de tener la lista de paquetes actualizada.</p>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 ¿Qué es un "paquete"?</h4>
+                <p>
+                    Un <strong>paquete</strong> es un programa empaquetado junto con sus dependencias (otros programas que necesita para funcionar). 
+                    Es como un archivo .exe de Windows pero más organizado: el sistema sabe qué instaló, a dónde fueron los archivos, 
+                    y puede desinstalarlo limpiamente. En Debian/Kali, los paquetes tienen extensión <code>.deb</code>.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 9: Editores -->
+        <div class="lesson-section" id="editores">
+            <h2><span class="section-icon">📝</span> 9. Editores de texto: nano y vim</h2>
+
+            <p class="lesson-text">
+                En muchas situaciones (configurar servicios, editar scripts, modificar archivos de configuración) necesitarás 
+                un <strong>editor de texto en la terminal</strong>. Los dos más usados son <strong>nano</strong> (fácil) y <strong>vim</strong> (poderoso).
+            </p>
+
+            <h3>nano — El editor fácil</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Usar nano</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Abrir/crear un archivo con nano</span>
+<span style="color:#00e676">$</span> nano mi_script.sh
+
+<span style="color:#546e7a"># Dentro de nano:</span>
+<span style="color:#546e7a"># - Escribe normalmente, como en un bloc de notas</span>
+<span style="color:#546e7a"># - Ctrl + O  → Guardar</span>
+<span style="color:#546e7a"># - Ctrl + X  → Salir</span>
+<span style="color:#546e7a"># - Ctrl + K  → Cortar línea</span>
+<span style="color:#546e7a"># - Ctrl + U  → Pegar línea</span>
+<span style="color:#546e7a"># - Ctrl + W  → Buscar texto</span>
+<span style="color:#546e7a"># - Ctrl + G  → Ayuda</span></code></pre>
+            </div>
+
+            <h3>vim — El editor poderoso</h3>
+            <p class="lesson-text">
+                <strong>Vim</strong> es más complejo pero infinitamente más poderoso. Lo encontrarás en prácticamente todos los servidores Linux, 
+                así que al menos debes saber lo básico: <strong>cómo entrar, escribir, guardar y salir</strong>.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Supervivencia en vim</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Abrir un archivo con vim</span>
+<span style="color:#00e676">$</span> vim archivo.txt
+
+<span style="color:#546e7a"># Vim tiene DOS MODOS principales:</span>
+<span style="color:#546e7a"># 1. Modo NORMAL (por defecto): para navegar y ejecutar comandos</span>
+<span style="color:#546e7a"># 2. Modo INSERT: para escribir texto</span>
+
+<span style="color:#ffcb6b">Comandos esenciales:</span>
+
+  i          → Entrar a modo INSERT (ahora puedes escribir)
+  Esc        → Volver a modo NORMAL
+  :w         → Guardar
+  :q         → Salir (solo si no hay cambios sin guardar)
+  :wq        → Guardar y salir
+  :q!        → Salir SIN guardar (fuerza la salida)
+  dd         → Borrar una línea completa (en modo NORMAL)
+  yy         → Copiar una línea
+  p          → Pegar
+  /texto     → Buscar "texto" en el archivo
+  u          → Deshacer (undo)
+
+<span style="color:#ff5252">¡Lo más importante: para salir de vim presiona Esc, luego escribe :q! y Enter!</span></code></pre>
+                <div class="explanation">
+                    <p>El chiste de "cómo salir de vim" es un meme legendario entre programadores porque es genuinamente confuso la primera vez. Ahora ya lo sabes: <strong><code>Esc</code> → <code>:q!</code> → <code>Enter</code></strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 10: Bash Scripting -->
+        <div class="lesson-section" id="bash">
+            <h2><span class="section-icon">🤖</span> 10. Bash scripting: automatiza tu trabajo</h2>
+
+            <p class="lesson-text">
+                Un <strong>script de Bash</strong> es un archivo de texto con una serie de comandos que se ejecutan automáticamente, uno tras otro. 
+                En lugar de escribir 20 comandos a mano, los pones en un script y lo ejecutas con un solo comando. 
+                En ciberseguridad, los scripts son <strong>esenciales</strong>: para automatizar escaneos, procesar logs, 
+                crear herramientas rápidas, etc.
+            </p>
+
+            <h3>Tu primer script</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">mi_primer_script.sh</span>
+                </div>
+                <pre><code><span style="color:#c792ea">#!/bin/bash</span>
+<span style="color:#546e7a"># ↑ Shebang: le dice al sistema que use Bash para ejecutar este script</span>
+
+<span style="color:#546e7a"># Mi primer script de ciberseguridad</span>
+echo "=============================="
+echo "  Información del Sistema"
+echo "=============================="
+echo ""
+echo "Usuario actual:   $(whoami)"
+echo "Hostname:         $(hostname)"
+echo "Sistema:          $(uname -o)"
+echo "Kernel:           $(uname -r)"
+echo "Fecha:            $(date)"
+echo "IP local:         $(hostname -I | awk '{print $1}')"
+echo "Usuarios logueados: $(who | wc -l)"
+echo ""
+echo "=============================="</code></pre>
+                <div class="explanation">
+                    <p><strong>Para ejecutar este script:</strong></p>
+                    <p>1. Créalo con <code>nano mi_primer_script.sh</code> y pega el contenido.</p>
+                    <p>2. Dale permiso de ejecución: <code>chmod +x mi_primer_script.sh</code></p>
+                    <p>3. Ejecútalo: <code>./mi_primer_script.sh</code></p>
+                    <p><strong><code>$(comando)</code></strong> ejecuta un comando y pone su resultado en ese lugar. Se llama <strong>command substitution</strong>.</p>
+                </div>
+            </div>
+
+            <h3>Variables</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Variables en Bash</span>
+                </div>
+                <pre><code><span style="color:#c792ea">#!/bin/bash</span>
+
+<span style="color:#546e7a"># Definir variables (SIN espacios alrededor del =)</span>
+nombre="CyberPath"
+version=2026
+ip_objetivo="10.0.2.15"
+
+<span style="color:#546e7a"># Usar variables con $</span>
+echo "Bienvenido a $nombre versión $version"
+echo "Escaneando objetivo: $ip_objetivo"
+
+<span style="color:#546e7a"># Guardar la salida de un comando en una variable</span>
+mi_ip=$(hostname -I | awk '{print $1}')
+echo "Mi IP es: $mi_ip"
+
+<span style="color:#546e7a"># Leer input del usuario</span>
+read -p "Introduce la IP objetivo: " target
+echo "Vas a escanear: $target"</code></pre>
+            </div>
+
+            <h3>Condicionales (if/else)</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Condicionales en Bash</span>
+                </div>
+                <pre><code><span style="color:#c792ea">#!/bin/bash</span>
+
+<span style="color:#546e7a"># Verificar si eres root</span>
+if [ "$(whoami)" = "root" ]; then
+    echo "✅ Eres root. Puedes ejecutar este script."
+else
+    echo "❌ Necesitas ser root. Ejecuta con: sudo $0"
+    exit 1
+fi
+
+<span style="color:#546e7a"># Verificar si un host está vivo</span>
+read -p "IP a verificar: " ip
+if ping -c 1 -W 2 "$ip" &> /dev/null; then
+    echo "✅ $ip está ONLINE"
+else
+    echo "❌ $ip está OFFLINE o no responde"
+fi</code></pre>
+            </div>
+
+            <h3>Bucles (for)</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">ping_sweep.sh — Tu primera herramienta</span>
+                </div>
+                <pre><code><span style="color:#c792ea">#!/bin/bash</span>
+<span style="color:#546e7a"># Ping Sweep: descubrir hosts vivos en una red</span>
+<span style="color:#546e7a"># Uso: ./ping_sweep.sh 192.168.1</span>
+
+red=$1  <span style="color:#546e7a"># $1 = primer argumento que le pases al script</span>
+
+if [ -z "$red" ]; then
+    echo "Uso: $0 <red>"
+    echo "Ejemplo: $0 192.168.1"
+    exit 1
+fi
+
+echo "🔍 Escaneando red $red.0/24..."
+echo ""
+
+for host in $(seq 1 254); do
+    ping -c 1 -W 1 "$red.$host" &> /dev/null
+    if [ $? -eq 0 ]; then
+        echo "✅ $red.$host está VIVO"
+    fi
+done
+
+echo ""
+echo "Escaneo completado."</code></pre>
+                <div class="explanation">
+                    <p><strong>¡Este script es tu primera herramienta de hacking!</strong> Hace un "ping sweep": envía un ping a cada IP de una red /24 (de .1 a .254) y te dice cuáles responden. Es una versión simplificada de lo que hace <code>nmap -sn</code>.</p>
+                    <p>Ejecución: <code>chmod +x ping_sweep.sh && ./ping_sweep.sh 192.168.1</code></p>
+                    <p><strong><code>$1</code></strong> = el primer argumento que le pasas al script. <strong><code>$?</code></strong> = el código de salida del último comando (0 = éxito).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 11: Práctica -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 11. Práctica final: retos en la terminal</h2>
+
+            <p class="lesson-text">
+                La única forma de aprender Linux es <strong>practicando</strong>. Aquí tienes una serie de retos ordenados de menor a mayor dificultad. 
+                Abre una terminal en Kali Linux (o cualquier Linux) e intenta completar cada uno:
+            </p>
+
+            <h3>Reto 1: Navegación básica</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Reto 1 — Completa estos pasos</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># 1. Muestra en qué directorio estás</span>
+<span style="color:#546e7a"># 2. Navega a /tmp</span>
+<span style="color:#546e7a"># 3. Crea un directorio llamado "cyberpath_lab"</span>
+<span style="color:#546e7a"># 4. Dentro de él, crea tres archivos: notas.txt, ips.txt, passwords.txt</span>
+<span style="color:#546e7a"># 5. Escribe "192.168.1.1" en ips.txt</span>
+<span style="color:#546e7a"># 6. Agrega "192.168.1.2" y "10.0.2.15" al mismo archivo</span>
+<span style="color:#546e7a"># 7. Muestra el contenido de ips.txt</span>
+<span style="color:#546e7a"># 8. Cuenta cuántas líneas tiene ips.txt</span>
+<span style="color:#546e7a"># 9. Vuelve a tu directorio home</span></code></pre>
+            </div>
+
+            <h3>Reto 2: Permisos y usuarios</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Reto 2 — Permisos</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># 1. Crea un archivo llamado "secreto.txt" y escribe "clave_secreta_123"</span>
+<span style="color:#546e7a"># 2. Verifica sus permisos actuales con ls -la</span>
+<span style="color:#546e7a"># 3. Cambia los permisos para que SOLO tú puedas leerlo (chmod 600)</span>
+<span style="color:#546e7a"># 4. Verifica que los permisos cambiaron</span>
+<span style="color:#546e7a"># 5. Lee el contenido de /etc/shadow (¿puedes? ¿por qué?)</span>
+<span style="color:#546e7a"># 6. Intenta leerlo con sudo. ¿Qué diferencia hay?</span>
+<span style="color:#546e7a"># 7. Busca archivos SUID en el sistema: find / -perm -4000 2>/dev/null</span></code></pre>
+            </div>
+
+            <h3>Reto 3: Investigación del sistema</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Reto 3 — Reconocimiento local</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Responde estas preguntas usando SOLO la terminal:</span>
+
+<span style="color:#546e7a"># 1. ¿Qué kernel usa tu sistema? (uname -r)</span>
+<span style="color:#546e7a"># 2. ¿Cuántos usuarios con shell /bin/bash existen?</span>
+<span style="color:#546e7a">#    (grep "/bin/bash" /etc/passwd | wc -l)</span>
+<span style="color:#546e7a"># 3. ¿Qué puertos están abiertos en tu máquina? (ss -tulnp)</span>
+<span style="color:#546e7a"># 4. ¿Qué procesos están consumiendo más CPU? (top o htop)</span>
+<span style="color:#546e7a"># 5. ¿Cuántos archivos .conf hay en /etc?</span>
+<span style="color:#546e7a">#    (find /etc -name "*.conf" 2>/dev/null | wc -l)</span>
+<span style="color:#546e7a"># 6. ¿Qué dice el archivo /etc/hostname?</span>
+<span style="color:#546e7a"># 7. ¿Puedes encontrar la palabra "password" en algún archivo de /etc?</span>
+<span style="color:#546e7a">#    (grep -r "password" /etc/ 2>/dev/null)</span></code></pre>
+            </div>
+
+            <h3>Reto 4: Tu primer script real</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Reto 4 — Crea este script</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Crea un script llamado "recon_local.sh" que:</span>
+<span style="color:#546e7a"># 1. Verifique si eres root (y avise si no lo eres)</span>
+<span style="color:#546e7a"># 2. Muestre la fecha y hora actual</span>
+<span style="color:#546e7a"># 3. Muestre el nombre del host</span>
+<span style="color:#546e7a"># 4. Muestre tu IP local</span>
+<span style="color:#546e7a"># 5. Liste los puertos abiertos</span>
+<span style="color:#546e7a"># 6. Liste los usuarios con shell /bin/bash</span>
+<span style="color:#546e7a"># 7. Muestre los últimos 10 comandos del historial</span>
+<span style="color:#546e7a"># 8. Guarde TODO el resultado en un archivo "recon_output.txt"</span>
+
+<span style="color:#546e7a"># Pista: usa redirección con > y >> para guardar en archivo</span>
+<span style="color:#546e7a"># Pista: usa tee para mostrar en pantalla Y guardar a la vez:</span>
+<span style="color:#546e7a">#   echo "dato" | tee -a archivo.txt</span></code></pre>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Antes de pasar a la siguiente lección, asegúrate de poder responder estas preguntas:</p>
+                <ul>
+                    <li>¿Cómo navegas por el sistema de archivos? (<code>cd</code>, <code>ls</code>, <code>pwd</code>)</li>
+                    <li>¿Cuál es la diferencia entre <code>></code> y <code>>></code>?</li>
+                    <li>¿Qué significan los permisos <code>rwxr-xr--</code>? ¿Y <code>chmod 755</code>?</li>
+                    <li>¿Cómo encuentras archivos SUID en el sistema?</li>
+                    <li>¿Qué información contiene <code>/etc/passwd</code> y <code>/etc/shadow</code>?</li>
+                    <li>¿Qué es <code>sudo</code> y cuándo lo necesitas?</li>
+                    <li>¿Cómo ves los puertos abiertos en tu máquina?</li>
+                    <li>¿Cómo matas un proceso que no responde?</li>
+                    <li>¿Cómo instalas software con <code>apt</code>?</li>
+                    <li>¿Puedes escribir un script básico de Bash con variables y condicionales?</li>
+                </ul>
+            </div>
+
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/linuxfundamentalspart1" target="_blank" rel="noopener noreferrer">TryHackMe: Linux Fundamentals Part 1</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/linuxfundamentalspart2" target="_blank" rel="noopener noreferrer">TryHackMe: Linux Fundamentals Part 2</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/linuxfundamentalspart3" target="_blank" rel="noopener noreferrer">TryHackMe: Linux Fundamentals Part 3</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/bashscripting" target="_blank" rel="noopener noreferrer">TryHackMe: Bash Scripting</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div style="text-align:center; margin: 1.5rem 0;">
+                <a href="cheatsheet-linux.html" class="download-btn" target="_blank">📋 Cheatsheet: Comandos de Linux — Imprimir / PDF</a>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <!-- Lesson Navigation -->
+        <div class="lesson-nav">
+            <a href="leccion-01-redes.html">
+                <span class="nav-label">← Anterior</span>
+                <span class="nav-title">Lección 01: Redes y TCP/IP</span>
+            </a>
+            <a href="leccion-03-programacion.html" class="next">
+                <span class="nav-label">Siguiente →</span>
+                <span class="nav-title">Lección 03: Python para Ciberseguridad</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "¿Qué significan los permisos rwxr-xr-- en un archivo?",
+                options: [
+                    "El propietario puede leer, el grupo puede escribir, y otros pueden ejecutar",
+                    "El propietario puede leer/escribir/ejecutar, el grupo puede leer/ejecutar, y otros solo pueden leer",
+                    "Todos los usuarios pueden leer, escribir y ejecutar el archivo",
+                    "El archivo es de solo lectura para todos los usuarios"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es la diferencia entre > y >> en la terminal de Linux?",
+                options: [
+                    "> agrega contenido al final del archivo, >> lo sobrescribe",
+                    "> redirige errores, >> redirige salida estándar",
+                    "> sobrescribe el archivo, >> agrega contenido al final sin borrar lo existente",
+                    "No hay diferencia, son sinónimos"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Qué archivo contiene los hashes de las contraseñas en Linux?",
+                options: [
+                    "/etc/passwd",
+                    "/etc/hosts",
+                    "/etc/shadow",
+                    "/var/log/auth.log"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Qué comando encuentras archivos con el bit SUID activado en todo el sistema?",
+                options: [
+                    "ls -la /usr/bin/",
+                    "find / -perm -4000 2>/dev/null",
+                    "grep SUID /etc/passwd",
+                    "chmod +s /bin/*"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué hace el comando kill -9 seguido de un PID?",
+                options: [
+                    "Envía una señal amable para que el proceso se cierre cuando pueda",
+                    "Reinicia el proceso con el PID indicado",
+                    "Fuerza la terminación inmediata del proceso (señal SIGKILL)",
+                    "Pausa el proceso temporalmente"
+                ],
+                correct: 2
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-02'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-02', quizQuestions);
+            const explanations = [
+                "rwxr-xr-- significa: propietario (rwx = leer+escribir+ejecutar), grupo (r-x = leer+ejecutar), otros (r-- = solo leer). En octal sería 754.",
+                "El operador > sobrescribe el archivo (lo crea si no existe). El operador >> agrega al final del archivo sin borrar el contenido existente.",
+                "/etc/shadow contiene los hashes de contraseñas y solo root puede leerlo. /etc/passwd contiene info de usuarios pero ya no almacena contraseñas.",
+                "find / -perm -4000 busca archivos con el bit SUID (Set User ID). Los archivos SUID se ejecutan con privilegios del propietario — un vector de escalada de privilegios.",
+                "kill -9 envía la señal SIGKILL que termina el proceso inmediatamente sin darle oportunidad de limpieza. kill sin -9 envía SIGTERM (terminación amable)."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>
+

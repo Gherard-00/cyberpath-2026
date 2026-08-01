@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 20: Elaboración de Informes Profesionales de Auditoría — Resumen ejecutivo, hallazgos con CVSS, fichas técnicas y guías de remediación.">
+    <title>Lección 20: Informes Profesionales de Auditoría — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 5</span><span>›</span><span>Lección 20</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,215,0,0.15);color:#ffd700">Fase 5 — Profesionalización y Nivel Experto</div>
+            <h1>Elaboración de Informes Profesionales de Auditoría</h1>
+            <p class="lesson-intro">
+                Puedes ser el mejor hacker del mundo, pero si no sabes <strong>comunicar tus hallazgos</strong>, 
+                tu trabajo no tiene valor. El informe de auditoría es el <strong>producto final</strong> que entregas 
+                al cliente. Un buen informe convierte hallazgos técnicos en <strong>decisiones de negocio</strong>. 
+                En esta lección aprenderás a escribir informes profesionales que te harán destacar en la industria.
+            </p>
+        </div>
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#por-que">¿Por qué importa el informe?</a></li>
+                <li><a href="#audiencia">Conoce a tu audiencia</a></li>
+                <li><a href="#estructura">Estructura del informe profesional</a></li>
+                <li><a href="#resumen-ejecutivo">Cómo escribir el resumen ejecutivo</a></li>
+                <li><a href="#cvss">Clasificar vulnerabilidades con CVSS</a></li>
+                <li><a href="#ficha-tecnica">Fichas técnicas de hallazgos</a></li>
+                <li><a href="#evidencias">Cómo presentar evidencias</a></li>
+                <li><a href="#remediacion">Guías de remediación</a></li>
+                <li><a href="#errores">Errores comunes a evitar</a></li>
+                <li><a href="#plantilla">Plantilla completa</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="por-que"><h2><span class="section-icon">📝</span> 1. ¿Por qué importa el informe?</h2>
+            <div class="lesson-callout"><strong>📌 Realidad de la industria:</strong>
+                <ul>
+                    <li>El cliente <strong>no ve</strong> tu terminal ni tus comandos. Solo ve tu informe.</li>
+                    <li>El informe es lo que <strong>justifica tu precio</strong>. Un informe de 3 páginas no justifica $50,000.</li>
+                    <li>El informe es el que <strong>convence al CTO</strong> de invertir $500,000 en seguridad.</li>
+                    <li>Un informe mal escrito puede hacer que <strong>nadie tome acción</strong>, aunque hayas encontrado vulnerabilidades críticas.</li>
+                    <li>El informe es <strong>evidencia legal</strong> — debe ser preciso, profesional y verificable.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="audiencia"><h2><span class="section-icon">👥</span> 2. Conoce a tu audiencia</h2>
+            <p class="lesson-text">Tu informe lo leerán <strong>diferentes personas con diferentes necesidades</strong>. Debes escribir para todos:</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Audiencia</th><th>Lo que quiere saber</th><th>Sección del informe</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>CEO / Directivos</strong></td><td>"¿Estamos en riesgo? ¿Cuánto nos cuesta?" (no quieren detalles técnicos)</td><td>Resumen ejecutivo</td></tr>
+                    <tr><td><strong>CISO / Security Manager</strong></td><td>"¿Qué tan grave es? ¿Qué arreglamos primero?"</td><td>Clasificación de riesgos + prioridades</td></tr>
+                    <tr><td><strong>Equipo técnico (IT/Dev)</strong></td><td>"¿Exactamente qué está mal y cómo lo arreglo?"</td><td>Fichas técnicas + remediación detallada</td></tr>
+                    <tr><td><strong>Legal / Compliance</strong></td><td>"¿Cumplimos con la normativa? ¿Hay implicaciones legales?"</td><td>Alcance, metodología, cumplimiento</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="estructura"><h2><span class="section-icon">📋</span> 3. Estructura del informe profesional</h2>
+            <div class="lesson-diagram"><pre>
+    Estructura recomendada:
+    
+    1. PORTADA
+       └── Nombre del proyecto, cliente, fecha, clasificación
+    
+    2. ÍNDICE
+    
+    3. RESUMEN EJECUTIVO (1-2 páginas)
+       └── Para directivos. Sin jerga técnica.
+    
+    4. ALCANCE Y METODOLOGÍA
+       └── Qué se probó, qué NO se probó, metodología usada
+    
+    5. CLASIFICACIÓN DE RIESGOS
+       └── Resumen visual: cuántas críticas, altas, medias, bajas
+    
+    6. HALLAZGOS DETALLADOS
+       └── Una ficha técnica por cada vulnerabilidad
+    
+    7. GUÍA DE REMEDIACIÓN PRIORIZADA
+       └── Qué arreglar primero y cómo
+    
+    8. CONCLUSIONES
+    
+    9. ANEXOS
+       └── Evidencias adicionales, logs completos, herramientas usadas
+            </pre></div>
+        </div>
+
+        <div class="lesson-section" id="resumen-ejecutivo"><h2><span class="section-icon">📊</span> 4. Cómo escribir el resumen ejecutivo</h2>
+            <p class="lesson-text">El resumen ejecutivo es la sección <strong>más importante</strong>. Muchos directivos SOLO leerán esta página. Debe responder tres preguntas:</p>
+            <div class="lesson-callout"><strong>📌 Las 3 preguntas del resumen ejecutivo:</strong>
+                <ol>
+                    <li><strong>¿Qué encontramos?</strong> — "Identificamos 23 vulnerabilidades, de las cuales 3 son críticas"</li>
+                    <li><strong>¿Cuál es el impacto real?</strong> — "Un atacante podría acceder a la base de datos de 50,000 clientes"</li>
+                    <li><strong>¿Qué debe hacer la organización?</strong> — "Recomendamos priorizar las 3 vulnerabilidades críticas en los próximos 30 días"</li>
+                </ol>
+            </div>
+            <div class="lesson-callout"><strong>✅ Ejemplo de buen resumen ejecutivo:</strong>
+                <p><em>"Durante la auditoría de seguridad realizada entre el 1 y el 15 de julio de 2026, se evaluó la infraestructura externa e interna de [Empresa]. Se identificaron <strong>23 vulnerabilidades</strong>: 3 críticas, 7 altas, 8 medias y 5 informativas. Las vulnerabilidades críticas permitirían a un atacante externo obtener <strong>acceso completo al servidor de base de datos</strong> que contiene información personal de 50,000 clientes, lo que podría resultar en una multa por incumplimiento de la Ley de Protección de Datos de hasta $2M. Se recomienda <strong>remediar las 3 vulnerabilidades críticas en un plazo máximo de 30 días</strong>."</em></p>
+            </div>
+            <div class="lesson-callout"><strong>❌ Ejemplo de MAL resumen:</strong>
+                <p><em>"Se encontraron varias vulnerabilidades de tipo SQL injection en el parámetro id del endpoint /api/users usando payload ' OR 1=1-- con Burp Suite v2024.3 y también un XSS reflejado en..."</em></p>
+                <p>→ Demasiado técnico. Un CEO no sabe qué es SQL injection ni Burp Suite.</p>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="cvss"><h2><span class="section-icon">📈</span> 5. Clasificar vulnerabilidades con CVSS</h2>
+            <p class="lesson-text"><strong>CVSS (Common Vulnerability Scoring System)</strong> es el estándar para medir la severidad de una vulnerabilidad en una escala de 0.0 a 10.0.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Puntuación</th><th>Severidad</th><th>Color</th><th>Plazo de remediación sugerido</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>9.0 – 10.0</strong></td><td>🔴 Crítica</td><td>Rojo</td><td>Inmediato (24-72 horas)</td></tr>
+                    <tr><td><strong>7.0 – 8.9</strong></td><td>🟠 Alta</td><td>Naranja</td><td>1-2 semanas</td></tr>
+                    <tr><td><strong>4.0 – 6.9</strong></td><td>🟡 Media</td><td>Amarillo</td><td>1-3 meses</td></tr>
+                    <tr><td><strong>0.1 – 3.9</strong></td><td>🟢 Baja</td><td>Verde</td><td>Siguiente ciclo de mantenimiento</td></tr>
+                    <tr><td><strong>0.0</strong></td><td>ℹ️ Informativa</td><td>Azul</td><td>Mejora recomendada, no urgente</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>📌 Métricas CVSS v3.1:</strong>
+                <ul>
+                    <li><strong>Attack Vector (AV)</strong>: ¿Desde dónde se explota? Network / Adjacent / Local / Physical</li>
+                    <li><strong>Attack Complexity (AC)</strong>: ¿Qué tan fácil es? Low / High</li>
+                    <li><strong>Privileges Required (PR)</strong>: ¿Necesitas autenticación? None / Low / High</li>
+                    <li><strong>User Interaction (UI)</strong>: ¿Necesitas que el usuario haga algo? None / Required</li>
+                    <li><strong>Scope (S)</strong>: ¿Afecta a otros componentes? Unchanged / Changed</li>
+                    <li><strong>Confidentiality (C)</strong>: ¿Se filtra información? None / Low / High</li>
+                    <li><strong>Integrity (I)</strong>: ¿Se pueden modificar datos? None / Low / High</li>
+                    <li><strong>Availability (A)</strong>: ¿Se puede tirar el servicio? None / Low / High</li>
+                </ul>
+                <p>Calculadora oficial: <strong>first.org/cvss/calculator/3.1</strong></p>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="ficha-tecnica"><h2><span class="section-icon">🗂️</span> 6. Fichas técnicas de hallazgos</h2>
+            <p class="lesson-text">Cada vulnerabilidad encontrada debe documentarse con una <strong>ficha técnica</strong> estandarizada:</p>
+            <div class="lesson-diagram"><pre>
+    ┌─────────────────────────────────────────────────────────┐
+    │  HALLAZGO #001                                         │
+    │  SQL Injection en formulario de login                   │
+    ├─────────────────────────────────────────────────────────┤
+    │  Severidad:    🔴 CRÍTICA (CVSS 9.8)                    │
+    │  CVSS Vector:  AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H    │
+    │  Activo:       app.empresa.com/login                     │
+    │  Parámetro:    username                                  │
+    │  CWE:          CWE-89 (SQL Injection)                    │
+    ├─────────────────────────────────────────────────────────┤
+    │  DESCRIPCIÓN:                                           │
+    │  El parámetro "username" del formulario de login no      │
+    │  sanitiza la entrada del usuario, permitiendo inyectar   │
+    │  sentencias SQL que extraen toda la base de datos.       │
+    ├─────────────────────────────────────────────────────────┤
+    │  EVIDENCIA:                                              │
+    │  [Screenshot de Burp Suite mostrando el payload]         │
+    │  [Request/Response completos]                            │
+    │  [Datos extraídos (censurados)]                          │
+    ├─────────────────────────────────────────────────────────┤
+    │  IMPACTO:                                                │
+    │  Un atacante sin autenticación puede extraer todos los   │
+    │  datos de la base de datos: usuarios, contraseñas,       │
+    │  información personal de 50,000 clientes.                │
+    ├─────────────────────────────────────────────────────────┤
+    │  REMEDIACIÓN:                                            │
+    │  1. Usar consultas parametrizadas (prepared statements)  │
+    │  2. Implementar WAF como capa adicional                  │
+    │  3. Aplicar principio de mínimo privilegio al DB user    │
+    │  Referencia: OWASP SQL Injection Prevention Cheat Sheet  │
+    └─────────────────────────────────────────────────────────┘
+            </pre></div>
+        </div>
+
+        <div class="lesson-section" id="evidencias"><h2><span class="section-icon">📸</span> 7. Cómo presentar evidencias</h2>
+            <div class="lesson-callout"><strong>📌 Reglas de oro para evidencias:</strong>
+                <ul>
+                    <li>✅ <strong>Cada hallazgo debe tener al menos un screenshot</strong></li>
+                    <li>✅ <strong>Resaltar lo importante</strong>: usa flechas rojas y recuadros</li>
+                    <li>✅ <strong>Mostrar Request Y Response</strong>: no solo el resultado, sino cómo lo lograste</li>
+                    <li>✅ <strong>Censurar datos sensibles</strong>: nunca incluir contraseñas reales, datos de clientes, o información PII sin censurar</li>
+                    <li>✅ <strong>Numerar cada screenshot</strong>: "Figura 3.1: Inyección SQL exitosa en /login"</li>
+                    <li>✅ <strong>Incluir timestamps</strong>: cuándo se descubrió y reproduce la vulnerabilidad</li>
+                    <li>❌ <strong>NO incluir</strong> screenshots de tu escritorio con información personal visible</li>
+                    <li>❌ <strong>NO incluir</strong> datos extraídos completos (solo muestras censured)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="remediacion"><h2><span class="section-icon">🔧</span> 8. Guías de remediación</h2>
+            <p class="lesson-text">La remediación debe ser <strong>específica, accionable y priorizada</strong>:</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Prioridad</th><th>Hallazgo</th><th>Remediación</th><th>Esfuerzo</th><th>Plazo</th></tr></thead>
+                <tbody>
+                    <tr><td>🔴 1</td><td>SQL Injection en login</td><td>Implementar prepared statements en auth.php línea 45</td><td>2-4 horas</td><td>24h</td></tr>
+                    <tr><td>🔴 2</td><td>RCE en upload de archivos</td><td>Validar extensión + MIME type + renombrar archivos</td><td>4-8 horas</td><td>48h</td></tr>
+                    <tr><td>🟠 3</td><td>XSS reflejado en búsqueda</td><td>Escapar output con htmlspecialchars()</td><td>1-2 horas</td><td>1 semana</td></tr>
+                    <tr><td>🟡 4</td><td>Headers de seguridad faltantes</td><td>Agregar CSP, HSTS, X-Frame-Options en nginx.conf</td><td>1 hora</td><td>2 semanas</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>💡 Tip profesional:</strong> No digas solo "arreglar la vulnerabilidad". Di <strong>exactamente cómo</strong>, en qué archivo, en qué línea, con un ejemplo de código corregido si es posible. Esto diferencia a un pentester junior de un profesional.</div>
+        </div>
+
+        <div class="lesson-section" id="errores"><h2><span class="section-icon">⚠️</span> 9. Errores comunes a evitar</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Error</th><th>Problema</th><th>Solución</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Solo listar CVEs</strong></td><td>No explica el impacto real para la empresa</td><td>Contextualizar: "Esto permite que un atacante acceda a..."</td></tr>
+                    <tr><td><strong>Resumen muy técnico</strong></td><td>El CEO no entiende nada y no toma acción</td><td>Escribir el resumen ejecutivo en lenguaje de negocio</td></tr>
+                    <tr><td><strong>Sin priorización</strong></td><td>El equipo técnico no sabe por dónde empezar</td><td>Ordenar hallazgos por severidad + tabla de remediación priorizada</td></tr>
+                    <tr><td><strong>Screenshots sin contexto</strong></td><td>No se entiende qué se está mostrando</td><td>Describir cada screenshot con texto debajo</td></tr>
+                    <tr><td><strong>Remediación genérica</strong></td><td>"Mejorar la seguridad" no es accionable</td><td>Dar pasos específicos con código, configuración, y referencias</td></tr>
+                    <tr><td><strong>Errores gramaticales</strong></td><td>Resta credibilidad profesional</td><td>Revisar ortografía y gramática antes de entregar</td></tr>
+                    <tr><td><strong>Entregar tarde</strong></td><td>El cliente pierde confianza</td><td>Acordar fecha de entrega y cumplirla</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="plantilla"><h2><span class="section-icon">📄</span> 10. Plantilla completa</h2>
+            <div class="lesson-callout"><strong>📌 Usa esta estructura para tus informes:</strong>
+                <ol>
+                    <li><strong>Portada</strong>: Logo, título, cliente, fecha, clasificación (Confidencial), versión</li>
+                    <li><strong>Control de versiones</strong>: Tabla con versión, fecha, autor, cambios</li>
+                    <li><strong>Índice automático</strong></li>
+                    <li><strong>Descargo de responsabilidad</strong>: Alcance, limitaciones, período de pruebas</li>
+                    <li><strong>Resumen ejecutivo</strong> (1-2 páginas, lenguaje de negocio)</li>
+                    <li><strong>Alcance</strong>: IPs, dominios, aplicaciones, redes probadas</li>
+                    <li><strong>Metodología</strong>: OWASP, PTES, OSSTMM, o la que uses</li>
+                    <li><strong>Resumen de hallazgos</strong>: Gráfica de pastel/barras por severidad</li>
+                    <li><strong>Hallazgos detallados</strong>: Una ficha por vulnerabilidad</li>
+                    <li><strong>Plan de remediación priorizado</strong>: Tabla con plazos</li>
+                    <li><strong>Conclusiones</strong></li>
+                    <li><strong>Anexos</strong>: Herramientas usadas, logs completos, referencias</li>
+                </ol>
+            </div>
+            <div class="lesson-callout"><strong>💡 Herramientas para generar informes:</strong>
+                <ul>
+                    <li><strong>Dradis</strong>: Plataforma colaborativa para reportes de pentest (open source)</li>
+                    <li><strong>PlexTrac</strong>: Plataforma comercial para gestión de reportes de seguridad</li>
+                    <li><strong>Ghostwriter</strong>: Herramienta de SpecterOps para reportes de Red Team (open source)</li>
+                    <li><strong>SysReptor</strong>: Generador de reportes de pentest basado en plantillas (open source)</li>
+                    <li><strong>Microsoft Word / LaTeX</strong>: El clásico, con plantillas bien diseñadas</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 11. Práctica</h2>
+            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Entiendes por qué el informe es el producto más importante</li>
+                    <li>Conoces las diferentes audiencias y qué necesitan</li>
+                    <li>Puedes escribir un resumen ejecutivo efectivo</li>
+                    <li>Sabes clasificar vulnerabilidades con CVSS v3.1</li>
+                    <li>Puedes crear fichas técnicas profesionales para cada hallazgo</li>
+                    <li>Sabes cómo presentar evidencias correctamente</li>
+                    <li>Puedes crear guías de remediación priorizadas y accionables</li>
+                    <li>Conoces las herramientas de reporting disponibles</li>
+                </ul>
+            </div>
+            <div class="lesson-callout"><strong>🎉 ¡FELICIDADES!</strong>
+                <p>Has completado las <strong>20 lecciones del curso CyberPath 2026</strong>. Ahora tienes las bases teóricas y prácticas para iniciar tu carrera en ciberseguridad. Recuerda: esto es solo el comienzo. La ciberseguridad es un campo que requiere <strong>aprendizaje continuo</strong>, <strong>práctica constante</strong> y <strong>mentalidad curiosa</strong>. ¡Sigue adelante!</p>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/path/outline/jrpenetrationtester" target="_blank" rel="noopener noreferrer">TryHackMe: Jr Penetration Tester (incluye modulo de reportes)</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://github.com/juliocesarfort/public-pentesting-reports" target="_blank" rel="noopener noreferrer">Repositorio de reportes de pentesting publicos (referencia)</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-19-wireshark.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 19: Wireshark</span></a>
+            <a href="../index.html" class="next"><span class="nav-label">Volver al inicio →</span><span class="nav-title">CyberPath 2026</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué es CVSS y para qué se usa en un informe de auditoría?",
+                    "options": [
+                              "Un tipo de vulnerabilidad web",
+                              "Un sistema de puntuación estandarizado (0-10) para medir la severidad de las vulnerabilidades",
+                              "Una herramienta de escaneo automático",
+                              "Un formato de archivo para reportes"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué secciones debe incluir un informe profesional de pentesting?",
+                    "options": [
+                              "Solo una lista de vulnerabilidades encontradas",
+                              "Resumen ejecutivo, metodología, hallazgos técnicos con evidencia, clasificación de riesgo (CVSS), y recomendaciones de remediación",
+                              "Solo capturas de pantalla de las herramientas usadas",
+                              "Un tutorial de cómo explotar cada vulnerabilidad"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Para quién se escribe el resumen ejecutivo de un informe de auditoría?",
+                    "options": [
+                              "Para el equipo técnico de IT",
+                              "Para otros pentesters",
+                              "Para la dirección/gerencia no técnica — debe ser entendible sin conocimiento técnico",
+                              "Para el equipo legal"
+                    ],
+                    "correct": 2
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-20'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-20', quizQuestions);
+            const explanations = [
+                "CVSS (Common Vulnerability Scoring System) puntúa vulnerabilidades de 0 a 10 basándose en vector de ataque, complejidad, impacto, etc. Permite priorizar remediación objetivamente.",
+                "Un informe profesional incluye: resumen ejecutivo (para directivos), metodología, cada hallazgo con evidencia y CVSS, impacto en el negocio, y recomendaciones priorizadas de remediación.",
+                "El resumen ejecutivo está dirigido a directivos que toman decisiones pero no tienen background técnico. Debe explicar el riesgo en términos de impacto al negocio, no en jerga técnica."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

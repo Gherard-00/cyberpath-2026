@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 06: Criptografía esencial — Cifrado simétrico y asimétrico, hashes, firmas digitales, TLS, GPG y OpenSSL explicados paso a paso.">
+    <title>Lección 06: Criptografía Esencial — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a><span>›</span><span>Fase 1</span><span>›</span><span>Lección 06</span>
+        </div>
+
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(0,176,255,0.15);color:#00b0ff">Fase 1 — Introducción a la Ciberseguridad</div>
+            <h1>Criptografía Esencial — Cómo se protege la información</h1>
+            <p class="lesson-intro">
+                La <strong>criptografía</strong> es el arte de proteger información transformándola en algo ilegible para quien no tenga la clave. 
+                Es la base de HTTPS, las VPNs, las contraseñas, las firmas digitales y prácticamente toda la seguridad digital moderna. 
+                En esta lección entenderás <strong>cómo funciona el cifrado, qué son los hashes, cómo verificar la integridad de archivos</strong> 
+                y practicarás con <strong>GPG y OpenSSL</strong>.
+            </p>
+        </div>
+
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-cripto">¿Qué es la criptografía?</a></li>
+                <li><a href="#simetrico">Cifrado simétrico: una clave para todo</a></li>
+                <li><a href="#asimetrico">Cifrado asimétrico: la magia de las dos claves</a></li>
+                <li><a href="#hashes">Funciones hash: la huella digital de los datos</a></li>
+                <li><a href="#firmas">Firmas digitales y certificados</a></li>
+                <li><a href="#tls">TLS/SSL: cómo HTTPS protege tu navegación</a></li>
+                <li><a href="#practica">Práctica: GPG y OpenSSL</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="que-es-cripto">
+            <h2><span class="section-icon">🔐</span> 1. ¿Qué es la criptografía?</h2>
+            <p class="lesson-text">
+                La criptografía transforma datos legibles (<strong>texto plano</strong>) en datos ilegibles (<strong>texto cifrado</strong>) 
+                usando un algoritmo y una <strong>clave</strong>. Solo quien tenga la clave correcta puede descifrar y leer los datos originales.
+            </p>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Concepto básico</span></div>
+                <pre><code>Texto plano  ──[Cifrado + Clave]──▶  Texto cifrado
+"Hola mundo"  ──[AES-256 + clave]──▶  "x7f2$kL9..."
+
+Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
+"x7f2$kL9..."  ──[AES-256 + clave]──▶  "Hola mundo"</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="simetrico">
+            <h2><span class="section-icon">🔑</span> 2. Cifrado simétrico: una clave para todo</h2>
+            <p class="lesson-text">
+                En el cifrado <strong>simétrico</strong>, se usa <strong>la misma clave</strong> para cifrar y descifrar. 
+                Es rápido y eficiente, pero tiene un problema: ¿cómo le envías la clave a la otra persona de forma segura?
+            </p>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Algoritmo</th><th>Tamaño de clave</th><th>Estado</th><th>Uso</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>AES-256</strong></td><td>256 bits</td><td>✅ Estándar actual</td><td>Cifrado de discos (BitLocker), VPNs, HTTPS</td></tr>
+                        <tr><td><strong>AES-128</strong></td><td>128 bits</td><td>✅ Seguro</td><td>WiFi (WPA2), muchas aplicaciones</td></tr>
+                        <tr><td><strong>ChaCha20</strong></td><td>256 bits</td><td>✅ Moderno</td><td>TLS 1.3, WireGuard VPN</td></tr>
+                        <tr><td><strong>DES</strong></td><td>56 bits</td><td>❌ Roto</td><td>Ya no se debe usar — clave demasiado corta</td></tr>
+                        <tr><td><strong>3DES</strong></td><td>168 bits</td><td>⚠️ Obsoleto</td><td>Sistemas legacy, siendo reemplazado</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Cifrado simétrico con OpenSSL</span></div>
+                <pre><code><span style="color:#546e7a"># Cifrar un archivo con AES-256</span>
+<span style="color:#00e676">$</span> openssl enc -aes-256-cbc -salt -in secreto.txt -out secreto.enc -pbkdf2
+<span style="color:#546e7a"># Te pedirá una contraseña (esta será la clave simétrica)</span>
+
+<span style="color:#546e7a"># Descifrar</span>
+<span style="color:#00e676">$</span> openssl enc -aes-256-cbc -d -in secreto.enc -out descifrado.txt -pbkdf2
+<span style="color:#546e7a"># Te pedirá la misma contraseña</span>
+
+<span style="color:#546e7a"># Ver el archivo cifrado (es ilegible)</span>
+<span style="color:#00e676">$</span> cat secreto.enc
+<span style="color:#546e7a"># → Salida binaria incomprensible ✓</span></code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="asimetrico">
+            <h2><span class="section-icon">🔑🔑</span> 3. Cifrado asimétrico: la magia de las dos claves</h2>
+            <p class="lesson-text">
+                El cifrado <strong>asimétrico</strong> usa <strong>dos claves</strong> que están matemáticamente relacionadas:
+            </p>
+            <ul>
+                <li><strong>Clave pública:</strong> la puedes compartir con todo el mundo. Se usa para <strong>cifrar</strong> mensajes.</li>
+                <li><strong>Clave privada:</strong> la mantienes en secreto. Es la ÚNICA que puede <strong>descifrar</strong> lo que se cifró con tu clave pública.</li>
+            </ul>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">📬</span>
+                <h4>Analogía: El buzón con candado</h4>
+                <p>
+                    Tu <strong>clave pública</strong> es como un buzón abierto en la calle: cualquiera puede meter una carta (cifrar un mensaje). 
+                    Pero <strong>solo tú tienes la llave</strong> (clave privada) para abrir el buzón y leer las cartas. 
+                    Aunque todos pueden meter cartas, nadie más puede leerlas.
+                </p>
+            </div>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Algoritmo</th><th>Tamaño clave</th><th>Uso</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>RSA</strong></td><td>2048-4096 bits</td><td>HTTPS, SSH, firmas digitales, GPG</td></tr>
+                        <tr><td><strong>ECC (Elliptic Curve)</strong></td><td>256-384 bits</td><td>TLS 1.3, SSH moderno, criptomonedas</td></tr>
+                        <tr><td><strong>Ed25519</strong></td><td>256 bits</td><td>SSH keys modernas, firmas rápidas</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="hashes">
+            <h2><span class="section-icon">🔍</span> 4. Funciones hash: la huella digital de los datos</h2>
+            <p class="lesson-text">
+                Un <strong>hash</strong> es una función que toma cualquier cantidad de datos y produce una cadena de tamaño fijo. 
+                Es una <strong>"huella digital"</strong> del dato original: si cambias un solo bit, el hash cambia completamente.
+            </p>
+
+            <h3>Propiedades de un buen hash</h3>
+            <ul>
+                <li><strong>Determinista:</strong> el mismo input siempre produce el mismo hash.</li>
+                <li><strong>Unidireccional:</strong> no puedes obtener el dato original a partir del hash.</li>
+                <li><strong>Efecto avalancha:</strong> un cambio mínimo en el input cambia todo el hash.</li>
+                <li><strong>Resistente a colisiones:</strong> es casi imposible encontrar dos inputs diferentes con el mismo hash.</li>
+            </ul>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Hashes en la práctica</span></div>
+                <pre><code><span style="color:#546e7a"># Generar hashes con diferentes algoritmos</span>
+<span style="color:#00e676">$</span> echo -n "password123" | md5sum
+482c811da5d5b4bc6d497ffa98491e38
+
+<span style="color:#00e676">$</span> echo -n "password123" | sha256sum
+ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f
+
+<span style="color:#546e7a"># Efecto avalancha: cambiar una letra cambia TODO el hash</span>
+<span style="color:#00e676">$</span> echo -n "password124" | md5sum
+35ac04d1a8f319f2fd38d12e7ecd8b99  <span style="color:#546e7a">← ¡Completamente diferente!</span>
+
+<span style="color:#546e7a"># Verificar la integridad de un archivo descargado</span>
+<span style="color:#00e676">$</span> sha256sum kali-linux-2026.1.iso
+a1b2c3d4...  kali-linux-2026.1.iso
+<span style="color:#546e7a"># Compara este hash con el publicado en la web oficial</span></code></pre>
+                <div class="explanation">
+                    <p><strong>En ciberseguridad:</strong> las contraseñas no se guardan en texto plano — se guardan como <strong>hashes</strong> en <code>/etc/shadow</code>. Cuando haces login, el sistema hashea tu contraseña y la compara con el hash guardado. El cracking de contraseñas (Lección 12) consiste en generar millones de hashes y buscar coincidencias.</p>
+                </div>
+            </div>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Algoritmo</th><th>Tamaño</th><th>Estado</th><th>Uso</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>MD5</strong></td><td>128 bits</td><td>❌ Roto (colisiones)</td><td>Solo para checksums rápidos, NO para seguridad</td></tr>
+                        <tr><td><strong>SHA-1</strong></td><td>160 bits</td><td>❌ Roto</td><td>Obsoleto, no usar para nada nuevo</td></tr>
+                        <tr><td><strong>SHA-256</strong></td><td>256 bits</td><td>✅ Estándar</td><td>Integridad de archivos, certificados, blockchain</td></tr>
+                        <tr><td><strong>SHA-512</strong></td><td>512 bits</td><td>✅ Seguro</td><td>Hashing de contraseñas en Linux (/etc/shadow)</td></tr>
+                        <tr><td><strong>bcrypt</strong></td><td>Variable</td><td>✅ Recomendado</td><td>Hashing de contraseñas (lento a propósito)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="firmas">
+            <h2><span class="section-icon">✍️</span> 5. Firmas digitales y certificados</h2>
+            <p class="lesson-text">
+                Una <strong>firma digital</strong> es la combinación de hash + cifrado asimétrico para garantizar que un mensaje es auténtico 
+                y no fue modificado. El emisor firma con su clave privada y cualquiera puede verificar con su clave pública.
+            </p>
+            <div class="lesson-diagram">
+                <pre>
+    FIRMAR:
+    Documento ──[Hash]──▶ Hash ──[Cifrar con clave PRIVADA]──▶ Firma Digital
+
+    VERIFICAR:
+    Firma Digital ──[Descifrar con clave PÚBLICA]──▶ Hash Original
+    Documento     ──[Hash]──▶ Hash Calculado
+    
+    ¿Hash Original == Hash Calculado?  →  ✅ Firma válida / ❌ Documento alterado
+                </pre>
+            </div>
+            <div class="concept-box">
+                <h4>💡 Certificados digitales (SSL/TLS)</h4>
+                <p>
+                    Un <strong>certificado digital</strong> es un archivo que vincula una clave pública con la identidad de un servidor (ej: google.com). 
+                    Es emitido por una <strong>Autoridad Certificadora (CA)</strong> de confianza (Let's Encrypt, DigiCert, etc.). 
+                    Cuando visitas un sitio HTTPS, tu navegador verifica el certificado para asegurarse de que realmente estás hablando con ese servidor 
+                    y no con un impostor.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="tls">
+            <h2><span class="section-icon">🔒</span> 6. TLS/SSL: cómo HTTPS protege tu navegación</h2>
+            <p class="lesson-text">
+                <strong>TLS (Transport Layer Security)</strong> es el protocolo que hace posible HTTPS. Combina cifrado simétrico, 
+                asimétrico y hashes para crear una conexión segura:
+            </p>
+            <ol>
+                <li><strong>Handshake TLS:</strong> el servidor envía su certificado (con su clave pública).</li>
+                <li>Tu navegador verifica el certificado con la CA.</li>
+                <li>Se negocia una <strong>clave simétrica de sesión</strong> usando cifrado asimétrico (para velocidad).</li>
+                <li>A partir de ahí, todo el tráfico se cifra con esa clave simétrica (AES-256 típicamente).</li>
+            </ol>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 7. Práctica: GPG y OpenSSL</h2>
+
+            <h3>Ejercicio 1: Cifrado con GPG</h3>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">GPG — Generar par de claves y cifrar</span></div>
+                <pre><code><span style="color:#546e7a"># Generar tu par de claves</span>
+<span style="color:#00e676">$</span> gpg --full-generate-key
+<span style="color:#546e7a"># Selecciona RSA, 4096 bits, y llena tus datos</span>
+
+<span style="color:#546e7a"># Ver tus claves</span>
+<span style="color:#00e676">$</span> gpg --list-keys
+
+<span style="color:#546e7a"># Exportar tu clave pública (para compartir)</span>
+<span style="color:#00e676">$</span> gpg --export --armor tu@email.com > mi_clave_publica.asc
+
+<span style="color:#546e7a"># Cifrar un archivo para ti mismo</span>
+<span style="color:#00e676">$</span> gpg -e -r tu@email.com secreto.txt
+<span style="color:#546e7a"># Genera: secreto.txt.gpg (cifrado)</span>
+
+<span style="color:#546e7a"># Descifrar</span>
+<span style="color:#00e676">$</span> gpg -d secreto.txt.gpg > descifrado.txt</code></pre>
+            </div>
+
+            <h3>Ejercicio 2: Verificar integridad de archivos</h3>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Verificar hashes</span></div>
+                <pre><code><span style="color:#546e7a"># Crear un archivo y generar su hash</span>
+<span style="color:#00e676">$</span> echo "Datos importantes" > datos.txt
+<span style="color:#00e676">$</span> sha256sum datos.txt > datos.sha256
+
+<span style="color:#546e7a"># Verificar que no fue modificado</span>
+<span style="color:#00e676">$</span> sha256sum -c datos.sha256
+datos.txt: OK
+
+<span style="color:#546e7a"># Modificar el archivo</span>
+<span style="color:#00e676">$</span> echo "Modificado" >> datos.txt
+
+<span style="color:#546e7a"># Verificar de nuevo</span>
+<span style="color:#00e676">$</span> sha256sum -c datos.sha256
+datos.txt: FAILED  <span style="color:#546e7a">← ¡Detectó la modificación!</span></code></pre>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Asegúrate de poder responder:</p>
+                <ul>
+                    <li>¿Cuál es la diferencia entre cifrado simétrico y asimétrico?</li>
+                    <li>¿Qué es un hash y por qué es unidireccional?</li>
+                    <li>¿Por qué MD5 y SHA-1 ya no son seguros?</li>
+                    <li>¿Cómo funciona una firma digital?</li>
+                    <li>¿Qué hace TLS en una conexión HTTPS?</li>
+                    <li>¿Puedes cifrar y descifrar un archivo con OpenSSL?</li>
+                    <li>¿Puedes verificar la integridad de un archivo con sha256sum?</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/cryptographyintro" target="_blank" rel="noopener noreferrer">TryHackMe: Cryptography Basics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/encryptioncrypto101" target="_blank" rel="noopener noreferrer">TryHackMe: Encryption - Crypto 101</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/hashingcrypto101" target="_blank" rel="noopener noreferrer">TryHackMe: Hashing - Crypto 101</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-05-seguridad-conceptos.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 05: Fundamentos de Seguridad</span></a>
+            <a href="leccion-07-etica-legal.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 07: Ética y Legalidad</span></a>
+        </div>
+    </main>
+
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Cuál es la diferencia principal entre cifrado simétrico y asimétrico?",
+                    "options": [
+                              "El simétrico es más seguro que el asimétrico",
+                              "El simétrico usa la misma clave para cifrar y descifrar; el asimétrico usa un par de claves (pública y privada)",
+                              "El asimétrico solo funciona con archivos pequeños",
+                              "No hay diferencia, ambos usan las mismas claves"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es una función hash y por qué NO se considera cifrado?",
+                    "options": [
+                              "Es lo mismo que cifrado, solo cambia el nombre",
+                              "Es una función de una sola vía: convierte datos en un resumen fijo que no se puede revertir al dato original",
+                              "Es cifrado pero sin clave",
+                              "Solo funciona con números, no con texto"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Para qué sirve una firma digital?",
+                    "options": [
+                              "Para cifrar el contenido de un archivo",
+                              "Para verificar que un mensaje fue enviado por quien dice ser y no fue alterado",
+                              "Para comprimir archivos de forma segura",
+                              "Para generar contraseñas seguras"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-06'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-06', quizQuestions);
+            const explanations = [
+                "Simétrico (AES, DES): una clave compartida. Asimétrico (RSA, ECC): clave pública para cifrar + clave privada para descifrar. El asimétrico resuelve el problema de distribución de claves.",
+                "Un hash (MD5, SHA-256) genera una huella digital de longitud fija. Es de una sola vía: no puedes obtener el dato original desde el hash. Se usa para verificar integridad, no para ocultar datos.",
+                "La firma digital usa criptografía asimétrica: firmas con tu clave privada, y cualquiera verifica con tu clave pública. Garantiza autenticidad (quién lo envió) e integridad (no fue modificado)."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>

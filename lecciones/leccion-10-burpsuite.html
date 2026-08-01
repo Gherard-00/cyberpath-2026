@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 10: Burp Suite — Interceptar peticiones HTTP, Repeater, Intruder y pentesting de aplicaciones web.">
+    <title>Lección 10: Burp Suite — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 2</span><span>›</span><span>Lección 10</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,171,0,0.15);color:#ffab00">Fase 2 — Pentesting Fundamental</div>
+            <h1>Burp Suite — Pentesting de aplicaciones web</h1>
+            <p class="lesson-intro">
+                <strong>Burp Suite</strong> es la herramienta número uno para pentesting de aplicaciones web. 
+                Funciona como un <strong>proxy HTTP</strong> que intercepta todo el tráfico entre tu navegador y el servidor, 
+                permitiéndote ver, modificar y repetir peticiones. En esta lección aprenderás a configurarlo y usar 
+                sus módulos principales: <strong>Proxy, Repeater, Intruder y Decoder</strong>.
+            </p>
+        </div>
+
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es">¿Qué es Burp Suite y cómo funciona?</a></li>
+                <li><a href="#configurar">Configuración inicial y proxy</a></li>
+                <li><a href="#proxy">Proxy: interceptar y modificar peticiones</a></li>
+                <li><a href="#repeater">Repeater: probar manualmente</a></li>
+                <li><a href="#intruder">Intruder: ataques automatizados</a></li>
+                <li><a href="#decoder">Decoder y Comparer</a></li>
+                <li><a href="#practica">Práctica: hackear DVWA con Burp</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="que-es">
+            <h2><span class="section-icon">🕷️</span> 1. ¿Qué es Burp Suite y cómo funciona?</h2>
+            <p class="lesson-text">
+                Burp Suite actúa como un <strong>hombre en el medio (MitM)</strong> entre tu navegador y el servidor web. 
+                Todo el tráfico HTTP/HTTPS pasa por Burp, donde puedes inspeccionarlo, modificarlo y reenviarlo.
+            </p>
+            <div class="lesson-diagram">
+                <pre>
+    Navegador ──▶ BURP SUITE (Proxy) ──▶ Servidor Web
+        ◀──────── (intercepta y modifica) ◀──────
+                </pre>
+            </div>
+            <p class="lesson-text">Burp viene pre-instalado en Kali Linux. Existe la versión <strong>Community</strong> (gratuita) y <strong>Professional</strong> (de pago con más funciones).</p>
+        </div>
+
+        <div class="lesson-section" id="configurar">
+            <h2><span class="section-icon">⚙️</span> 2. Configuración inicial y proxy</h2>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Configurar Burp Suite</span></div>
+                <pre><code><span style="color:#546e7a"># 1. Abrir Burp Suite</span>
+<span style="color:#00e676">$</span> burpsuite &
+
+<span style="color:#546e7a"># 2. Configurar el proxy del navegador</span>
+<span style="color:#546e7a"># Firefox → Configuración → Proxy de red → Configuración manual:</span>
+<span style="color:#546e7a">#   HTTP Proxy: 127.0.0.1   Puerto: 8080</span>
+<span style="color:#546e7a">#   Marcar: "Usar este proxy para todos los protocolos"</span>
+
+<span style="color:#546e7a"># 3. Instalar el certificado CA de Burp (para interceptar HTTPS)</span>
+<span style="color:#546e7a"># Navega a: http://burp  → Download CA Certificate</span>
+<span style="color:#546e7a"># Firefox: Configuración → Certificados → Importar → selecciona el .der</span>
+
+<span style="color:#546e7a"># TIP: Usa la extensión FoxyProxy en Firefox para cambiar fácilmente</span>
+<span style="color:#546e7a"># entre proxy ON (Burp) y proxy OFF (directo)</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="proxy">
+            <h2><span class="section-icon">🔀</span> 3. Proxy: interceptar y modificar peticiones</h2>
+            <p class="lesson-text">
+                Con Intercept activado, <strong>cada petición HTTP que hagas se pausa en Burp</strong>, mostrándote todo su contenido. 
+                Puedes leerla, modificarla y reenviarla.
+            </p>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ejemplo: modificar una petición</span></div>
+                <pre><code><span style="color:#546e7a"># Petición interceptada (login de DVWA):</span>
+<span style="color:#c792ea">POST</span> /login.php HTTP/1.1
+Host: 10.0.2.15
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&password=password&Login=Login
+
+<span style="color:#546e7a"># Puedes modificar cualquier campo antes de enviar:</span>
+<span style="color:#546e7a"># - Cambiar el username o password</span>
+<span style="color:#546e7a"># - Agregar headers</span>
+<span style="color:#546e7a"># - Modificar cookies</span>
+<span style="color:#546e7a"># - Inyectar payloads de SQLi o XSS</span>
+
+<span style="color:#546e7a"># Botones clave:</span>
+<span style="color:#546e7a"># Forward  → Enviar la petición (modificada o no)</span>
+<span style="color:#546e7a"># Drop     → Descartar la petición (no se envía)</span>
+<span style="color:#546e7a"># Send to Repeater → Enviar a Repeater para probar variaciones</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="repeater">
+            <h2><span class="section-icon">🔁</span> 4. Repeater: probar manualmente</h2>
+            <p class="lesson-text">
+                <strong>Repeater</strong> te permite enviar una petición una y otra vez, modificándola cada vez, 
+                y ver la respuesta del servidor al instante. Es perfecto para <strong>probar payloads de SQLi, XSS, IDOR</strong>, etc.
+            </p>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Usando Repeater para probar IDOR</span></div>
+                <pre><code><span style="color:#546e7a"># 1. Intercepta una petición con Proxy</span>
+<span style="color:#546e7a"># 2. Click derecho → "Send to Repeater"</span>
+<span style="color:#546e7a"># 3. En Repeater, modifica el ID y haz clic en "Send"</span>
+
+<span style="color:#546e7a"># Petición original:</span>
+GET /api/user/profile?id=<span style="color:#c3e88d">1001</span> HTTP/1.1
+
+<span style="color:#546e7a"># Prueba 1: cambiar a otro usuario</span>
+GET /api/user/profile?id=<span style="color:#ff5252">1002</span> HTTP/1.1
+<span style="color:#546e7a"># → ¿Ves datos de otro usuario? = IDOR confirmado</span>
+
+<span style="color:#546e7a"># Prueba 2: probar el admin</span>
+GET /api/user/profile?id=<span style="color:#ff5252">1</span> HTTP/1.1
+
+<span style="color:#546e7a"># Prueba 3: inyección SQL</span>
+GET /api/user/profile?id=<span style="color:#ff5252">1 OR 1=1</span> HTTP/1.1</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="intruder">
+            <h2><span class="section-icon">⚔️</span> 5. Intruder: ataques automatizados</h2>
+            <p class="lesson-text">
+                <strong>Intruder</strong> automatiza ataques enviando muchas peticiones con diferentes payloads. 
+                Ideal para <strong>fuerza bruta, fuzzing y enumeración</strong>.
+            </p>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Modo</th><th>Descripción</th><th>Uso típico</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Sniper</strong></td><td>Un payload a la vez en una posición.</td><td>Probar una lista de passwords en un campo.</td></tr>
+                        <tr><td><strong>Battering Ram</strong></td><td>El mismo payload en todas las posiciones.</td><td>Probar una palabra en usuario Y contraseña.</td></tr>
+                        <tr><td><strong>Pitchfork</strong></td><td>Payload diferente por posición, en paralelo.</td><td>Lista de usuarios + lista de passwords alineadas.</td></tr>
+                        <tr><td><strong>Cluster Bomb</strong></td><td>Todas las combinaciones de payloads.</td><td>Fuerza bruta: todos los usuarios × todas las passwords.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="decoder">
+            <h2><span class="section-icon">🔤</span> 6. Decoder y Comparer</h2>
+            <p class="lesson-text">
+                <strong>Decoder</strong> codifica/decodifica texto en varios formatos (Base64, URL encoding, HTML encoding, hex). 
+                <strong>Comparer</strong> compara dos respuestas para encontrar diferencias sutiles.
+            </p>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Decoder — Ejemplos</span></div>
+                <pre><code><span style="color:#546e7a"># Base64 decode:</span>
+YWRtaW46cGFzc3dvcmQ=  →  admin:password
+
+<span style="color:#546e7a"># URL decode:</span>
+%27%20OR%201%3D1%20--  →  ' OR 1=1 --
+
+<span style="color:#546e7a"># HTML decode:</span>
+&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;  →  &lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 7. Práctica: hackear DVWA con Burp</h2>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ejercicios</span></div>
+                <pre><code><span style="color:#546e7a"># 1. Configura Burp como proxy de tu navegador</span>
+<span style="color:#546e7a"># 2. Navega a DVWA e intercepta el login</span>
+<span style="color:#546e7a"># 3. Envía la petición de login a Repeater</span>
+<span style="color:#546e7a"># 4. Prueba SQLi en el campo de usuario: admin' OR '1'='1' --</span>
+<span style="color:#546e7a"># 5. Usa Intruder (Sniper) para fuerza bruta del login:</span>
+<span style="color:#546e7a">#    - Posición: el campo password</span>
+<span style="color:#546e7a">#    - Payload: lista de contraseñas comunes</span>
+<span style="color:#546e7a">#    - Observa las diferencias en la longitud de respuesta</span>
+<span style="color:#546e7a"># 6. Usa Repeater para probar XSS reflected en la página de búsqueda</span></code></pre>
+            </div>
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Configuraste Burp Suite como proxy</li>
+                    <li>Interceptaste y modificaste una petición HTTP</li>
+                    <li>Usaste Repeater para probar payloads manualmente</li>
+                    <li>Entiendes los modos de Intruder (Sniper, Cluster Bomb)</li>
+                    <li>Puedes decodificar Base64 y URL encoding con Decoder</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/burpsuitebasics" target="_blank" rel="noopener noreferrer">TryHackMe: Burp Suite Basics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/burpsuiterepeater" target="_blank" rel="noopener noreferrer">TryHackMe: Burp Suite Repeater</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/burpsuiteintruder" target="_blank" rel="noopener noreferrer">TryHackMe: Burp Suite Intruder</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-09-web-hacking.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 09: Hacking Web</span></a>
+            <a href="leccion-11-metasploit.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 11: Metasploit</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Cuál es la función principal de Burp Suite Proxy?",
+                    "options": [
+                              "Escanear puertos en una red",
+                              "Interceptar y modificar peticiones HTTP/HTTPS entre tu navegador y el servidor web",
+                              "Crackear contraseñas de aplicaciones web",
+                              "Generar reportes de vulnerabilidades automáticamente"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Para qué sirve Burp Suite Repeater?",
+                    "options": [
+                              "Para automatizar ataques de fuerza bruta",
+                              "Para reenviar peticiones HTTP individuales y analizar las respuestas manualmente",
+                              "Para escanear vulnerabilidades automáticamente",
+                              "Para decodificar tokens JWT"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué módulo de Burp Suite se usa para ataques de fuerza bruta y fuzzing?",
+                    "options": [
+                              "Scanner",
+                              "Repeater",
+                              "Intruder",
+                              "Decoder"
+                    ],
+                    "correct": 2
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-10'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-10', quizQuestions);
+            const explanations = [
+                "Burp Proxy intercepta todo el tráfico HTTP/S entre tu navegador y el servidor. Puedes ver, modificar y reenviar cada petición — esencial para encontrar vulnerabilidades web.",
+                "Repeater permite tomar una petición interceptada, modificarla manualmente, y reenviarla las veces que quieras. Ideal para probar inyecciones SQL, IDOR y bypass de autenticación.",
+                "Intruder automatiza el envío de múltiples peticiones con payloads variables. Se usa para fuerza bruta de login, fuzzing de parámetros, y enumeración de IDs."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>

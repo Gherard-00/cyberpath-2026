@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 03: Python para Ciberseguridad — Aprende Python desde cero con enfoque en hacking: sockets, automatización, parsing y creación de herramientas.">
+    <title>Lección 03: Python para Ciberseguridad — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <!-- Breadcrumb -->
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a>
+            <span>›</span>
+            <span>Fase 0</span>
+            <span>›</span>
+            <span>Lección 03</span>
+        </div>
+
+        <!-- Lesson Hero -->
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:var(--accent-green-dim);color:var(--accent-green)">Fase 0 — Cimientos</div>
+            <h1>Python para Ciberseguridad — Programación orientada a hacking</h1>
+            <p class="lesson-intro">
+                Python es el <strong>lenguaje por excelencia en ciberseguridad</strong>. La mayoría de herramientas de pentesting tienen módulos en Python, 
+                los exploits se escriben en Python, la automatización de tareas se hace en Python. En esta lección 
+                aprenderás <strong>lo esencial de Python con enfoque directo en seguridad</strong>: variables, funciones, archivos, 
+                sockets, peticiones HTTP y cómo crear tus propias herramientas de hacking.
+            </p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#por-que-python">¿Por qué Python en ciberseguridad?</a></li>
+                <li><a href="#fundamentos">Fundamentos: variables, tipos y operadores</a></li>
+                <li><a href="#control-flujo">Control de flujo: if, for, while</a></li>
+                <li><a href="#funciones">Funciones: organiza tu código</a></li>
+                <li><a href="#strings">Strings: manipulación de texto</a></li>
+                <li><a href="#archivos">Lectura y escritura de archivos</a></li>
+                <li><a href="#listas-diccionarios">Listas y diccionarios</a></li>
+                <li><a href="#modulos">Módulos y pip: amplía tu arsenal</a></li>
+                <li><a href="#sockets">Sockets: conexiones de red con Python</a></li>
+                <li><a href="#requests">Requests: interactuar con APIs y webs</a></li>
+                <li><a href="#herramienta">Proyecto: tu primera herramienta de hacking</a></li>
+                <li><a href="#practica">Práctica: retos de programación</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="por-que-python">
+            <h2><span class="section-icon">🐍</span> 1. ¿Por qué Python en ciberseguridad?</h2>
+
+            <p class="lesson-text">
+                Python es el lenguaje más usado en ciberseguridad por varias razones:
+            </p>
+            <ul>
+                <li><strong>Es fácil de aprender:</strong> su sintaxis es limpia y legible, ideal para principiantes.</li>
+                <li><strong>Tiene bibliotecas para todo:</strong> <code>socket</code> para redes, <code>requests</code> para HTTP, <code>scapy</code> para manipular paquetes, <code>pwntools</code> para exploits, <code>paramiko</code> para SSH.</li>
+                <li><strong>Viene pre-instalado en Kali Linux</strong> y en la mayoría de servidores.</li>
+                <li><strong>Los exploits se escriben en Python:</strong> Exploit-DB, Metasploit y muchas herramientas usan Python.</li>
+                <li><strong>Automatización:</strong> puedes crear scripts para automatizar escaneos, analizar logs, generar reportes.</li>
+            </ul>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Verificar Python en tu sistema</span>
+                </div>
+                <pre><code><span style="color:#00e676">$</span> python3 --version
+Python 3.11.6
+
+<span style="color:#546e7a"># Abrir el intérprete interactivo</span>
+<span style="color:#00e676">$</span> python3
+>>> print("¡Hola, hacker!")
+¡Hola, hacker!
+>>> 2 + 2
+4
+>>> exit()
+
+<span style="color:#546e7a"># Ejecutar un script</span>
+<span style="color:#00e676">$</span> python3 mi_script.py</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="fundamentos">
+            <h2><span class="section-icon">📐</span> 2. Fundamentos: variables, tipos y operadores</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">fundamentos.py</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Variables — No necesitas declarar el tipo</span>
+ip_objetivo = "10.0.2.15"         <span style="color:#546e7a"># string (texto)</span>
+puerto = 80                       <span style="color:#546e7a"># int (número entero)</span>
+es_vulnerable = True              <span style="color:#546e7a"># bool (verdadero/falso)</span>
+puntaje_cvss = 9.8                <span style="color:#546e7a"># float (decimal)</span>
+
+<span style="color:#546e7a"># f-strings: la forma moderna de incluir variables en texto</span>
+print(f"Objetivo: {ip_objetivo}:{puerto}")
+print(f"¿Vulnerable? {es_vulnerable}")
+print(f"CVSS: {puntaje_cvss}")
+
+<span style="color:#546e7a"># Operadores</span>
+a = 10
+b = 3
+print(a + b)    <span style="color:#546e7a"># 13  — suma</span>
+print(a - b)    <span style="color:#546e7a"># 7   — resta</span>
+print(a * b)    <span style="color:#546e7a"># 30  — multiplicación</span>
+print(a / b)    <span style="color:#546e7a"># 3.33 — división</span>
+print(a // b)   <span style="color:#546e7a"># 3   — división entera</span>
+print(a % b)    <span style="color:#546e7a"># 1   — módulo (resto)</span>
+print(a ** b)   <span style="color:#546e7a"># 1000 — potencia</span>
+
+<span style="color:#546e7a"># Input del usuario</span>
+target = input("Introduce la IP objetivo: ")
+print(f"Escaneando {target}...")</code></pre>
+                <div class="explanation">
+                    <p><strong>f-strings</strong> (format strings) son la forma más limpia de combinar variables con texto. Escribes <code>f"texto {variable}"</code> y Python sustituye <code>{variable}</code> por su valor.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="control-flujo">
+            <h2><span class="section-icon">🔀</span> 3. Control de flujo: if, for, while</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Condicionales y bucles</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># === CONDICIONALES (if/elif/else) ===</span>
+puerto = 22
+
+if puerto == 22:
+    print("SSH detectado — posible fuerza bruta")
+elif puerto == 80:
+    print("HTTP detectado — probar vulnerabilidades web")
+elif puerto == 443:
+    print("HTTPS detectado — verificar certificado TLS")
+elif puerto == 445:
+    print("SMB detectado — probar EternalBlue")
+else:
+    print(f"Puerto {puerto} — investigar servicio")
+
+<span style="color:#546e7a"># === BUCLE FOR ===</span>
+<span style="color:#546e7a"># Iterar sobre una lista</span>
+puertos_comunes = [21, 22, 23, 25, 53, 80, 443, 445, 3306, 3389]
+
+for puerto in puertos_comunes:
+    print(f"Escaneando puerto {puerto}...")
+
+<span style="color:#546e7a"># Iterar sobre un rango de números</span>
+for i in range(1, 255):   <span style="color:#546e7a"># 1 hasta 254</span>
+    ip = f"192.168.1.{i}"
+    <span style="color:#546e7a"># Aquí podrías hacer ping a cada IP</span>
+
+<span style="color:#546e7a"># === BUCLE WHILE ===</span>
+intentos = 0
+max_intentos = 3
+
+while intentos < max_intentos:
+    password = input("Contraseña: ")
+    if password == "admin123":
+        print("✅ Acceso concedido")
+        break   <span style="color:#546e7a"># Salir del bucle</span>
+    else:
+        intentos += 1
+        print(f"❌ Incorrecto. Intentos restantes: {max_intentos - intentos}")
+
+if intentos == max_intentos:
+    print("🔒 Cuenta bloqueada")</code></pre>
+                <div class="explanation">
+                    <p><strong>Importante en Python:</strong> la indentación (espacios al inicio) NO es decorativa, es <strong>obligatoria</strong>. Python usa la indentación para saber qué código pertenece a cada bloque. Siempre usa 4 espacios.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="funciones">
+            <h2><span class="section-icon">🧩</span> 4. Funciones: organiza tu código</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Funciones en Python</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Definir una función</span>
+def escanear_puerto(ip, puerto):
+    """Verifica si un puerto está abierto."""
+    import socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(1)
+    resultado = sock.connect_ex((ip, puerto))
+    sock.close()
+    return resultado == 0  <span style="color:#546e7a"># True si está abierto</span>
+
+<span style="color:#546e7a"># Usar la función</span>
+ip = "10.0.2.15"
+puertos = [21, 22, 80, 443, 445, 3306]
+
+for puerto in puertos:
+    if escanear_puerto(ip, puerto):
+        print(f"✅ Puerto {puerto} ABIERTO")
+    else:
+        print(f"❌ Puerto {puerto} cerrado")
+
+<span style="color:#546e7a"># Función con valor por defecto</span>
+def banner():
+    print("=" * 50)
+    print("  CyberPath — Port Scanner v1.0")
+    print("=" * 50)
+
+<span style="color:#546e7a"># Función que retorna un valor</span>
+def clasificar_puerto(puerto):
+    servicios = {
+        21: "FTP", 22: "SSH", 23: "Telnet",
+        25: "SMTP", 53: "DNS", 80: "HTTP",
+        443: "HTTPS", 445: "SMB", 3306: "MySQL",
+        3389: "RDP"
+    }
+    return servicios.get(puerto, "Desconocido")</code></pre>
+                <div class="explanation">
+                    <p>La función <code>escanear_puerto()</code> es un <strong>mini port scanner</strong>. Intenta conectarse a una IP y puerto; si lo logra (resultado 0), el puerto está abierto. Esta lógica es la base de cómo funciona Nmap internamente.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="strings">
+            <h2><span class="section-icon">📝</span> 5. Strings: manipulación de texto</h2>
+
+            <p class="lesson-text">
+                En ciberseguridad trabajarás constantemente con texto: logs, hashes, URLs, IPs, respuestas HTTP. 
+                Saber manipular strings es <strong>fundamental</strong>.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Operaciones con strings</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Métodos esenciales de strings</span>
+url = "  https://EJEMPLO.com/admin/login.php  "
+
+print(url.strip())        <span style="color:#546e7a"># Quitar espacios: "https://EJEMPLO.com/admin/login.php"</span>
+print(url.lower())        <span style="color:#546e7a"># Minúsculas: "  https://ejemplo.com/admin/login.php  "</span>
+print(url.upper())        <span style="color:#546e7a"># Mayúsculas: "  HTTPS://EJEMPLO.COM/ADMIN/LOGIN.PHP  "</span>
+print(url.replace("http", "ftp"))  <span style="color:#546e7a"># Reemplazar texto</span>
+
+<span style="color:#546e7a"># Split: dividir un string en partes</span>
+log_line = "192.168.1.100 - - [09/Jul/2026:10:30:15] GET /admin HTTP/1.1 200"
+partes = log_line.split(" ")
+ip = partes[0]            <span style="color:#546e7a"># "192.168.1.100"</span>
+metodo = partes[5]        <span style="color:#546e7a"># "GET"</span>
+ruta = partes[6]          <span style="color:#546e7a"># "/admin"</span>
+codigo = partes[7]        <span style="color:#546e7a"># "200"</span>
+
+<span style="color:#546e7a"># Join: unir una lista en un string</span>
+palabras = ["admin", "password", "123456"]
+linea = "\n".join(palabras)  <span style="color:#546e7a"># "admin\npassword\n123456"</span>
+
+<span style="color:#546e7a"># Slicing: extraer partes de un string</span>
+hash_md5 = "5d41402abc4b2a76b9719d911017c592"
+print(hash_md5[:8])       <span style="color:#546e7a"># "5d41402a" — primeros 8 caracteres</span>
+print(hash_md5[-8:])      <span style="color:#546e7a"># "1017c592" — últimos 8 caracteres</span>
+
+<span style="color:#546e7a"># Verificar contenido</span>
+print("admin" in url)     <span style="color:#546e7a"># True</span>
+print(url.startswith("https"))  <span style="color:#546e7a"># False (tiene espacios al inicio)</span>
+print(url.strip().startswith("https"))  <span style="color:#546e7a"># True</span></code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="archivos">
+            <h2><span class="section-icon">💾</span> 6. Lectura y escritura de archivos</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Trabajar con archivos</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># === ESCRIBIR un archivo ===</span>
+with open("resultados.txt", "w") as f:
+    f.write("Puerto 22: ABIERTO (SSH)\n")
+    f.write("Puerto 80: ABIERTO (HTTP)\n")
+    f.write("Puerto 443: CERRADO\n")
+
+<span style="color:#546e7a"># === LEER un archivo completo ===</span>
+with open("resultados.txt", "r") as f:
+    contenido = f.read()
+    print(contenido)
+
+<span style="color:#546e7a"># === LEER línea por línea (ideal para archivos grandes) ===</span>
+with open("/etc/passwd", "r") as f:
+    for linea in f:
+        if "/bin/bash" in linea:
+            usuario = linea.split(":")[0]
+            print(f"Usuario con bash: {usuario}")
+
+<span style="color:#546e7a"># === AGREGAR contenido sin borrar (modo "a" = append) ===</span>
+with open("resultados.txt", "a") as f:
+    f.write("Puerto 3306: ABIERTO (MySQL)\n")
+
+<span style="color:#546e7a"># === Ejemplo real: cargar un diccionario de contraseñas ===</span>
+passwords = []
+with open("wordlist.txt", "r") as f:
+    for linea in f:
+        passwords.append(linea.strip())
+
+print(f"Diccionario cargado: {len(passwords)} contraseñas")</code></pre>
+                <div class="explanation">
+                    <p><strong><code>with open()</code></strong> es la forma correcta de trabajar con archivos en Python. Se asegura de cerrar el archivo automáticamente cuando terminas. Los modos son: <code>"r"</code> leer, <code>"w"</code> escribir (sobreescribe), <code>"a"</code> agregar al final.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="lesson-section" id="listas-diccionarios">
+            <h2><span class="section-icon">📊</span> 7. Listas y diccionarios</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Listas y diccionarios</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># === LISTAS — Colección ordenada de elementos ===</span>
+puertos_abiertos = [22, 80, 443]
+
+puertos_abiertos.append(3306)     <span style="color:#546e7a"># Agregar al final</span>
+puertos_abiertos.remove(443)      <span style="color:#546e7a"># Eliminar un elemento</span>
+print(len(puertos_abiertos))      <span style="color:#546e7a"># Cantidad de elementos: 3</span>
+print(22 in puertos_abiertos)     <span style="color:#546e7a"># True</span>
+
+<span style="color:#546e7a"># List comprehension (forma rápida de crear listas)</span>
+ips = [f"192.168.1.{i}" for i in range(1, 255)]
+<span style="color:#546e7a"># Genera: ["192.168.1.1", "192.168.1.2", ..., "192.168.1.254"]</span>
+
+<span style="color:#546e7a"># === DICCIONARIOS — Pares clave:valor ===</span>
+vulnerabilidad = {
+    "nombre": "SQL Injection",
+    "cvss": 9.8,
+    "severidad": "Crítica",
+    "url_afectada": "/login.php",
+    "parametro": "username",
+    "remediacion": "Usar consultas parametrizadas"
+}
+
+print(vulnerabilidad["nombre"])       <span style="color:#546e7a"># "SQL Injection"</span>
+print(vulnerabilidad.get("cvss"))     <span style="color:#546e7a"># 9.8</span>
+
+<span style="color:#546e7a"># Recorrer un diccionario</span>
+for clave, valor in vulnerabilidad.items():
+    print(f"  {clave}: {valor}")
+
+<span style="color:#546e7a"># Lista de diccionarios (muy común en reportes)</span>
+hallazgos = [
+    {"puerto": 22, "servicio": "SSH", "version": "OpenSSH 7.9"},
+    {"puerto": 80, "servicio": "HTTP", "version": "Apache 2.4.49"},
+    {"puerto": 3306, "servicio": "MySQL", "version": "5.7.33"},
+]
+
+for h in hallazgos:
+    print(f"Puerto {h['puerto']}: {h['servicio']} ({h['version']})")</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="lesson-section" id="modulos">
+            <h2><span class="section-icon">📚</span> 8. Módulos y pip: amplía tu arsenal</h2>
+
+            <p class="lesson-text">
+                Python viene con muchos módulos integrados, y puedes instalar miles más con <strong>pip</strong> (el gestor de paquetes de Python).
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Módulo</th>
+                            <th>Uso en ciberseguridad</th>
+                            <th>Instalación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>socket</code></td><td>Conexiones de red, port scanning</td><td>Integrado</td></tr>
+                        <tr><td><code>os</code> / <code>subprocess</code></td><td>Ejecutar comandos del sistema</td><td>Integrado</td></tr>
+                        <tr><td><code>hashlib</code></td><td>Generar hashes (MD5, SHA256)</td><td>Integrado</td></tr>
+                        <tr><td><code>re</code></td><td>Expresiones regulares para parsing</td><td>Integrado</td></tr>
+                        <tr><td><code>requests</code></td><td>Peticiones HTTP (web scraping, APIs)</td><td><code>pip install requests</code></td></tr>
+                        <tr><td><code>scapy</code></td><td>Manipular paquetes de red a bajo nivel</td><td><code>pip install scapy</code></td></tr>
+                        <tr><td><code>paramiko</code></td><td>Conexiones SSH programáticas</td><td><code>pip install paramiko</code></td></tr>
+                        <tr><td><code>beautifulsoup4</code></td><td>Parsear HTML (web scraping)</td><td><code>pip install beautifulsoup4</code></td></tr>
+                        <tr><td><code>pwntools</code></td><td>Desarrollo de exploits</td><td><code>pip install pwntools</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Usando módulos</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Importar módulos integrados</span>
+import os
+import hashlib
+import subprocess
+
+<span style="color:#546e7a"># Ejecutar un comando del sistema</span>
+resultado = subprocess.run(["whoami"], capture_output=True, text=True)
+print(f"Usuario: {resultado.stdout.strip()}")
+
+<span style="color:#546e7a"># Generar hashes</span>
+texto = "password123"
+hash_md5 = hashlib.md5(texto.encode()).hexdigest()
+hash_sha256 = hashlib.sha256(texto.encode()).hexdigest()
+
+print(f"MD5:    {hash_md5}")
+print(f"SHA256: {hash_sha256}")
+
+<span style="color:#546e7a"># Instalar un módulo externo desde la terminal</span>
+<span style="color:#546e7a"># $ pip3 install requests</span></code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 9 -->
+        <div class="lesson-section" id="sockets">
+            <h2><span class="section-icon">🔌</span> 9. Sockets: conexiones de red con Python</h2>
+
+            <p class="lesson-text">
+                Un <strong>socket</strong> es un punto de comunicación entre dos máquinas a través de la red. 
+                Con sockets puedes crear tu propio <strong>port scanner</strong>, <strong>reverse shell</strong>, 
+                <strong>chat cifrado</strong>, o cualquier herramienta que se comunique por red.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">port_scanner.py — Scanner de puertos</span>
+                </div>
+                <pre><code>import socket
+from datetime import datetime
+
+def scan_port(ip, port):
+    """Intenta conectarse a un puerto. Retorna True si está abierto."""
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)
+        result = sock.connect_ex((ip, port))
+        sock.close()
+        return result == 0
+    except:
+        return False
+
+def banner_grab(ip, port):
+    """Intenta obtener el banner del servicio."""
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(2)
+        sock.connect((ip, port))
+        sock.send(b"HEAD / HTTP/1.1\r\nHost: target\r\n\r\n")
+        banner = sock.recv(1024).decode(errors="ignore").strip()
+        sock.close()
+        return banner[:100]  <span style="color:#546e7a"># Primeros 100 caracteres</span>
+    except:
+        return "No banner"
+
+<span style="color:#546e7a"># === Programa principal ===</span>
+target = input("IP objetivo: ")
+print(f"\n🔍 Escaneando {target}...")
+print(f"Inicio: {datetime.now()}\n")
+
+puertos = [21, 22, 23, 25, 53, 80, 110, 443, 445, 993, 3306, 3389, 8080, 8443]
+
+for port in puertos:
+    if scan_port(target, port):
+        banner = banner_grab(target, port)
+        print(f"  ✅ Puerto {port:>5} ABIERTO  |  {banner[:60]}")
+
+print(f"\n✅ Escaneo completado: {datetime.now()}")</code></pre>
+                <div class="explanation">
+                    <p><strong>¡Este es un port scanner funcional!</strong> Pruébalo contra tu máquina Metasploitable en el laboratorio. <code>connect_ex()</code> retorna 0 si la conexión fue exitosa (puerto abierto) o un código de error si no. <code>banner_grab()</code> intenta leer la respuesta del servicio para identificarlo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 10 -->
+        <div class="lesson-section" id="requests">
+            <h2><span class="section-icon">🌐</span> 10. Requests: interactuar con APIs y webs</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Peticiones HTTP con requests</span>
+                </div>
+                <pre><code>import requests
+
+<span style="color:#546e7a"># GET — Obtener una página web</span>
+response = requests.get("http://example.com")
+print(f"Código de estado: {response.status_code}")
+print(f"Headers del servidor: {response.headers.get('Server')}")
+print(f"Tamaño: {len(response.text)} caracteres")
+
+<span style="color:#546e7a"># POST — Enviar datos (ej: intentar login)</span>
+login_data = {
+    "username": "admin",
+    "password": "admin123"
+}
+response = requests.post("http://target/login.php", data=login_data)
+
+if "Welcome" in response.text:
+    print("✅ Login exitoso!")
+elif "Invalid" in response.text:
+    print("❌ Credenciales incorrectas")
+
+<span style="color:#546e7a"># Verificar headers de seguridad de un sitio</span>
+def check_security_headers(url):
+    """Verifica si un sitio tiene headers de seguridad configurados."""
+    r = requests.get(url)
+    headers_seguridad = [
+        "X-Frame-Options",
+        "X-Content-Type-Options",
+        "Strict-Transport-Security",
+        "Content-Security-Policy",
+        "X-XSS-Protection"
+    ]
+    print(f"\n🔍 Headers de seguridad para {url}:\n")
+    for header in headers_seguridad:
+        valor = r.headers.get(header, "❌ NO CONFIGURADO")
+        print(f"  {header}: {valor}")
+
+check_security_headers("https://google.com")</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 11 -->
+        <div class="lesson-section" id="herramienta">
+            <h2><span class="section-icon">🛠️</span> 11. Proyecto: tu primera herramienta de hacking</h2>
+
+            <p class="lesson-text">
+                Vamos a combinar todo lo aprendido para crear un <strong>escáner de directorios web</strong> (similar a <code>gobuster</code> o <code>dirb</code>). 
+                Esta herramienta prueba rutas comunes en un servidor web para descubrir páginas ocultas.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">dir_scanner.py — Escáner de directorios</span>
+                </div>
+                <pre><code>import requests
+import sys
+from datetime import datetime
+
+def banner():
+    print("=" * 55)
+    print("  🔍 CyberPath Dir Scanner v1.0")
+    print("  Escáner de directorios web")
+    print("=" * 55)
+
+def scan_directory(url, wordlist_path):
+    """Escanea directorios de un servidor web usando un diccionario."""
+
+    <span style="color:#546e7a"># Cargar el diccionario</span>
+    try:
+        with open(wordlist_path, "r") as f:
+            words = [line.strip() for line in f if line.strip()]
+    except FileNotFoundError:
+        print(f"❌ No se encontró el archivo: {wordlist_path}")
+        return
+
+    print(f"\n🎯 Objetivo: {url}")
+    print(f"📖 Diccionario: {wordlist_path} ({len(words)} palabras)")
+    print(f"⏰ Inicio: {datetime.now()}\n")
+
+    encontrados = 0
+
+    for i, word in enumerate(words):
+        target_url = f"{url}/{word}"
+        try:
+            response = requests.get(target_url, timeout=3)
+
+            <span style="color:#546e7a"># Mostrar progreso cada 50 peticiones</span>
+            if i % 50 == 0 and i > 0:
+                print(f"  ... probando {i}/{len(words)}...")
+
+            <span style="color:#546e7a"># Si el código no es 404, lo encontramos</span>
+            if response.status_code != 404:
+                print(f"  ✅ [{response.status_code}] {target_url}")
+                encontrados += 1
+
+        except requests.exceptions.RequestException:
+            pass  <span style="color:#546e7a"># Ignorar errores de conexión</span>
+
+    print(f"\n{'=' * 55}")
+    print(f"  Escaneo completado: {encontrados} rutas encontradas")
+    print(f"  Hora: {datetime.now()}")
+    print(f"{'=' * 55}")
+
+<span style="color:#546e7a"># === Programa principal ===</span>
+if __name__ == "__main__":
+    banner()
+
+    if len(sys.argv) != 3:
+        print(f"\nUso: python3 {sys.argv[0]} &lt;URL&gt; &lt;wordlist&gt;")
+        print(f"Ejemplo: python3 {sys.argv[0]} http://10.0.2.15 wordlist.txt")
+        sys.exit(1)
+
+    url = sys.argv[1].rstrip("/")
+    wordlist = sys.argv[2]
+
+    scan_directory(url, wordlist)</code></pre>
+                <div class="explanation">
+                    <p><strong>Para usarla:</strong></p>
+                    <p>1. Crea un archivo <code>wordlist.txt</code> con rutas comunes: <code>admin</code>, <code>login</code>, <code>dashboard</code>, <code>uploads</code>, <code>backup</code>, <code>config</code>, <code>api</code>, etc.</p>
+                    <p>2. Ejecuta: <code>python3 dir_scanner.py http://10.0.2.15 wordlist.txt</code></p>
+                    <p>3. El escáner probará cada ruta y te mostrará las que existen (código diferente a 404).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 12: Práctica -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 12. Práctica: retos de programación</h2>
+
+            <h3>Reto 1: Generador de hashes</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Reto 1</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Crea un script que:</span>
+<span style="color:#546e7a"># 1. Pida al usuario un texto</span>
+<span style="color:#546e7a"># 2. Genere y muestre su hash en MD5, SHA1 y SHA256</span>
+<span style="color:#546e7a"># 3. Guarde los resultados en un archivo "hashes.txt"</span>
+<span style="color:#546e7a"># Pista: usa el módulo hashlib</span></code></pre>
+            </div>
+
+            <h3>Reto 2: Analizador de logs</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Reto 2</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Crea un script que lea un archivo de log de Apache y:</span>
+<span style="color:#546e7a"># 1. Cuente cuántas peticiones hizo cada IP</span>
+<span style="color:#546e7a"># 2. Muestre las IPs ordenadas de mayor a menor número de peticiones</span>
+<span style="color:#546e7a"># 3. Identifique las IPs con más de 100 peticiones (posible ataque)</span>
+<span style="color:#546e7a"># Pista: usa un diccionario para contar, y sorted() para ordenar</span></code></pre>
+            </div>
+
+            <h3>Reto 3: Fuerza bruta simulada</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Reto 3</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Crea un script que:</span>
+<span style="color:#546e7a"># 1. Tenga un hash MD5 "objetivo" (ej: el hash de "secret123")</span>
+<span style="color:#546e7a"># 2. Lea un archivo de diccionario línea por línea</span>
+<span style="color:#546e7a"># 3. Calcule el hash MD5 de cada palabra</span>
+<span style="color:#546e7a"># 4. Compare con el hash objetivo</span>
+<span style="color:#546e7a"># 5. Si coinciden, muestre "¡Contraseña encontrada: [palabra]!"</span>
+<span style="color:#546e7a"># Este es exactamente cómo funciona un ataque de diccionario</span></code></pre>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Antes de pasar a la siguiente lección, asegúrate de poder:</p>
+                <ul>
+                    <li>Escribir un script de Python que use variables, condicionales y bucles</li>
+                    <li>Leer y escribir archivos con <code>open()</code></li>
+                    <li>Usar listas y diccionarios para organizar datos</li>
+                    <li>Crear funciones reutilizables</li>
+                    <li>Usar <code>socket</code> para verificar si un puerto está abierto</li>
+                    <li>Hacer peticiones HTTP con <code>requests</code></li>
+                    <li>Generar hashes con <code>hashlib</code></li>
+                    <li>Ejecutar tu port scanner y directory scanner contra un objetivo de laboratorio</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/pythonbasics" target="_blank" rel="noopener noreferrer">TryHackMe: Python Basics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/introtopythonhacking" target="_blank" rel="noopener noreferrer">TryHackMe: Python for Pentesters</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/intropocscripting" target="_blank" rel="noopener noreferrer">TryHackMe: Scripting</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <!-- Lesson Navigation -->
+        <div class="lesson-nav">
+            <a href="leccion-02-linux.html">
+                <span class="nav-label">← Anterior</span>
+                <span class="nav-title">Lección 02: Linux desde Cero</span>
+            </a>
+            <a href="leccion-04-laboratorio.html" class="next">
+                <span class="nav-label">Siguiente →</span>
+                <span class="nav-title">Lección 04: Montar tu Laboratorio Virtual</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué módulo de Python se usa para crear conexiones de red (por ejemplo, un port scanner)?",
+                    "options": [
+                              "os",
+                              "requests",
+                              "socket",
+                              "hashlib"
+                    ],
+                    "correct": 2
+          },
+          {
+                    "question": "¿Cuál es la diferencia entre una lista y un diccionario en Python?",
+                    "options": [
+                              "Las listas usan llaves {} y los diccionarios usan corchetes []",
+                              "Las listas son ordenadas por índice numérico, los diccionarios almacenan pares clave:valor",
+                              "Los diccionarios son más rápidos que las listas en todos los casos",
+                              "No hay diferencia, son intercambiables"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué hace hashlib.md5(b'texto').hexdigest() en Python?",
+                    "options": [
+                              "Cifra el texto con AES-256",
+                              "Calcula el hash MD5 del texto y devuelve su representación hexadecimal",
+                              "Descifra un hash MD5 a texto plano",
+                              "Genera una contraseña aleatoria"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué hace el bloque try/except en Python?",
+                    "options": [
+                              "Repite el código hasta que funcione correctamente",
+                              "Ejecuta código y captura errores sin que el programa se detenga",
+                              "Ignora todo el código dentro del bloque",
+                              "Ejecuta el código en modo administrador"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-03'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-03', quizQuestions);
+            const explanations = [
+                "El módulo socket permite crear conexiones TCP/UDP directas. Es la base para construir herramientas como port scanners, reverse shells y clientes de red.",
+                "Las listas ([]) son secuencias ordenadas accedidas por índice (0, 1, 2...). Los diccionarios ({}) almacenan pares clave:valor para acceso rápido por nombre.",
+                "hashlib.md5() calcula el hash MD5 (función de una vía). hexdigest() lo convierte a una cadena hexadecimal legible. Los hashes NO se pueden revertir directamente.",
+                "try/except permite manejar errores gracefully. El código en try se ejecuta; si hay error, se ejecuta except en vez de crashear el programa."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>

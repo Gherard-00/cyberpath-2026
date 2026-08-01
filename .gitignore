@@ -1,0 +1,25 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Node (in case someone runs a local dev server)
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+
+# Misc
+.env
+.env.local

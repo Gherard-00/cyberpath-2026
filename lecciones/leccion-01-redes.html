@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Leccion 01: Redes y TCP/IP. Aprende como funcionan las redes, direcciones IP, puertos, TCP/UDP, DNS y HTTP desde cero.">
+    <title>Leccion 01: Redes y TCP/IP — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <!-- Breadcrumb -->
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a>
+            <span>›</span>
+            <span>Fase 0</span>
+            <span>›</span>
+            <span>Lección 01</span>
+        </div>
+
+        <!-- Lesson Hero -->
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:var(--accent-green-dim);color:var(--accent-green)">Fase 0 — Cimientos</div>
+            <h1>Redes y TCP/IP — Cómo se comunican las computadoras</h1>
+            <p class="lesson-intro">
+                Antes de intentar hackear cualquier sistema, necesitas entender <strong>cómo viajan los datos por la red</strong>. 
+                Cada vez que abres una página web, envías un correo o haces un ping, ocurren cosas complejas por debajo que necesitas dominar.
+                En esta lección vas a aprender cómo funciona Internet desde adentro: <strong>qué es una dirección IP, qué son los puertos, 
+                cómo se establece una conexión TCP, qué hace el DNS</strong> y mucho más. Todo explicado de forma clara con ejemplos y analogías.
+            </p>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-red">¿Qué es una red de computadoras?</a></li>
+                <li><a href="#modelo-osi">El modelo OSI y TCP/IP: las capas de la red</a></li>
+                <li><a href="#direcciones-ip">Direcciones IP: la dirección de cada computadora</a></li>
+                <li><a href="#subnetting">Subnetting: dividir redes en segmentos</a></li>
+                <li><a href="#puertos">Puertos: las puertas de cada servicio</a></li>
+                <li><a href="#tcp-vs-udp">TCP vs UDP: dos formas de enviar datos</a></li>
+                <li><a href="#dns">DNS: traducir nombres a direcciones IP</a></li>
+                <li><a href="#http">HTTP/HTTPS: cómo funciona la web</a></li>
+                <li><a href="#flujo-completo">El flujo completo: qué pasa cuando visitas una web</a></li>
+                <li><a href="#practica">Práctica: ver todo esto en Wireshark</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="que-es-red">
+            <h2><span class="section-icon">🌐</span> 1. ¿Qué es una red de computadoras?</h2>
+
+            <p class="lesson-text">
+                Una <strong>red de computadoras</strong> es simplemente un grupo de dispositivos (computadoras, teléfonos, servidores, impresoras) 
+                que están conectados entre sí para <strong>compartir información</strong>. Cuando tú accedes a Google, tu computadora envía un 
+                mensaje a través de la red hasta llegar a un servidor de Google, que te responde con la página web.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">📮</span>
+                <h4>Analogía: La red es como el sistema postal</h4>
+                <p>
+                    Imagina que quieres enviar una carta a un amigo. Necesitas: <strong>su dirección</strong> (la dirección IP), 
+                    <strong>un sobre</strong> (el paquete de datos), <strong>un cartero y oficinas postales</strong> (los routers y switches), 
+                    y <strong>un sistema para saber qué ruta tomar</strong> (los protocolos de enrutamiento). La red funciona exactamente igual, 
+                    pero a la velocidad de la luz.
+                </p>
+            </div>
+
+            <h3>Tipos de redes</h3>
+            <p class="lesson-text">Las redes se clasifican por su tamaño:</p>
+            <ul>
+                <li><strong>LAN (Local Area Network):</strong> Red local — tu casa o una oficina. Todos los dispositivos están en el mismo lugar físico, conectados al mismo router.</li>
+                <li><strong>WAN (Wide Area Network):</strong> Red de área amplia — Internet es la WAN más grande del mundo. Conecta LANs que están en diferentes ciudades o países.</li>
+                <li><strong>WLAN:</strong> Red local inalámbrica — tu WiFi de casa es una WLAN.</li>
+            </ul>
+
+            <h3>¿Qué componentes forman una red?</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Qué hace</th>
+                            <th>Analogía</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Router</strong></td>
+                            <td>Dirige los paquetes de datos entre diferentes redes. Tu router en casa conecta tu LAN con Internet.</td>
+                            <td>La oficina postal que decide por qué ruta enviar tu carta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Switch</strong></td>
+                            <td>Conecta dispositivos dentro de la misma red local y envía datos solo al destinatario correcto.</td>
+                            <td>El cartero que sabe a qué buzón exacto entregar la carta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Firewall</strong></td>
+                            <td>Filtra el tráfico: decide qué datos pueden pasar y cuáles se bloquean según reglas de seguridad.</td>
+                            <td>El guardia de seguridad que revisa quién entra y quién no</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Servidor</strong></td>
+                            <td>Computadora que ofrece servicios: web, correo, archivos, DNS, etc.</td>
+                            <td>La empresa que procesa tu pedido y te envía lo que pediste</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 2: OSI/TCP-IP -->
+        <div class="lesson-section" id="modelo-osi">
+            <h2><span class="section-icon">📚</span> 2. El modelo OSI y TCP/IP: las capas de la red</h2>
+
+            <p class="lesson-text">
+                Para que dos computadoras se comuniquen, los datos pasan por varias <strong>capas</strong>, cada una con una función específica.
+                Existen dos modelos que explican esto: el <strong>modelo OSI</strong> (teórico, 7 capas) y el <strong>modelo TCP/IP</strong> 
+                (práctico, 4 capas, el que realmente usa Internet).
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">📦</span>
+                <h4>Analogía: Las capas son como envolver un paquete</h4>
+                <p>
+                    Imagina que quieres enviar un regalo. Primero lo envuelves en papel (capa de aplicación: los datos), 
+                    luego lo metes en una caja (capa de transporte: TCP/UDP), luego le pones la dirección de envío 
+                    (capa de red: IP), y finalmente lo entregas al servicio de mensajería (capa de acceso: la red física). 
+                    Cuando llega al destinatario, se "desenvuelve" en orden inverso.
+                </p>
+            </div>
+
+            <h3>El modelo TCP/IP (el que importa en la práctica)</h3>
+            <p class="lesson-text">Internet funciona con el modelo TCP/IP, que tiene <strong>4 capas</strong>:</p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Capa</th>
+                            <th>Nombre</th>
+                            <th>¿Qué hace?</th>
+                            <th>Protocolos principales</th>
+                            <th>Ejemplo cotidiano</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td><strong>Aplicación</strong></td>
+                            <td>Es lo que el usuario ve e interactúa. Aquí vive tu navegador web, tu cliente de email, etc.</td>
+                            <td><code>HTTP</code>, <code>HTTPS</code>, <code>DNS</code>, <code>FTP</code>, <code>SSH</code>, <code>SMTP</code></td>
+                            <td>Abrir google.com en el navegador</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td><strong>Transporte</strong></td>
+                            <td>Garantiza que los datos lleguen completos y en orden (TCP) o los envía rápido sin garantía (UDP).</td>
+                            <td><code>TCP</code>, <code>UDP</code></td>
+                            <td>TCP: cargar una web. UDP: ver un stream de video en vivo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2</strong></td>
+                            <td><strong>Red (Internet)</strong></td>
+                            <td>Se encarga de las <strong>direcciones IP</strong> y de decidir la ruta que siguen los paquetes.</td>
+                            <td><code>IP</code>, <code>ICMP</code>, <code>ARP</code></td>
+                            <td>El GPS que decide por qué carreteras va tu paquete</td>
+                        </tr>
+                        <tr>
+                            <td><strong>1</strong></td>
+                            <td><strong>Acceso a Red</strong></td>
+                            <td>El medio físico: cables, WiFi, tarjetas de red. Maneja las <strong>direcciones MAC</strong>.</td>
+                            <td><code>Ethernet</code>, <code>WiFi (802.11)</code></td>
+                            <td>El cable de red o la señal WiFi que conecta tu computadora</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 ¿Por qué importa esto para la ciberseguridad?</h4>
+                <p>
+                    Cada capa tiene sus propias vulnerabilidades. Un ataque puede ocurrir en la <strong>capa de aplicación</strong> 
+                    (inyección SQL en una web), en la <strong>capa de transporte</strong> (un ataque SYN flood), en la <strong>capa de red</strong> 
+                    (spoofing de IP) o en la <strong>capa física</strong> (interceptar tráfico WiFi). Para defender o atacar un sistema, 
+                    necesitas entender qué pasa en cada capa.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3: IPs -->
+        <div class="lesson-section" id="direcciones-ip">
+            <h2><span class="section-icon">🔢</span> 3. Direcciones IP: la dirección de cada computadora</h2>
+
+            <p class="lesson-text">
+                Cada dispositivo conectado a una red necesita una <strong>dirección IP</strong> (Internet Protocol) para poder recibir y enviar datos. 
+                Es como la dirección de tu casa: sin ella, nadie puede encontrarte.
+            </p>
+
+            <h3>IPv4: la versión que usamos hoy</h3>
+            <p class="lesson-text">
+                Una dirección IPv4 se compone de <strong>4 números separados por puntos</strong>, donde cada número va de 0 a 255.
+                Cada número se representa internamente con <strong>8 bits</strong> (un byte), lo que da un total de <strong>32 bits</strong>.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Ejemplo de dirección IPv4</span>
+                </div>
+                <pre><code>192.168.1.100
+
+Desglose:
+  192     .  168     .  1       .  100
+  ├─8 bits─┤ ├─8 bits─┤ ├─8 bits─┤ ├─8 bits─┤
+  = 11000000.10101000.00000001.01100100  (en binario)
+  
+  Total: 32 bits = 4 bytes</code></pre>
+                <div class="explanation">
+                    <p>Cada sección entre puntos se llama <strong>octeto</strong> porque tiene 8 bits. Con 32 bits se pueden crear 2^32 = <strong>4,294,967,296</strong> direcciones únicas (por eso se están agotando y existe IPv6).</p>
+                </div>
+            </div>
+
+            <h3>Tipos de direcciones IP</h3>
+            <p class="lesson-text">No todas las IPs se usan para Internet. Hay dos tipos importantes:</p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Rango</th>
+                            <th>Uso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>IP privada</strong></td>
+                            <td><code>10.0.0.0 – 10.255.255.255</code><br><code>172.16.0.0 – 172.31.255.255</code><br><code>192.168.0.0 – 192.168.255.255</code></td>
+                            <td>Se usan dentro de tu red local (tu casa, oficina). <strong>No son accesibles desde Internet</strong>. Tu router traduce estas a una IP pública usando NAT.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IP pública</strong></td>
+                            <td>Cualquier otra (ej. <code>8.8.8.8</code>, <code>142.250.80.46</code>)</td>
+                            <td>Son únicas en todo Internet. Es la dirección que el mundo ve de tu red.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loopback</strong></td>
+                            <td><code>127.0.0.1</code> (localhost)</td>
+                            <td>Tu propia máquina. Cuando escribes <code>127.0.0.1</code> te estás conectando a ti mismo. Útil para probar servicios localmente.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 ¿Qué es NAT?</h4>
+                <p>
+                    <strong>NAT (Network Address Translation)</strong> es lo que hace tu router para que todos los dispositivos de tu casa 
+                    compartan una sola IP pública. Tu computadora tiene IP privada <code>192.168.1.100</code>, pero cuando sale a Internet, 
+                    el router la traduce a su IP pública (ej. <code>86.34.22.156</code>). Cuando la respuesta vuelve, el router sabe 
+                    a qué dispositivo interno reenviarla.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 4: Subnetting -->
+        <div class="lesson-section" id="subnetting">
+            <h2><span class="section-icon">🧮</span> 4. Subnetting: dividir redes en segmentos</h2>
+
+            <p class="lesson-text">
+                <strong>Subnetting</strong> es dividir una red grande en redes más pequeñas (subredes). ¿Por qué? Por seguridad y organización. 
+                En una empresa, puedes tener una subred para contabilidad, otra para ventas, otra para servidores — así, si un atacante 
+                compromete una subred, no tiene acceso automático a las demás.
+            </p>
+
+            <h3>La máscara de subred</h3>
+            <p class="lesson-text">
+                La <strong>máscara de subred</strong> define qué parte de una IP identifica la red y qué parte identifica al host (dispositivo).
+                Se escribe en <strong>notación CIDR</strong> con una barra y un número (ej. <code>/24</code>).
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Entendiendo la máscara /24</span>
+                </div>
+                <pre><code>IP:       192.168.1.100 /24
+Máscara:  255.255.255.0
+
+En binario:
+  IP:       11000000.10101000.00000001.01100100
+  Máscara:  11111111.11111111.11111111.00000000
+            ├──── parte de RED (24 bits) ────┤├ HOST ┤
+
+  Los primeros 24 bits (los "1") identifican la RED: 192.168.1.0
+  Los últimos 8 bits (los "0") identifican al HOST: .100
+
+Red:      192.168.1.0     (dirección de la red — no se asigna)
+Broadcast: 192.168.1.255  (envía a todos — no se asigna)
+Rango utilizable: 192.168.1.1 hasta 192.168.1.254 (254 hosts)</code></pre>
+                <div class="explanation">
+                    <p><strong>Fórmula para calcular hosts:</strong> <code>Hosts = 2^(32 - n) - 2</code> donde <code>n</code> es la máscara CIDR.</p>
+                    <p>Para /24: <code>2^(32-24) - 2 = 2^8 - 2 = 256 - 2 = 254 hosts</code></p>
+                    <p>Para /16: <code>2^(32-16) - 2 = 2^16 - 2 = 65,534 hosts</code></p>
+                    <p>Se restan 2 porque la primera dirección es la <strong>dirección de red</strong> y la última es el <strong>broadcast</strong>.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: Puertos -->
+        <div class="lesson-section" id="puertos">
+            <h2><span class="section-icon">🚪</span> 5. Puertos: las puertas de cada servicio</h2>
+
+            <p class="lesson-text">
+                Una dirección IP te lleva a una computadora, pero una computadora puede tener <strong>muchos servicios</strong> corriendo al mismo tiempo 
+                (web, correo, SSH, base de datos). ¿Cómo sabe la computadora a qué servicio va cada paquete? Con los <strong>puertos</strong>.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🏢</span>
+                <h4>Analogía: Un edificio con departamentos</h4>
+                <p>
+                    La <strong>dirección IP</strong> es la dirección del edificio (ej. "Av. Principal #456"). 
+                    El <strong>puerto</strong> es el número de departamento (ej. "Depto. 80"). 
+                    Si quieres visitar al servicio web, vas al departamento 80. Si quieres SSH, vas al 22. 
+                    El edificio es la misma computadora, pero cada servicio "vive" en un puerto diferente.
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                Los puertos van del <strong>0 al 65,535</strong> (16 bits). Cada servicio usa un puerto estándar asignado:
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Puerto</th>
+                            <th>Protocolo</th>
+                            <th>Qué hace</th>
+                            <th>¿Por qué importa en pentesting?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>21</code></td><td>FTP</td><td>Transferencia de archivos</td><td>A menudo permite login anónimo o tiene credenciales débiles</td></tr>
+                        <tr><td><code>22</code></td><td>SSH</td><td>Acceso remoto seguro (terminal)</td><td>Objetivo principal para fuerza bruta de contraseñas</td></tr>
+                        <tr><td><code>23</code></td><td>Telnet</td><td>Acceso remoto SIN cifrar</td><td>Todo viaja en texto plano — se pueden capturar credenciales</td></tr>
+                        <tr><td><code>25</code></td><td>SMTP</td><td>Envío de correo electrónico</td><td>Se puede usar para enumerar usuarios válidos</td></tr>
+                        <tr><td><code>53</code></td><td>DNS</td><td>Resolución de nombres de dominio</td><td>Transferencias de zona pueden revelar toda la infraestructura</td></tr>
+                        <tr><td><code>80</code></td><td>HTTP</td><td>Páginas web sin cifrar</td><td>Vulnerabilidades web (SQLi, XSS, IDOR)</td></tr>
+                        <tr><td><code>443</code></td><td>HTTPS</td><td>Páginas web con cifrado TLS</td><td>Mismo que HTTP pero con cifrado — igual tiene vulnerabilidades</td></tr>
+                        <tr><td><code>445</code></td><td>SMB</td><td>Compartir archivos en Windows</td><td>EternalBlue, acceso a recursos compartidos sin autenticación</td></tr>
+                        <tr><td><code>3306</code></td><td>MySQL</td><td>Base de datos MySQL</td><td>Si está expuesto, se puede intentar acceso con credenciales por defecto</td></tr>
+                        <tr><td><code>3389</code></td><td>RDP</td><td>Escritorio remoto de Windows</td><td>Fuerza bruta, BlueKeep</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 ¿Por qué es importante conocer los puertos?</h4>
+                <p>
+                    Cuando haces un <strong>escaneo de puertos</strong> con Nmap (lo aprenderás en la Lección 8), estás buscando qué "puertas" 
+                    están abiertas en un servidor. Cada puerto abierto es un posible <strong>vector de ataque</strong>. Por ejemplo, si encuentras 
+                    el puerto 21 (FTP) abierto, puedes intentar conectarte con usuario <code>anonymous</code>. Si encuentras el 445 (SMB), 
+                    puedes buscar vulnerabilidades como EternalBlue.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6: TCP vs UDP -->
+        <div class="lesson-section" id="tcp-vs-udp">
+            <h2><span class="section-icon">🔄</span> 6. TCP vs UDP: dos formas de enviar datos</h2>
+
+            <p class="lesson-text">
+                En la <strong>capa de transporte</strong>, hay dos protocolos principales para enviar datos: <strong>TCP</strong> y <strong>UDP</strong>.
+                La diferencia clave es que TCP <strong>garantiza</strong> que los datos lleguen completos y en orden, mientras que UDP <strong>no garantiza nada</strong> pero es más rápido.
+            </p>
+
+            <h3>TCP (Transmission Control Protocol) — El protocolo confiable</h3>
+            <p class="lesson-text">
+                TCP funciona como enviar una carta certificada: antes de enviar datos, las dos computadoras deben <strong>"ponerse de acuerdo"</strong> 
+                mediante un proceso llamado <strong>Three-Way Handshake</strong> (acuerdo de tres vías). Esto es FUNDAMENTAL entenderlo 
+                porque es la base de muchos ataques y escaneos.
+            </p>
+
+            <h4>El Three-Way Handshake explicado paso a paso</h4>
+
+            <div class="lesson-diagram">
+                <pre>
+    TU COMPUTADORA                          SERVIDOR
+          |                                     |
+          |──── 1. SYN ────────────────────────▶|  "¡Hola! Quiero conectarme"
+          |                                     |
+          |◀─── 2. SYN-ACK ────────────────────|  "¡Hola! OK, acepto. ¿Listo?"
+          |                                     |
+          |──── 3. ACK ────────────────────────▶|  "¡Sí, listo! Empecemos"
+          |                                     |
+          |◀════ CONEXIÓN ESTABLECIDA ═════════▶|
+          |                                     |
+          |──── Datos ─────────────────────────▶|  Ahora sí se envían los datos
+          |◀─── Datos ─────────────────────────|
+                </pre>
+                <p class="diagram-caption">El Three-Way Handshake de TCP: SYN → SYN-ACK → ACK</p>
+            </div>
+
+            <p class="lesson-text">Explicado en detalle:</p>
+            <ol>
+                <li><strong>SYN (Synchronize):</strong> Tu computadora envía un paquete con la bandera SYN activada diciendo "quiero conectarme contigo al puerto 80".</li>
+                <li><strong>SYN-ACK:</strong> Si el puerto está <strong>abierto</strong>, el servidor responde con SYN-ACK: "OK, acepto la conexión, estoy escuchando".</li>
+                <li><strong>ACK (Acknowledge):</strong> Tu computadora confirma: "Perfecto, vamos a comunicarnos". La conexión queda establecida.</li>
+            </ol>
+
+            <div class="warning-box">
+                <h4>⚠️ ¿Y si el puerto está cerrado?</h4>
+                <p>
+                    Si el puerto está <strong>cerrado</strong>, el servidor responde con un paquete <strong>RST (Reset)</strong> en lugar de SYN-ACK, 
+                    que significa "No hay nada escuchando aquí, vete". Si hay un <strong>firewall</strong> bloqueando, simplemente no responde nada 
+                    (el paquete se pierde en el vacío). Esto es exactamente lo que Nmap analiza para determinar si un puerto está abierto, cerrado o filtrado.
+                </p>
+            </div>
+
+            <h3>UDP (User Datagram Protocol) — El protocolo rápido</h3>
+            <p class="lesson-text">
+                UDP <strong>no hace handshake</strong>. Simplemente envía los datos y espera que lleguen. Es como gritar un mensaje por la ventana: 
+                puede que lo escuchen, puede que no, pero es rápido. Se usa para cosas donde la velocidad importa más que la fiabilidad: 
+                <strong>videollamadas, streaming, juegos online, DNS</strong>.
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>TCP</th>
+                            <th>UDP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Conexión</td><td>Requiere handshake previo</td><td>Sin conexión, envía directo</td></tr>
+                        <tr><td>Fiabilidad</td><td>Garantiza entrega y orden</td><td>No garantiza nada</td></tr>
+                        <tr><td>Velocidad</td><td>Más lento (por las verificaciones)</td><td>Más rápido</td></tr>
+                        <tr><td>Uso típico</td><td>Web (HTTP), email, SSH, FTP</td><td>DNS, video, juegos, VoIP</td></tr>
+                        <tr><td>En pentesting</td><td>Escaneo SYN, ataques SYN Flood</td><td>Escaneos UDP (más lentos y difíciles)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 7: DNS -->
+        <div class="lesson-section" id="dns">
+            <h2><span class="section-icon">📖</span> 7. DNS: traducir nombres a direcciones IP</h2>
+
+            <p class="lesson-text">
+                Los humanos no recordamos números fácilmente. Es más fácil recordar <code>google.com</code> que <code>142.250.80.46</code>. 
+                El <strong>DNS (Domain Name System)</strong> es el servicio que traduce los nombres de dominio a direcciones IP. 
+                Es como la <strong>guía telefónica de Internet</strong>.
+            </p>
+
+            <h3>¿Cómo funciona una consulta DNS?</h3>
+            <p class="lesson-text">Cuando escribes <code>google.com</code> en tu navegador, esto es lo que pasa:</p>
+            <ol>
+                <li>Tu computadora revisa su <strong>caché local</strong>: "¿Ya resolví este nombre antes?" Si sí, usa la IP guardada.</li>
+                <li>Si no, pregunta al <strong>servidor DNS configurado</strong> (generalmente el de tu proveedor de Internet o <code>8.8.8.8</code> de Google).</li>
+                <li>Si ese servidor tampoco lo sabe, pregunta a los <strong>servidores raíz</strong> (los "jefes" del DNS mundial).</li>
+                <li>Los servidores raíz redirigen al <strong>servidor del dominio .com</strong>, que a su vez redirige al <strong>servidor de google.com</strong>.</li>
+                <li>Finalmente, se obtiene la IP <code>142.250.80.46</code> y se devuelve a tu computadora.</li>
+                <li>Tu navegador puede ahora conectarse a esa IP.</li>
+            </ol>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Practica: resolver un dominio con nslookup</span>
+                </div>
+                <pre><code><span style="color:#00e676">$</span> nslookup google.com
+Server:         8.8.8.8
+Address:        8.8.8.8#53
+
+Non-authoritative answer:
+Name:   google.com
+Address: 142.250.80.46</code></pre>
+                <div class="explanation">
+                    <p>El comando <code>nslookup</code> le pregunta al servidor DNS cuál es la IP de <code>google.com</code>. La respuesta <strong>"Non-authoritative"</strong> significa que vino de un caché, no del servidor oficial de Google.</p>
+                    <p>También puedes usar <code>dig google.com</code> en Linux para una respuesta más detallada.</p>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 ¿Por qué DNS importa en ciberseguridad?</h4>
+                <p>
+                    El DNS es un <strong>objetivo frecuente de ataques</strong>: <strong>DNS Spoofing</strong> (envenenar el DNS para redirigir a sitios falsos), 
+                    <strong>DNS Tunneling</strong> (esconder datos dentro de consultas DNS para exfiltrar información), y 
+                    <strong>transferencias de zona</strong> (obtener una lista completa de todos los subdominios de un objetivo). 
+                    También es una herramienta de reconocimiento: mediante DNS puedes descubrir subdominios, servidores de correo y más.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 8: HTTP -->
+        <div class="lesson-section" id="http">
+            <h2><span class="section-icon">🌍</span> 8. HTTP/HTTPS: cómo funciona la web</h2>
+
+            <p class="lesson-text">
+                <strong>HTTP (HyperText Transfer Protocol)</strong> es el protocolo que usa tu navegador para comunicarse con los servidores web. 
+                Cada vez que abres una página, tu navegador envía una <strong>petición HTTP</strong> y el servidor responde con el contenido 
+                (HTML, CSS, imágenes, etc.).
+            </p>
+
+            <h3>Anatomía de una petición HTTP</h3>
+            <p class="lesson-text">Cuando visitas <code>http://ejemplo.com/pagina</code>, tu navegador envía algo como esto:</p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Petición HTTP — lo que envía tu navegador</span>
+                </div>
+                <pre><code><span style="color:#c792ea">GET</span> /pagina <span style="color:#82aaff">HTTP/1.1</span>
+<span style="color:#ffcb6b">Host:</span> ejemplo.com
+<span style="color:#ffcb6b">User-Agent:</span> Mozilla/5.0 (X11; Linux x86_64)
+<span style="color:#ffcb6b">Accept:</span> text/html
+<span style="color:#ffcb6b">Cookie:</span> session=abc123</code></pre>
+                <div class="explanation">
+                    <p><strong><code>GET</code></strong> — El método: "quiero OBTENER este recurso". Otros métodos: <code>POST</code> (enviar datos), <code>PUT</code> (actualizar), <code>DELETE</code> (borrar).</p>
+                    <p><strong><code>/pagina</code></strong> — La ruta del recurso que se solicita.</p>
+                    <p><strong><code>Host</code></strong> — A qué servidor va dirigida la petición.</p>
+                    <p><strong><code>Cookie</code></strong> — Tu sesión activa. Si un atacante roba esta cookie, puede suplantar tu identidad.</p>
+                </div>
+            </div>
+
+            <h3>La respuesta del servidor</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Respuesta HTTP — lo que devuelve el servidor</span>
+                </div>
+                <pre><code><span style="color:#82aaff">HTTP/1.1</span> <span style="color:#c3e88d">200 OK</span>
+<span style="color:#ffcb6b">Content-Type:</span> text/html
+<span style="color:#ffcb6b">Content-Length:</span> 1234
+
+<span style="color:#546e7a">&lt;html&gt;</span>
+  <span style="color:#546e7a">&lt;body&gt;</span>Bienvenido a la página<span style="color:#546e7a">&lt;/body&gt;</span>
+<span style="color:#546e7a">&lt;/html&gt;</span></code></pre>
+                <div class="explanation">
+                    <p><strong><code>200 OK</code></strong> — Código de estado: todo salió bien. Otros códigos importantes:</p>
+                    <p>• <code>301</code> / <code>302</code> — Redirección (el recurso se movió)</p>
+                    <p>• <code>403</code> — Prohibido (no tienes permiso)</p>
+                    <p>• <code>404</code> — No encontrado</p>
+                    <p>• <code>500</code> — Error interno del servidor (posible vulnerabilidad)</p>
+                </div>
+            </div>
+
+            <h3>HTTPS = HTTP + TLS</h3>
+            <p class="lesson-text">
+                <strong>HTTPS</strong> es HTTP pero con una capa de cifrado <strong>TLS (Transport Layer Security)</strong>. 
+                Antes de intercambiar datos, el servidor presenta un <strong>certificado digital</strong> que demuestra su identidad, 
+                y ambas partes negocian una <strong>clave de cifrado</strong>. A partir de ahí, todo el tráfico va cifrado — 
+                nadie que intercepte la comunicación puede leer el contenido.
+            </p>
+        </div>
+
+        <!-- SECTION 9: Flujo completo -->
+        <div class="lesson-section" id="flujo-completo">
+            <h2><span class="section-icon">🔗</span> 9. El flujo completo: qué pasa cuando visitas una web</h2>
+
+            <p class="lesson-text">
+                Ahora juntemos todo. Cuando escribes <code>https://seguridad.local</code> en tu navegador, esto es lo que pasa <strong>paso a paso</strong>:
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr><th>Paso</th><th>Protocolo</th><th>¿Qué pasa?</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1. Resolución DNS</strong></td>
+                            <td><code>DNS</code> (puerto 53)</td>
+                            <td>Tu computadora pregunta al servidor DNS: "¿Cuál es la IP de seguridad.local?" y obtiene, por ejemplo, <code>10.0.2.15</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. Conexión TCP</strong></td>
+                            <td><code>TCP</code> (puerto 443)</td>
+                            <td>Se ejecuta el Three-Way Handshake (SYN → SYN-ACK → ACK) para establecer la conexión con el servidor en el puerto 443 (HTTPS).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. Cifrado TLS</strong></td>
+                            <td><code>TLS</code></td>
+                            <td>Se negocian algoritmos de cifrado, el servidor presenta su certificado digital y se intercambian claves para asegurar la comunicación.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. Petición HTTP</strong></td>
+                            <td><code>HTTP</code></td>
+                            <td>Tu navegador envía <code>GET /index.html HTTP/1.1</code> y el servidor responde con <code>200 OK</code> y el contenido HTML de la página.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5. Enrutamiento IP</strong></td>
+                            <td><code>IP</code></td>
+                            <td>Durante todo el proceso, los routers leen las direcciones IP de origen y destino para dirigir cada paquete por la ruta correcta.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 10: Práctica -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 10. Práctica: ver todo esto en Wireshark</h2>
+
+            <p class="lesson-text">
+                La mejor forma de entender las redes es <strong>ver los paquetes de datos reales</strong>. Wireshark es una herramienta 
+                que captura todo el tráfico que pasa por tu tarjeta de red y te permite examinarlo paquete por paquete.
+            </p>
+
+            <h3>Ejercicio 1: Capturar un handshake TCP</h3>
+            <ol>
+                <li>Abre Wireshark (ya viene instalado en Kali Linux, o instálalo con <code>sudo apt install wireshark</code>).</li>
+                <li>Selecciona tu interfaz de red (generalmente <code>eth0</code> o <code>wlan0</code>) y haz clic en el icono de tiburón azul para empezar a capturar.</li>
+                <li>En otra terminal, ejecuta: <code>curl http://example.com</code></li>
+                <li>Vuelve a Wireshark y detén la captura.</li>
+                <li>En el filtro de visualización (barra superior), escribe: <code>tcp.flags.syn == 1</code></li>
+                <li>Verás los paquetes SYN del handshake. Haz clic en uno y observa:
+                    <ul>
+                        <li>En "Transmission Control Protocol" verás las banderas (SYN, ACK, etc.)</li>
+                        <li>En "Internet Protocol" verás las IPs de origen y destino</li>
+                        <li>El puerto de destino (80 para HTTP)</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Ejercicio 2: Ver una consulta DNS</h3>
+            <ol>
+                <li>Inicia una nueva captura en Wireshark.</li>
+                <li>En terminal, ejecuta: <code>nslookup google.com</code></li>
+                <li>Detén la captura.</li>
+                <li>Filtra con: <code>dns</code></li>
+                <li>Verás dos paquetes: la <strong>consulta</strong> (query) y la <strong>respuesta</strong> (response). En la respuesta podrás ver la IP que resolvió el DNS.</li>
+            </ol>
+
+            <h3>Ejercicio 3: Crear tu cheatsheet de comandos de red</h3>
+            <p class="lesson-text">
+                Abre una terminal en Linux y ejecuta cada uno de estos comandos. Anota qué hace y qué muestra:
+            </p>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Comandos esenciales de red</span>
+                </div>
+                <pre><code><span style="color:#00e676">$</span> ip a                    <span style="color:#546e7a"># Ver tus interfaces de red e IPs</span>
+<span style="color:#00e676">$</span> ip route               <span style="color:#546e7a"># Ver la tabla de rutas (a dónde va cada paquete)</span>
+<span style="color:#00e676">$</span> ping 8.8.8.8           <span style="color:#546e7a"># Verificar conectividad con el DNS de Google</span>
+<span style="color:#00e676">$</span> traceroute google.com  <span style="color:#546e7a"># Ver los saltos (routers) hasta llegar a Google</span>
+<span style="color:#00e676">$</span> ss -tulnp              <span style="color:#546e7a"># Ver puertos abiertos en tu máquina</span>
+<span style="color:#00e676">$</span> nslookup google.com    <span style="color:#546e7a"># Resolver un dominio a IP</span>
+<span style="color:#00e676">$</span> dig google.com         <span style="color:#546e7a"># Resolución DNS detallada</span>
+<span style="color:#00e676">$</span> curl -v http://example.com  <span style="color:#546e7a"># Hacer una petición HTTP y ver todo el proceso</span></code></pre>
+                <div class="explanation">
+                    <p><strong>Tarea:</strong> Ejecuta cada comando, observa la salida, y créate un documento (puede ser un archivo de texto o un .md en GitHub) con el comando, qué hace y un ejemplo de la salida. Este será el inicio de tu <strong>cheatsheet personal</strong> de ciberseguridad.</p>
+                </div>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Antes de pasar a la siguiente lección, asegúrate de poder responder estas preguntas:</p>
+                <ul>
+                    <li>¿Cuál es la diferencia entre IP pública e IP privada?</li>
+                    <li>¿Qué hace un router y qué hace un switch?</li>
+                    <li>¿Cómo funciona el Three-Way Handshake de TCP? ¿Qué pasa si el puerto está cerrado?</li>
+                    <li>¿Cuántos hosts caben en una red /24? ¿Y en una /16?</li>
+                    <li>¿Qué servicio corre típicamente en el puerto 22? ¿Y en el 80? ¿Y en el 443?</li>
+                    <li>¿Qué es DNS y para qué sirve?</li>
+                    <li>¿Cuál es la diferencia entre HTTP y HTTPS?</li>
+                </ul>
+            </div>
+
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/whatisnetworking" target="_blank" rel="noopener noreferrer">TryHackMe: What is Networking</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/introtolan" target="_blank" rel="noopener noreferrer">TryHackMe: Intro to LAN</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/introtonetworking" target="_blank" rel="noopener noreferrer">TryHackMe: Intro to Networking</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/osimodelzi" target="_blank" rel="noopener noreferrer">TryHackMe: OSI Model</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/packetsframes" target="_blank" rel="noopener noreferrer">TryHackMe: Packets & Frames</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div style="text-align:center; margin: 1.5rem 0;">
+                <a href="cheatsheet-puertos.html" class="download-btn" target="_blank">📋 Cheatsheet: Puertos y Protocolos — Imprimir / PDF</a>
+            </div>
+
+            <!-- Quiz de evaluación -->
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <!-- Lesson Navigation -->
+        <div class="lesson-nav">
+            <a href="../index.html">
+                <span class="nav-label">← Volver</span>
+                <span class="nav-title">Temario del Curso</span>
+            </a>
+            <a href="leccion-02-linux.html" class="next">
+                <span class="nav-label">Siguiente →</span>
+                <span class="nav-title">Lección 02: Linux desde Cero</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        // Preguntas del quiz — Lección 01: Redes y TCP/IP
+        const quizQuestions = [
+            {
+                question: "¿Cuál es la diferencia principal entre una IP pública y una IP privada?",
+                options: [
+                    "La IP pública es más rápida que la IP privada",
+                    "La IP pública es única en Internet y la IP privada solo funciona dentro de una red local (LAN)",
+                    "La IP privada se usa para servidores y la IP pública para computadoras personales",
+                    "No hay diferencia, son intercambiables"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Cuáles son las tres banderas (flags) del Three-Way Handshake de TCP, en orden?",
+                options: [
+                    "ACK → SYN → FIN",
+                    "SYN → ACK → SYN-ACK",
+                    "SYN → SYN-ACK → ACK",
+                    "FIN → FIN-ACK → ACK"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Qué servicio corre normalmente en el puerto 443?",
+                options: [
+                    "SSH (Secure Shell)",
+                    "HTTP (web sin cifrar)",
+                    "FTP (transferencia de archivos)",
+                    "HTTPS (web cifrada con TLS/SSL)"
+                ],
+                correct: 3
+            },
+            {
+                question: "¿Cuántos hosts utilizables tiene una red con máscara /24 (255.255.255.0)?",
+                options: [
+                    "256 hosts",
+                    "254 hosts (se restan la dirección de red y la de broadcast)",
+                    "255 hosts",
+                    "128 hosts"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué hace el protocolo DNS?",
+                options: [
+                    "Cifra la conexión entre el navegador y el servidor web",
+                    "Asigna direcciones IP automáticamente a los dispositivos de la red",
+                    "Traduce nombres de dominio (como google.com) a direcciones IP",
+                    "Filtra el tráfico de red no autorizado como un firewall"
+                ],
+                correct: 2
+            }
+        ];
+
+        // Guardar preguntas para funcionalidad de retry
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-01'] = quizQuestions;
+
+        // Agregar explicaciones a las preguntas en el DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-01', quizQuestions);
+
+            // Agregar data-explanation a cada pregunta
+            const explanations = [
+                "La IP pública es asignada por tu ISP y es accesible desde Internet. Las IPs privadas (10.x.x.x, 172.16-31.x.x, 192.168.x.x) solo funcionan dentro de una LAN y no se enrutan en Internet.",
+                "El Three-Way Handshake es: el cliente envía SYN, el servidor responde SYN-ACK, y el cliente confirma con ACK. Solo entonces se establece la conexión TCP.",
+                "El puerto 443 es el estándar para HTTPS — tráfico web cifrado con TLS/SSL. El puerto 80 es HTTP (sin cifrar), el 22 es SSH y el 21 es FTP.",
+                "Una /24 tiene 256 direcciones totales (2⁸), pero se restan 2: la dirección de red (.0) y la de broadcast (.255), dejando 254 hosts utilizables.",
+                "DNS (Domain Name System) traduce nombres legibles como google.com a direcciones IP como 142.250.80.46. Sin DNS, tendrías que memorizar IPs numéricas para navegar."
+            ];
+
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) {
+                    q.dataset.explanation = explanations[i];
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

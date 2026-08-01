@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 19: Wireshark — Análisis de tráfico de red: captura de paquetes, filtros de visualización, detección de escaneos, exfiltración y reconstrucción de sesiones.">
+    <title>Lección 19: Wireshark — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 19</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(0,176,255,0.15);color:#00b0ff">Fase 4 — Informática Forense y DFIR</div>
+            <h1>Wireshark — Análisis de tráfico de red y detección de amenazas</h1>
+            <p class="lesson-intro">
+                <strong>Wireshark</strong> es el analizador de protocolos de red más utilizado del mundo. 
+                Te permite <strong>capturar y analizar</strong> cada paquete que pasa por tu red en tiempo real. 
+                En ciberseguridad lo usamos para <strong>detectar escaneos</strong> de puertos, identificar 
+                <strong>exfiltración de datos</strong>, analizar <strong>tráfico malicioso</strong>, y reconstruir 
+                exactamente qué pasó durante un incidente de seguridad.
+            </p>
+        </div>
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es">¿Qué es Wireshark?</a></li>
+                <li><a href="#interfaz">La interfaz de Wireshark</a></li>
+                <li><a href="#captura">Capturar tráfico</a></li>
+                <li><a href="#filtros-captura">Filtros de captura vs filtros de visualización</a></li>
+                <li><a href="#filtros-display">Filtros de visualización esenciales</a></li>
+                <li><a href="#tcp">Analizar conversaciones TCP</a></li>
+                <li><a href="#http">Analizar tráfico HTTP</a></li>
+                <li><a href="#dns">Analizar tráfico DNS</a></li>
+                <li><a href="#detectar-escaneos">Detectar escaneos de puertos (Nmap)</a></li>
+                <li><a href="#detectar-exfiltracion">Detectar exfiltración de datos</a></li>
+                <li><a href="#extraer">Extraer archivos y credenciales</a></li>
+                <li><a href="#tshark">tshark: Wireshark en la terminal</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="que-es"><h2><span class="section-icon">🦈</span> 1. ¿Qué es Wireshark?</h2>
+            <p class="lesson-text"><strong>Wireshark</strong> captura tráfico de red a nivel de paquetes y te permite inspeccionarlos con detalle extremo: cabeceras Ethernet, IP, TCP/UDP, y protocolos de aplicación (HTTP, DNS, SMB, etc.).</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Uso</th><th>Descripción</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Análisis forense de red</strong></td><td>Investigar un PCAP capturado durante un incidente</td></tr>
+                    <tr><td><strong>Detección de amenazas</strong></td><td>Identificar escaneos, malware, C2 beaconing</td></tr>
+                    <tr><td><strong>Troubleshooting</strong></td><td>Diagnosticar problemas de red y rendimiento</td></tr>
+                    <tr><td><strong>Pentesting</strong></td><td>Capturar credenciales en protocolos inseguros</td></tr>
+                    <tr><td><strong>Aprendizaje</strong></td><td>Entender cómo funcionan los protocolos de red</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="interfaz"><h2><span class="section-icon">🖥️</span> 2. La interfaz de Wireshark</h2>
+            <div class="lesson-callout"><strong>📌 Paneles principales:</strong>
+                <ul>
+                    <li><strong>Packet List (arriba)</strong>: Lista de todos los paquetes capturados (número, tiempo, origen, destino, protocolo, info)</li>
+                    <li><strong>Packet Details (medio)</strong>: Desglose del paquete seleccionado capa por capa (Ethernet → IP → TCP → HTTP)</li>
+                    <li><strong>Packet Bytes (abajo)</strong>: Los bytes crudos del paquete en hexadecimal y ASCII</li>
+                    <li><strong>Display Filter Bar (superior)</strong>: Donde escribes tus filtros de visualización</li>
+                </ul>
+            </div>
+            <div class="lesson-callout"><strong>💡 Colores importantes:</strong>
+                <ul>
+                    <li>🟢 <strong>Verde</strong>: Tráfico TCP normal</li>
+                    <li>🔵 <strong>Azul claro</strong>: Tráfico UDP (DNS, etc.)</li>
+                    <li>🟡 <strong>Amarillo</strong>: Tráfico HTTP</li>
+                    <li>🔴 <strong>Rojo/Negro</strong>: Errores TCP (RST, retransmisiones)</li>
+                    <li>⚫ <strong>Negro con fondo rojo</strong>: Problemas graves</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="captura"><h2><span class="section-icon">📡</span> 3. Capturar tráfico</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Captura de tráfico</span></div>
+                <pre><code><span style="color:#546e7a"># Abrir Wireshark</span>
+<span style="color:#546e7a"># 1. Seleccionar la interfaz de red (eth0, wlan0, etc.)</span>
+<span style="color:#546e7a"># 2. Click en el ícono de aleta de tiburón (Start Capturing)</span>
+<span style="color:#546e7a"># 3. Para detener: click en el cuadrado rojo (Stop)</span>
+
+<span style="color:#546e7a"># Guardar la captura: File → Save As → archivo.pcapng</span>
+
+<span style="color:#546e7a"># Abrir un PCAP existente (de un caso forense):</span>
+<span style="color:#546e7a"># File → Open → seleccionar el archivo .pcap o .pcapng</span>
+
+<span style="color:#546e7a"># Capturar desde terminal con dumpcap:</span>
+<span style="color:#00e676">$</span> dumpcap -i eth0 -w captura.pcapng</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="filtros-captura"><h2><span class="section-icon">🎯</span> 4. Filtros de captura vs filtros de visualización</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Tipo</th><th>Cuándo se aplica</th><th>Sintaxis</th><th>Ejemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Filtro de captura</strong></td><td>ANTES de capturar — descarta paquetes que no coinciden</td><td>BPF (Berkeley Packet Filter)</td><td><code>host 10.10.10.5 and port 80</code></td></tr>
+                    <tr><td><strong>Filtro de visualización</strong></td><td>DESPUÉS de capturar — oculta paquetes del listado</td><td>Sintaxis propia de Wireshark</td><td><code>ip.addr == 10.10.10.5 && tcp.port == 80</code></td></tr>
+                </tbody>
+            </table></div>
+            <p class="lesson-text">En análisis forense, generalmente <strong>trabajas con PCAPs ya capturados</strong>, por lo que usarás filtros de visualización el 95% del tiempo.</p>
+        </div>
+
+        <div class="lesson-section" id="filtros-display"><h2><span class="section-icon">🔍</span> 5. Filtros de visualización esenciales</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Filtro</th><th>Qué muestra</th></tr></thead>
+                <tbody>
+                    <tr><td><code>ip.addr == 10.10.10.5</code></td><td>Todo el tráfico de/hacia esa IP</td></tr>
+                    <tr><td><code>ip.src == 10.10.10.5</code></td><td>Solo tráfico DESDE esa IP</td></tr>
+                    <tr><td><code>ip.dst == 10.10.10.5</code></td><td>Solo tráfico HACIA esa IP</td></tr>
+                    <tr><td><code>tcp.port == 443</code></td><td>Tráfico TCP en puerto 443 (HTTPS)</td></tr>
+                    <tr><td><code>udp.port == 53</code></td><td>Tráfico DNS</td></tr>
+                    <tr><td><code>http</code></td><td>Solo tráfico HTTP</td></tr>
+                    <tr><td><code>dns</code></td><td>Solo consultas/respuestas DNS</td></tr>
+                    <tr><td><code>tcp.flags.syn == 1 && tcp.flags.ack == 0</code></td><td>Solo paquetes SYN (inicio de conexión / escaneo)</td></tr>
+                    <tr><td><code>tcp.flags.rst == 1</code></td><td>Paquetes RST (conexión rechazada / puerto cerrado)</td></tr>
+                    <tr><td><code>http.request.method == "POST"</code></td><td>Solo peticiones POST (posible exfiltración)</td></tr>
+                    <tr><td><code>frame contains "password"</code></td><td>Paquetes que contienen la palabra "password"</td></tr>
+                    <tr><td><code>!(arp or dns or icmp)</code></td><td>Excluir tráfico "ruidoso" para ver lo interesante</td></tr>
+                    <tr><td><code>tcp.stream eq 5</code></td><td>Toda la conversación TCP #5</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>💡 Tip:</strong> Puedes combinar filtros con <code>&&</code> (AND), <code>||</code> (OR), y <code>!</code> (NOT). Ejemplo: <code>ip.addr == 10.10.10.5 && http && !(http.response.code == 200)</code></div>
+        </div>
+
+        <div class="lesson-section" id="tcp"><h2><span class="section-icon">🔄</span> 6. Analizar conversaciones TCP</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Follow TCP Stream</span></div>
+                <pre><code><span style="color:#546e7a"># La función más poderosa de Wireshark:</span>
+<span style="color:#546e7a"># Clic derecho en cualquier paquete → Follow → TCP Stream</span>
+
+<span style="color:#546e7a"># Esto reconstruye TODA la conversación entre cliente y servidor</span>
+<span style="color:#546e7a"># El texto en ROJO es lo que envió el cliente</span>
+<span style="color:#546e7a"># El texto en AZUL es lo que respondió el servidor</span>
+
+<span style="color:#546e7a"># Ejemplo: login FTP en texto plano</span>
+<span style="color:#ff5252">USER admin</span>
+<span style="color:#448aff">331 Password required for admin</span>
+<span style="color:#ff5252">PASS SuperSecretPassword123</span>
+<span style="color:#448aff">230 User admin logged in</span>
+
+<span style="color:#546e7a"># ¡Contraseña capturada en texto plano!</span></code></pre>
+            </div>
+            <div class="lesson-callout"><strong>📌 Statistics → Conversations:</strong> Muestra un resumen de TODAS las conversaciones (quién habló con quién, cuántos bytes, duración). Muy útil para identificar las conexiones más voluminosas (posible exfiltración).</div>
+        </div>
+
+        <div class="lesson-section" id="http"><h2><span class="section-icon">🌐</span> 7. Analizar tráfico HTTP</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Análisis HTTP</span></div>
+                <pre><code><span style="color:#546e7a"># Filtrar todo el tráfico HTTP</span>
+<span style="color:#ffcc02">http</span>
+
+<span style="color:#546e7a"># Solo peticiones (sin respuestas)</span>
+<span style="color:#ffcc02">http.request</span>
+
+<span style="color:#546e7a"># Solo peticiones POST (formularios, uploads)</span>
+<span style="color:#ffcc02">http.request.method == "POST"</span>
+
+<span style="color:#546e7a"># Buscar descargas de archivos</span>
+<span style="color:#ffcc02">http.content_type contains "application"</span>
+
+<span style="color:#546e7a"># Ver lista de todos los sitios visitados:</span>
+<span style="color:#546e7a"># Statistics → HTTP → Requests</span>
+
+<span style="color:#546e7a"># Exportar archivos transferidos por HTTP:</span>
+<span style="color:#546e7a"># File → Export Objects → HTTP</span>
+<span style="color:#546e7a"># Muestra todos los archivos descargados/subidos</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="dns"><h2><span class="section-icon">📇</span> 8. Analizar tráfico DNS</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Análisis DNS</span></div>
+                <pre><code><span style="color:#546e7a"># Filtrar todo el tráfico DNS</span>
+<span style="color:#ffcc02">dns</span>
+
+<span style="color:#546e7a"># Solo consultas (no respuestas)</span>
+<span style="color:#ffcc02">dns.flags.response == 0</span>
+
+<span style="color:#546e7a"># Buscar dominios sospechosos</span>
+<span style="color:#ffcc02">dns.qry.name contains "evil"</span>
+
+<span style="color:#546e7a"># 🚩 Señales de exfiltración por DNS:</span>
+<span style="color:#546e7a"># - Consultas a dominios con subdominios MUY largos:</span>
+<span style="color:#546e7a">#   aGVsbG8gd29ybGQ=.datos.evil.com  (datos codificados en base64)</span>
+<span style="color:#546e7a"># - Volumen alto de consultas TXT a un mismo dominio</span>
+<span style="color:#546e7a"># - Consultas a dominios recién registrados (DGA)</span>
+
+<span style="color:#546e7a"># Buscar consultas DNS con subdominios largos (posible exfiltración)</span>
+<span style="color:#ffcc02">dns.qry.name.len > 50</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="detectar-escaneos"><h2><span class="section-icon">🔎</span> 9. Detectar escaneos de puertos (Nmap)</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detectar Nmap</span></div>
+                <pre><code><span style="color:#546e7a"># SYN Scan (el más común de Nmap):</span>
+<span style="color:#546e7a"># Muchos paquetes SYN desde la misma IP a diferentes puertos</span>
+<span style="color:#ffcc02">tcp.flags.syn == 1 && tcp.flags.ack == 0</span>
+
+<span style="color:#546e7a"># Si ves cientos de SYN desde una IP → escaneo de puertos</span>
+<span style="color:#546e7a"># Statistics → Conversations → TCP → ordenar por paquetes</span>
+
+<span style="color:#546e7a"># Puerto abierto: SYN → SYN-ACK → RST (Nmap no completa la conexión)</span>
+<span style="color:#546e7a"># Puerto cerrado: SYN → RST-ACK</span>
+
+<span style="color:#546e7a"># Detectar ICMP scan (ping sweep):</span>
+<span style="color:#ffcc02">icmp.type == 8</span>  <span style="color:#546e7a"># Echo requests</span>
+
+<span style="color:#546e7a"># Detectar NULL/FIN/XMAS scans:</span>
+<span style="color:#ffcc02">tcp.flags == 0x000</span>  <span style="color:#546e7a"># NULL scan (sin flags)</span>
+<span style="color:#ffcc02">tcp.flags.fin == 1 && tcp.flags.syn == 0</span>  <span style="color:#546e7a"># FIN scan</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="detectar-exfiltracion"><h2><span class="section-icon">📤</span> 10. Detectar exfiltración de datos</h2>
+            <div class="lesson-callout"><strong>🚩 Señales de exfiltración:</strong>
+                <ul>
+                    <li><strong>Volumen anómalo</strong>: Una estación de trabajo enviando GBs hacia afuera (Statistics → Endpoints → ordenar por Tx Bytes)</li>
+                    <li><strong>Beaconing</strong>: Conexiones a intervalos regulares al mismo destino (cada 30s, 1min) → típico de C2</li>
+                    <li><strong>DNS tunneling</strong>: Consultas DNS con subdominios inusualmente largos</li>
+                    <li><strong>ICMP tunneling</strong>: Paquetes ICMP con payloads anormalmente grandes</li>
+                    <li><strong>Destinos sospechosos</strong>: Conexiones a IPs en países donde la empresa no opera</li>
+                    <li><strong>HTTP POST grandes</strong>: Uploads masivos a dominios desconocidos</li>
+                </ul>
+            </div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detectar beaconing</span></div>
+                <pre><code><span style="color:#546e7a"># Buscar conexiones repetitivas al mismo destino</span>
+<span style="color:#ffcc02">ip.dst == 185.99.2.3</span>
+
+<span style="color:#546e7a"># Statistics → IO Graph</span>
+<span style="color:#546e7a"># Si ves picos de tráfico a intervalos regulares → beaconing</span>
+
+<span style="color:#546e7a"># Buscar ICMP con payloads grandes (posible tunnel)</span>
+<span style="color:#ffcc02">icmp && data.len > 100</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="extraer"><h2><span class="section-icon">💎</span> 11. Extraer archivos y credenciales</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Extracción</span></div>
+                <pre><code><span style="color:#546e7a"># Extraer TODOS los archivos transferidos por HTTP:</span>
+<span style="color:#546e7a"># File → Export Objects → HTTP → Save All</span>
+
+<span style="color:#546e7a"># Extraer archivos de SMB:</span>
+<span style="color:#546e7a"># File → Export Objects → SMB → Save All</span>
+
+<span style="color:#546e7a"># Extraer archivos de FTP:</span>
+<span style="color:#546e7a"># Follow TCP Stream del canal de datos (puerto 20)</span>
+<span style="color:#546e7a"># Show data as: Raw → Save As</span>
+
+<span style="color:#546e7a"># Buscar credenciales en texto plano:</span>
+<span style="color:#ffcc02">http.authbasic</span>  <span style="color:#546e7a"># HTTP Basic Auth</span>
+<span style="color:#ffcc02">ftp.request.command == "PASS"</span>  <span style="color:#546e7a"># Contraseñas FTP</span>
+<span style="color:#ffcc02">smtp.req.parameter contains "@"</span>  <span style="color:#546e7a"># Credenciales SMTP</span>
+
+<span style="color:#546e7a"># Buscar cualquier texto que contenga "password"</span>
+<span style="color:#ffcc02">frame contains "password"</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="tshark"><h2><span class="section-icon">⌨️</span> 12. tshark: Wireshark en la terminal</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">tshark</span></div>
+                <pre><code><span style="color:#546e7a"># Capturar tráfico en la terminal</span>
+<span style="color:#00e676">$</span> tshark -i eth0
+
+<span style="color:#546e7a"># Capturar solo HTTP y guardar</span>
+<span style="color:#00e676">$</span> tshark -i eth0 -f "port 80" -w captura_http.pcapng
+
+<span style="color:#546e7a"># Leer un PCAP con filtro de visualización</span>
+<span style="color:#00e676">$</span> tshark -r captura.pcapng -Y "http.request"
+
+<span style="color:#546e7a"># Extraer campos específicos (útil para scripts)</span>
+<span style="color:#00e676">$</span> tshark -r captura.pcapng -Y "dns" -T fields -e dns.qry.name | sort | uniq -c | sort -rn
+
+<span style="color:#546e7a"># Top 10 dominios DNS más consultados</span>
+<span style="color:#ffcc02">    247 evil-c2.com
+     85 updates.windows.com
+     42 google.com</span>
+<span style="color:#546e7a"># 247 consultas a evil-c2.com → ¡Definitivamente C2!</span>
+
+<span style="color:#546e7a"># Extraer todas las URLs HTTP</span>
+<span style="color:#00e676">$</span> tshark -r captura.pcapng -Y "http.request" -T fields -e http.host -e http.request.uri</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 13. Práctica</h2>
+            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Conoces la interfaz de Wireshark y sus paneles</li>
+                    <li>Puedes capturar y guardar tráfico de red</li>
+                    <li>Dominas los filtros de visualización más importantes</li>
+                    <li>Sabes seguir (Follow) una conversación TCP</li>
+                    <li>Puedes analizar tráfico HTTP y DNS</li>
+                    <li>Sabes detectar escaneos de puertos y exfiltración</li>
+                    <li>Puedes extraer archivos y credenciales del tráfico</li>
+                    <li>Conoces tshark para análisis desde la terminal</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/wireshark" target="_blank" rel="noopener noreferrer">TryHackMe: Wireshark 101</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/wiresharkpacketoperations" target="_blank" rel="noopener noreferrer">TryHackMe: Wireshark: Packet Operations</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://cyberdefenders.org/" target="_blank" rel="noopener noreferrer">CyberDefenders: Network Forensics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-18-autopsy.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 18: Autopsy</span></a>
+            <a href="leccion-20-reportes.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 20: Informes Profesionales</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué filtro de Wireshark muestra solo el tráfico HTTP?",
+                    "options": [
+                              "filter http",
+                              "tcp.port == 80",
+                              "http",
+                              "protocol == HTTP"
+                    ],
+                    "correct": 2
+          },
+          {
+                    "question": "¿Cómo puedes reconstruir un archivo transferido capturado en Wireshark?",
+                    "options": [
+                              "Copiando los bytes manualmente",
+                              "Usando 'Follow TCP Stream' para ver la conversación completa y/o 'Export Objects' para extraer archivos",
+                              "No es posible reconstruir archivos desde capturas de red",
+                              "Usando el filtro 'file.export'"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué indica ver muchos paquetes SYN sin respuestas SYN-ACK en una captura?",
+                    "options": [
+                              "Tráfico normal de navegación web",
+                              "Una transferencia de archivos grande",
+                              "Un posible escaneo de puertos (SYN scan) o un ataque SYN flood",
+                              "Problemas de DNS"
+                    ],
+                    "correct": 2
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-19'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-19', quizQuestions);
+            const explanations = [
+                "En Wireshark, simplemente escribes 'http' en la barra de filtro de visualización. tcp.port == 80 muestra todo el tráfico del puerto 80, pero 'http' filtra específicamente paquetes HTTP parseados.",
+                "Follow TCP Stream reconstruye toda la conversación. Export Objects (File → Export Objects → HTTP/SMB) extrae archivos completos transferidos durante la captura.",
+                "Muchos SYN sin SYN-ACK indica un SYN scan (reconocimiento) o un SYN flood (DoS). En tráfico normal, cada SYN tiene su SYN-ACK correspondiente como parte del handshake."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

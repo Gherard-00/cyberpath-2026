@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 07: Ética y legalidad del hacking — Qué está permitido, cómo obtener autorización, código de ética y marco legal.">
+    <title>Lección 07: Ética y Legalidad del Hacking — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a><span>›</span><span>Fase 1</span><span>›</span><span>Lección 07</span>
+        </div>
+
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(0,176,255,0.15);color:#00b0ff">Fase 1 — Introducción a la Ciberseguridad</div>
+            <h1>Ética y Legalidad del Hacking</h1>
+            <p class="lesson-intro">
+                Saber hackear sin saber los <strong>límites legales y éticos</strong> es como saber conducir sin conocer las reglas de tránsito: 
+                te metes en problemas. En esta lección aprenderás <strong>qué está permitido y qué no</strong>, 
+                cómo obtener <strong>autorización legal</strong> para hacer pruebas de penetración, 
+                y la diferencia entre un <strong>hacker ético y un cibercriminal</strong>.
+            </p>
+        </div>
+
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#tipos-hackers">Los tipos de hackers: sombreros</a></li>
+                <li><a href="#legal">Marco legal: qué dice la ley</a></li>
+                <li><a href="#autorizacion">La autorización: tu protección legal</a></li>
+                <li><a href="#reglas">Reglas de oro del hacker ético</a></li>
+                <li><a href="#bug-bounty">Bug Bounty: hackear legalmente por dinero</a></li>
+                <li><a href="#certificaciones">Certificaciones y carrera profesional</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="tipos-hackers">
+            <h2><span class="section-icon">🎩</span> 1. Los tipos de hackers: sombreros</h2>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Tipo</th><th>También llamado</th><th>Descripción</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>White Hat 🤍</strong></td><td>Hacker ético</td><td>Profesional que busca vulnerabilidades <strong>con autorización</strong> para ayudar a corregirlas. Trabaja dentro de la ley.</td></tr>
+                        <tr><td><strong>Black Hat 🖤</strong></td><td>Cibercriminal</td><td>Accede a sistemas <strong>sin autorización</strong> para robar datos, extorsionar o causar daño. Es ilegal.</td></tr>
+                        <tr><td><strong>Grey Hat 🩶</strong></td><td>Zona gris</td><td>Hackea sin autorización pero sin intención maliciosa (ej: reporta la vulnerabilidad después). Sigue siendo ilegal.</td></tr>
+                        <tr><td><strong>Red Team</strong></td><td>Equipo ofensivo</td><td>Equipo profesional contratado para simular ataques reales contra una organización.</td></tr>
+                        <tr><td><strong>Blue Team</strong></td><td>Equipo defensivo</td><td>Equipo que defiende los sistemas: monitorea, detecta y responde a incidentes.</td></tr>
+                        <tr><td><strong>Purple Team</strong></td><td>Equipo mixto</td><td>Colaboración entre Red y Blue Team para mejorar la seguridad conjuntamente.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ La diferencia entre un pentester y un criminal es UN DOCUMENTO</h4>
+                <p>
+                    Las mismas técnicas que usa un hacker ético las usa un criminal. La diferencia es que el hacker ético tiene 
+                    <strong>autorización escrita</strong> (contrato, scope, reglas de compromiso) antes de tocar cualquier sistema. 
+                    Sin ese documento, es un delito. Así de simple.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="legal">
+            <h2><span class="section-icon">⚖️</span> 2. Marco legal: qué dice la ley</h2>
+            <p class="lesson-text">
+                En la mayoría de países, <strong>acceder a un sistema sin autorización es un delito</strong>, 
+                incluso si no causas daño ni robas nada. Algunas leyes clave:
+            </p>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>País/Región</th><th>Ley principal</th><th>Qué prohíbe</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>España</strong></td><td>Art. 197 y 264 Código Penal</td><td>Acceso no autorizado a sistemas, interceptación de comunicaciones, daño informático.</td></tr>
+                        <tr><td><strong>México</strong></td><td>Art. 211 bis Código Penal Federal</td><td>Acceso ilícito a sistemas y equipos de informática.</td></tr>
+                        <tr><td><strong>Colombia</strong></td><td>Ley 1273 de 2009</td><td>Delitos informáticos: acceso abusivo, daño informático, interceptación de datos.</td></tr>
+                        <tr><td><strong>Argentina</strong></td><td>Ley 26.388</td><td>Delitos informáticos: acceso no autorizado, daño a datos y sistemas.</td></tr>
+                        <tr><td><strong>EE.UU.</strong></td><td>CFAA (Computer Fraud and Abuse Act)</td><td>Acceso no autorizado, exceder autorización, fraude informático.</td></tr>
+                        <tr><td><strong>UE</strong></td><td>Directiva 2013/40/EU</td><td>Ataques contra sistemas de información.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 Lo que SÍ es legal</h4>
+                <p>
+                    ✅ Practicar en <strong>tu propio laboratorio virtual</strong> (Metasploitable, DVWA, etc.)<br>
+                    ✅ Participar en <strong>plataformas de CTF</strong> (HackTheBox, TryHackMe, OverTheWire)<br>
+                    ✅ Participar en <strong>programas de Bug Bounty</strong> oficiales<br>
+                    ✅ Hacer pentesting con <strong>autorización escrita</strong> del dueño del sistema<br>
+                    ✅ Estudiar y practicar técnicas en entornos controlados
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="autorizacion">
+            <h2><span class="section-icon">📝</span> 3. La autorización: tu protección legal</h2>
+            <p class="lesson-text">
+                Antes de hacer cualquier prueba de penetración profesional, necesitas un <strong>contrato de autorización</strong> 
+                (a veces llamado <strong>"Rules of Engagement"</strong> o <strong>"Statement of Work"</strong>) que defina:
+            </p>
+            <ul>
+                <li><strong>Alcance (Scope):</strong> QUÉ sistemas puedes probar (IPs, dominios, aplicaciones específicas).</li>
+                <li><strong>Límites:</strong> QUÉ NO puedes hacer (ej: no hacer DDoS, no borrar datos, no acceder a ciertos sistemas).</li>
+                <li><strong>Ventana de tiempo:</strong> CUÁNDO puedes realizar las pruebas.</li>
+                <li><strong>Contacto de emergencia:</strong> A quién llamar si algo sale mal.</li>
+                <li><strong>Manejo de datos:</strong> Cómo tratar los datos sensibles que encuentres.</li>
+                <li><strong>Entregables:</strong> Qué informe debes entregar al final.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="reglas">
+            <h2><span class="section-icon">🏅</span> 4. Reglas de oro del hacker ético</h2>
+            <ol>
+                <li><strong>Nunca accedas a un sistema sin autorización escrita.</strong> Sin excepciones.</li>
+                <li><strong>Protege los datos que encuentres.</strong> Si encuentras contraseñas, datos personales o información sensible, trátala con confidencialidad.</li>
+                <li><strong>Reporta todo lo que encuentres.</strong> Tu trabajo es informar vulnerabilidades, no explotarlas para beneficio personal.</li>
+                <li><strong>No causes daño innecesario.</strong> Intenta no interrumpir servicios ni borrar datos. Si es posible, prueba en horarios de bajo tráfico.</li>
+                <li><strong>Mantente dentro del alcance autorizado.</strong> Si encuentras acceso a un sistema fuera del scope, NO lo explores.</li>
+                <li><strong>Documenta todo.</strong> Cada acción, cada comando, cada hallazgo. Es tu evidencia y tu protección legal.</li>
+                <li><strong>Sigue formándote.</strong> Las técnicas evolucionan constantemente. Nunca dejes de aprender.</li>
+            </ol>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="bug-bounty">
+            <h2><span class="section-icon">💰</span> 5. Bug Bounty: hackear legalmente por dinero</h2>
+            <p class="lesson-text">
+                Los programas de <strong>Bug Bounty</strong> son programas oficiales donde empresas pagan a hackers por encontrar y reportar vulnerabilidades en sus sistemas. 
+                Es una de las formas más accesibles de empezar a hacer hacking ético profesionalmente.
+            </p>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Plataforma</th><th>Descripción</th><th>Recompensas típicas</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>HackerOne</strong></td><td>La plataforma más grande. Empresas como Google, Facebook, Uber.</td><td>$100 — $100,000+</td></tr>
+                        <tr><td><strong>Bugcrowd</strong></td><td>Otra plataforma grande con muchos programas activos.</td><td>$50 — $50,000+</td></tr>
+                        <tr><td><strong>Intigriti</strong></td><td>Popular en Europa.</td><td>€250 — €50,000+</td></tr>
+                        <tr><td><strong>Google VRP</strong></td><td>Programa propio de Google.</td><td>$500 — $31,337+</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="certificaciones">
+            <h2><span class="section-icon">📜</span> 6. Certificaciones y carrera profesional</h2>
+            <p class="lesson-text">
+                Las certificaciones validan tus conocimientos ante empleadores. Aquí las más reconocidas, ordenadas por nivel:
+            </p>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Nivel</th><th>Certificación</th><th>Enfoque</th></tr></thead>
+                    <tbody>
+                        <tr><td>🟢 Principiante</td><td><strong>CompTIA Security+</strong></td><td>Conceptos generales de ciberseguridad</td></tr>
+                        <tr><td>🟢 Principiante</td><td><strong>eJPT (eLearnSecurity)</strong></td><td>Pentesting práctico introductorio</td></tr>
+                        <tr><td>🟡 Intermedio</td><td><strong>CEH (EC-Council)</strong></td><td>Hacking ético — más teórico</td></tr>
+                        <tr><td>🟡 Intermedio</td><td><strong>CompTIA PenTest+</strong></td><td>Pentesting práctico</td></tr>
+                        <tr><td>🔴 Avanzado</td><td><strong>OSCP (OffSec)</strong></td><td>Pentesting práctico avanzado — 24h de examen práctico</td></tr>
+                        <tr><td>🔴 Avanzado</td><td><strong>OSWE (OffSec)</strong></td><td>Hacking web avanzado</td></tr>
+                        <tr><td>⚫ Experto</td><td><strong>OSEP / OSED (OffSec)</strong></td><td>Evasión de defensas, desarrollo de exploits</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Asegúrate de poder responder:</p>
+                <ul>
+                    <li>¿Cuál es la diferencia entre un White Hat, Black Hat y Grey Hat?</li>
+                    <li>¿Qué necesitas antes de hacer un pentest profesional?</li>
+                    <li>¿Dónde es legal practicar hacking?</li>
+                    <li>¿Qué es un programa de Bug Bounty?</li>
+                    <li>¿Cuáles son las reglas de oro del hacker ético?</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/careersincyber" target="_blank" rel="noopener noreferrer">TryHackMe: Careers in Cyber</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/introtooffensivesecurity" target="_blank" rel="noopener noreferrer">TryHackMe: Intro to Offensive Security</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-06-criptografia.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 06: Criptografía Esencial</span></a>
+            <a href="leccion-08-nmap.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 08: Nmap</span></a>
+        </div>
+    </main>
+
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Cuál es la diferencia fundamental entre un hacker ético y un cibercriminal?",
+                    "options": [
+                              "El hacker ético usa herramientas diferentes",
+                              "El hacker ético tiene autorización explícita y un alcance definido",
+                              "No hay diferencia técnica, solo legal",
+                              "El cibercriminal es más hábil técnicamente"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es el 'scope' en una prueba de penetración?",
+                    "options": [
+                              "La herramienta principal que se usará",
+                              "El presupuesto del proyecto",
+                              "El alcance definido que especifica qué sistemas se pueden probar y qué está fuera de límites",
+                              "El tiempo máximo para completar el test"
+                    ],
+                    "correct": 2
+          },
+          {
+                    "question": "¿Qué documento necesitas antes de realizar cualquier prueba de penetración?",
+                    "options": [
+                              "Un manual de Kali Linux",
+                              "Una autorización por escrito (NDA/contrato/acuerdo de pruebas)",
+                              "Un certificado CEH",
+                              "Una licencia de software"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-07'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-07', quizQuestions);
+            const explanations = [
+                "La diferencia clave es la AUTORIZACIÓN. Un hacker ético tiene permiso escrito (contrato/scope) para probar sistemas. Usa las mismas técnicas, pero dentro de un marco legal y ético.",
+                "El scope define exactamente qué IPs, dominios, aplicaciones o redes se pueden probar, y cuáles están explícitamente excluidos. Salirse del scope es ilegal aunque tengas contrato.",
+                "SIEMPRE necesitas autorización por escrito antes de probar cualquier sistema. Sin ella, incluso un escaneo de puertos puede ser ilegal según la jurisdicción."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>

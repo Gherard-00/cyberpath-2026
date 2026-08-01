@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 08B: Fundamentos de Desarrollo Web — HTML, JavaScript, HTTP, bases de datos SQL y el flujo completo de una aplicación web.">
+    <title>Lección 08B: Fundamentos de Desarrollo Web — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 2</span><span>›</span><span>Lección 08B</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,171,0,0.15);color:#ffab00">Fase 2 — Pentesting Fundamental</div>
+            <h1>Fundamentos de Desarrollo Web — Lo que necesitas antes de hackear webs</h1>
+            <p class="lesson-intro">
+                Antes de aprender a explotar vulnerabilidades web como SQL Injection o XSS, necesitas entender 
+                <strong>cómo funciona una aplicación web por dentro</strong>. En esta lección aprenderás qué hacen 
+                HTML, JavaScript y CSS, cómo el navegador se comunica con el servidor mediante HTTP, 
+                qué es una base de datos relacional y cómo todo se conecta en el flujo de una petición real.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#como-funciona">¿Cómo funciona una aplicación web?</a></li>
+                <li><a href="#html-css-js">HTML, CSS y JavaScript: los tres pilares</a></li>
+                <li><a href="#http-detalle">HTTP en detalle: métodos, headers y cookies</a></li>
+                <li><a href="#bases-datos">Bases de datos relacionales y SQL</a></li>
+                <li><a href="#flujo-completo">El flujo completo: del formulario a la base de datos</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="como-funciona">
+            <h2><span class="section-icon">🌐</span> 1. ¿Cómo funciona una aplicación web?</h2>
+            <p class="lesson-text">
+                Una <strong>aplicación web</strong> no es un programa que instalas en tu PC — vive en un servidor remoto y tú la 
+                usas a través del navegador. Cada vez que abres Facebook, Gmail o tu banco online, tu navegador se conecta 
+                a un servidor que procesa tu petición y te devuelve una página.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🍽️</span>
+                <h4>Analogía: El restaurante</h4>
+                <p>
+                    Una app web funciona como un <strong>restaurante</strong>:
+                    tú (el <strong>cliente/navegador</strong>) pides un platillo al <strong>mesero</strong> (el protocolo HTTP).
+                    El mesero lleva tu pedido a la <strong>cocina</strong> (el servidor). El chef consulta la 
+                    <strong>receta</strong> (la base de datos), prepara el platillo y el mesero te lo trae.
+                    Si el chef no valida lo que le pides, podrías pedirle que te dé la receta secreta — eso es básicamente 
+                    una <strong>inyección SQL</strong>.
+                </p>
+            </div>
+
+            <div class="lesson-diagram"><pre>
+    ┌──────────┐     HTTP Request      ┌──────────────┐     Query      ┌────────────┐
+    │          │ ──────────────────────►│              │ ──────────────►│            │
+    │ CLIENTE  │                        │  SERVIDOR    │                │  BASE DE   │
+    │(Navegador)│◄──────────────────────│  (Backend)   │◄──────────────│   DATOS    │
+    │          │     HTTP Response      │  PHP/Python/ │    Resultados  │  (MySQL,   │
+    │ HTML+CSS │                        │  Node.js     │                │  PostgreSQL│
+    │   + JS   │                        │              │                │  etc.)     │
+    └──────────┘                        └──────────────┘                └────────────┘
+            </pre><p class="diagram-caption">Arquitectura Cliente → Servidor → Base de Datos</p></div>
+
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Componente</th><th>Dónde vive</th><th>Qué hace</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Frontend</strong></td><td>En tu navegador (cliente)</td><td>Lo que VES: diseño, formularios, botones, animaciones. Se ejecuta en TU máquina.</td></tr>
+                    <tr><td><strong>Backend</strong></td><td>En el servidor remoto</td><td>La LÓGICA: procesa datos, verifica credenciales, consulta la base de datos.</td></tr>
+                    <tr><td><strong>Base de datos</strong></td><td>En el servidor (o un servidor dedicado)</td><td>Almacena DATOS: usuarios, contraseñas, productos, mensajes.</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="html-css-js">
+            <h2><span class="section-icon">📄</span> 2. HTML, CSS y JavaScript: los tres pilares</h2>
+            <p class="lesson-text">
+                Todo lo que ves en tu navegador está construido con tres tecnologías que trabajan juntas:
+            </p>
+
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Tecnología</th><th>Función</th><th>Analogía</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>HTML</strong></td><td>La <strong>estructura</strong> de la página: títulos, párrafos, formularios, links, imágenes.</td><td>Los <strong>cimientos y paredes</strong> de una casa</td></tr>
+                    <tr><td><strong>CSS</strong></td><td>El <strong>diseño visual</strong>: colores, fuentes, layout, animaciones.</td><td>La <strong>pintura y decoración</strong> de la casa</td></tr>
+                    <tr><td><strong>JavaScript</strong></td><td>El <strong>comportamiento</strong>: interactividad, validación, comunicación con el servidor sin recargar.</td><td>La <strong>electricidad e instalaciones</strong> que hacen que todo funcione</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>HTML: la estructura</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ejemplo de HTML — Formulario de login</span></div>
+                <pre><code><span style="color:#546e7a">&lt;!-- Un formulario de login típico --&gt;</span>
+<span style="color:#ff5252">&lt;form</span> <span style="color:#ffab40">action</span>=<span style="color:#00e676">"/login"</span> <span style="color:#ffab40">method</span>=<span style="color:#00e676">"POST"</span><span style="color:#ff5252">&gt;</span>
+    <span style="color:#ff5252">&lt;input</span> <span style="color:#ffab40">type</span>=<span style="color:#00e676">"text"</span> <span style="color:#ffab40">name</span>=<span style="color:#00e676">"username"</span> <span style="color:#ffab40">placeholder</span>=<span style="color:#00e676">"Usuario"</span><span style="color:#ff5252">&gt;</span>
+    <span style="color:#ff5252">&lt;input</span> <span style="color:#ffab40">type</span>=<span style="color:#00e676">"password"</span> <span style="color:#ffab40">name</span>=<span style="color:#00e676">"password"</span> <span style="color:#ffab40">placeholder</span>=<span style="color:#00e676">"Contraseña"</span><span style="color:#ff5252">&gt;</span>
+    <span style="color:#ff5252">&lt;button</span> <span style="color:#ffab40">type</span>=<span style="color:#00e676">"submit"</span><span style="color:#ff5252">&gt;</span>Iniciar Sesión<span style="color:#ff5252">&lt;/button&gt;</span>
+<span style="color:#ff5252">&lt;/form&gt;</span>
+
+<span style="color:#546e7a">&lt;!-- Lo importante para hacking web: --&gt;</span>
+<span style="color:#546e7a">&lt;!-- action="/login"  → A dónde se envían los datos --&gt;</span>
+<span style="color:#546e7a">&lt;!-- method="POST"    → Cómo se envían (POST = en el body, no en la URL) --&gt;</span>
+<span style="color:#546e7a">&lt;!-- name="username"  → El nombre del campo que recibe el servidor --&gt;</span></code></pre>
+                <div class="explanation">
+                    <p><strong>¿Por qué importa?</strong> Cuando haces SQL Injection, escribes código malicioso en estos campos <code>input</code>. El valor de <code>name</code> te dice qué parámetro manipular. El <code>method</code> y <code>action</code> te dicen cómo y adónde viajan los datos.</p>
+                </div>
+            </div>
+
+            <h3>JavaScript: el comportamiento</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">JavaScript en el navegador</span></div>
+                <pre><code><span style="color:#546e7a">// JavaScript puede manipular la página (DOM)</span>
+document.getElementById("username").value = "admin";
+
+<span style="color:#546e7a">// Puede hacer peticiones al servidor sin recargar (AJAX/Fetch)</span>
+fetch('/api/users/123')
+    .then(response => response.json())
+    .then(data => console.log(data));
+
+<span style="color:#546e7a">// Puede acceder a cookies</span>
+console.log(document.cookie);
+<span style="color:#546e7a">// → "session=abc123; token=xyz789"</span>
+
+<span style="color:#546e7a">// ¿Por qué importa? Un ataque XSS inyecta JavaScript malicioso</span>
+<span style="color:#546e7a">// que puede robar cookies con: document.cookie</span></code></pre>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 Clave para entender XSS</h4>
+                <p>
+                    <strong>Cross-Site Scripting (XSS)</strong> funciona porque el atacante logra que su código JavaScript 
+                    se ejecute en el navegador de la víctima. Si la app web no sanitiza los datos, un atacante puede 
+                    inyectar <code>&lt;script&gt;document.cookie&lt;/script&gt;</code> y robar la sesión del usuario.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="http-detalle">
+            <h2><span class="section-icon">📡</span> 3. HTTP en detalle: métodos, headers y cookies</h2>
+            <p class="lesson-text">
+                <strong>HTTP (HyperText Transfer Protocol)</strong> es el idioma que hablan el navegador y el servidor. 
+                Cada interacción es una <strong>petición</strong> (request) y una <strong>respuesta</strong> (response).
+            </p>
+
+            <h3>Métodos HTTP principales</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Método</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>GET</strong></td><td>Pedir información. Los parámetros van en la URL.</td><td><code>GET /buscar?q=hacking</code></td></tr>
+                    <tr><td><strong>POST</strong></td><td>Enviar datos al servidor. Los parámetros van en el body (no en la URL).</td><td><code>POST /login</code> con body: <code>user=admin&pass=123</code></td></tr>
+                    <tr><td><strong>PUT</strong></td><td>Actualizar un recurso existente.</td><td><code>PUT /api/users/5</code></td></tr>
+                    <tr><td><strong>DELETE</strong></td><td>Eliminar un recurso.</td><td><code>DELETE /api/users/5</code></td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Anatomía de una petición HTTP</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Petición HTTP real (lo que ve Burp Suite)</span></div>
+                <pre><code><span style="color:#00e676">POST</span> /login <span style="color:#546e7a">HTTP/1.1</span>
+<span style="color:#ffab40">Host:</span> www.ejemplo.com
+<span style="color:#ffab40">Content-Type:</span> application/x-www-form-urlencoded
+<span style="color:#ffab40">Cookie:</span> session=abc123def456
+<span style="color:#ffab40">User-Agent:</span> Mozilla/5.0 (X11; Linux x86_64)
+
+<span style="color:#b388ff">username=admin&password=MiContraseña123</span>
+
+<span style="color:#546e7a">--- RESPUESTA DEL SERVIDOR ---</span>
+<span style="color:#546e7a">HTTP/1.1</span> <span style="color:#00e676">302 Found</span>
+<span style="color:#ffab40">Set-Cookie:</span> session=nuevo_token_xyz789; HttpOnly; Secure
+<span style="color:#ffab40">Location:</span> /dashboard</code></pre>
+                <div class="explanation">
+                    <p><strong>Lo importante:</strong> La línea <code>Cookie:</code> contiene tu sesión. Si un atacante la roba (vía XSS), puede suplantar tu identidad. <code>Set-Cookie</code> crea cookies nuevas. <code>HttpOnly</code> impide que JavaScript acceda a la cookie.</p>
+                </div>
+            </div>
+
+            <h3>Cookies y sesiones</h3>
+            <p class="lesson-text">
+                HTTP es <strong>stateless</strong> (sin estado) — cada petición es independiente. Para "recordar" que estás 
+                logueado, el servidor te da una <strong>cookie de sesión</strong>: un token que tu navegador envía en cada 
+                petición. Si alguien roba tu cookie, puede actuar como tú sin conocer tu contraseña.
+            </p>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="bases-datos">
+            <h2><span class="section-icon">🗄️</span> 4. Bases de datos relacionales y SQL</h2>
+            <p class="lesson-text">
+                La mayoría de aplicaciones web guardan información en <strong>bases de datos relacionales</strong>: 
+                tablas con filas y columnas, como una hoja de Excel muy poderosa. <strong>SQL (Structured Query Language)</strong> 
+                es el lenguaje que se usa para consultar y manipular esos datos.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">📋</span>
+                <h4>Analogía: La base de datos es un archivo de Excel</h4>
+                <p>
+                    Imagina una hoja de Excel llamada <strong>"usuarios"</strong> con columnas: id, nombre, email, password_hash. 
+                    SQL es el idioma para preguntarle cosas a ese Excel: "dame todos los usuarios cuyo email contenga @gmail.com" 
+                    o "agrega una nueva fila". <strong>SQL Injection</strong> es cuando el atacante logra escribir sus propias 
+                    instrucciones SQL en lugar de solo un nombre de usuario.
+                </p>
+            </div>
+
+            <h3>Tabla de ejemplo: <code>users</code></h3>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>id</th><th>username</th><th>email</th><th>password_hash</th><th>role</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>admin</td><td>admin@empresa.com</td><td>5f4dcc3b5aa765d61...</td><td>admin</td></tr>
+                    <tr><td>2</td><td>jgarcia</td><td>juan@empresa.com</td><td>e99a18c428cb38d5f...</td><td>user</td></tr>
+                    <tr><td>3</td><td>mlopez</td><td>maria@empresa.com</td><td>d8578edf8458ce06f...</td><td>user</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Comandos SQL esenciales</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">SQL básico — Lo mínimo para entender SQLi</span></div>
+                <pre><code><span style="color:#546e7a">-- SELECCIONAR datos (leer)</span>
+<span style="color:#00e676">SELECT</span> * <span style="color:#00e676">FROM</span> users;                       <span style="color:#546e7a">-- Todos los usuarios</span>
+<span style="color:#00e676">SELECT</span> username, email <span style="color:#00e676">FROM</span> users <span style="color:#00e676">WHERE</span> role = 'admin';  <span style="color:#546e7a">-- Solo admins</span>
+
+<span style="color:#546e7a">-- INSERTAR datos (crear)</span>
+<span style="color:#00e676">INSERT INTO</span> users (username, email, password_hash, role)
+<span style="color:#00e676">VALUES</span> ('nuevo', 'nuevo@mail.com', 'hash123', 'user');
+
+<span style="color:#546e7a">-- ACTUALIZAR datos</span>
+<span style="color:#00e676">UPDATE</span> users <span style="color:#00e676">SET</span> role = 'admin' <span style="color:#00e676">WHERE</span> username = 'jgarcia';
+
+<span style="color:#546e7a">-- BORRAR datos</span>
+<span style="color:#00e676">DELETE FROM</span> users <span style="color:#00e676">WHERE</span> id = 3;
+
+<span style="color:#546e7a">-- UNIR tablas</span>
+<span style="color:#00e676">SELECT</span> users.username, orders.total 
+<span style="color:#00e676">FROM</span> users <span style="color:#00e676">JOIN</span> orders <span style="color:#00e676">ON</span> users.id = orders.user_id;</code></pre>
+                <div class="explanation">
+                    <p><strong>¿Por qué importa?</strong> SQL Injection funciona porque la aplicación construye estas consultas concatenando lo que escribes en el formulario. Si escribes <code>' OR '1'='1' --</code> en lugar de un nombre de usuario, alteras la lógica de la consulta.</p>
+                </div>
+            </div>
+
+            <h3>Cómo funciona un login con SQL (código vulnerable)</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Login vulnerable vs. seguro</span></div>
+                <pre><code><span style="color:#ff5252">❌ CÓDIGO VULNERABLE (NO hagas esto):</span>
+query = "SELECT * FROM users WHERE username='" + user_input + "' AND password='" + pass_input + "'"
+
+<span style="color:#546e7a"># Si el atacante escribe: admin' OR '1'='1' -- </span>
+<span style="color:#546e7a"># La query se convierte en:</span>
+SELECT * FROM users WHERE username='<span style="color:#ff5252">admin' OR '1'='1' --</span>' AND password=''
+<span style="color:#546e7a"># '1'='1' siempre es verdadero → el atacante entra como admin</span>
+
+<span style="color:#00e676">✅ CÓDIGO SEGURO (parametrizado):</span>
+query = "SELECT * FROM users WHERE username = %s AND password = %s"
+cursor.execute(query, (user_input, pass_input))
+<span style="color:#546e7a"># Los parámetros se tratan como DATOS, nunca como código SQL</span></code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="flujo-completo">
+            <h2><span class="section-icon">🔄</span> 5. El flujo completo: del formulario a la base de datos</h2>
+            <p class="lesson-text">
+                Ahora que conoces cada pieza, veamos cómo se conectan en un escenario real: 
+                <strong>un usuario hace login en una aplicación web</strong>.
+            </p>
+
+            <div class="lesson-diagram"><pre>
+    1. El usuario escribe usuario/contraseña en el formulario HTML
+       └─→ El navegador construye una petición HTTP POST
+
+    2. POST /login HTTP/1.1
+       Body: username=jgarcia&password=MiPass123
+       └─→ Se envía al servidor vía HTTP (cifrado si es HTTPS)
+
+    3. El servidor recibe los datos
+       └─→ El backend (PHP/Python/Node.js) los procesa
+
+    4. El backend construye una consulta SQL:
+       SELECT * FROM users WHERE username='jgarcia' AND password_hash='...'
+       └─→ Envía la query a la base de datos
+
+    5. La base de datos responde:
+       └─→ ✓ "Encontré al usuario" → El servidor crea una cookie de sesión
+       └─→ ✗ "No encontrado" → El servidor responde "Credenciales inválidas"
+
+    6. El servidor envía la respuesta HTTP al navegador:
+       HTTP 302 Found + Set-Cookie: session=TOKEN_UNICO
+       └─→ El navegador guarda la cookie y redirige al dashboard
+            </pre><p class="diagram-caption">Flujo completo de un login web: Formulario → HTTP → Backend → SQL → Respuesta</p></div>
+
+            <div class="warning-box">
+                <h4>⚠️ ¿Dónde vive cada vulnerabilidad?</h4>
+                <p>
+                    <strong>SQL Injection:</strong> En el paso 4 — si el backend concatena los datos sin sanitizar.<br>
+                    <strong>XSS:</strong> En el paso 6 — si el servidor refleja datos del usuario sin escapar en el HTML.<br>
+                    <strong>CSRF:</strong> En el paso 2 — si la app no verifica que la petición fue iniciada por el usuario real.<br>
+                    <strong>IDOR:</strong> En el paso 3 — si el backend no verifica que el usuario tiene permiso de acceder al recurso.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6: Practice -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 6. Práctica</h2>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Antes de pasar a Web Hacking (Lección 09), asegúrate de poder responder:</p>
+                <ul>
+                    <li>¿Cuál es la diferencia entre frontend y backend?</li>
+                    <li>¿Qué hace HTML, CSS y JavaScript respectivamente?</li>
+                    <li>¿Cuál es la diferencia entre GET y POST?</li>
+                    <li>¿Qué es una cookie de sesión y por qué es valiosa para un atacante?</li>
+                    <li>¿Qué hace <code>SELECT * FROM users WHERE username='admin'</code>?</li>
+                    <li>¿Por qué es vulnerable concatenar input del usuario directamente en una query SQL?</li>
+                </ul>
+            </div>
+
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/howwebsiteswork" target="_blank" rel="noopener noreferrer">TryHackMe: How Websites Work</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/httpindetail" target="_blank" rel="noopener noreferrer">TryHackMe: HTTP in Detail</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/webfundamentals" target="_blank" rel="noopener noreferrer">TryHackMe: Web Fundamentals</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_all" target="_blank" rel="noopener noreferrer">W3Schools: SQL Playground interactivo</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-08-nmap.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 08: Nmap</span></a>
+            <a href="leccion-09-web-hacking.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 09: Hacking Web (OWASP Top 10)</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "¿Cuál es la diferencia entre GET y POST en HTTP?",
+                options: [
+                    "GET es más seguro que POST",
+                    "GET envía parámetros en la URL, POST los envía en el body de la petición",
+                    "POST solo funciona con formularios, GET funciona con todo",
+                    "No hay diferencia, son intercambiables"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué hace la consulta SQL: SELECT * FROM users WHERE role = 'admin'?",
+                options: [
+                    "Borra todos los administradores de la tabla users",
+                    "Crea un nuevo usuario administrador",
+                    "Devuelve todas las columnas de todos los usuarios cuyo rol sea 'admin'",
+                    "Actualiza el rol de todos los usuarios a 'admin'"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Por qué es peligroso concatenar input del usuario directamente en una consulta SQL?",
+                options: [
+                    "Porque hace la consulta más lenta",
+                    "Porque el atacante puede inyectar código SQL que modifica la lógica de la consulta",
+                    "Porque rompe el diseño CSS de la página",
+                    "No es peligroso, todos los frameworks lo hacen así"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué es una cookie de sesión?",
+                options: [
+                    "Un archivo que se descarga al visitar un sitio web",
+                    "Un token que el servidor envía al navegador para identificar al usuario en peticiones posteriores",
+                    "Un tipo de cifrado para contraseñas",
+                    "Un plugin del navegador para guardar contraseñas"
+                ],
+                correct: 1
+            },
+            {
+                question: "Si un atacante logra inyectar una etiqueta \u003cscript\u003e con document.cookie en una p\u00e1gina web, \u00bfqu\u00e9 tipo de ataque es?",
+                options: [
+                    "SQL Injection",
+                    "CSRF (Cross-Site Request Forgery)",
+                    "XSS (Cross-Site Scripting)",
+                    "IDOR (Insecure Direct Object Reference)"
+                ],
+                correct: 2
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-08b'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-08b', quizQuestions);
+            const explanations = [
+                "GET envía datos en la URL (?param=valor), visible para todos. POST los envía en el body, ocultos de la URL. POST se usa para datos sensibles como credenciales.",
+                "SELECT * FROM users WHERE role = 'admin' selecciona (*) todas las columnas de la tabla users donde la columna role sea exactamente 'admin'.",
+                "Si concatenas input del usuario en SQL, el atacante puede cerrar la cadena original con una comilla e inyectar sus propios comandos SQL (SQL Injection).",
+                "Una cookie de sesión es un token (ej: session=abc123) que el servidor envía con Set-Cookie. El navegador la reenvía en cada petición para mantener la sesión activa.",
+                "Inyectar código JavaScript que se ejecuta en el navegador de otros usuarios es Cross-Site Scripting (XSS). Puede robar cookies, redirigir a sitios maliciosos o modificar la página."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 16: Fundamentos de Informática Forense — Cadena de custodia, adquisición de evidencia, integridad con hashes y proceso forense completo.">
+    <title>Lección 16: Fundamentos de Informática Forense — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 16</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(0,176,255,0.15);color:#00b0ff">Fase 4 — Informática Forense y DFIR</div>
+            <h1>Fundamentos de Informática Forense</h1>
+            <p class="lesson-intro">
+                Cuando ocurre un incidente de seguridad — un ransomware, una filtración de datos, un empleado desleal — 
+                alguien tiene que <strong>investigar qué pasó</strong>. Esa persona es el <strong>analista forense</strong>. 
+                En esta lección aprenderás los fundamentos: qué es la forense digital, cómo se preserva la evidencia, 
+                la <strong>cadena de custodia</strong>, la <strong>adquisición de imágenes</strong> y el proceso 
+                forense completo que usarás en todas las lecciones siguientes.
+            </p>
+        </div>
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es">¿Qué es la informática forense?</a></li>
+                <li><a href="#principios">Principios fundamentales</a></li>
+                <li><a href="#tipos-evidencia">Tipos de evidencia digital</a></li>
+                <li><a href="#cadena-custodia">Cadena de custodia</a></li>
+                <li><a href="#orden-volatilidad">Orden de volatilidad</a></li>
+                <li><a href="#adquisicion">Adquisición de evidencia</a></li>
+                <li><a href="#integridad">Integridad: hashes y verificación</a></li>
+                <li><a href="#proceso">El proceso forense completo</a></li>
+                <li><a href="#herramientas">Herramientas esenciales</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="que-es"><h2><span class="section-icon">🔬</span> 1. ¿Qué es la informática forense?</h2>
+            <p class="lesson-text">La <strong>informática forense</strong> (digital forensics) es la disciplina que se encarga de <strong>identificar, preservar, analizar y presentar</strong> evidencia digital de forma que sea <strong>admisible en un proceso legal</strong>.</p>
+            <div class="lesson-callout"><strong>📌 Diferencia con incident response:</strong>
+                <ul>
+                    <li><strong>Incident Response (IR)</strong>: Prioridad = contener y remediar el incidente RÁPIDO</li>
+                    <li><strong>Digital Forensics</strong>: Prioridad = preservar evidencia y entender QUÉ pasó exactamente</li>
+                    <li><strong>DFIR</strong>: La combinación de ambas — el estándar moderno</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="principios"><h2><span class="section-icon">⚖️</span> 2. Principios fundamentales</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Principio</th><th>Descripción</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>No alterar la evidencia</strong></td><td>NUNCA trabajar directamente sobre el dispositivo original. Siempre crear una copia forense bit a bit.</td></tr>
+                    <tr><td><strong>Documentar todo</strong></td><td>Cada acción que tomes debe quedar registrada: qué hiciste, cuándo, por qué, con qué herramienta.</td></tr>
+                    <tr><td><strong>Cadena de custodia</strong></td><td>Registrar quién tuvo acceso a la evidencia en cada momento.</td></tr>
+                    <tr><td><strong>Reproducibilidad</strong></td><td>Otro analista con la misma evidencia debe poder llegar a las mismas conclusiones.</td></tr>
+                    <tr><td><strong>Integridad verificable</strong></td><td>Usar hashes (MD5, SHA-256) para demostrar que la evidencia no fue modificada.</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="tipos-evidencia"><h2><span class="section-icon">💾</span> 3. Tipos de evidencia digital</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Tipo</th><th>Ejemplos</th><th>Volatilidad</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Memoria RAM</strong></td><td>Procesos, conexiones de red, claves de cifrado, malware en ejecución</td><td>⚡ Muy alta — se pierde al apagar</td></tr>
+                    <tr><td><strong>Disco duro / SSD</strong></td><td>Archivos, registros, logs del sistema, archivos borrados</td><td>🟢 Baja — persiste al apagar</td></tr>
+                    <tr><td><strong>Tráfico de red</strong></td><td>Capturas PCAP, logs de firewall, logs DNS</td><td>⚡ Alta — si no se captura, se pierde</td></tr>
+                    <tr><td><strong>Logs</strong></td><td>Event logs de Windows, syslog, logs de aplicaciones</td><td>🟡 Media — pueden ser rotados o borrados</td></tr>
+                    <tr><td><strong>Dispositivos móviles</strong></td><td>SMS, apps, geolocalización, fotos con EXIF</td><td>🟡 Media</td></tr>
+                    <tr><td><strong>Nube</strong></td><td>Logs de AWS/Azure/GCP, correos, almacenamiento</td><td>🟡 Depende del proveedor</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="cadena-custodia"><h2><span class="section-icon">🔗</span> 4. Cadena de custodia</h2>
+            <p class="lesson-text">La <strong>cadena de custodia</strong> es el registro documentado de quién ha tenido acceso a la evidencia desde que se recolectó hasta que se presenta en un tribunal.</p>
+            <div class="lesson-callout"><strong>📌 Un registro de custodia incluye:</strong>
+                <ul>
+                    <li><strong>Fecha y hora</strong> de recolección</li>
+                    <li><strong>Quién</strong> recolectó la evidencia (nombre, rol)</li>
+                    <li><strong>Descripción</strong> del dispositivo (marca, modelo, serial)</li>
+                    <li><strong>Hash de integridad</strong> calculado al momento de adquisición</li>
+                    <li><strong>Dónde se almacena</strong> la evidencia (caja fuerte, servidor seguro)</li>
+                    <li><strong>Cada transferencia</strong>: quién entregó a quién, fecha, firma</li>
+                </ul>
+            </div>
+            <p class="lesson-text">Si la cadena de custodia se rompe (alguien accedió sin registrar, la evidencia estuvo sin custodia), un juez puede <strong>invalidar toda la investigación</strong>.</p>
+        </div>
+
+        <div class="lesson-section" id="orden-volatilidad"><h2><span class="section-icon">⏱️</span> 5. Orden de volatilidad</h2>
+            <p class="lesson-text">Cuando llegas a un incidente, debes recolectar evidencia en <strong>orden de volatilidad</strong> — primero lo que se pierde más rápido:</p>
+            <div class="lesson-diagram"><pre>
+    Orden de recolección (de más a menos volátil):
+    
+    1. 🔴 Registros del CPU, caché           → Se pierden inmediatamente
+    2. 🟠 Memoria RAM                        → Se pierde al apagar
+    3. 🟡 Estado de red (conexiones, ARP)     → Cambia constantemente
+    4. 🟢 Procesos en ejecución              → Cambian al interactuar
+    5. 🔵 Disco duro / SSD                   → Persiste (pero puede ser sobreescrito)
+    6. 🟣 Logs remotos / backups             → Persisten pero pueden ser rotados
+    7. ⬜ Medios físicos (CD, USB, papel)     → Estables
+            </pre><p class="diagram-caption">RFC 3227: Guidelines for Evidence Collection — siempre recolectar de lo más volátil a lo menos</p></div>
+        </div>
+
+        <div class="lesson-section" id="adquisicion"><h2><span class="section-icon">📀</span> 6. Adquisición de evidencia</h2>
+            <p class="lesson-text">La <strong>adquisición</strong> es crear una copia exacta (bit a bit) del dispositivo original. Hay dos tipos:</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Tipo</th><th>Descripción</th><th>Herramientas</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Imagen forense (dead)</strong></td><td>Se apaga el dispositivo y se crea una imagen del disco completo</td><td><code>dd</code>, <code>dc3dd</code>, <code>FTK Imager</code></td></tr>
+                    <tr><td><strong>Adquisición en vivo (live)</strong></td><td>Se recolecta evidencia con el sistema encendido (RAM, procesos, red)</td><td><code>DumpIt</code>, <code>WinPMEM</code>, <code>LiME</code></td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Adquisición de disco con dd</span></div>
+                <pre><code><span style="color:#546e7a"># Crear imagen forense bit a bit de un disco</span>
+<span style="color:#00e676">$</span> sudo dd if=/dev/sda of=/evidencia/disco_imagen.raw bs=4096 status=progress
+
+<span style="color:#546e7a"># Con dc3dd (mejor para forense: muestra hash al final)</span>
+<span style="color:#00e676">$</span> sudo dc3dd if=/dev/sda of=/evidencia/disco.raw hash=sha256 log=adquisicion.log
+
+<span style="color:#546e7a"># Calcular hash de integridad</span>
+<span style="color:#00e676">$</span> sha256sum /evidencia/disco_imagen.raw
+<span style="color:#ffcc02">a1b2c3d4e5f6... /evidencia/disco_imagen.raw</span>
+
+<span style="color:#546e7a"># FTK Imager (GUI - Windows) crea formato E01</span>
+<span style="color:#546e7a"># E01 es el formato estándar forense (comprimido + con metadatos)</span></code></pre>
+            </div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Adquisición de RAM</span></div>
+                <pre><code><span style="color:#546e7a"># En Windows: usar DumpIt (ejecutar como Admin)</span>
+<span style="color:#ffcc02">C:\></span> DumpIt.exe
+<span style="color:#ffcc02">Address space size: 8589934592 (8.00 GB)
+Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
+
+<span style="color:#546e7a"># En Linux: usar LiME</span>
+<span style="color:#00e676">$</span> sudo insmod lime.ko "path=/evidencia/ram.raw format=raw"
+
+<span style="color:#546e7a"># Calcular hash inmediatamente después</span>
+<span style="color:#00e676">$</span> sha256sum /evidencia/ram.raw</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="integridad"><h2><span class="section-icon">🔐</span> 7. Integridad: hashes y verificación</h2>
+            <p class="lesson-text">Los <strong>hashes</strong> son la columna vertebral de la forense digital. Demuestran que la evidencia no ha sido alterada.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Verificación de integridad</span></div>
+                <pre><code><span style="color:#546e7a"># Calcular hashes de la imagen forense</span>
+<span style="color:#00e676">$</span> md5sum disco_imagen.raw
+<span style="color:#00e676">$</span> sha256sum disco_imagen.raw
+
+<span style="color:#546e7a"># ANTES de analizar: verificar que el hash coincide</span>
+<span style="color:#00e676">$</span> sha256sum disco_imagen.raw
+<span style="color:#ffcc02">a1b2c3d4e5f6...  disco_imagen.raw</span>
+<span style="color:#546e7a"># ¿Coincide con el hash original? ✅ → Evidencia íntegra</span>
+
+<span style="color:#546e7a"># Si el hash cambia → ❌ La evidencia fue modificada</span>
+<span style="color:#546e7a"># Esto invalida el análisis en un tribunal</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="proceso"><h2><span class="section-icon">📊</span> 8. El proceso forense completo</h2>
+            <div class="lesson-diagram"><pre>
+    Proceso Forense (NIST SP 800-86):
+    
+    1. IDENTIFICACIÓN     → ¿Qué dispositivos contienen evidencia relevante?
+           ↓
+    2. PRESERVACIÓN       → Aislar y proteger la evidencia (bloqueador de escritura)
+           ↓
+    3. ADQUISICIÓN        → Crear copias forenses bit a bit + calcular hashes
+           ↓
+    4. ANÁLISIS           → Examinar la copia forense con herramientas especializadas
+           ↓
+    5. DOCUMENTACIÓN      → Registrar CADA hallazgo con timestamps y contexto
+           ↓
+    6. PRESENTACIÓN       → Reporte final para cliente / tribunal / management
+            </pre><p class="diagram-caption">Cada fase tiene sus reglas estrictas — saltarse una puede invalidar la investigación</p></div>
+        </div>
+
+        <div class="lesson-section" id="herramientas"><h2><span class="section-icon">🧰</span> 9. Herramientas esenciales</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Herramienta</th><th>Tipo</th><th>Uso</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>FTK Imager</strong></td><td>Gratuita (Windows)</td><td>Adquisición de discos e imágenes forenses</td></tr>
+                    <tr><td><strong>Autopsy</strong></td><td>Open Source</td><td>Análisis forense de discos (GUI)</td></tr>
+                    <tr><td><strong>Volatility 3</strong></td><td>Open Source</td><td>Análisis forense de memoria RAM</td></tr>
+                    <tr><td><strong>Wireshark</strong></td><td>Open Source</td><td>Análisis de tráfico de red (PCAP)</td></tr>
+                    <tr><td><strong>KAPE</strong></td><td>Gratuita</td><td>Recolección y procesamiento rápido de artefactos</td></tr>
+                    <tr><td><strong>Eric Zimmerman Tools</strong></td><td>Gratuitas</td><td>Parsear artefactos de Windows (Registry, prefetch, etc.)</td></tr>
+                    <tr><td><strong>Sleuth Kit (TSK)</strong></td><td>Open Source</td><td>Herramientas de línea de comandos para análisis de filesystems</td></tr>
+                    <tr><td><strong>Plaso/log2timeline</strong></td><td>Open Source</td><td>Crear supertimelines de eventos</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 10. Práctica</h2>
+            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Entiendes qué es la informática forense y cuándo se aplica</li>
+                    <li>Conoces los 5 principios fundamentales</li>
+                    <li>Puedes explicar la cadena de custodia y por qué es crucial</li>
+                    <li>Sabes el orden de volatilidad para recolectar evidencia</li>
+                    <li>Puedes crear una imagen forense con dd o FTK Imager</li>
+                    <li>Sabes verificar integridad con hashes SHA-256</li>
+                    <li>Conoces el proceso forense de 6 fases (NIST)</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/introdigitalforensics" target="_blank" rel="noopener noreferrer">TryHackMe: Intro to Digital Forensics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://cyberdefenders.org/" target="_blank" rel="noopener noreferrer">CyberDefenders: Retos de análisis forense</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-15b-cloud-security.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15B: Cloud Security 101</span></a>
+            <a href="leccion-17-volatility.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 17: Volatility 3</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué es la cadena de custodia en informática forense?",
+                    "options": [
+                              "La lista de herramientas usadas en el análisis",
+                              "El registro documentado de quién tuvo la evidencia, cuándo y qué se hizo con ella",
+                              "La secuencia de comandos ejecutados",
+                              "El orden en que se encontraron los archivos"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Por qué se calcula un hash de la evidencia antes de analizarla?",
+                    "options": [
+                              "Para cifrar la evidencia",
+                              "Para verificar que la evidencia no se modifique durante el análisis (integridad)",
+                              "Para comprimir los archivos de evidencia",
+                              "Para desbloquear archivos protegidos"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Cuál es la diferencia entre una imagen forense y una copia simple de archivos?",
+                    "options": [
+                              "No hay diferencia",
+                              "La imagen forense es una copia bit a bit que incluye archivos borrados, espacio no asignado y metadatos del sistema de archivos",
+                              "La imagen forense solo copia archivos visibles",
+                              "Una copia simple es más completa que una imagen forense"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-16'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-16', quizQuestions);
+            const explanations = [
+                "La cadena de custodia garantiza que la evidencia es legítima en juicio. Documenta cada persona que tocó la evidencia, cuándo y qué acciones realizó. Sin ella, la evidencia puede ser inadmisible.",
+                "El hash (SHA-256/MD5) de la evidencia original se calcula al inicio. Después del análisis se recalcula — si coincide, la evidencia no fue alterada. Garantiza integridad forense.",
+                "Una imagen forense (dd, FTK Imager) copia CADA bit del disco: archivos borrados, espacio libre, slack space, MBR. Una copia normal solo copia archivos visibles del sistema de archivos."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

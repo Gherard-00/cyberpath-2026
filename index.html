@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Curso completo de Ciberseguridad 2026: Aprende desde cero hacking ético, pentesting y forense digital con lecciones paso a paso.">
+    <title>CyberPath 2026 — Curso Completo de Ciberseguridad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+    <div class="scan-line"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Menú"><span></span><span></span><span></span></button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#hero" class="nav-link active">Inicio</a></li>
+            <li><a href="#temario" class="nav-link">Temario</a></li>
+        </ul>
+        <div class="nav-progress"><div class="nav-progress-bar" id="scrollProgress"></div></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge"><span class="badge-dot"></span>Curso Completo 2026</div>
+            <h1 class="hero-title">
+                <span class="title-line">Aprende</span>
+                <span class="title-line"><span class="gradient-text">Ciberseguridad</span></span>
+                <span class="title-line">Desde Cero</span>
+            </h1>
+            <p class="hero-subtitle">
+                Un curso real que te <strong>enseña paso a paso</strong>: teoría explicada, 
+                comandos detallados, ejercicios prácticos y todo lo que necesitas para dominar 
+                <strong>Hacking Ético</strong>, <strong>Pentesting</strong> y <strong>Forense Digital</strong>.
+            </p>
+            <div class="hero-stats">
+                <div class="stat"><span class="stat-number" data-count="6">0</span><span class="stat-label">Fases</span></div>
+                <div class="stat"><span class="stat-number" data-count="23">0</span><span class="stat-label">Lecciones</span></div>
+                <div class="stat"><span class="stat-number" data-count="15">0</span><span class="stat-label">Herramientas</span></div>
+            </div>
+            <a href="#temario" class="btn btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                Ver Temario Completo
+            </a>
+        </div>
+        <div class="hero-visual">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+                    <span class="terminal-title">cyberpath@kali:~</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line"><span class="prompt">┌──(cyberpath㉿kali)-[~]</span></div>
+                    <div class="terminal-line"><span class="prompt">└─$</span> <span class="command" id="typewriter"></span><span class="cursor">█</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Temario / Course Index -->
+    <section class="section temario-section" id="temario">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Temario del Curso</span>
+                <h2 class="section-title">Lecciones <span class="gradient-text">Paso a Paso</span></h2>
+                <p class="section-desc">Cada lección te enseña la teoría completa, te explica cada concepto y te guía con ejercicios prácticos. Haz clic en una lección para comenzar.</p>
+            </div>
+
+            <!-- FASE 0 -->
+            <div class="course-phase">
+                <div class="course-phase-header">
+                    <div class="phase-marker beginner"></div>
+                    <div>
+                        <h3>Fase 0 — Cimientos Absolutos <span class="phase-time">(Meses 0–3)</span></h3>
+                        <p>Aquí aprenderás todo lo que necesitas saber sobre redes, Linux y programación antes de tocar cualquier herramienta de hacking.</p>
+                    </div>
+                </div>
+                <div class="lessons-list">
+                    <a href="lecciones/leccion-01-redes.html" class="lesson-card">
+                        <span class="lesson-number">01</span>
+                        <div class="lesson-info">
+                            <h4>Redes y TCP/IP — Cómo se comunican las computadoras</h4>
+                            <p>Aprende qué es una red, cómo viajan los datos, qué son los puertos, TCP vs UDP, DNS, HTTP y cómo funciona Internet por dentro.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-02-linux.html" class="lesson-card">
+                        <span class="lesson-number">02</span>
+                        <div class="lesson-info">
+                            <h4>Linux desde Cero — Tu sistema operativo de trabajo</h4>
+                            <p>Aprende a instalar Linux, manejar la terminal, archivos, permisos, procesos, y scripting en Bash. Todo con ejemplos reales explicados.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~4 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-03-programacion.html" class="lesson-card">
+                        <span class="lesson-number">03</span>
+                        <div class="lesson-info">
+                            <h4>Python para Ciberseguridad — Programación orientada a hacking</h4>
+                            <p>Aprende Python desde cero con enfoque en seguridad: sockets, automatización, parsing de logs y creación de herramientas.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~4 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-04-laboratorio.html" class="lesson-card">
+                        <span class="lesson-number">04</span>
+                        <div class="lesson-info">
+                            <h4>Montar tu Laboratorio Virtual — Tu entorno de práctica seguro</h4>
+                            <p>Aprende a instalar VirtualBox, configurar redes virtuales, montar Kali Linux, Metasploitable y Active Directory paso a paso.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">100% Práctica</span>
+                                <span class="meta-tag">~2 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FASE 1 -->
+            <div class="course-phase">
+                <div class="course-phase-header">
+                    <div class="phase-marker beginner-2"></div>
+                    <div>
+                        <h3>Fase 1 — Introducción a la Ciberseguridad <span class="phase-time">(Meses 3–6)</span></h3>
+                        <p>Aquí aprenderás los conceptos fundamentales de seguridad informática, criptografía y darás tus primeros pasos en hacking ético.</p>
+                    </div>
+                </div>
+                <div class="lessons-list">
+                    <a href="lecciones/leccion-05-seguridad-conceptos.html" class="lesson-card">
+                        <span class="lesson-number">05</span>
+                        <div class="lesson-info">
+                            <h4>Fundamentos de Seguridad Informática</h4>
+                            <p>Qué es la seguridad informática, la tríada CIA, tipos de amenazas, malware, ingeniería social, y cómo piensa un atacante.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría</span>
+                                <span class="meta-tag">~2 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-06-criptografia.html" class="lesson-card">
+                        <span class="lesson-number">06</span>
+                        <div class="lesson-info">
+                            <h4>Criptografía Esencial — Cómo se protege la información</h4>
+                            <p>Cifrado simétrico vs asimétrico, funciones hash, firmas digitales. Práctica con GPG y OpenSSL.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-07-etica-legal.html" class="lesson-card">
+                        <span class="lesson-number">07</span>
+                        <div class="lesson-info">
+                            <h4>Ética y Legalidad del Hacking</h4>
+                            <p>Qué está permitido, qué no, cómo obtener autorización, código de ética, y diferencia entre hacker ético y cibercriminal.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría</span>
+                                <span class="meta-tag">~1 hora</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FASE 2 -->
+            <div class="course-phase">
+                <div class="course-phase-header">
+                    <div class="phase-marker intermediate"></div>
+                    <div>
+                        <h3>Fase 2 — Pentesting Fundamental <span class="phase-time">(Meses 6–18)</span></h3>
+                        <p>Aquí aprenderás a usar las herramientas reales de pentesting: cómo escanear redes, encontrar vulnerabilidades, explotarlas y reportar hallazgos.</p>
+                    </div>
+                </div>
+                <div class="lessons-list">
+                    <a href="lecciones/leccion-08-nmap.html" class="lesson-card">
+                        <span class="lesson-number">08</span>
+                        <div class="lesson-info">
+                            <h4>Nmap — Escaneo de redes y descubrimiento de servicios</h4>
+                            <p>Cómo funciona un escaneo de puertos, tipos de escaneo (SYN, TCP, UDP), scripts NSE, detección de servicios y sistemas operativos.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-08b-web-fundamentals.html" class="lesson-card">
+                        <span class="lesson-number">08B</span>
+                        <div class="lesson-info">
+                            <h4>Fundamentos de Desarrollo Web — Lo que necesitas antes de hackear webs</h4>
+                            <p>Cómo funciona una app web: HTML, JavaScript, HTTP, bases de datos SQL y el flujo completo de una petición. Prerrequisito para Web Hacking.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Ejemplos</span>
+                                <span class="meta-tag">~2 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-09-web-hacking.html" class="lesson-card">
+                        <span class="lesson-number">09</span>
+                        <div class="lesson-info">
+                            <h4>Hacking Web — OWASP Top 10 explicado y practicado</h4>
+                            <p>Inyección SQL, XSS, CSRF, IDOR: qué son, cómo funcionan, cómo explotarlos y cómo defenderse. Todo con ejemplos reales.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~4 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-10-burpsuite.html" class="lesson-card">
+                        <span class="lesson-number">10</span>
+                        <div class="lesson-info">
+                            <h4>Burp Suite — Pentesting de aplicaciones web</h4>
+                            <p>Cómo interceptar peticiones HTTP, usar el Repeater para probar IDOR, usar Intruder para fuerza bruta, y analizar respuestas.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">100% Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-11-metasploit.html" class="lesson-card">
+                        <span class="lesson-number">11</span>
+                        <div class="lesson-info">
+                            <h4>Metasploit — Framework de explotación de vulnerabilidades</h4>
+                            <p>Cómo funciona Metasploit, cómo buscar y usar exploits, payloads, Meterpreter, post-explotación y escalada de privilegios.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-12-password-cracking.html" class="lesson-card">
+                        <span class="lesson-number">12</span>
+                        <div class="lesson-info">
+                            <h4>Cracking de Contraseñas — Hydra, John the Ripper y Hashcat</h4>
+                            <p>Cómo funcionan los hashes, tipos de ataques de fuerza bruta, diccionarios, y cómo crackear contraseñas paso a paso.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~2 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FASE 3 -->
+            <div class="course-phase">
+                <div class="course-phase-header">
+                    <div class="phase-marker advanced"></div>
+                    <div>
+                        <h3>Fase 3 — Red Team y Técnicas Avanzadas <span class="phase-time">(Meses 18–36)</span></h3>
+                        <p>Aquí aprenderás a simular ataques reales: Active Directory, movimiento lateral, evasión de defensas y operaciones de Red Team.</p>
+                    </div>
+                </div>
+                <div class="lessons-list">
+                    <a href="lecciones/leccion-13a-windows-ad-fundamentos.html" class="lesson-card">
+                        <span class="lesson-number">13A</span>
+                        <div class="lesson-info">
+                            <h4>Fundamentos de Windows y Active Directory</h4>
+                            <p>Estructura de dominios, usuarios, grupos, GPOs, Domain Controllers y PowerShell para AD. Prerrequisito para ataques a AD.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-13-active-directory.html" class="lesson-card">
+                        <span class="lesson-number">13</span>
+                        <div class="lesson-info">
+                            <h4>Active Directory — Ataques a entornos corporativos</h4>
+                            <p>Qué es AD, cómo funciona Kerberos, ataques como Kerberoasting, Pass-the-Hash, Golden Ticket y cómo usar BloodHound.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~4 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-14-wifi-hacking.html" class="lesson-card">
+                        <span class="lesson-number">14</span>
+                        <div class="lesson-info">
+                            <h4>Hacking WiFi — Auditoría de redes inalámbricas</h4>
+                            <p>Cómo funciona WPA/WPA2, captura de handshakes con Aircrack-ng, ataques de deautenticación y cracking de claves.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~2 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-15-redteam.html" class="lesson-card">
+                        <span class="lesson-number">15</span>
+                        <div class="lesson-info">
+                            <h4>Red Team — Simulación de ataques reales con MITRE ATT&CK</h4>
+                            <p>Cómo planificar y ejecutar un ejercicio de Red Team completo: reconocimiento, explotación, pivoteo, persistencia y reporte.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~4 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-15b-cloud-security.html" class="lesson-card">
+                        <span class="lesson-number">15B</span>
+                        <div class="lesson-info">
+                            <h4>Cloud Security 101 — Seguridad en AWS, Azure y GCP</h4>
+                            <p>Modelo de responsabilidad compartida, IAM, buckets expuestos, SSRF al metadata service y herramientas de auditoría cloud.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FASE 4 -->
+            <div class="course-phase">
+                <div class="course-phase-header">
+                    <div class="phase-marker forensic"></div>
+                    <div>
+                        <h3>Fase 4 — Informática Forense y DFIR <span class="phase-time">(En paralelo)</span></h3>
+                        <p>Aquí aprenderás a investigar incidentes de seguridad: analizar memoria RAM, discos duros, tráfico de red y generar reportes forenses.</p>
+                    </div>
+                </div>
+                <div class="lessons-list">
+                    <a href="lecciones/leccion-16-forense-intro.html" class="lesson-card">
+                        <span class="lesson-number">16</span>
+                        <div class="lesson-info">
+                            <h4>Fundamentos de Informática Forense</h4>
+                            <p>Qué es la forense digital, cadena de custodia, adquisición de evidencia, integridad con hashes y el proceso forense completo.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría</span>
+                                <span class="meta-tag">~2 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-17-volatility.html" class="lesson-card">
+                        <span class="lesson-number">17</span>
+                        <div class="lesson-info">
+                            <h4>Volatility 3 — Análisis forense de memoria RAM</h4>
+                            <p>Cómo capturar RAM, analizar procesos, detectar rootkits, inyecciones de código, conexiones de red y extraer malware.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~4 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-18-autopsy.html" class="lesson-card">
+                        <span class="lesson-number">18</span>
+                        <div class="lesson-info">
+                            <h4>Autopsy — Análisis forense de discos duros</h4>
+                            <p>Cómo crear un caso forense, cargar imágenes de disco, buscar archivos borrados, construir timelines y generar reportes.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                    <a href="lecciones/leccion-19-wireshark.html" class="lesson-card">
+                        <span class="lesson-number">19</span>
+                        <div class="lesson-info">
+                            <h4>Wireshark — Análisis de tráfico de red y detección de amenazas</h4>
+                            <p>Cómo capturar paquetes, usar filtros de visualización, detectar escaneos, fugas de datos y reconstruir conversaciones.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Práctica</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FASE 5 -->
+            <div class="course-phase">
+                <div class="course-phase-header">
+                    <div class="phase-marker expert"></div>
+                    <div>
+                        <h3>Fase 5 — Profesionalización y Nivel Experto <span class="phase-time">(3+ años)</span></h3>
+                        <p>Aquí aprenderás a escribir informes profesionales, prepararte para certificaciones y desarrollar tu mentalidad de experto.</p>
+                    </div>
+                </div>
+                <div class="lessons-list">
+                    <a href="lecciones/leccion-20-reportes.html" class="lesson-card">
+                        <span class="lesson-number">20</span>
+                        <div class="lesson-info">
+                            <h4>Elaboración de Informes Profesionales de Auditoría</h4>
+                            <p>Cómo escribir un resumen ejecutivo, documentar hallazgos con CVSS, crear fichas técnicas y redactar guías de remediación.</p>
+                            <div class="lesson-meta">
+                                <span class="meta-tag">Teoría + Plantillas</span>
+                                <span class="meta-tag">~3 horas</span>
+                            </div>
+                        </div>
+                        <span class="lesson-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <span>CyberPath 2026</span>
+                </div>
+                <p class="footer-quote">"Dominar ciberseguridad no es aprender listas infinitas de herramientas, sino construir fundamentos sólidos, práctica intensa y mentalidad analítica."</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="quiz.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

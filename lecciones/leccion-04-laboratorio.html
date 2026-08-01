@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 04: Monta tu laboratorio virtual de ciberseguridad — VirtualBox, Kali Linux, Metasploitable y Active Directory paso a paso.">
+    <title>Lección 04: Montar tu Laboratorio Virtual — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a>
+            <span>›</span>
+            <span>Fase 0</span>
+            <span>›</span>
+            <span>Lección 04</span>
+        </div>
+
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:var(--accent-green-dim);color:var(--accent-green)">Fase 0 — Cimientos</div>
+            <h1>Montar tu Laboratorio Virtual — Tu entorno de práctica seguro</h1>
+            <p class="lesson-intro">
+                <strong>No puedes aprender ciberseguridad sin practicar, y no puedes practicar en sistemas reales sin permiso.</strong> 
+                La solución: montar tu propio <strong>laboratorio virtual</strong> donde puedas atacar, defender y experimentar 
+                sin riesgo legal ni daño real. En esta lección instalarás <strong>VirtualBox</strong>, configurarás 
+                <strong>Kali Linux</strong> como tu máquina atacante, <strong>Metasploitable</strong> como objetivo vulnerable, 
+                y crearás una red virtual aislada donde todo está permitido.
+            </p>
+        </div>
+
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#por-que-lab">¿Por qué necesitas un laboratorio virtual?</a></li>
+                <li><a href="#arquitectura">Arquitectura del laboratorio</a></li>
+                <li><a href="#virtualbox">Instalar y configurar VirtualBox</a></li>
+                <li><a href="#kali">Instalar Kali Linux</a></li>
+                <li><a href="#metasploitable">Instalar Metasploitable 2</a></li>
+                <li><a href="#red-virtual">Configurar la red virtual aislada</a></li>
+                <li><a href="#verificar">Verificar que todo funciona</a></li>
+                <li><a href="#snapshots">Snapshots: tu red de seguridad</a></li>
+                <li><a href="#extras">Máquinas adicionales para practicar</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="por-que-lab">
+            <h2><span class="section-icon">🧪</span> 1. ¿Por qué necesitas un laboratorio virtual?</h2>
+
+            <p class="lesson-text">
+                Un <strong>laboratorio virtual</strong> es un entorno controlado donde ejecutas máquinas virtuales (VMs) 
+                en tu propia computadora. Cada VM es como una computadora separada corriendo dentro de tu PC.
+            </p>
+
+            <ul>
+                <li><strong>Legal y seguro:</strong> todo ocurre dentro de tu computadora. No estás atacando sistemas reales de nadie.</li>
+                <li><strong>Reversible:</strong> si rompes algo, puedes restaurar una snapshot y volver al estado anterior en segundos.</li>
+                <li><strong>Realista:</strong> las VMs se comportan exactamente como máquinas reales, con sus propias IPs, servicios y vulnerabilidades.</li>
+                <li><strong>Portátil:</strong> puedes llevar tu laboratorio a cualquier lugar en un USB o disco externo.</li>
+            </ul>
+
+            <div class="warning-box">
+                <h4>⚠️ IMPORTANTE: Legalidad</h4>
+                <p>
+                    <strong>Solo puedes practicar hacking en sistemas que TÚ controlas o que tienes autorización escrita para probar.</strong> 
+                    Atacar sistemas sin permiso es un delito en prácticamente todos los países. Tu laboratorio virtual es tu espacio seguro y legal para aprender.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="arquitectura">
+            <h2><span class="section-icon">🏗️</span> 2. Arquitectura del laboratorio</h2>
+
+            <p class="lesson-text">
+                Nuestro laboratorio tendrá esta estructura:
+            </p>
+
+            <div class="lesson-diagram">
+                <pre>
+    ┌─────────────────────────────────────────────────────┐
+    │              TU COMPUTADORA (Host)                   │
+    │                                                      │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │        Red Virtual Aislada (NAT Network)     │   │
+    │   │              10.0.2.0/24                     │   │
+    │   │                                              │   │
+    │   │   ┌──────────┐     ┌──────────────────┐     │   │
+    │   │   │   KALI   │     │  METASPLOITABLE  │     │   │
+    │   │   │  LINUX   │────▶│       2           │     │   │
+    │   │   │ 10.0.2.5 │     │   10.0.2.15      │     │   │
+    │   │   │(Atacante)│     │   (Objetivo)      │     │   │
+    │   │   └──────────┘     └──────────────────┘     │   │
+    │   │                                              │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                      │
+    └─────────────────────────────────────────────────────┘
+                </pre>
+                <p class="diagram-caption">Arquitectura básica del laboratorio: Kali ataca → Metasploitable (vulnerable a propósito)</p>
+            </div>
+
+            <h3>Requisitos mínimos de hardware</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Mínimo</th>
+                            <th>Recomendado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>RAM</strong></td><td>8 GB</td><td>16 GB o más</td></tr>
+                        <tr><td><strong>CPU</strong></td><td>4 núcleos (con soporte VT-x/AMD-V)</td><td>6+ núcleos</td></tr>
+                        <tr><td><strong>Disco</strong></td><td>50 GB libres</td><td>100 GB+ (SSD recomendado)</td></tr>
+                        <tr><td><strong>SO Host</strong></td><td>Windows 10/11, macOS, Linux</td><td>Cualquiera funciona</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 ¿Qué es la virtualización?</h4>
+                <p>
+                    La <strong>virtualización</strong> te permite ejecutar un sistema operativo completo dentro de una ventana de tu computadora. 
+                    El software de virtualización (VirtualBox, VMware) crea una "computadora virtual" con su propia CPU, RAM, disco y red — 
+                    todo simulado usando los recursos de tu PC real. Para activarla, debes habilitar <strong>VT-x</strong> (Intel) o <strong>AMD-V</strong> (AMD) 
+                    en la BIOS de tu computadora.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="virtualbox">
+            <h2><span class="section-icon">📦</span> 3. Instalar y configurar VirtualBox</h2>
+
+            <p class="lesson-text">
+                <strong>VirtualBox</strong> es el software de virtualización que usaremos. Es gratuito, open source, y funciona en Windows, macOS y Linux.
+            </p>
+
+            <h3>Paso 1: Descargar VirtualBox</h3>
+            <ol>
+                <li>Ve a <code>https://www.virtualbox.org/wiki/Downloads</code></li>
+                <li>Descarga la versión para tu sistema operativo (Windows hosts, macOS hosts, o Linux).</li>
+                <li>También descarga el <strong>Extension Pack</strong> (misma página, sección "All supported platforms").</li>
+            </ol>
+
+            <h3>Paso 2: Instalar</h3>
+            <ol>
+                <li>Ejecuta el instalador y sigue el asistente (acepta los valores por defecto).</li>
+                <li>En Windows, te pedirá instalar drivers de red — acepta.</li>
+                <li>Una vez instalado, abre VirtualBox.</li>
+                <li>Ve a <strong>Archivo → Herramientas → Extension Pack Manager</strong> e instala el Extension Pack que descargaste.</li>
+            </ol>
+
+            <h3>Paso 3: Habilitar virtualización en BIOS</h3>
+            <div class="warning-box">
+                <h4>⚠️ Si VirtualBox da error al iniciar una VM</h4>
+                <p>
+                    Probablemente necesitas habilitar la virtualización en la BIOS:<br>
+                    1. Reinicia tu PC y entra a la BIOS (presiona <code>F2</code>, <code>DEL</code> o <code>F12</code> al arrancar — varía por marca).<br>
+                    2. Busca la opción <strong>Intel VT-x</strong>, <strong>Intel Virtualization Technology</strong> o <strong>AMD-V/SVM Mode</strong>.<br>
+                    3. Actívala (<strong>Enabled</strong>).<br>
+                    4. En Windows 11, además puede que necesites desactivar <strong>Hyper-V</strong> y <strong>Memory Integrity</strong> en la configuración de Windows.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="kali">
+            <h2><span class="section-icon">🐉</span> 4. Instalar Kali Linux</h2>
+
+            <p class="lesson-text">
+                <strong>Kali Linux</strong> es la distribución de Linux diseñada para pentesting. Viene con +600 herramientas pre-instaladas. 
+                La forma más fácil de instalarla es descargar la <strong>imagen pre-construida para VirtualBox</strong>.
+            </p>
+
+            <h3>Opción rápida: imagen pre-construida (recomendada)</h3>
+            <ol>
+                <li>Ve a <code>https://www.kali.org/get-kali/#kali-virtual-machines</code></li>
+                <li>Descarga la versión <strong>"VirtualBox (64-bit)"</strong> (archivo <code>.7z</code> o <code>.ova</code>).</li>
+                <li>Si es <code>.7z</code>, descomprímelo con 7-Zip.</li>
+                <li>En VirtualBox: <strong>Archivo → Importar servicio virtualizado</strong> → selecciona el archivo <code>.ova</code>.</li>
+                <li>Revisa la configuración y haz clic en <strong>Importar</strong>.</li>
+            </ol>
+
+            <h3>Configuración recomendada</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Ajustes de la VM de Kali</span>
+                </div>
+                <pre><code>Configuración → Sistema:
+  RAM: 4096 MB (mínimo 2048 MB)
+  Procesadores: 2 (mínimo 1)
+  
+Configuración → Pantalla:
+  Memoria de video: 128 MB
+  Habilitar aceleración 3D: ✓ (opcional)
+
+Credenciales por defecto:
+  Usuario: kali
+  Contraseña: kali</code></pre>
+            </div>
+
+            <h3>Primeros pasos después de instalar Kali</h3>
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Configuración inicial de Kali</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># Actualizar todo el sistema</span>
+<span style="color:#00e676">$</span> sudo apt update && sudo apt upgrade -y
+
+<span style="color:#546e7a"># Cambiar la contraseña por defecto (MUY IMPORTANTE)</span>
+<span style="color:#00e676">$</span> passwd
+
+<span style="color:#546e7a"># Cambiar la distribución del teclado a español (si necesario)</span>
+<span style="color:#00e676">$</span> sudo dpkg-reconfigure keyboard-configuration
+
+<span style="color:#546e7a"># Verificar tu IP</span>
+<span style="color:#00e676">$</span> ip a
+
+<span style="color:#546e7a"># Verificar que las herramientas principales están instaladas</span>
+<span style="color:#00e676">$</span> nmap --version
+<span style="color:#00e676">$</span> msfconsole --version
+<span style="color:#00e676">$</span> python3 --version</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="metasploitable">
+            <h2><span class="section-icon">🎯</span> 5. Instalar Metasploitable 2</h2>
+
+            <p class="lesson-text">
+                <strong>Metasploitable 2</strong> es una máquina virtual intencionalmente vulnerable. Está diseñada para ser hackeada — 
+                tiene servicios mal configurados, contraseñas débiles, vulnerabilidades conocidas. Es tu <strong>objetivo de práctica principal</strong>.
+            </p>
+
+            <h3>Paso a paso</h3>
+            <ol>
+                <li>Descarga Metasploitable 2 desde <code>https://sourceforge.net/projects/metasploitable/</code></li>
+                <li>Descomprime el archivo ZIP. Obtendrás archivos <code>.vmdk</code> (disco virtual).</li>
+                <li>En VirtualBox:
+                    <ol>
+                        <li>Clic en <strong>Nueva</strong></li>
+                        <li>Nombre: <strong>Metasploitable2</strong></li>
+                        <li>Tipo: <strong>Linux</strong>, Versión: <strong>Ubuntu (64-bit)</strong></li>
+                        <li>RAM: <strong>1024 MB</strong> (es suficiente)</li>
+                        <li>Disco duro: <strong>Usar un disco duro virtual existente</strong> → selecciona el archivo <code>.vmdk</code></li>
+                    </ol>
+                </li>
+                <li>Inicia la VM. El login es: <code>msfadmin</code> / <code>msfadmin</code></li>
+            </ol>
+
+            <div class="warning-box">
+                <h4>⚠️ NUNCA expongas Metasploitable a Internet</h4>
+                <p>
+                    Metasploitable tiene vulnerabilidades graves a propósito. Si la conectas a Internet, 
+                    cualquier atacante real podría comprometerla en minutos. <strong>Solo debe estar en tu red virtual interna</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="red-virtual">
+            <h2><span class="section-icon">🔗</span> 6. Configurar la red virtual aislada</h2>
+
+            <p class="lesson-text">
+                Para que Kali pueda "atacar" a Metasploitable, ambas máquinas deben estar en la <strong>misma red virtual</strong>. 
+                La opción más segura es crear una <strong>red NAT</strong> o usar <strong>Red interna</strong>.
+            </p>
+
+            <h3>Opción 1: Red NAT (recomendada para principiantes)</h3>
+            <p class="lesson-text">Permite que las VMs se comuniquen entre sí Y tengan acceso a Internet (para actualizar software).</p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Crear la red NAT</span>
+                </div>
+                <pre><code>En VirtualBox:
+1. Archivo → Herramientas → Administrador de red
+2. Pestaña "Redes NAT" → Crear (+)
+3. Nombre: CyberPathLab
+4. CIDR: 10.0.2.0/24
+5. Habilitar DHCP: ✓
+
+Para cada VM (Kali y Metasploitable):
+1. Selecciona la VM → Configuración → Red
+2. Adaptador 1:
+   - Conectado a: "Red NAT"
+   - Nombre: CyberPathLab</code></pre>
+            </div>
+
+            <h3>Opción 2: Red interna (más aislada)</h3>
+            <p class="lesson-text">Las VMs solo se comunican entre sí, sin acceso a Internet. Más segura pero tendrás que configurar IPs manualmente.</p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Configurar Red Interna</span>
+                </div>
+                <pre><code>Para cada VM:
+1. Configuración → Red → Adaptador 1
+2. Conectado a: "Red interna"
+3. Nombre: "pentest-lab"
+
+Luego, en Kali, configura IP manualmente:
+<span style="color:#00e676">$</span> sudo ip addr add 10.0.2.5/24 dev eth0
+<span style="color:#00e676">$</span> sudo ip link set eth0 up
+
+En Metasploitable:
+<span style="color:#00e676">$</span> sudo ifconfig eth0 10.0.2.15 netmask 255.255.255.0 up</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="lesson-section" id="verificar">
+            <h2><span class="section-icon">✅</span> 7. Verificar que todo funciona</h2>
+
+            <p class="lesson-text">
+                Una vez configurado todo, verifica la conectividad entre tus máquinas:
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Verificación desde Kali Linux</span>
+                </div>
+                <pre><code><span style="color:#546e7a"># 1. Verificar tu IP en Kali</span>
+<span style="color:#00e676">$</span> ip a
+<span style="color:#546e7a"># Busca tu IP en la interfaz eth0 (ej: 10.0.2.5)</span>
+
+<span style="color:#546e7a"># 2. Hacer ping a Metasploitable</span>
+<span style="color:#00e676">$</span> ping -c 4 10.0.2.15
+PING 10.0.2.15 (10.0.2.15) 56(84) bytes of data.
+64 bytes from 10.0.2.15: icmp_seq=1 ttl=64 time=0.523 ms
+64 bytes from 10.0.2.15: icmp_seq=2 ttl=64 time=0.421 ms
+<span style="color:#546e7a"># ✅ Si recibes respuesta, la red funciona</span>
+
+<span style="color:#546e7a"># 3. Tu PRIMER escaneo real con Nmap</span>
+<span style="color:#00e676">$</span> nmap -sV 10.0.2.15
+<span style="color:#546e7a"># Verás MUCHOS puertos abiertos y servicios — ¡es lo esperado!</span>
+<span style="color:#546e7a"># Metasploitable está diseñada para ser vulnerable</span>
+
+Starting Nmap 7.94 ( https://nmap.org )
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         vsftpd 2.3.4
+22/tcp   open  ssh         OpenSSH 4.7p1
+23/tcp   open  telnet      Linux telnetd
+25/tcp   open  smtp        Postfix smtpd
+80/tcp   open  http        Apache httpd 2.2.8
+139/tcp  open  netbios-ssn Samba smbd 3.X
+445/tcp  open  netbios-ssn Samba smbd 3.X
+3306/tcp open  mysql       MySQL 5.0.51a
+5432/tcp open  postgresql  PostgreSQL DB
+...</code></pre>
+                <div class="explanation">
+                    <p><strong>¡Felicidades!</strong> Si ves esta salida, tu laboratorio está funcionando. Cada uno de esos puertos abiertos es una oportunidad de práctica. En las siguientes lecciones aprenderás a explotar estas vulnerabilidades una por una.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="lesson-section" id="snapshots">
+            <h2><span class="section-icon">📸</span> 8. Snapshots: tu red de seguridad</h2>
+
+            <p class="lesson-text">
+                Las <strong>snapshots</strong> (instantáneas) guardan el estado completo de una VM en un momento dado. 
+                Si rompes algo, puedes restaurar la snapshot y volver al estado anterior en segundos. 
+                Son <strong>imprescindibles</strong> para practicar sin miedo.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="term-title">Cómo usar Snapshots</span>
+                </div>
+                <pre><code>Crear una Snapshot:
+1. Selecciona la VM en VirtualBox
+2. Menú Máquina → Tomar Snapshot (Ctrl + Shift + S)
+3. Dale un nombre descriptivo: "Kali - Estado Limpio"
+
+Restaurar una Snapshot:
+1. Selecciona la VM (debe estar apagada)
+2. Haz clic en el icono de Snapshots (lista a la derecha)
+3. Selecciona la snapshot → "Restaurar"
+
+Snapshots recomendadas:
+✅ "Estado Limpio" — Justo después de instalar y actualizar
+✅ "Pre-Explotación" — Antes de un ejercicio de pentesting
+✅ "Laboratorio Funcional" — Cuando todo está configurado y verificado</code></pre>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 Buena práctica</h4>
+                <p>
+                    Antes de cada ejercicio de pentesting, <strong>toma una snapshot de tus VMs</strong>. Así, si algo sale mal 
+                    (corrompes la VM, instalas malware por accidente, cambias configuraciones), puedes restaurar en 10 segundos 
+                    en lugar de reinstalar todo desde cero.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 9 -->
+        <div class="lesson-section" id="extras">
+            <h2><span class="section-icon">🎮</span> 9. Máquinas adicionales para practicar</h2>
+
+            <p class="lesson-text">
+                Además de Metasploitable, existen muchas plataformas y máquinas vulnerables para seguir practicando:
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr>
+                            <th>Plataforma</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>DVWA</strong></td>
+                            <td>Web vulnerable</td>
+                            <td>Damn Vulnerable Web Application — para practicar SQLi, XSS, CSRF. Se instala en tu lab.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HackTheBox</strong></td>
+                            <td>Online</td>
+                            <td>Plataforma con máquinas vulnerables de diferentes niveles. Conectas por VPN y atacas.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TryHackMe</strong></td>
+                            <td>Online</td>
+                            <td>Cursos guiados con máquinas virtuales. Ideal para principiantes. Tiene ruta gratuita.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>VulnHub</strong></td>
+                            <td>VMs descargables</td>
+                            <td>Cientos de máquinas vulnerables para descargar y practicar en tu VirtualBox.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>OverTheWire</strong></td>
+                            <td>Wargames online</td>
+                            <td>Retos de Linux (Bandit), web (Natas), red (Leviathan). Gratis y excelentes para aprender.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="lab-checklist" id="lab-checklist">
+                <h4>📋 Checklist de Montaje del Laboratorio</h4>
+                <p>Marca cada paso a medida que lo completes. Tu progreso se guarda automáticamente.</p>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="vbox-install"> <span>VirtualBox instalado y funcionando</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="kali-install"> <span>Kali Linux VM creada e instalada</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="kali-update"> <span>Kali actualizada (<code>sudo apt update && sudo apt upgrade -y</code>)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="kali-password"> <span>Contraseña por defecto cambiada (<code>passwd</code>)</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="meta-install"> <span>Metasploitable 2 VM creada e importada</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="network-config"> <span>Ambas VMs en red Host-Only / Internal Network</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="ping-test"> <span>Ping exitoso entre Kali y Metasploitable</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="nmap-scan"> <span>Primer escaneo con Nmap a Metasploitable completado</span>
+                    </label>
+                    <label class="checklist-item">
+                        <input type="checkbox" data-step="snapshots"> <span>Snapshots del estado limpio de ambas VMs creadas</span>
+                    </label>
+                </div>
+                <div class="checklist-progress">
+                    <div class="checklist-progress-bar"><div class="checklist-progress-fill" id="checklist-fill"></div></div>
+                    <span class="checklist-progress-text" id="checklist-text">0/9 completados</span>
+                </div>
+                <div class="checklist-done" id="checklist-done" style="display:none">
+                    🎉 <strong>¡Laboratorio completo!</strong> Tu entorno está listo para las lecciones de pentesting.
+                </div>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Antes de pasar a la siguiente fase, verifica que:</p>
+                <ul>
+                    <li>VirtualBox está instalado y funcionando</li>
+                    <li>Kali Linux está instalado, actualizado y con la contraseña cambiada</li>
+                    <li>Metasploitable 2 está instalado</li>
+                    <li>Ambas VMs están en la misma red virtual y se pueden hacer ping</li>
+                    <li>Hiciste tu primer escaneo con Nmap a Metasploitable</li>
+                    <li>Creaste snapshots del estado limpio de ambas VMs</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/dvwa" target="_blank" rel="noopener noreferrer">TryHackMe: DVWA</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://www.vulnhub.com/" target="_blank" rel="noopener noreferrer">VulnHub: Máquinas vulnerables descargables</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/tutorial" target="_blank" rel="noopener noreferrer">TryHackMe: Tutorial (introduccion a maquinas virtuales)</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <!-- Lesson Navigation -->
+        <div class="lesson-nav">
+            <a href="leccion-03-programacion.html">
+                <span class="nav-label">← Anterior</span>
+                <span class="nav-title">Lección 03: Python para Ciberseguridad</span>
+            </a>
+            <a href="leccion-05-seguridad-conceptos.html" class="next">
+                <span class="nav-label">Siguiente →</span>
+                <span class="nav-title">Lección 05: Fundamentos de Seguridad Informática</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Por qué es importante usar una red \"Host-Only\" o \"Internal Network\" para tu laboratorio?",
+                    "options": [
+                              "Porque es más rápido que NAT",
+                              "Para que las máquinas vulnerables no estén expuestas a Internet real",
+                              "Porque VirtualBox no soporta NAT",
+                              "Para que las VMs tengan acceso a Internet"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es una snapshot en VirtualBox?",
+                    "options": [
+                              "Una captura de pantalla de la VM",
+                              "Una copia de seguridad del estado completo de la VM en un momento dado, que puedes restaurar",
+                              "Un backup del sistema operativo host",
+                              "Un registro de todos los comandos ejecutados"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Cuáles son los credenciales por defecto de Metasploitable 2?",
+                    "options": [
+                              "root / root",
+                              "admin / admin",
+                              "msfadmin / msfadmin",
+                              "kali / kali"
+                    ],
+                    "correct": 2
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-04'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-04', quizQuestions);
+            const explanations = [
+                "Una red aislada (Host-Only/Internal) asegura que las máquinas vulnerables como Metasploitable NO estén expuestas a Internet, evitando que alguien las ataque de verdad.",
+                "Una snapshot guarda el estado completo de la VM (disco, RAM, configuración). Si rompes algo, puedes restaurar la snapshot y volver al estado exacto anterior.",
+                "Metasploitable 2 usa msfadmin/msfadmin como credenciales por defecto. Kali Linux usa kali/kali. Recordar credenciales por defecto es esencial en pentesting."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+    <script>
+        // Lab Checklist — localStorage persistence
+        (function() {
+            const CHECKLIST_KEY = 'cyberpath_lab_checklist';
+            const checkboxes = document.querySelectorAll('#lab-checklist input[type="checkbox"]');
+            const fill = document.getElementById('checklist-fill');
+            const text = document.getElementById('checklist-text');
+            const doneMsg = document.getElementById('checklist-done');
+            const total = checkboxes.length;
+
+            function loadState() {
+                try { return JSON.parse(localStorage.getItem(CHECKLIST_KEY)) || {}; } catch(e) { return {}; }
+            }
+
+            function saveState(state) {
+                localStorage.setItem(CHECKLIST_KEY, JSON.stringify(state));
+            }
+
+            function updateUI() {
+                const state = loadState();
+                let checked = 0;
+                checkboxes.forEach(cb => {
+                    const step = cb.dataset.step;
+                    cb.checked = !!state[step];
+                    if (cb.checked) {
+                        checked++;
+                        cb.closest('.checklist-item').classList.add('checked');
+                    } else {
+                        cb.closest('.checklist-item').classList.remove('checked');
+                    }
+                });
+                fill.style.width = `${(checked / total) * 100}%`;
+                text.textContent = `${checked}/${total} completados`;
+                if (checked === total) {
+                    doneMsg.style.display = 'block';
+                    fill.style.background = 'var(--accent-green)';
+                } else {
+                    doneMsg.style.display = 'none';
+                    fill.style.background = '';
+                }
+            }
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const state = loadState();
+                    state[cb.dataset.step] = cb.checked;
+                    saveState(state);
+                    updateUI();
+                });
+            });
+
+            updateUI();
+        })();
+    </script>
+</body>
+</html>

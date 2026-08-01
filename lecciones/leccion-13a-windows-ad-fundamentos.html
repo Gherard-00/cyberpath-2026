@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 13A: Fundamentos de Windows y Active Directory — Dominios, usuarios, grupos, GPOs y Domain Controllers explicados desde cero.">
+    <title>Lección 13A: Fundamentos de Windows y Active Directory — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 3</span><span>›</span><span>Lección 13A</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,82,82,0.15);color:#ff5252">Fase 3 — Red Team y Técnicas Avanzadas</div>
+            <h1>Fundamentos de Windows y Active Directory — Lo que necesitas antes de atacar</h1>
+            <p class="lesson-intro">
+                Si Linux es el <strong>taller del mecánico</strong>, Windows es la <strong>flota de coches corporativos</strong> que vas a auditar. 
+                El 95% de las empresas Fortune 1000 usan Active Directory. Antes de aprender ataques como Kerberoasting o Pass-the-Hash, 
+                necesitas entender <strong>cómo funciona el sistema que vas a atacar</strong>. En esta lección aprenderás la estructura de 
+                un dominio Windows, qué son los usuarios, grupos, GPOs y Domain Controllers — todo con analogías claras.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#por-que-windows">¿Por qué Windows importa en ciberseguridad?</a></li>
+                <li><a href="#estructura-dominio">Estructura de un dominio Windows</a></li>
+                <li><a href="#usuarios-grupos">Usuarios, Grupos y Permisos</a></li>
+                <li><a href="#gpos">Group Policy Objects (GPOs)</a></li>
+                <li><a href="#domain-controller">¿Qué es un Domain Controller?</a></li>
+                <li><a href="#herramientas">Herramientas de administración</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="por-que-windows">
+            <h2><span class="section-icon">🪟</span> 1. ¿Por qué Windows importa en ciberseguridad?</h2>
+            <p class="lesson-text">
+                Hasta ahora has trabajado casi exclusivamente con Linux. Pero en el mundo real, la gran mayoría de las 
+                <strong>redes corporativas</strong> corren sobre Windows. Los empleados usan Windows 10/11, los servidores corren 
+                Windows Server, y todo está conectado mediante <strong>Active Directory</strong>.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🏢</span>
+                <h4>Analogía: La empresa como un edificio corporativo</h4>
+                <p>
+                    Imagina una empresa como un <strong>edificio de oficinas</strong>. Cada empleado tiene una <strong>credencial (badge)</strong> 
+                    que le da acceso a ciertas áreas. Hay un <strong>departamento de seguridad</strong> (el Domain Controller) que gestiona 
+                    todas las credenciales, decide quién entra a dónde, y aplica las <strong>reglas del edificio</strong> (las GPOs). 
+                    Active Directory es ese departamento de seguridad — centralizado, poderoso, y si lo controlas, controlas todo el edificio.
+                </p>
+            </div>
+
+            <p class="lesson-text">
+                <strong>¿Por qué es relevante para pentesting?</strong> Porque si logras comprometer un usuario del dominio, puedes escalar 
+                privilegios hasta llegar a <strong>Domain Admin</strong> — el equivalente a tener la llave maestra de todo el edificio.
+            </p>
+
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Aspecto</th><th>Linux</th><th>Windows / Active Directory</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Uso empresarial</strong></td><td>Servidores, DevOps, seguridad</td><td>Estaciones de trabajo, servidores de archivos, correo, aplicaciones de negocio</td></tr>
+                    <tr><td><strong>Gestión de usuarios</strong></td><td>/etc/passwd, /etc/shadow (local)</td><td>Centralizado en Active Directory (NTDS.dit)</td></tr>
+                    <tr><td><strong>Autenticación</strong></td><td>SSH keys, PAM</td><td>Kerberos, NTLM</td></tr>
+                    <tr><td><strong>Permisos</strong></td><td>rwx, ACLs POSIX</td><td>ACLs de Windows, GPOs</td></tr>
+                    <tr><td><strong>Herramientas ofensivas</strong></td><td>LinPEAS, GTFOBins</td><td>BloodHound, Mimikatz, Impacket, Rubeus</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="estructura-dominio">
+            <h2><span class="section-icon">🌳</span> 2. Estructura de un dominio Windows</h2>
+            <p class="lesson-text">
+                Un <strong>dominio</strong> de Windows es un grupo de computadoras, usuarios y recursos administrados centralmente. 
+                Todos comparten la misma base de datos de seguridad.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🗺️</span>
+                <h4>Analogía: El organigrama de una multinacional</h4>
+                <p>
+                    Un <strong>bosque (forest)</strong> es la multinacional completa. Dentro hay <strong>árboles (trees)</strong>, que son 
+                    las divisiones regionales. Cada árbol tiene <strong>dominios</strong>, que son las oficinas locales. Y dentro de cada 
+                    dominio hay <strong>Unidades Organizativas (OUs)</strong>, que son los departamentos: Ventas, IT, RRHH. 
+                    Todos comparten cierto nivel de confianza (trusts) entre sí.
+                </p>
+            </div>
+
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Concepto</th><th>Descripción</th><th>Ejemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Dominio</strong></td><td>Unidad administrativa básica. Todos los objetos comparten la misma BD de seguridad.</td><td><code>empresa.local</code></td></tr>
+                    <tr><td><strong>Árbol (Tree)</strong></td><td>Conjunto de dominios con un nombre DNS común y relaciones de confianza.</td><td><code>empresa.local</code> → <code>ventas.empresa.local</code></td></tr>
+                    <tr><td><strong>Bosque (Forest)</strong></td><td>El contenedor más alto. Agrupa árboles con confianza entre sí.</td><td>Todo <code>empresa.local</code> y sus subdominios</td></tr>
+                    <tr><td><strong>OU (Organizational Unit)</strong></td><td>Contenedor para organizar usuarios, grupos y PCs dentro de un dominio.</td><td>OU=IT, OU=Ventas, OU=Servidores</td></tr>
+                    <tr><td><strong>Trust</strong></td><td>Relación de confianza entre dominios que permite autenticación cruzada.</td><td>Los usuarios de <code>empresa.local</code> pueden acceder a recursos en <code>partner.local</code></td></tr>
+                </tbody>
+            </table></div>
+
+            <div class="lesson-diagram"><pre>
+                    ┌────────────────────────────────────┐
+                    │        BOSQUE (Forest)              │
+                    │     empresa.local                   │
+                    │                                     │
+                    │  ┌──────────┐    ┌──────────────┐   │
+                    │  │ DOMINIO  │    │  DOMINIO     │   │
+                    │  │ empresa  │◄──►│  ventas      │   │
+                    │  │ .local   │trust│  .empresa    │   │
+                    │  │          │    │  .local      │   │
+                    │  └────┬─────┘    └──────────────┘   │
+                    │       │                             │
+                    │  ┌────┴──────────────────┐          │
+                    │  │    OUs del dominio     │          │
+                    │  │  ┌────┐ ┌────┐ ┌────┐ │          │
+                    │  │  │ IT │ │RRHH│ │Vent│ │          │
+                    │  │  └────┘ └────┘ └────┘ │          │
+                    │  │  Users, PCs, Servers   │          │
+                    │  └───────────────────────┘          │
+                    └────────────────────────────────────┘
+            </pre><p class="diagram-caption">Estructura jerárquica: Bosque → Árbol → Dominio → OUs → Objetos</p></div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="usuarios-grupos">
+            <h2><span class="section-icon">👥</span> 3. Usuarios, Grupos y Permisos</h2>
+            <p class="lesson-text">
+                En Active Directory, cada persona, computadora y servicio es un <strong>objeto</strong> con un identificador único 
+                llamado <strong>SID (Security Identifier)</strong>. Los permisos se asignan a través de <strong>grupos</strong>.
+            </p>
+
+            <h3>Tipos de cuentas</h3>
+            <ul>
+                <li><strong>Cuentas de usuario:</strong> Para personas reales (ej: <code>jgarcia@empresa.local</code>)</li>
+                <li><strong>Cuentas de servicio:</strong> Para aplicaciones y servicios (ej: <code>svc_sql</code>, <code>svc_backup</code>) — objetivos valiosos en ataques</li>
+                <li><strong>Cuentas de equipo:</strong> Cada PC unida al dominio tiene su propia cuenta (ej: <code>DESKTOP-ABC123$</code>)</li>
+            </ul>
+
+            <h3>Grupos predefinidos críticos</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Grupo</th><th>Descripción</th><th>¿Por qué importa?</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Domain Admins</strong></td><td>Administradores totales del dominio. Acceso a todo.</td><td>El objetivo final de un atacante. Si llegas aquí, controlas todo.</td></tr>
+                    <tr><td><strong>Enterprise Admins</strong></td><td>Administradores de todo el bosque (multi-dominio).</td><td>Nivel máximo. Solo existe en el dominio raíz del bosque.</td></tr>
+                    <tr><td><strong>Domain Users</strong></td><td>Todos los usuarios del dominio son miembros.</td><td>Un usuario normal puede enumerar MUCHA información del dominio por defecto.</td></tr>
+                    <tr><td><strong>Administrators (local)</strong></td><td>Admins locales de una máquina específica.</td><td>Admin local ≠ Domain Admin, pero puede ser un paso hacia allá.</td></tr>
+                    <tr><td><strong>Backup Operators</strong></td><td>Pueden hacer backup de archivos, incluyendo NTDS.dit.</td><td>Si comprometes este grupo, puedes extraer TODOS los hashes del dominio.</td></tr>
+                </tbody>
+            </table></div>
+
+            <div class="warning-box">
+                <h4>⚠️ Error común de principiante</h4>
+                <p>
+                    <strong>Admin local ≠ Domain Admin.</strong> Ser administrador de tu PC no significa que tengas control del dominio. 
+                    Sin embargo, un admin local puede extraer credenciales de la memoria (mimikatz) y escalar hasta Domain Admin 
+                    si las credenciales correctas están cacheadas.
+                </p>
+            </div>
+
+            <h3>SID: el identificador único</h3>
+            <p class="lesson-text">
+                Cada objeto en AD tiene un <strong>SID</strong> (Security Identifier) único. Los permisos internos se resuelven por SID, no por nombre.
+            </p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Estructura de un SID</span></div>
+                <pre><code><span style="color:#546e7a"># Formato de un SID:</span>
+S-1-5-21-<span style="color:#00e676">3623811015</span>-<span style="color:#00e676">3361044348</span>-<span style="color:#00e676">30300820</span>-<span style="color:#ffab40">1013</span>
+│ │ │    └──────────────────────────────────────┘  └──┘
+│ │ │              Identificador del dominio        RID
+│ │ └── Authority (5 = NT Authority)                (ID relativo del objeto)
+│ └── Revision
+└── SID marker
+
+<span style="color:#546e7a"># SIDs conocidos:</span>
+S-1-5-21-...-<span style="color:#ff5252">500</span>  → Administrador (built-in)
+S-1-5-21-...-<span style="color:#ff5252">512</span>  → Domain Admins
+S-1-5-21-...-<span style="color:#ff5252">513</span>  → Domain Users
+S-1-5-21-...-<span style="color:#ff5252">519</span>  → Enterprise Admins</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="gpos">
+            <h2><span class="section-icon">📜</span> 4. Group Policy Objects (GPOs)</h2>
+            <p class="lesson-text">
+                Las <strong>GPOs</strong> son reglas que se aplican automáticamente a usuarios y computadoras del dominio. 
+                Son el mecanismo central de control en una red Windows.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">📋</span>
+                <h4>Analogía: Las reglas del edificio</h4>
+                <p>
+                    Las GPOs son como las <strong>políticas internas de la empresa</strong>: "todos deben cambiar su contraseña cada 90 días", 
+                    "nadie puede instalar software sin autorización", "las pantallas se bloquean después de 5 minutos". Se aplican 
+                    automáticamente a todos o a grupos específicos — no puedes elegir ignorarlas.
+                </p>
+            </div>
+
+            <h3>Ejemplos comunes de GPOs</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>GPO</th><th>Qué hace</th><th>Relevancia para pentesting</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Password Policy</strong></td><td>Longitud mínima, complejidad, historial, expiración</td><td>Contraseñas débiles = fuerza bruta más fácil</td></tr>
+                    <tr><td><strong>Account Lockout</strong></td><td>Bloquea cuenta después de X intentos fallidos</td><td>Si hay lockout, la fuerza bruta es más lenta/riesgosa</td></tr>
+                    <tr><td><strong>Software Restriction</strong></td><td>Controla qué aplicaciones pueden ejecutarse</td><td>Puede bloquear tus herramientas de pentesting</td></tr>
+                    <tr><td><strong>Audit Policy</strong></td><td>Qué eventos se registran en los logs</td><td>Logs activos = mayor riesgo de detección</td></tr>
+                    <tr><td><strong>Startup/Logon Scripts</strong></td><td>Scripts que se ejecutan al iniciar sesión o encender la PC</td><td>Si los puedes modificar, tienes persistencia automática</td></tr>
+                </tbody>
+            </table></div>
+
+            <div class="concept-box">
+                <h4>💡 Dato clave para pentesting</h4>
+                <p>
+                    Las GPOs se almacenan en la carpeta <code>\\dominio\SYSVOL</code>, accesible por cualquier usuario del dominio. 
+                    A veces contienen contraseñas en texto plano en archivos XML (Group Policy Preferences) — una vulnerabilidad 
+                    clásica conocida como <strong>GPP Passwords</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="domain-controller">
+            <h2><span class="section-icon">🖥️</span> 5. ¿Qué es un Domain Controller?</h2>
+            <p class="lesson-text">
+                El <strong>Domain Controller (DC)</strong> es el servidor que gestiona TODO el dominio. Es el cerebro de Active Directory.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🏛️</span>
+                <h4>Analogía: El registro civil + la comisaría + el banco central</h4>
+                <p>
+                    El Domain Controller es todo a la vez: el <strong>registro civil</strong> (sabe quién es cada persona), 
+                    la <strong>comisaría</strong> (decide quién tiene permiso de hacer qué), y el <strong>banco central</strong> 
+                    (guarda todas las credenciales). Si un atacante lo compromete, <strong>controla todo el dominio</strong>.
+                </p>
+            </div>
+
+            <h3>Componentes críticos de un DC</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Componente</th><th>Función</th><th>Puerto</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>NTDS.dit</strong></td><td>Base de datos con TODOS los hashes de contraseñas del dominio</td><td>N/A (archivo en disco)</td></tr>
+                    <tr><td><strong>Kerberos (KDC)</strong></td><td>Servicio de autenticación que emite tickets</td><td>88</td></tr>
+                    <tr><td><strong>LDAP</strong></td><td>Protocolo para consultar información del directorio</td><td>389 / 636 (SSL)</td></tr>
+                    <tr><td><strong>DNS</strong></td><td>Resolución de nombres — AD depende totalmente de DNS</td><td>53</td></tr>
+                    <tr><td><strong>SMB/CIFS</strong></td><td>Compartir archivos, SYSVOL, NETLOGON</td><td>445</td></tr>
+                    <tr><td><strong>RPC</strong></td><td>Comunicación entre servicios</td><td>135 + dinámicos</td></tr>
+                </tbody>
+            </table></div>
+
+            <div class="warning-box">
+                <h4>⚠️ NTDS.dit: El Santo Grial</h4>
+                <p>
+                    <strong>NTDS.dit</strong> contiene los hashes de TODAS las contraseñas del dominio. Si un atacante obtiene este archivo 
+                    (vía DCSync, backup, o acceso al DC), puede crackear o usar Pass-the-Hash para autenticarse como CUALQUIER usuario, 
+                    incluyendo Domain Admin.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="herramientas">
+            <h2><span class="section-icon">🔧</span> 6. Herramientas de administración</h2>
+            <p class="lesson-text">
+                Conocer las herramientas de administración de Windows te permite entender qué hace un administrador legítimo — 
+                y cómo un atacante abusa de las mismas herramientas.
+            </p>
+
+            <h3>PowerShell para Active Directory</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Comandos de PowerShell para AD</span></div>
+                <pre><code><span style="color:#546e7a"># Ver información del dominio</span>
+<span style="color:#00e676">PS></span> Get-ADDomain
+
+<span style="color:#546e7a"># Listar todos los usuarios del dominio</span>
+<span style="color:#00e676">PS></span> Get-ADUser -Filter * -Properties * | Select Name, SamAccountName, Enabled
+
+<span style="color:#546e7a"># Listar todos los grupos</span>
+<span style="color:#00e676">PS></span> Get-ADGroup -Filter * | Select Name
+
+<span style="color:#546e7a"># Ver miembros de Domain Admins</span>
+<span style="color:#00e676">PS></span> Get-ADGroupMember "Domain Admins" | Select Name
+
+<span style="color:#546e7a"># Buscar cuentas de servicio (con SPN)</span>
+<span style="color:#00e676">PS></span> Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
+
+<span style="color:#546e7a"># Ver GPOs aplicadas</span>
+<span style="color:#00e676">PS></span> Get-GPO -All | Select DisplayName, GpoStatus
+
+<span style="color:#546e7a"># Ver la política de contraseñas</span>
+<span style="color:#00e676">PS></span> Get-ADDefaultDomainPasswordPolicy</code></pre>
+                <div class="explanation">
+                    <p><strong>Importante:</strong> Cualquier usuario del dominio puede ejecutar la mayoría de estos comandos de consulta. 
+                    Esta es la razón por la que la enumeración de AD es tan poderosa — el diseño del sistema permite que cualquier 
+                    usuario autenticado lea mucha información.</p>
+                </div>
+            </div>
+
+            <h3>Herramientas gráficas</h3>
+            <ul>
+                <li><strong>Active Directory Users and Computers (ADUC):</strong> Interfaz gráfica para gestionar usuarios, grupos y OUs</li>
+                <li><strong>Group Policy Management Console (GPMC):</strong> Para crear y gestionar GPOs</li>
+                <li><strong>Server Manager:</strong> Panel central de administración de Windows Server</li>
+                <li><strong>RSAT (Remote Server Administration Tools):</strong> Herramientas para administrar AD desde una estación de trabajo</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 7: Practice -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 7. Práctica</h2>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Antes de pasar a los ataques de AD (Lección 13), asegúrate de poder responder:</p>
+                <ul>
+                    <li>¿Qué es un dominio de Active Directory y qué diferencia tiene con una red sin dominio?</li>
+                    <li>¿Cuál es la diferencia entre Domain Admin, Enterprise Admin y Administrador local?</li>
+                    <li>¿Qué es una GPO y para qué se usa?</li>
+                    <li>¿Qué contiene NTDS.dit y por qué es tan valioso para un atacante?</li>
+                    <li>¿Qué servicios corren en un Domain Controller?</li>
+                    <li>¿Qué información puede obtener un usuario normal del dominio con PowerShell?</li>
+                </ul>
+            </div>
+
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/windowsfundamentals1xbx" target="_blank" rel="noopener noreferrer">TryHackMe: Windows Fundamentals 1</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/windowsfundamentals2x0x" target="_blank" rel="noopener noreferrer">TryHackMe: Windows Fundamentals 2</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/activedirectorybasics" target="_blank" rel="noopener noreferrer">TryHackMe: Active Directory Basics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/windowsfundamentals3xzx" target="_blank" rel="noopener noreferrer">TryHackMe: Windows Fundamentals 3</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-12-password-cracking.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 12: Cracking de Contraseñas</span></a>
+            <a href="leccion-13-active-directory.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 13: Ataques a Active Directory</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "¿Qué es Active Directory?",
+                options: [
+                    "Un antivirus de Microsoft",
+                    "Un servicio de directorio que centraliza la gestión de usuarios, computadoras y permisos en una red corporativa Windows",
+                    "Un sistema operativo alternativo a Linux",
+                    "Una herramienta de hacking para redes Windows"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué contiene el archivo NTDS.dit?",
+                options: [
+                    "La configuración del firewall de Windows",
+                    "Los logs de eventos del sistema",
+                    "Los hashes de TODAS las contraseñas del dominio",
+                    "Las políticas de grupo (GPOs)"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es la diferencia entre Domain Admins y un administrador local?",
+                options: [
+                    "Son lo mismo, no hay diferencia",
+                    "Domain Admins controlan todo el dominio (todas las máquinas); admin local solo controla esa máquina específica",
+                    "Admin local tiene más permisos que Domain Admins",
+                    "Domain Admins solo pueden acceder al Domain Controller"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué protocolo usa Active Directory para autenticación basada en tickets?",
+                options: [
+                    "NTLM",
+                    "OAuth 2.0",
+                    "Kerberos",
+                    "RADIUS"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Por qué un usuario normal del dominio puede obtener tanta información con PowerShell?",
+                options: [
+                    "Porque PowerShell tiene un bug de seguridad",
+                    "Porque Active Directory fue diseñado para ser consultable por cualquier usuario autenticado del dominio",
+                    "Porque todas las cuentas son administradores por defecto",
+                    "Porque los firewalls no bloquean PowerShell"
+                ],
+                correct: 1
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-13a'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-13a', quizQuestions);
+            const explanations = [
+                "Active Directory (AD) es el servicio de directorio de Microsoft para gestión centralizada de usuarios, PCs, permisos y políticas en redes corporativas Windows.",
+                "NTDS.dit es la base de datos de Active Directory que contiene los hashes de TODAS las contraseñas del dominio. Si un atacante lo obtiene, puede comprometer todo el dominio.",
+                "Domain Admins tienen control total sobre todo el dominio — todas las máquinas, usuarios y recursos. Un admin local solo tiene privilegios elevados en esa máquina específica.",
+                "Kerberos es el protocolo de autenticación principal de AD. Usa tickets (TGT y TGS) en lugar de enviar contraseñas por la red. NTLM es el protocolo legacy más antiguo.",
+                "AD fue diseñado para que cualquier usuario autenticado pueda consultar el directorio (usuarios, grupos, OUs, SPNs). Esto facilita la enumeración masiva en pentesting."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

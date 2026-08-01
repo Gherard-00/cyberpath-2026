@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 08: Nmap — Escaneo de redes, descubrimiento de hosts, puertos, servicios y scripts NSE para pentesting.">
+    <title>Lección 08: Nmap — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a><span>›</span><span>Fase 2</span><span>›</span><span>Lección 08</span>
+        </div>
+
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,171,0,0.15);color:#ffab00">Fase 2 — Pentesting Fundamental</div>
+            <h1>Nmap — Escaneo de redes y descubrimiento de servicios</h1>
+            <p class="lesson-intro">
+                <strong>Nmap (Network Mapper)</strong> es la herramienta más importante del pentester. Es lo primero que ejecutas al empezar un pentest: 
+                te dice qué <strong>hosts están vivos</strong>, qué <strong>puertos están abiertos</strong>, qué <strong>servicios y versiones</strong> corren, 
+                e incluso puede detectar el <strong>sistema operativo</strong>. En esta lección dominarás Nmap desde los fundamentos hasta técnicas avanzadas.
+            </p>
+        </div>
+
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-nmap">¿Qué es Nmap y por qué es esencial?</a></li>
+                <li><a href="#descubrimiento">Descubrimiento de hosts: ¿quién está vivo?</a></li>
+                <li><a href="#tipos-escaneo">Tipos de escaneo de puertos</a></li>
+                <li><a href="#deteccion-servicios">Detección de servicios y versiones</a></li>
+                <li><a href="#deteccion-os">Detección de sistema operativo</a></li>
+                <li><a href="#nse">Scripts NSE: el poder oculto de Nmap</a></li>
+                <li><a href="#evasion">Técnicas de evasión y timing</a></li>
+                <li><a href="#output">Formatos de salida y reportes</a></li>
+                <li><a href="#cheatsheet">Cheatsheet de comandos esenciales</a></li>
+                <li><a href="#practica">Práctica: escanea tu laboratorio</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="que-es-nmap">
+            <h2><span class="section-icon">🔍</span> 1. ¿Qué es Nmap y por qué es esencial?</h2>
+            <p class="lesson-text">
+                Nmap es un <strong>escáner de red</strong> open source creado por Gordon "Fyodor" Lyon. Es la herramienta de reconocimiento 
+                más usada en el mundo por pentesters, administradores de red y equipos de seguridad.
+            </p>
+            <p class="lesson-text">Con Nmap puedes:</p>
+            <ul>
+                <li><strong>Descubrir hosts:</strong> encontrar qué dispositivos están activos en una red.</li>
+                <li><strong>Escanear puertos:</strong> ver qué puertos están abiertos, cerrados o filtrados.</li>
+                <li><strong>Detectar servicios:</strong> identificar qué software corre en cada puerto (Apache, SSH, MySQL...).</li>
+                <li><strong>Detectar versiones:</strong> saber la versión exacta del servicio (útil para buscar exploits).</li>
+                <li><strong>Detectar SO:</strong> adivinar qué sistema operativo tiene el objetivo.</li>
+                <li><strong>Ejecutar scripts:</strong> lanzar scripts automatizados para detectar vulnerabilidades.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="descubrimiento">
+            <h2><span class="section-icon">📡</span> 2. Descubrimiento de hosts: ¿quién está vivo?</h2>
+            <p class="lesson-text">
+                Antes de escanear puertos, necesitas saber qué hosts están activos en la red. Nmap ofrece varias técnicas:
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Descubrimiento de hosts</span></div>
+                <pre><code><span style="color:#546e7a"># Ping Sweep — descubrir hosts vivos en una red</span>
+<span style="color:#00e676">$</span> nmap -sn 10.0.2.0/24
+<span style="color:#546e7a"># -sn = solo descubrimiento, NO escanea puertos</span>
+<span style="color:#546e7a"># Resultado: lista de IPs que respondieron</span>
+
+<span style="color:#546e7a"># Escanear un rango específico</span>
+<span style="color:#00e676">$</span> nmap -sn 10.0.2.1-50
+
+<span style="color:#546e7a"># Escanear una lista de IPs desde un archivo</span>
+<span style="color:#00e676">$</span> nmap -sn -iL targets.txt
+
+<span style="color:#546e7a"># Descubrimiento con ARP (más efectivo en red local)</span>
+<span style="color:#00e676">$</span> nmap -sn -PR 10.0.2.0/24
+
+<span style="color:#546e7a"># Sin ping (útil si el host bloquea ICMP)</span>
+<span style="color:#00e676">$</span> nmap -Pn 10.0.2.15
+<span style="color:#546e7a"># -Pn = asume que el host está vivo, escanea directo</span></code></pre>
+                <div class="explanation">
+                    <p><strong><code>-sn</code></strong> es tu primer comando en cualquier pentest: te dice qué hay en la red sin hacer ruido excesivo. Si un host no responde a ping, usa <code>-Pn</code> para escanearlo de todas formas (muchos firewalls bloquean ICMP).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="tipos-escaneo">
+            <h2><span class="section-icon">🚪</span> 3. Tipos de escaneo de puertos</h2>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Tipo</th><th>Flag</th><th>Cómo funciona</th><th>¿Cuándo usarlo?</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>SYN Scan (Half-open)</strong></td>
+                            <td><code>-sS</code></td>
+                            <td>Envía SYN, si recibe SYN-ACK → abierto. Envía RST para no completar la conexión.</td>
+                            <td>Escaneo por defecto. Rápido, sigiloso. Necesita root.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TCP Connect</strong></td>
+                            <td><code>-sT</code></td>
+                            <td>Completa el Three-Way Handshake completo.</td>
+                            <td>Cuando no tienes permisos de root. Más lento y detectable.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>UDP Scan</strong></td>
+                            <td><code>-sU</code></td>
+                            <td>Envía paquetes UDP. Si no hay respuesta, podría estar abierto o filtrado.</td>
+                            <td>Para servicios UDP (DNS:53, SNMP:161, DHCP:67). Muy lento.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FIN Scan</strong></td>
+                            <td><code>-sF</code></td>
+                            <td>Envía paquete con flag FIN. Sistemas conformes a RFC responden con RST si cerrado.</td>
+                            <td>Evasión de firewalls básicos. No funciona contra Windows.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>XMAS Scan</strong></td>
+                            <td><code>-sX</code></td>
+                            <td>Envía paquete con flags FIN+PSH+URG activadas (como un árbol de navidad).</td>
+                            <td>Otra técnica de evasión de firewalls.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NULL Scan</strong></td>
+                            <td><code>-sN</code></td>
+                            <td>Envía paquete TCP sin ninguna flag activada.</td>
+                            <td>Evasión de firewalls. No funciona contra Windows.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Escaneos de puertos en acción</span></div>
+                <pre><code><span style="color:#546e7a"># SYN Scan (el más usado) — necesita sudo</span>
+<span style="color:#00e676">$</span> sudo nmap -sS 10.0.2.15
+
+<span style="color:#546e7a"># Escanear puertos específicos</span>
+<span style="color:#00e676">$</span> nmap -p 22,80,443,3306 10.0.2.15
+
+<span style="color:#546e7a"># Escanear un rango de puertos</span>
+<span style="color:#00e676">$</span> nmap -p 1-1000 10.0.2.15
+
+<span style="color:#546e7a"># Escanear TODOS los puertos (65,535)</span>
+<span style="color:#00e676">$</span> nmap -p- 10.0.2.15
+<span style="color:#546e7a"># Puede tardar varios minutos</span>
+
+<span style="color:#546e7a"># Top 100 puertos más comunes (rápido)</span>
+<span style="color:#00e676">$</span> nmap --top-ports 100 10.0.2.15
+
+<span style="color:#546e7a"># Escaneo rápido de los 1000 puertos más comunes</span>
+<span style="color:#00e676">$</span> nmap -F 10.0.2.15</code></pre>
+            </div>
+
+            <div class="concept-box">
+                <h4>💡 ¿Qué significan los estados de los puertos?</h4>
+                <p>
+                    <strong><code>open</code></strong> — El puerto está abierto y un servicio está escuchando. ✅ Vector de ataque potencial.<br>
+                    <strong><code>closed</code></strong> — El puerto es accesible pero no hay servicio escuchando.<br>
+                    <strong><code>filtered</code></strong> — Un firewall está bloqueando el acceso. Nmap no puede determinar si está abierto o cerrado.<br>
+                    <strong><code>open|filtered</code></strong> — Nmap no puede distinguir entre abierto y filtrado (común en escaneos UDP).
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="deteccion-servicios">
+            <h2><span class="section-icon">🏷️</span> 4. Detección de servicios y versiones</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de servicios</span></div>
+                <pre><code><span style="color:#546e7a"># Detectar versiones de servicios (-sV)</span>
+<span style="color:#00e676">$</span> nmap -sV 10.0.2.15
+
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         vsftpd 2.3.4
+22/tcp   open  ssh         OpenSSH 4.7p1
+80/tcp   open  http        Apache httpd 2.2.8 ((Ubuntu) DAV/2)
+3306/tcp open  mysql       MySQL 5.0.51a-3ubuntu5
+
+<span style="color:#546e7a"># Con más agresividad en la detección</span>
+<span style="color:#00e676">$</span> nmap -sV --version-intensity 5 10.0.2.15
+
+<span style="color:#546e7a"># Escaneo completo: puertos + versiones + scripts + SO</span>
+<span style="color:#00e676">$</span> sudo nmap -sS -sV -sC -O 10.0.2.15
+<span style="color:#546e7a"># -sS = SYN scan</span>
+<span style="color:#546e7a"># -sV = versiones</span>
+<span style="color:#546e7a"># -sC = scripts por defecto</span>
+<span style="color:#546e7a"># -O  = detección de SO</span>
+
+<span style="color:#546e7a"># Atajo para "escaneo agresivo" (equivalente a -sV -sC -O --traceroute)</span>
+<span style="color:#00e676">$</span> sudo nmap -A 10.0.2.15</code></pre>
+                <div class="explanation">
+                    <p><strong>¿Por qué importan las versiones?</strong> Si descubres que un servidor tiene <code>vsftpd 2.3.4</code>, puedes buscar en Google o Exploit-DB si esa versión tiene vulnerabilidades conocidas. Spoiler: vsftpd 2.3.4 tiene un <strong>backdoor</strong> que permite acceso root. Lo explotarás con Metasploit en la Lección 11.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="deteccion-os">
+            <h2><span class="section-icon">💻</span> 5. Detección de sistema operativo</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de SO</span></div>
+                <pre><code><span style="color:#546e7a"># Detección de sistema operativo (necesita root)</span>
+<span style="color:#00e676">$</span> sudo nmap -O 10.0.2.15
+
+OS details: Linux 2.6.9 - 2.6.33
+Network Distance: 1 hop
+
+<span style="color:#546e7a"># Con más agresividad</span>
+<span style="color:#00e676">$</span> sudo nmap -O --osscan-guess 10.0.2.15</code></pre>
+                <div class="explanation">
+                    <p>Nmap detecta el SO analizando las respuestas TCP/IP del objetivo (TTL, tamaño de ventana, opciones TCP). No es 100% exacto pero da una buena idea. Saber el SO te ayuda a elegir los exploits correctos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="nse">
+            <h2><span class="section-icon">📜</span> 6. Scripts NSE: el poder oculto de Nmap</h2>
+            <p class="lesson-text">
+                <strong>NSE (Nmap Scripting Engine)</strong> es el sistema de scripts de Nmap. Contiene cientos de scripts para 
+                detectar vulnerabilidades, obtener información adicional y hasta explotar algunos fallos.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Scripts NSE</span></div>
+                <pre><code><span style="color:#546e7a"># Ejecutar scripts por defecto (safe + informational)</span>
+<span style="color:#00e676">$</span> nmap -sC 10.0.2.15
+
+<span style="color:#546e7a"># Ejecutar un script específico</span>
+<span style="color:#00e676">$</span> nmap --script=http-title 10.0.2.15
+<span style="color:#546e7a"># Muestra el título de la página web</span>
+
+<span style="color:#546e7a"># Buscar vulnerabilidades conocidas</span>
+<span style="color:#00e676">$</span> nmap --script=vuln 10.0.2.15
+<span style="color:#546e7a"># Ejecuta TODOS los scripts de detección de vulnerabilidades</span>
+
+<span style="color:#546e7a"># Scripts específicos útiles:</span>
+<span style="color:#00e676">$</span> nmap --script=smb-vuln-ms17-010 10.0.2.15    <span style="color:#546e7a"># EternalBlue</span>
+<span style="color:#00e676">$</span> nmap --script=ftp-anon 10.0.2.15              <span style="color:#546e7a"># FTP anónimo</span>
+<span style="color:#00e676">$</span> nmap --script=ssh-brute 10.0.2.15             <span style="color:#546e7a"># Fuerza bruta SSH</span>
+<span style="color:#00e676">$</span> nmap --script=http-enum 10.0.2.15             <span style="color:#546e7a"># Enumerar directorios web</span>
+<span style="color:#00e676">$</span> nmap --script=mysql-info 10.0.2.15            <span style="color:#546e7a"># Info de MySQL</span>
+<span style="color:#00e676">$</span> nmap --script=dns-zone-transfer -p 53 target  <span style="color:#546e7a"># Transferencia de zona DNS</span>
+
+<span style="color:#546e7a"># Ver todos los scripts disponibles</span>
+<span style="color:#00e676">$</span> ls /usr/share/nmap/scripts/ | wc -l
+<span style="color:#546e7a"># → 600+ scripts</span>
+
+<span style="color:#546e7a"># Buscar scripts por categoría</span>
+<span style="color:#00e676">$</span> ls /usr/share/nmap/scripts/ | grep smb
+<span style="color:#00e676">$</span> ls /usr/share/nmap/scripts/ | grep http</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="lesson-section" id="evasion">
+            <h2><span class="section-icon">🥷</span> 7. Técnicas de evasión y timing</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Timing y evasión</span></div>
+                <pre><code><span style="color:#546e7a"># Templates de velocidad (-T0 a -T5)</span>
+<span style="color:#00e676">$</span> nmap -T0 10.0.2.15   <span style="color:#546e7a"># Paranoico — muy lento, difícil de detectar</span>
+<span style="color:#00e676">$</span> nmap -T1 10.0.2.15   <span style="color:#546e7a"># Sneaky — lento</span>
+<span style="color:#00e676">$</span> nmap -T2 10.0.2.15   <span style="color:#546e7a"># Polite — no sobrecarga la red</span>
+<span style="color:#00e676">$</span> nmap -T3 10.0.2.15   <span style="color:#546e7a"># Normal (defecto)</span>
+<span style="color:#00e676">$</span> nmap -T4 10.0.2.15   <span style="color:#546e7a"># Aggressive — rápido (el más usado)</span>
+<span style="color:#00e676">$</span> nmap -T5 10.0.2.15   <span style="color:#546e7a"># Insane — muy rápido, puede perder puertos</span>
+
+<span style="color:#546e7a"># Fragmentar paquetes (evadir IDS/IPS)</span>
+<span style="color:#00e676">$</span> nmap -f 10.0.2.15
+
+<span style="color:#546e7a"># Usar un decoy (IP señuelo)</span>
+<span style="color:#00e676">$</span> nmap -D RND:5 10.0.2.15
+<span style="color:#546e7a"># Genera 5 IPs falsas para confundir al IDS</span>
+
+<span style="color:#546e7a"># Cambiar el puerto de origen</span>
+<span style="color:#00e676">$</span> nmap --source-port 53 10.0.2.15
+<span style="color:#546e7a"># Algunos firewalls permiten tráfico del puerto 53 (DNS)</span></code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="lesson-section" id="output">
+            <h2><span class="section-icon">📄</span> 8. Formatos de salida y reportes</h2>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Guardar resultados</span></div>
+                <pre><code><span style="color:#546e7a"># Guardar en formato normal (legible)</span>
+<span style="color:#00e676">$</span> nmap -sV 10.0.2.15 -oN scan_normal.txt
+
+<span style="color:#546e7a"># Guardar en formato XML (para parsear con herramientas)</span>
+<span style="color:#00e676">$</span> nmap -sV 10.0.2.15 -oX scan.xml
+
+<span style="color:#546e7a"># Guardar en formato grepable (para buscar con grep)</span>
+<span style="color:#00e676">$</span> nmap -sV 10.0.2.15 -oG scan_grep.txt
+
+<span style="color:#546e7a"># Guardar en TODOS los formatos a la vez</span>
+<span style="color:#00e676">$</span> nmap -sV 10.0.2.15 -oA scan_completo
+<span style="color:#546e7a"># Genera: scan_completo.nmap, scan_completo.xml, scan_completo.gnmap</span></code></pre>
+                <div class="explanation">
+                    <p><strong>Siempre guarda los resultados</strong> con <code>-oA</code>. Es tu evidencia para el reporte, y si necesitas consultar algo después, no tienes que volver a escanear.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 9 -->
+        <div class="lesson-section" id="cheatsheet">
+            <h2><span class="section-icon">📋</span> 9. Cheatsheet de comandos esenciales</h2>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Escenario</th><th>Comando</th></tr></thead>
+                    <tbody>
+                        <tr><td>Descubrir hosts en la red</td><td><code>nmap -sn 10.0.2.0/24</code></td></tr>
+                        <tr><td>Escaneo rápido</td><td><code>nmap -F 10.0.2.15</code></td></tr>
+                        <tr><td>Escaneo completo estándar</td><td><code>sudo nmap -sS -sV -sC -O -T4 10.0.2.15 -oA scan</code></td></tr>
+                        <tr><td>Todos los puertos + versiones</td><td><code>nmap -p- -sV -T4 10.0.2.15</code></td></tr>
+                        <tr><td>Buscar vulnerabilidades</td><td><code>nmap --script=vuln 10.0.2.15</code></td></tr>
+                        <tr><td>Escaneo UDP</td><td><code>sudo nmap -sU --top-ports 50 10.0.2.15</code></td></tr>
+                        <tr><td>Escaneo sigiloso</td><td><code>sudo nmap -sS -T2 -f -D RND:3 10.0.2.15</code></td></tr>
+                        <tr><td>Enumerar web</td><td><code>nmap --script=http-enum -p 80 10.0.2.15</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 10 -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 10. Práctica: escanea tu laboratorio</h2>
+
+            <h3>Ejercicio 1: Reconocimiento básico</h3>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ejercicios con Metasploitable</span></div>
+                <pre><code><span style="color:#546e7a"># 1. Descubre todos los hosts en tu red virtual</span>
+<span style="color:#00e676">$</span> nmap -sn 10.0.2.0/24
+
+<span style="color:#546e7a"># 2. Escanea todos los puertos de Metasploitable</span>
+<span style="color:#00e676">$</span> nmap -p- -T4 10.0.2.15
+
+<span style="color:#546e7a"># 3. Detecta versiones de los servicios</span>
+<span style="color:#00e676">$</span> nmap -sV -p 21,22,80,445,3306 10.0.2.15
+
+<span style="color:#546e7a"># 4. Ejecuta scripts de vulnerabilidades</span>
+<span style="color:#00e676">$</span> nmap --script=vuln -p 21,445 10.0.2.15
+
+<span style="color:#546e7a"># 5. Busca si FTP permite acceso anónimo</span>
+<span style="color:#00e676">$</span> nmap --script=ftp-anon -p 21 10.0.2.15
+
+<span style="color:#546e7a"># 6. Guarda un escaneo completo</span>
+<span style="color:#00e676">$</span> sudo nmap -A -T4 -p- 10.0.2.15 -oA metasploitable_full</code></pre>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Asegúrate de poder:</p>
+                <ul>
+                    <li>Hacer un ping sweep para descubrir hosts</li>
+                    <li>Distinguir entre escaneo SYN, TCP Connect y UDP</li>
+                    <li>Detectar versiones de servicios con <code>-sV</code></li>
+                    <li>Usar scripts NSE para buscar vulnerabilidades</li>
+                    <li>Guardar resultados con <code>-oA</code></li>
+                    <li>Interpretar los estados de puertos (open, closed, filtered)</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/furthernmap" target="_blank" rel="noopener noreferrer">TryHackMe: Nmap</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/rustscan" target="_blank" rel="noopener noreferrer">TryHackMe: RustScan</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/nmap01" target="_blank" rel="noopener noreferrer">TryHackMe: Nmap Live Host Discovery</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-07-etica-legal.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 07: Ética y Legalidad</span></a>
+            <a href="leccion-08b-web-fundamentals.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 08B: Fundamentos Web</span></a>
+        </div>
+    </main>
+
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué tipo de escaneo de Nmap envía paquetes SYN pero nunca completa el Three-Way Handshake?",
+                    "options": [
+                              "TCP Connect Scan (-sT)",
+                              "SYN Scan / Half-Open Scan (-sS)",
+                              "UDP Scan (-sU)",
+                              "Ping Scan (-sn)"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué flag de Nmap se usa para detectar la versión de los servicios corriendo en puertos abiertos?",
+                    "options": [
+                              "-O",
+                              "-sV",
+                              "-A",
+                              "-p"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué son los scripts NSE de Nmap?",
+                    "options": [
+                              "Plugins de terceros no oficiales",
+                              "Scripts de automatización escritos en Lua que extienden las capacidades de Nmap (detección de vulns, enumeración, etc.)",
+                              "Archivos de configuración de Nmap",
+                              "Logs de escaneo en formato especial"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "Si Nmap muestra un puerto como 'filtered', ¿qué significa?",
+                    "options": [
+                              "El puerto está abierto y el servicio funciona",
+                              "El puerto está cerrado",
+                              "Un firewall está bloqueando la comunicación y Nmap no puede determinar si está abierto o cerrado",
+                              "El servicio requiere autenticación"
+                    ],
+                    "correct": 2
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-08'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-08', quizQuestions);
+            const explanations = [
+                "El SYN Scan (-sS) envía SYN y analiza la respuesta: SYN-ACK = puerto abierto, RST = cerrado. Nunca envía el ACK final, por eso es 'half-open' y más sigiloso.",
+                "-sV (Version detection) interroga los puertos abiertos para identificar el servicio y su versión. -O detecta el sistema operativo. -A activa ambos más scripts y traceroute.",
+                "NSE (Nmap Scripting Engine) incluye cientos de scripts Lua para detección de vulnerabilidades, enumeración de servicios, fuerza bruta, etc. Se usan con --script=nombre.",
+                "\"Filtered\" significa que un firewall, regla de iptables u otro dispositivo de seguridad bloquea los paquetes de Nmap, impidiendo determinar el estado real del puerto."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 05: Fundamentos de Seguridad Informática — Tríada CIA, tipos de amenazas, malware, ingeniería social y mentalidad del atacante.">
+    <title>Lección 05: Fundamentos de Seguridad Informática — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <nav class="navbar" id="navbar">
+        <a href="../index.html" class="nav-brand" style="text-decoration:none">
+            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
+        </a>
+    </nav>
+
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb">
+            <a href="../index.html">Inicio</a><span>›</span><span>Fase 1</span><span>›</span><span>Lección 05</span>
+        </div>
+
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(0,176,255,0.15);color:#00b0ff">Fase 1 — Introducción a la Ciberseguridad</div>
+            <h1>Fundamentos de Seguridad Informática</h1>
+            <p class="lesson-intro">
+                Antes de aprender a atacar, necesitas entender <strong>qué estás protegiendo y contra qué</strong>. 
+                En esta lección aprenderás los conceptos fundamentales de seguridad informática: la <strong>tríada CIA</strong>, 
+                los <strong>tipos de amenazas</strong>, los <strong>tipos de malware</strong>, la <strong>ingeniería social</strong> 
+                y cómo piensa un atacante. Estos conceptos son la base de todo lo que viene después.
+            </p>
+        </div>
+
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es">¿Qué es la seguridad informática?</a></li>
+                <li><a href="#triada-cia">La Tríada CIA: los tres pilares</a></li>
+                <li><a href="#amenazas">Tipos de amenazas y actores</a></li>
+                <li><a href="#malware">Tipos de malware</a></li>
+                <li><a href="#ingenieria-social">Ingeniería social: hackear personas</a></li>
+                <li><a href="#superficie-ataque">Superficie de ataque y vectores</a></li>
+                <li><a href="#defensa-profundidad">Defensa en profundidad</a></li>
+                <li><a href="#mentalidad">La mentalidad del hacker ético</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="que-es">
+            <h2><span class="section-icon">🛡️</span> 1. ¿Qué es la seguridad informática?</h2>
+            <p class="lesson-text">
+                La <strong>seguridad informática</strong> (o ciberseguridad) es el conjunto de prácticas, tecnologías y procesos 
+                diseñados para <strong>proteger sistemas, redes y datos</strong> contra accesos no autorizados, ataques, daños o robo. 
+                No se trata solo de instalar un antivirus — es una disciplina completa que abarca desde la configuración de firewalls 
+                hasta la formación de empleados para detectar phishing.
+            </p>
+            <div class="concept-box">
+                <h4>💡 Seguridad vs. Comodidad</h4>
+                <p>
+                    Existe una tensión constante entre <strong>seguridad</strong> y <strong>comodidad</strong>. 
+                    Una contraseña de 32 caracteres es más segura, pero nadie la recuerda. Un sistema sin acceso a Internet es más seguro, 
+                    pero inútil para trabajar. La ciberseguridad busca el <strong>equilibrio correcto</strong> entre protección y funcionalidad.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="triada-cia">
+            <h2><span class="section-icon">🔺</span> 2. La Tríada CIA: los tres pilares</h2>
+            <p class="lesson-text">
+                Todo en seguridad informática gira alrededor de tres principios fundamentales conocidos como la <strong>Tríada CIA</strong> 
+                (por sus siglas en inglés):
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr><th>Pilar</th><th>Significado</th><th>Ejemplo de ataque que lo viola</th><th>Ejemplo de protección</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Confidencialidad (Confidentiality)</strong></td>
+                            <td>Solo las personas autorizadas pueden acceder a la información.</td>
+                            <td>Un hacker roba una base de datos con contraseñas.</td>
+                            <td>Cifrado de datos, control de acceso, clasificación de información.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Integridad (Integrity)</strong></td>
+                            <td>La información no ha sido modificada de forma no autorizada.</td>
+                            <td>Un atacante modifica los registros de una base de datos bancaria.</td>
+                            <td>Hashes, firmas digitales, control de versiones, checksums.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Disponibilidad (Availability)</strong></td>
+                            <td>Los sistemas y datos están accesibles cuando se necesitan.</td>
+                            <td>Un ataque DDoS tumba un sitio web durante 24 horas.</td>
+                            <td>Redundancia, backups, balanceo de carga, planes de recuperación.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🏦</span>
+                <h4>Analogía: La Tríada CIA como una caja fuerte bancaria</h4>
+                <p>
+                    <strong>Confidencialidad:</strong> Solo el dueño y el gerente pueden abrir la caja fuerte (acceso restringido).<br>
+                    <strong>Integridad:</strong> Nadie puede alterar el contenido sin que se note (sellos de seguridad).<br>
+                    <strong>Disponibilidad:</strong> El banco está abierto en horario laboral y la caja fuerte es accesible cuando la necesitas.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="amenazas">
+            <h2><span class="section-icon">👤</span> 3. Tipos de amenazas y actores</h2>
+            <p class="lesson-text">
+                No todos los "hackers" son iguales. Los <strong>actores de amenaza</strong> tienen diferentes motivaciones, capacidades y objetivos:
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr><th>Actor</th><th>Motivación</th><th>Capacidad</th><th>Ejemplo</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Script Kiddies</strong></td><td>Diversión, ego</td><td>Baja — usan herramientas sin entenderlas</td><td>Adolescente que descarga un exploit de Internet y lo lanza sin saber qué hace</td></tr>
+                        <tr><td><strong>Hacktivistas</strong></td><td>Ideología, política</td><td>Media</td><td>Anonymous atacando sitios gubernamentales por una causa política</td></tr>
+                        <tr><td><strong>Cibercriminales</strong></td><td>Dinero</td><td>Media-Alta</td><td>Grupos de ransomware que cifran datos y piden rescate (LockBit, BlackCat)</td></tr>
+                        <tr><td><strong>Insiders (amenaza interna)</strong></td><td>Venganza, dinero</td><td>Alta (ya tienen acceso)</td><td>Empleado descontento que roba datos antes de irse de la empresa</td></tr>
+                        <tr><td><strong>APT (Advanced Persistent Threat)</strong></td><td>Espionaje, geopolítica</td><td>Muy alta — recursos de un estado</td><td>Grupos patrocinados por gobiernos (APT28/Fancy Bear → Rusia, APT41 → China)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="malware">
+            <h2><span class="section-icon">🦠</span> 4. Tipos de malware</h2>
+            <p class="lesson-text">
+                <strong>Malware</strong> (malicious software) es cualquier software diseñado para causar daño, robar datos o acceder a sistemas sin autorización.
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr><th>Tipo</th><th>¿Qué hace?</th><th>Ejemplo real</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Virus</strong></td><td>Se adjunta a archivos legítimos y se propaga cuando el archivo se ejecuta.</td><td>ILOVEYOU (2000) — se propagó por email infectando 50 millones de PCs</td></tr>
+                        <tr><td><strong>Gusano (Worm)</strong></td><td>Se propaga solo por la red, sin necesidad de que el usuario haga nada.</td><td>WannaCry (2017) — infectó 200,000 PCs en 150 países vía EternalBlue</td></tr>
+                        <tr><td><strong>Troyano</strong></td><td>Se disfraza de programa legítimo pero tiene funcionalidad maliciosa oculta.</td><td>RATs (Remote Access Trojans) que dan control remoto al atacante</td></tr>
+                        <tr><td><strong>Ransomware</strong></td><td>Cifra todos tus archivos y pide rescate (en Bitcoin) para descifrarlos.</td><td>LockBit, BlackCat, Conti — atacan hospitales, empresas, gobiernos</td></tr>
+                        <tr><td><strong>Spyware</strong></td><td>Espía tu actividad: capturas de pantalla, teclas presionadas, cámara, micrófono.</td><td>Pegasus (NSO Group) — usado por gobiernos para espiar periodistas</td></tr>
+                        <tr><td><strong>Rootkit</strong></td><td>Se oculta profundamente en el sistema para mantener acceso persistente y evadir detección.</td><td>Sony BMG rootkit — Sony lo instaló secretamente en CDs de música</td></tr>
+                        <tr><td><strong>Keylogger</strong></td><td>Registra todas las teclas que presionas para capturar contraseñas.</td><td>Muchos troyanos incluyen keyloggers como componente</td></tr>
+                        <tr><td><strong>Botnet</strong></td><td>Red de máquinas infectadas controladas remotamente para ataques coordinados (DDoS).</td><td>Mirai — infectó dispositivos IoT para lanzar DDoS masivos</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="ingenieria-social">
+            <h2><span class="section-icon">🎭</span> 5. Ingeniería social: hackear personas</h2>
+            <p class="lesson-text">
+                La <strong>ingeniería social</strong> es la técnica de manipular personas para que revelen información confidencial 
+                o realicen acciones que comprometan la seguridad. Es el ataque más efectivo que existe porque 
+                <strong>el eslabón más débil siempre es el humano</strong>.
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr><th>Técnica</th><th>¿Cómo funciona?</th><th>Ejemplo</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Phishing</strong></td><td>Email falso que imita a una entidad legítima para robar credenciales.</td><td>"Su cuenta de banco ha sido bloqueada. Haga clic aquí para verificar." → te lleva a un sitio falso</td></tr>
+                        <tr><td><strong>Spear Phishing</strong></td><td>Phishing personalizado dirigido a una persona específica.</td><td>"Hola Juan, soy de IT. Necesitamos que actualices tu contraseña en este enlace."</td></tr>
+                        <tr><td><strong>Vishing</strong></td><td>Phishing por teléfono (voice phishing).</td><td>Te llaman haciéndose pasar por tu banco pidiendo tu PIN</td></tr>
+                        <tr><td><strong>Smishing</strong></td><td>Phishing por SMS.</td><td>"Tu paquete de Amazon está retenido. Confirma tu dirección: [enlace malicioso]"</td></tr>
+                        <tr><td><strong>Pretexting</strong></td><td>Crear una historia falsa para obtener información.</td><td>Llamar a IT haciéndose pasar por un directivo para pedir una contraseña reset</td></tr>
+                        <tr><td><strong>Baiting</strong></td><td>Dejar un dispositivo infectado (USB) para que alguien lo conecte.</td><td>Dejar USBs con malware en el estacionamiento de una empresa</td></tr>
+                        <tr><td><strong>Tailgating</strong></td><td>Seguir a un empleado para entrar a un área restringida sin autorización.</td><td>"¿Me aguantas la puerta? Se me olvidó la tarjeta de acceso"</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box">
+                <h4>⚠️ El 90% de los ciberataques comienzan con ingeniería social</h4>
+                <p>
+                    No importa cuántos firewalls tengas — si un empleado hace clic en un enlace de phishing y escribe su contraseña, 
+                    el atacante ya está dentro. Por eso la <strong>concienciación</strong> (security awareness) es tan importante como la tecnología.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="superficie-ataque">
+            <h2><span class="section-icon">🎯</span> 6. Superficie de ataque y vectores</h2>
+            <p class="lesson-text">
+                La <strong>superficie de ataque</strong> es el conjunto de todos los puntos por donde un atacante podría intentar entrar a un sistema. 
+                Cada punto es un <strong>vector de ataque</strong>. Cuantos más servicios, puertos y aplicaciones expongas, mayor es tu superficie de ataque.
+            </p>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead>
+                        <tr><th>Vector de ataque</th><th>Ejemplo</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Servicios de red expuestos</strong></td><td>Puerto SSH abierto con contraseña débil</td></tr>
+                        <tr><td><strong>Aplicaciones web</strong></td><td>Formulario de login vulnerable a SQL Injection</td></tr>
+                        <tr><td><strong>Email</strong></td><td>Phishing con adjunto malicioso</td></tr>
+                        <tr><td><strong>Acceso físico</strong></td><td>USB con malware dejado en el parking</td></tr>
+                        <tr><td><strong>Cadena de suministro</strong></td><td>Librería de software legítima infectada (ej: ataque a SolarWinds)</td></tr>
+                        <tr><td><strong>WiFi</strong></td><td>Red WiFi con WPA2 y contraseña débil</td></tr>
+                        <tr><td><strong>Usuarios</strong></td><td>Empleado que reutiliza la misma contraseña en todos sus servicios</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="lesson-section" id="defensa-profundidad">
+            <h2><span class="section-icon">🏰</span> 7. Defensa en profundidad</h2>
+            <p class="lesson-text">
+                La <strong>defensa en profundidad</strong> (defense in depth) es la estrategia de poner <strong>múltiples capas de seguridad</strong>, 
+                de modo que si una capa falla, las otras siguen protegiendo. Es como un castillo medieval: muralla exterior, foso, muralla interior, 
+                torre del homenaje.
+            </p>
+
+            <div class="lesson-diagram">
+                <pre>
+    Capa 1: PERÍMETRO    → Firewall, IDS/IPS, WAF
+    Capa 2: RED          → Segmentación, VLANs, VPN
+    Capa 3: HOST         → Antivirus, actualizaciones, hardening
+    Capa 4: APLICACIÓN   → Autenticación, validación de input, HTTPS
+    Capa 5: DATOS        → Cifrado, backups, DLP
+    Capa 6: USUARIOS     → Capacitación, MFA, políticas de contraseñas
+    Capa 7: FÍSICO       → Control de acceso, cámaras, cerraduras
+                </pre>
+                <p class="diagram-caption">Defensa en profundidad: si una capa falla, las demás siguen protegiendo.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="lesson-section" id="mentalidad">
+            <h2><span class="section-icon">🧠</span> 8. La mentalidad del hacker ético</h2>
+            <p class="lesson-text">
+                Un <strong>hacker ético</strong> piensa como un atacante pero actúa como un defensor. Su trabajo es <strong>encontrar vulnerabilidades 
+                antes de que los criminales las encuentren</strong> y reportarlas para que se corrijan.
+            </p>
+
+            <h3>Las 5 fases del pentesting</h3>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Fase</th><th>Nombre</th><th>¿Qué haces?</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>1</strong></td><td>Reconocimiento</td><td>Recopilar información sobre el objetivo: IPs, dominios, empleados, tecnologías.</td></tr>
+                        <tr><td><strong>2</strong></td><td>Escaneo</td><td>Escanear puertos, servicios, versiones, y buscar vulnerabilidades conocidas.</td></tr>
+                        <tr><td><strong>3</strong></td><td>Explotación</td><td>Explotar las vulnerabilidades encontradas para obtener acceso al sistema.</td></tr>
+                        <tr><td><strong>4</strong></td><td>Post-Explotación</td><td>Escalar privilegios, movimiento lateral, extraer datos, mantener acceso.</td></tr>
+                        <tr><td><strong>5</strong></td><td>Reporte</td><td>Documentar todo: qué encontraste, cómo lo explotaste, cuál es el riesgo, cómo remediarlo.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Asegúrate de poder responder estas preguntas:</p>
+                <ul>
+                    <li>¿Qué significan Confidencialidad, Integridad y Disponibilidad? Da un ejemplo de ataque para cada una.</li>
+                    <li>¿Cuál es la diferencia entre un virus, un gusano y un troyano?</li>
+                    <li>¿Qué es el ransomware y cómo funciona?</li>
+                    <li>¿Qué es el phishing y en qué se diferencia del spear phishing?</li>
+                    <li>¿Qué es la superficie de ataque?</li>
+                    <li>¿Cuáles son las 5 fases del pentesting?</li>
+                    <li>¿Qué es la defensa en profundidad?</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/introtocybersecurity" target="_blank" rel="noopener noreferrer">TryHackMe: Intro to Cyber Security</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/securityprinciples" target="_blank" rel="noopener noreferrer">TryHackMe: Security Principles</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/phishingyl" target="_blank" rel="noopener noreferrer">TryHackMe: Phishing</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-04-laboratorio.html">
+                <span class="nav-label">← Anterior</span>
+                <span class="nav-title">Lección 04: Laboratorio Virtual</span>
+            </a>
+            <a href="leccion-06-criptografia.html" class="next">
+                <span class="nav-label">Siguiente →</span>
+                <span class="nav-title">Lección 06: Criptografía Esencial</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué significan las siglas CIA en el contexto de seguridad informática?",
+                    "options": [
+                              "Central Intelligence Agency",
+                              "Confidencialidad, Integridad y Autenticación",
+                              "Confidencialidad, Integridad y Disponibilidad (Availability)",
+                              "Control, Identificación y Acceso"
+                    ],
+                    "correct": 2
+          },
+          {
+                    "question": "¿Qué tipo de ataque usa la manipulación psicológica para obtener información?",
+                    "options": [
+                              "SQL Injection",
+                              "Brute force",
+                              "Ingeniería social",
+                              "Buffer overflow"
+                    ],
+                    "correct": 2
+          },
+          {
+                    "question": "¿Cuál es la diferencia entre un ataque activo y un ataque pasivo?",
+                    "options": [
+                              "No hay diferencia real, son sinónimos",
+                              "El pasivo solo observa/intercepta tráfico, el activo modifica datos o interactúa con el sistema",
+                              "El activo es legal, el pasivo es ilegal",
+                              "El pasivo requiere acceso físico, el activo es remoto"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-05'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-05', quizQuestions);
+            const explanations = [
+                "La tríada CIA es: Confidencialidad (solo accede quien debe), Integridad (los datos no se alteran sin autorización), y Disponibilidad (los sistemas están accesibles cuando se necesitan).",
+                "La ingeniería social explota el factor humano: phishing, pretexting, tailgating. Es el vector de ataque más efectivo porque la persona es siempre el eslabón más débil.",
+                "Un ataque pasivo (ej: sniffing) solo observa sin modificar. Un ataque activo (ej: inyección, spoofing) modifica datos o interactúa directamente con el sistema objetivo."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>

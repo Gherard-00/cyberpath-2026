@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheatsheet: Puertos y Protocolos — CyberPath 2026</title>
+    <meta name="description" content="Referencia rapida de puertos y protocolos de red mas utilizados en ciberseguridad, pentesting y administracion de sistemas.">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .cheatsheet-page { max-width: 900px; margin: 2rem auto; padding: 2rem; }
+        .cheatsheet-header { text-align: center; margin-bottom: 2rem; }
+        .cheatsheet-header h1 { font-family: var(--font-heading); font-size: 2rem; color: var(--accent-cyan); }
+        .cheatsheet-header p { color: var(--text-muted); margin-top: 0.5rem; }
+        .cheatsheet-actions { text-align: center; margin: 1.5rem 0; }
+        .print-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.75rem 2rem; font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600;
+            background: var(--accent-cyan-dim); color: var(--accent-cyan);
+            border: 1px solid rgba(0,229,255,0.3); border-radius: var(--radius-sm);
+            cursor: pointer; transition: var(--transition-fast); text-decoration: none;
+        }
+        .print-btn:hover { background: rgba(0,229,255,0.15); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,229,255,0.15); }
+        .cheatsheet-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .cheatsheet-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 1.5rem; }
+        .cheatsheet-card h3 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 1rem; }
+        @media print {
+            body { background: #fff !important; color: #000 !important; }
+            .bg-grid, .bg-glow, .bg-glow-1, .bg-glow-2, .navbar, .footer, .cheatsheet-actions, .print-btn { display: none !important; }
+            .cheatsheet-page { padding: 0; margin: 0; max-width: 100%; }
+            .cheatsheet-header h1 { color: #000; }
+            .cheatsheet-header p { color: #666; }
+            .cheatsheet-card { background: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .cheatsheet-card h3 { color: #333; }
+            .lesson-table th, .lesson-table td { border: 1px solid #999 !important; padding: 4px 8px !important; color: #000 !important; background: #fff !important; font-size: 0.85rem; }
+            .lesson-table th { background: #eee !important; }
+            code { background: #eee !important; color: #000 !important; padding: 1px 4px; border-radius: 3px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+
+    <div class="cheatsheet-page">
+        <div class="cheatsheet-header">
+            <h1>📋 Cheatsheet: Puertos y Protocolos</h1>
+            <p>Referencia rápida de los puertos más importantes para pentesting — Lección 01</p>
+        </div>
+        <div class="cheatsheet-actions">
+            <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+            <a href="leccion-01-redes.html" class="print-btn" style="margin-left:1rem">← Volver a la lección</a>
+        </div>
+
+        <div class="cheatsheet-grid">
+            <div class="cheatsheet-card">
+                <h3>🔒 Puertos esenciales para pentesting</h3>
+                <div class="lesson-table-wrap"><table class="lesson-table">
+                    <thead><tr><th>Puerto</th><th>Servicio</th><th>Protocolo</th><th>Uso</th><th>Vector de ataque</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>21</code></td><td>FTP</td><td>TCP</td><td>Transferencia de archivos</td><td>Login anónimo, credenciales débiles</td></tr>
+                        <tr><td><code>22</code></td><td>SSH</td><td>TCP</td><td>Shell remota cifrada</td><td>Fuerza bruta, claves débiles</td></tr>
+                        <tr><td><code>23</code></td><td>Telnet</td><td>TCP</td><td>Shell remota SIN cifrar</td><td>Sniffing de credenciales en texto plano</td></tr>
+                        <tr><td><code>25</code></td><td>SMTP</td><td>TCP</td><td>Envío de correo</td><td>Enumeración de usuarios (VRFY, EXPN)</td></tr>
+                        <tr><td><code>53</code></td><td>DNS</td><td>TCP/UDP</td><td>Resolución de nombres</td><td>Zone transfer, DNS tunneling</td></tr>
+                        <tr><td><code>80</code></td><td>HTTP</td><td>TCP</td><td>Web sin cifrar</td><td>SQLi, XSS, IDOR, SSRF</td></tr>
+                        <tr><td><code>110</code></td><td>POP3</td><td>TCP</td><td>Recibir correo</td><td>Credenciales en texto plano</td></tr>
+                        <tr><td><code>135</code></td><td>RPC</td><td>TCP</td><td>Comunicación Windows</td><td>Enumeración, exploits RPC</td></tr>
+                        <tr><td><code>139</code></td><td>NetBIOS</td><td>TCP</td><td>Compartir archivos (legacy)</td><td>Enumeración de shares, null sessions</td></tr>
+                        <tr><td><code>143</code></td><td>IMAP</td><td>TCP</td><td>Correo avanzado</td><td>Credenciales, enumeración</td></tr>
+                        <tr><td><code>389</code></td><td>LDAP</td><td>TCP</td><td>Directorio (AD)</td><td>Enumeración de AD, inyección LDAP</td></tr>
+                        <tr><td><code>443</code></td><td>HTTPS</td><td>TCP</td><td>Web cifrada (TLS)</td><td>Mismas vulns web + análisis de certificados</td></tr>
+                        <tr><td><code>445</code></td><td>SMB</td><td>TCP</td><td>Compartir archivos Windows</td><td>EternalBlue, shares anónimos, relay</td></tr>
+                        <tr><td><code>1433</code></td><td>MSSQL</td><td>TCP</td><td>Base de datos SQL Server</td><td>Credenciales por defecto, xp_cmdshell</td></tr>
+                        <tr><td><code>1521</code></td><td>Oracle</td><td>TCP</td><td>Base de datos Oracle</td><td>TNS listener, credenciales por defecto</td></tr>
+                        <tr><td><code>3306</code></td><td>MySQL</td><td>TCP</td><td>Base de datos MySQL</td><td>Credenciales por defecto, UDF injection</td></tr>
+                        <tr><td><code>3389</code></td><td>RDP</td><td>TCP</td><td>Escritorio remoto Windows</td><td>Fuerza bruta, BlueKeep (CVE-2019-0708)</td></tr>
+                        <tr><td><code>5432</code></td><td>PostgreSQL</td><td>TCP</td><td>Base de datos PostgreSQL</td><td>Credenciales débiles, ejecución de comandos</td></tr>
+                        <tr><td><code>5900</code></td><td>VNC</td><td>TCP</td><td>Escritorio remoto</td><td>Sin autenticación, contraseñas débiles</td></tr>
+                        <tr><td><code>6379</code></td><td>Redis</td><td>TCP</td><td>Cache/BD en memoria</td><td>Sin autenticación por defecto</td></tr>
+                        <tr><td><code>8080</code></td><td>HTTP Alt</td><td>TCP</td><td>Web/proxy alternativo</td><td>Paneles de admin, Tomcat Manager</td></tr>
+                        <tr><td><code>8443</code></td><td>HTTPS Alt</td><td>TCP</td><td>Web cifrada alternativa</td><td>Servicios internos expuestos</td></tr>
+                    </tbody>
+                </table></div>
+            </div>
+
+            <div class="cheatsheet-card">
+                <h3>🔑 Rangos de puertos</h3>
+                <div class="lesson-table-wrap"><table class="lesson-table">
+                    <thead><tr><th>Rango</th><th>Nombre</th><th>Descripción</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>0 – 1023</code></td><td>Well-Known Ports</td><td>Servicios estándar del sistema (requieren root para abrir)</td></tr>
+                        <tr><td><code>1024 – 49151</code></td><td>Registered Ports</td><td>Asignados a aplicaciones específicas</td></tr>
+                        <tr><td><code>49152 – 65535</code></td><td>Dynamic / Ephemeral</td><td>Puertos temporales que usa tu sistema para conexiones salientes</td></tr>
+                    </tbody>
+                </table></div>
+            </div>
+
+            <div class="cheatsheet-card">
+                <h3>🛡️ Protocolo Kerberos — Puertos de Active Directory</h3>
+                <div class="lesson-table-wrap"><table class="lesson-table">
+                    <thead><tr><th>Puerto</th><th>Servicio</th><th>Relevancia</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>88</code></td><td>Kerberos</td><td>Autenticación AD — Kerberoasting, AS-REP Roasting</td></tr>
+                        <tr><td><code>389/636</code></td><td>LDAP/LDAPS</td><td>Enumeración de usuarios, grupos, OUs</td></tr>
+                        <tr><td><code>445</code></td><td>SMB</td><td>SYSVOL, GPP passwords, relay attacks</td></tr>
+                        <tr><td><code>5985/5986</code></td><td>WinRM</td><td>PowerShell remoto — Evil-WinRM</td></tr>
+                    </tbody>
+                </table></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+</body></html>

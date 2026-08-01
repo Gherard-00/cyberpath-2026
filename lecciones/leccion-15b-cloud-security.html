@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 15B: Cloud Security 101 — AWS, Azure, GCP: modelo de responsabilidad compartida, IAM, almacenamiento expuesto y vectores de ataque en la nube.">
+    <title>Lección 15B: Cloud Security 101 — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 3</span><span>›</span><span>Lección 15B</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,82,82,0.15);color:#ff5252">Fase 3 — Red Team y Técnicas Avanzadas</div>
+            <h1>Cloud Security 101 — Seguridad en AWS, Azure y GCP</h1>
+            <p class="lesson-intro">
+                El <strong>94% de las empresas</strong> usan servicios en la nube. Las infraestructuras ya no viven solo en servidores 
+                físicos — ahora están en AWS, Azure y Google Cloud. Como pentester moderno, necesitas entender 
+                <strong>cómo funciona la nube, dónde se cometen errores</strong> y cómo se explotan. En esta lección 
+                aprenderás los conceptos fundamentales de cloud security, los ataques más comunes y las herramientas para auditarlos.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-cloud">¿Qué es "la nube" realmente?</a></li>
+                <li><a href="#responsabilidad">Modelo de responsabilidad compartida</a></li>
+                <li><a href="#iam">IAM: Identity and Access Management</a></li>
+                <li><a href="#storage">Almacenamiento expuesto (S3, Blobs, GCS)</a></li>
+                <li><a href="#vectores">Vectores de ataque comunes en la nube</a></li>
+                <li><a href="#herramientas">Herramientas de auditoría cloud</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="que-es-cloud">
+            <h2><span class="section-icon">☁️</span> 1. ¿Qué es "la nube" realmente?</h2>
+            <p class="lesson-text">
+                "La nube" no es magia — son <strong>computadoras de otra persona</strong>. Específicamente, son centros de datos 
+                masivos operados por Amazon (AWS), Microsoft (Azure) o Google (GCP) que te alquilan servidores, bases de datos, 
+                almacenamiento y servicios a demanda.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🏨</span>
+                <h4>Analogía: Hotel vs. Casa propia</h4>
+                <p>
+                    Tener tu propio servidor es como tener <strong>casa propia</strong>: tú controlas todo, pero también 
+                    mantienes todo (plomería, electricidad, seguridad). La nube es como vivir en un <strong>hotel</strong>: 
+                    ellos mantienen la estructura, pero tú eres responsable de <strong>no dejar la puerta de tu habitación abierta</strong>. 
+                    La mayoría de las brechas en la nube ocurren porque el cliente dejó "la puerta abierta" — no porque el hotel fue hackeado.
+                </p>
+            </div>
+
+            <h3>Los tres modelos de servicio</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Modelo</th><th>Tú controlas</th><th>El proveedor controla</th><th>Ejemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>IaaS</strong><br>(Infrastructure as a Service)</td><td>OS, apps, datos, configuración de red</td><td>Hardware, virtualización, data center</td><td>AWS EC2, Azure VMs, GCP Compute Engine</td></tr>
+                    <tr><td><strong>PaaS</strong><br>(Platform as a Service)</td><td>Apps y datos</td><td>OS, runtime, middleware, infra</td><td>AWS Elastic Beanstalk, Azure App Service, Google App Engine</td></tr>
+                    <tr><td><strong>SaaS</strong><br>(Software as a Service)</td><td>Solo tus datos y configuración</td><td>Todo lo demás</td><td>Gmail, Salesforce, Office 365, Slack</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="lesson-section" id="responsabilidad">
+            <h2><span class="section-icon">🤝</span> 2. Modelo de responsabilidad compartida</h2>
+            <p class="lesson-text">
+                Este es el concepto <strong>más importante</strong> de cloud security. Define quién es responsable de qué.
+            </p>
+
+            <div class="lesson-diagram"><pre>
+    ┌─────────────────────────────────────────────────────────────┐
+    │                RESPONSABILIDAD DEL CLIENTE                   │
+    │                                                              │
+    │   ✓ Datos y contenido                                        │
+    │   ✓ Gestión de identidades (IAM)                             │
+    │   ✓ Configuración de seguridad de servicios                  │
+    │   ✓ Cifrado de datos (en reposo y en tránsito)               │
+    │   ✓ Firewall / Security Groups / NACLs                       │
+    │   ✓ Parches del OS (en IaaS)                                 │
+    ├──────────────────────────────────────────────────────────────┤
+    │              RESPONSABILIDAD DEL PROVEEDOR                   │
+    │                                                              │
+    │   ✓ Seguridad física del data center                         │
+    │   ✓ Hardware, networking, virtualización                     │
+    │   ✓ Infraestructura global                                   │
+    │   ✓ Servicios fundamentales (compute, storage, DB)           │
+    └─────────────────────────────────────────────────────────────┘
+            </pre><p class="diagram-caption">Seguridad DE la nube (proveedor) vs. Seguridad EN la nube (cliente)</p></div>
+
+            <div class="warning-box">
+                <h4>⚠️ La realidad de las brechas cloud</h4>
+                <p>
+                    Según Gartner, <strong>el 99% de los fallos de seguridad en la nube serán culpa del cliente</strong>, no del proveedor. 
+                    Los errores más comunes: buckets S3 públicos, credenciales IAM excesivamente permisivas, 
+                    security groups abiertos a 0.0.0.0/0, y secretos hardcodeados en código.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="lesson-section" id="iam">
+            <h2><span class="section-icon">🔑</span> 3. IAM: Identity and Access Management</h2>
+            <p class="lesson-text">
+                <strong>IAM</strong> es el sistema de control de acceso de la nube. Define <strong>quién</strong> puede hacer 
+                <strong>qué</strong> sobre <strong>qué recursos</strong>. Es el equivalente cloud de Active Directory.
+            </p>
+
+            <div class="analogy-box">
+                <span class="analogy-icon">🎫</span>
+                <h4>Analogía: El sistema de pases de un festival</h4>
+                <p>
+                    IAM funciona como los <strong>pases de un festival de música</strong>: hay pases generales (acceso básico), 
+                    VIP (más recursos), y backstage (admin total). Si alguien pierde su pase VIP o lo clona, tiene acceso a zonas 
+                    que no debería. Y si el festival da pases backstage a todos "por comodidad"... cualquiera puede llegar al escenario.
+                </p>
+            </div>
+
+            <h3>Conceptos clave de IAM</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Concepto</th><th>AWS</th><th>Azure</th><th>Descripción</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Usuario</strong></td><td>IAM User</td><td>Azure AD User</td><td>Identidad individual (persona o servicio)</td></tr>
+                    <tr><td><strong>Grupo</strong></td><td>IAM Group</td><td>Azure AD Group</td><td>Colección de usuarios con permisos compartidos</td></tr>
+                    <tr><td><strong>Rol</strong></td><td>IAM Role</td><td>Azure Role</td><td>Identidad temporal que cualquier entidad puede asumir</td></tr>
+                    <tr><td><strong>Política</strong></td><td>IAM Policy (JSON)</td><td>Role Assignment</td><td>Documento que define qué acciones se permiten/niegan</td></tr>
+                    <tr><td><strong>MFA</strong></td><td>Virtual MFA</td><td>Azure MFA</td><td>Segundo factor de autenticación — crítico para admins</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Ejemplo de política IAM (AWS)</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Política IAM peligrosa vs. segura</span></div>
+                <pre><code><span style="color:#ff5252">❌ PELIGROSO — Acceso total a todo (AdministratorAccess):</span>
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "<span style="color:#ff5252">Allow</span>",
+        "Action": "<span style="color:#ff5252">*</span>",           <span style="color:#546e7a">← Cualquier acción</span>
+        "Resource": "<span style="color:#ff5252">*</span>"         <span style="color:#546e7a">← Sobre cualquier recurso</span>
+    }]
+}
+
+<span style="color:#00e676">✅ SEGURO — Principio de mínimo privilegio:</span>
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+        "Effect": "Allow",
+        "Action": [
+            "s3:GetObject",
+            "s3:ListBucket"
+        ],
+        "Resource": [
+            "arn:aws:s3:::mi-bucket-datos",
+            "arn:aws:s3:::mi-bucket-datos/*"
+        ]
+    }]
+}</code></pre>
+                <div class="explanation">
+                    <p><strong>Principio de mínimo privilegio:</strong> Cada usuario/servicio solo debe tener los permisos estrictamente necesarios para su función. Nunca uses <code>Action: "*"</code> en producción.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="lesson-section" id="storage">
+            <h2><span class="section-icon">📦</span> 4. Almacenamiento expuesto: el error #1 en la nube</h2>
+            <p class="lesson-text">
+                El servicio de almacenamiento de objetos (AWS S3, Azure Blob Storage, Google Cloud Storage) es donde se guardan 
+                archivos: backups, logs, datos de usuarios, assets. El error más común es dejarlo <strong>público accidentalmente</strong>.
+            </p>
+
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Proveedor</th><th>Servicio</th><th>URL pública típica</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>AWS</strong></td><td>S3 Bucket</td><td><code>https://nombre-bucket.s3.amazonaws.com/</code></td></tr>
+                    <tr><td><strong>Azure</strong></td><td>Blob Storage</td><td><code>https://cuenta.blob.core.windows.net/container/</code></td></tr>
+                    <tr><td><strong>GCP</strong></td><td>Cloud Storage</td><td><code>https://storage.googleapis.com/nombre-bucket/</code></td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Cómo buscar buckets expuestos</h3>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Enumeración de buckets S3</span></div>
+                <pre><code><span style="color:#546e7a"># Verificar si un bucket existe y es accesible</span>
+<span style="color:#00e676">$</span> curl -s https://nombre-empresa.s3.amazonaws.com/ | head
+
+<span style="color:#546e7a"># Listar contenido de un bucket público con AWS CLI</span>
+<span style="color:#00e676">$</span> aws s3 ls s3://nombre-empresa --no-sign-request
+
+<span style="color:#546e7a"># Descargar todo el contenido de un bucket público</span>
+<span style="color:#00e676">$</span> aws s3 sync s3://nombre-empresa ./bucket-dump --no-sign-request
+
+<span style="color:#546e7a"># Google dorking para encontrar buckets expuestos</span>
+<span style="color:#546e7a"># site:s3.amazonaws.com "nombre-empresa"</span>
+<span style="color:#546e7a"># site:blob.core.windows.net "nombre-empresa"</span></code></pre>
+                <div class="explanation">
+                    <p><strong>Brechas reales:</strong> Capital One (2019) — 100 millones de registros expuestos por un bucket S3 mal configurado. Accenture, FedEx, Pentagon — todos han tenido datos expuestos en S3 públicos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="lesson-section" id="vectores">
+            <h2><span class="section-icon">⚔️</span> 5. Vectores de ataque comunes en la nube</h2>
+
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Ataque</th><th>Descripción</th><th>Cómo se previene</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Credenciales expuestas</strong></td><td>Claves de API/access keys hardcodeadas en código (GitHub, .env)</td><td>AWS Secrets Manager, Azure Key Vault, rotación automática</td></tr>
+                    <tr><td><strong>Buckets públicos</strong></td><td>Storage accesible sin autenticación</td><td>Block Public Access, bucket policies restrictivas</td></tr>
+                    <tr><td><strong>Security Groups abiertos</strong></td><td>Puertos abiertos a 0.0.0.0/0 (todo Internet)</td><td>Restringir a IPs específicas, usar VPN</td></tr>
+                    <tr><td><strong>SSRF → Metadata</strong></td><td>Server-Side Request Forgery para acceder al servicio de metadata (169.254.169.254) y robar credenciales temporales</td><td>IMDSv2, WAF, validación de URLs</td></tr>
+                    <tr><td><strong>Privilege Escalation IAM</strong></td><td>Permisos excesivos permiten crear nuevos admins o asumir roles más privilegiados</td><td>Mínimo privilegio, auditoría regular de políticas</td></tr>
+                    <tr><td><strong>Lambda/Functions abuse</strong></td><td>Funciones serverless con permisos excesivos o inyección de comandos</td><td>Roles con mínimo privilegio, input validation</td></tr>
+                </tbody>
+            </table></div>
+
+            <div class="concept-box">
+                <h4>💡 SSRF al servicio de metadata — El ataque más peligroso en la nube</h4>
+                <p>
+                    Cada instancia EC2/VM tiene acceso a un servicio de metadata en <code>http://169.254.169.254</code>. 
+                    Si una aplicación web tiene <strong>SSRF</strong>, el atacante puede hacer que el servidor consulte esa 
+                    URL interna y obtenga <strong>credenciales temporales de IAM</strong>. Con esas credenciales, puede 
+                    acceder a S3, bases de datos, y cualquier recurso que el rol de la instancia permita. 
+                    Así fue exactamente el ataque a Capital One.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="lesson-section" id="herramientas">
+            <h2><span class="section-icon">🔧</span> 6. Herramientas de auditoría cloud</h2>
+
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Herramienta</th><th>Plataforma</th><th>Función</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>ScoutSuite</strong></td><td>AWS, Azure, GCP</td><td>Auditoría multi-cloud automatizada — genera reportes de configuración insegura</td></tr>
+                    <tr><td><strong>Prowler</strong></td><td>AWS</td><td>Auditoría de seguridad y cumplimiento (CIS, PCI-DSS, HIPAA)</td></tr>
+                    <tr><td><strong>Pacu</strong></td><td>AWS</td><td>Framework de explotación post-compromiso para AWS (como Metasploit para la nube)</td></tr>
+                    <tr><td><strong>CloudBrute</strong></td><td>Multi-cloud</td><td>Enumeración de assets cloud (buckets, apps, databases)</td></tr>
+                    <tr><td><strong>truffleHog</strong></td><td>Git repos</td><td>Busca secretos (API keys, tokens) en repositorios de código</td></tr>
+                    <tr><td><strong>aws cli</strong></td><td>AWS</td><td>Herramienta oficial — esencial para enumeración e interacción con servicios</td></tr>
+                </tbody>
+            </table></div>
+
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Comandos de reconocimiento AWS</span></div>
+                <pre><code><span style="color:#546e7a"># Verificar quién eres (con credenciales comprometidas)</span>
+<span style="color:#00e676">$</span> aws sts get-caller-identity
+
+<span style="color:#546e7a"># Listar buckets S3</span>
+<span style="color:#00e676">$</span> aws s3 ls
+
+<span style="color:#546e7a"># Listar instancias EC2</span>
+<span style="color:#00e676">$</span> aws ec2 describe-instances --region us-east-1
+
+<span style="color:#546e7a"># Listar usuarios IAM</span>
+<span style="color:#00e676">$</span> aws iam list-users
+
+<span style="color:#546e7a"># Ver políticas de un usuario</span>
+<span style="color:#00e676">$</span> aws iam list-attached-user-policies --user-name nombre
+
+<span style="color:#546e7a"># Acceder al servicio de metadata (desde dentro de una EC2)</span>
+<span style="color:#00e676">$</span> curl http://169.254.169.254/latest/meta-data/iam/security-credentials/</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 7: Practice -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 7. Práctica</h2>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Asegúrate de poder responder:</p>
+                <ul>
+                    <li>¿Cuál es la diferencia entre IaaS, PaaS y SaaS?</li>
+                    <li>¿Qué es el modelo de responsabilidad compartida?</li>
+                    <li>¿Qué es IAM y qué es el principio de mínimo privilegio?</li>
+                    <li>¿Cómo puede un bucket S3 público comprometer una empresa?</li>
+                    <li>¿Qué es SSRF al servicio de metadata y por qué es tan peligroso?</li>
+                    <li>¿Qué herramienta usarías para auditar la configuración de seguridad de una cuenta AWS?</li>
+                </ul>
+            </div>
+
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/introtocloudsecurity" target="_blank" rel="noopener noreferrer">TryHackMe: Intro to Cloud Security</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="http://flaws.cloud/" target="_blank" rel="noopener noreferrer">flAWS.cloud: Retos de seguridad AWS</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="http://flaws2.cloud/" target="_blank" rel="noopener noreferrer">flAWS2.cloud: Retos avanzados de AWS</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://github.com/RhinoSecurityLabs/cloudgoat" target="_blank" rel="noopener noreferrer">CloudGoat: Infraestructura AWS vulnerable para practicar</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-15-redteam.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15: Red Team</span></a>
+            <a href="leccion-16-forense-intro.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 16: Forense Digital (Intro)</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "¿Quién es responsable de la configuración de seguridad de los servicios cloud según el modelo de responsabilidad compartida?",
+                options: [
+                    "El proveedor cloud (AWS/Azure/GCP) es responsable de todo",
+                    "El cliente es responsable de la configuración de seguridad de sus servicios",
+                    "Nadie, los servicios cloud son seguros por defecto",
+                    "El gobierno regula la seguridad de los servicios cloud"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué es el principio de mínimo privilegio en IAM?",
+                options: [
+                    "Dar acceso de administrador a todos los usuarios para facilitar el trabajo",
+                    "Dar a cada usuario/servicio solo los permisos estrictamente necesarios para su función",
+                    "Crear un solo usuario compartido para todo el equipo",
+                    "Desactivar todos los permisos por defecto"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué es SSRF al servicio de metadata (169.254.169.254)?",
+                options: [
+                    "Un tipo de SQL Injection específico para bases de datos cloud",
+                    "Un ataque que abusa de una vulnerabilidad SSRF para obtener credenciales IAM temporales del servicio de metadata de la instancia",
+                    "Una técnica para escanear puertos en redes cloud",
+                    "Un método de cifrado usado por AWS"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Qué comando verifica tu identidad cuando tienes credenciales AWS comprometidas?",
+                options: [
+                    "aws iam list-users",
+                    "aws ec2 describe-instances",
+                    "aws sts get-caller-identity",
+                    "aws s3 ls"
+                ],
+                correct: 2
+            },
+            {
+                question: "¿Cuál es la causa más común de brechas de seguridad en la nube?",
+                options: [
+                    "Vulnerabilidades en la infraestructura del proveedor cloud",
+                    "Ataques de fuerza bruta contra la consola de administración",
+                    "Mala configuración por parte del cliente: buckets públicos, permisos excesivos, credenciales expuestas",
+                    "Ataques DDoS contra los data centers"
+                ],
+                correct: 2
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-15b'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-15b', quizQuestions);
+            const explanations = [
+                "El proveedor asegura la infraestructura física y los servicios base (seguridad DE la nube). El cliente es responsable de configurar correctamente sus servicios (seguridad EN la nube).",
+                "El mínimo privilegio significa que un usuario de RRHH no necesita acceso a los servidores, y un desarrollador no necesita borrar buckets de producción. Cada uno tiene solo lo que necesita.",
+                "SSRF al metadata service es devastador: si la app web tiene SSRF, el atacante accede a http://169.254.169.254 y obtiene credenciales IAM temporales del rol de la instancia. Así fue el ataque a Capital One.",
+                "aws sts get-caller-identity devuelve el ARN (Amazon Resource Name) del usuario o rol asociado a las credenciales. Es lo primero que ejecutas con credenciales comprometidas.",
+                "Gartner estima que el 99% de los fallos cloud son culpa del cliente. Los errores más comunes: S3 públicos, Security Groups abiertos a 0.0.0.0/0, y API keys hardcodeadas en GitHub."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

