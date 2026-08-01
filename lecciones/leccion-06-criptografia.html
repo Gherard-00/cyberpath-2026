@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div>
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
 
     <nav class="navbar" id="navbar">
         <a href="../index.html" class="nav-brand" style="text-decoration:none">
-            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
         </a>
     </nav>
@@ -61,7 +61,7 @@
                 usando un algoritmo y una <strong>clave</strong>. Solo quien tenga la clave correcta puede descifrar y leer los datos originales.
             </p>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Concepto básico</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Concepto básico</span></div>
                 <pre><code>Texto plano  ──[Cifrado + Clave]──▶  Texto cifrado
 "Hola mundo"  ──[AES-256 + clave]──▶  "x7f2$kL9..."
 
@@ -91,7 +91,7 @@ Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
             </div>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Cifrado simétrico con OpenSSL</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Cifrado simétrico con OpenSSL</span></div>
                 <pre><code><span style="color:#546e7a"># Cifrar un archivo con AES-256</span>
 <span style="color:#00e676">$</span> openssl enc -aes-256-cbc -salt -in secreto.txt -out secreto.enc -pbkdf2
 <span style="color:#546e7a"># Te pedirá una contraseña (esta será la clave simétrica)</span>
@@ -155,7 +155,7 @@ Texto cifrado  ──[Descifrado + Clave]──▶  Texto plano
             </ul>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Hashes en la práctica</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Hashes en la práctica</span></div>
                 <pre><code><span style="color:#546e7a"># Generar hashes con diferentes algoritmos</span>
 <span style="color:#00e676">$</span> echo -n "password123" | md5sum
 482c811da5d5b4bc6d497ffa98491e38
@@ -241,7 +241,7 @@ a1b2c3d4...  kali-linux-2026.1.iso
 
             <h3>Ejercicio 1: Cifrado con GPG</h3>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">GPG — Generar par de claves y cifrar</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">GPG — Generar par de claves y cifrar</span></div>
                 <pre><code><span style="color:#546e7a"># Generar tu par de claves</span>
 <span style="color:#00e676">$</span> gpg --full-generate-key
 <span style="color:#546e7a"># Selecciona RSA, 4096 bits, y llena tus datos</span>
@@ -262,7 +262,7 @@ a1b2c3d4...  kali-linux-2026.1.iso
 
             <h3>Ejercicio 2: Verificar integridad de archivos</h3>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Verificar hashes</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Verificar hashes</span></div>
                 <pre><code><span style="color:#546e7a"># Crear un archivo y generar su hash</span>
 <span style="color:#00e676">$</span> echo "Datos importantes" > datos.txt
 <span style="color:#00e676">$</span> sha256sum datos.txt > datos.sha256

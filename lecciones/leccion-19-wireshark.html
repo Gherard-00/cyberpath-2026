@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
-    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
         <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 19</span></div>
         <div class="lesson-hero">
@@ -79,7 +79,7 @@
         </div>
 
         <div class="lesson-section" id="captura"><h2>3. Capturar tráfico</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Captura de tráfico</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Captura de tráfico</span></div>
                 <pre><code><span style="color:#546e7a"># Abrir Wireshark</span>
 <span style="color:#546e7a"># 1. Seleccionar la interfaz de red (eth0, wlan0, etc.)</span>
 <span style="color:#546e7a"># 2. Click en el ícono de aleta de tiburón (Start Capturing)</span>
@@ -127,7 +127,7 @@
         </div>
 
         <div class="lesson-section" id="tcp"><h2>6. Analizar conversaciones TCP</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Follow TCP Stream</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Follow TCP Stream</span></div>
                 <pre><code><span style="color:#546e7a"># La función más poderosa de Wireshark:</span>
 <span style="color:#546e7a"># Clic derecho en cualquier paquete → Follow → TCP Stream</span>
 
@@ -147,7 +147,7 @@
         </div>
 
         <div class="lesson-section" id="http"><h2>7. Analizar tráfico HTTP</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Análisis HTTP</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Análisis HTTP</span></div>
                 <pre><code><span style="color:#546e7a"># Filtrar todo el tráfico HTTP</span>
 <span style="color:#ffcc02">http</span>
 
@@ -170,7 +170,7 @@
         </div>
 
         <div class="lesson-section" id="dns"><h2>8. Analizar tráfico DNS</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Análisis DNS</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Análisis DNS</span></div>
                 <pre><code><span style="color:#546e7a"># Filtrar todo el tráfico DNS</span>
 <span style="color:#ffcc02">dns</span>
 
@@ -192,7 +192,7 @@
         </div>
 
         <div class="lesson-section" id="detectar-escaneos"><h2>9. Detectar escaneos de puertos (Nmap)</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detectar Nmap</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Detectar Nmap</span></div>
                 <pre><code><span style="color:#546e7a"># SYN Scan (el más común de Nmap):</span>
 <span style="color:#546e7a"># Muchos paquetes SYN desde la misma IP a diferentes puertos</span>
 <span style="color:#ffcc02">tcp.flags.syn == 1 && tcp.flags.ack == 0</span>
@@ -223,7 +223,7 @@
                     <li><strong>HTTP POST grandes</strong>: Uploads masivos a dominios desconocidos</li>
                 </ul>
             </div>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detectar beaconing</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Detectar beaconing</span></div>
                 <pre><code><span style="color:#546e7a"># Buscar conexiones repetitivas al mismo destino</span>
 <span style="color:#ffcc02">ip.dst == 185.99.2.3</span>
 
@@ -236,7 +236,7 @@
         </div>
 
         <div class="lesson-section" id="extraer"><h2>11. Extraer archivos y credenciales</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Extracción</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Extracción</span></div>
                 <pre><code><span style="color:#546e7a"># Extraer TODOS los archivos transferidos por HTTP:</span>
 <span style="color:#546e7a"># File → Export Objects → HTTP → Save All</span>
 
@@ -258,7 +258,7 @@
         </div>
 
         <div class="lesson-section" id="tshark"><h2>12. tshark: Wireshark en la terminal</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">tshark</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">tshark</span></div>
                 <pre><code><span style="color:#546e7a"># Capturar tráfico en la terminal</span>
 <span style="color:#00e676">$</span> tshark -i eth0
 

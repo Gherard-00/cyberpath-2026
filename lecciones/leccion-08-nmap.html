@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div>
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
 
     <nav class="navbar" id="navbar">
         <a href="../index.html" class="nav-brand" style="text-decoration:none">
-            <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
         </a>
     </nav>
@@ -81,7 +81,7 @@
             </p>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Descubrimiento de hosts</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Descubrimiento de hosts</span></div>
                 <pre><code><span style="color:#546e7a"># Ping Sweep — descubrir hosts vivos en una red</span>
 <span style="color:#00e676">$</span> nmap -sn 10.0.2.0/24
 <span style="color:#546e7a"># -sn = solo descubrimiento, NO escanea puertos</span>
@@ -154,7 +154,7 @@
             </div>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Escaneos de puertos en acción</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Escaneos de puertos en acción</span></div>
                 <pre><code><span style="color:#546e7a"># SYN Scan (el más usado) — necesita sudo</span>
 <span style="color:#00e676">$</span> sudo nmap -sS 10.0.2.15
 
@@ -191,7 +191,7 @@
             <h2>4. Detección de servicios y versiones</h2>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de servicios</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Detección de servicios</span></div>
                 <pre><code><span style="color:#546e7a"># Detectar versiones de servicios (-sV)</span>
 <span style="color:#00e676">$</span> nmap -sV 10.0.2.15
 
@@ -224,7 +224,7 @@ PORT     STATE SERVICE     VERSION
             <h2>5. Detección de sistema operativo</h2>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de SO</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Detección de SO</span></div>
                 <pre><code><span style="color:#546e7a"># Detección de sistema operativo (necesita root)</span>
 <span style="color:#00e676">$</span> sudo nmap -O 10.0.2.15
 
@@ -248,7 +248,7 @@ Network Distance: 1 hop
             </p>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Scripts NSE</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Scripts NSE</span></div>
                 <pre><code><span style="color:#546e7a"># Ejecutar scripts por defecto (safe + informational)</span>
 <span style="color:#00e676">$</span> nmap -sC 10.0.2.15
 
@@ -283,7 +283,7 @@ Network Distance: 1 hop
             <h2>7. Técnicas de evasión y timing</h2>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Timing y evasión</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Timing y evasión</span></div>
                 <pre><code><span style="color:#546e7a"># Templates de velocidad (-T0 a -T5)</span>
 <span style="color:#00e676">$</span> nmap -T0 10.0.2.15   <span style="color:#546e7a"># Paranoico — muy lento, difícil de detectar</span>
 <span style="color:#00e676">$</span> nmap -T1 10.0.2.15   <span style="color:#546e7a"># Sneaky — lento</span>
@@ -310,7 +310,7 @@ Network Distance: 1 hop
             <h2>8. Formatos de salida y reportes</h2>
 
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Guardar resultados</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Guardar resultados</span></div>
                 <pre><code><span style="color:#546e7a"># Guardar en formato normal (legible)</span>
 <span style="color:#00e676">$</span> nmap -sV 10.0.2.15 -oN scan_normal.txt
 
@@ -356,7 +356,7 @@ Network Distance: 1 hop
 
             <h3>Ejercicio 1: Reconocimiento básico</h3>
             <div class="lesson-terminal">
-                <div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Ejercicios con Metasploitable</span></div>
+                <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Ejercicios con Metasploitable</span></div>
                 <pre><code><span style="color:#546e7a"># 1. Descubre todos los hosts en tu red virtual</span>
 <span style="color:#00e676">$</span> nmap -sn 10.0.2.0/24
 

@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <div class="bg-grid"></div><div class="bg-glow bg-glow-1"></div><div class="bg-glow bg-glow-2"></div>
-    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
         <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 17</span></div>
         <div class="lesson-hero">
@@ -67,7 +67,7 @@
                     <tr><td><strong>osxpmem</strong></td><td>macOS</td><td>.raw</td></tr>
                 </tbody>
             </table></div>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Captura de RAM</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Captura de RAM</span></div>
                 <pre><code><span style="color:#546e7a"># Windows: DumpIt (ejecutar como Admin, solo doble clic)</span>
 <span style="color:#ffcc02">C:\></span> DumpIt.exe /Q /O ram_dump.raw
 
@@ -84,7 +84,7 @@
 
         <div class="lesson-section" id="vol3-intro"><h2>3. Introducción a Volatility 3</h2>
             <p class="lesson-text"><strong>Volatility 3</strong> es la versión moderna del framework. Está escrito en Python 3 y tiene mejor rendimiento que Volatility 2.</p>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Instalación y uso básico</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Instalación y uso básico</span></div>
                 <pre><code><span style="color:#546e7a"># Instalar Volatility 3 (ya viene en Kali Linux)</span>
 <span style="color:#00e676">$</span> pip3 install volatility3
 
@@ -102,7 +102,7 @@
         </div>
 
         <div class="lesson-section" id="info"><h2>4. Identificar el sistema operativo</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Información del sistema</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Información del sistema</span></div>
                 <pre><code><span style="color:#546e7a"># Información básica del dump</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.info
 
@@ -118,7 +118,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         </div>
 
         <div class="lesson-section" id="procesos"><h2>5. Analizar procesos</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Análisis de procesos</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Análisis de procesos</span></div>
                 <pre><code><span style="color:#546e7a"># Listar todos los procesos</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.pslist
 
@@ -157,7 +157,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         </div>
 
         <div class="lesson-section" id="dlls"><h2>6. DLLs y handles</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">DLLs y handles</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">DLLs y handles</span></div>
                 <pre><code><span style="color:#546e7a"># Listar DLLs cargadas por un proceso específico</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.dlllist --pid 6712
 
@@ -170,7 +170,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         </div>
 
         <div class="lesson-section" id="red"><h2>7. Conexiones de red</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Conexiones de red</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Conexiones de red</span></div>
                 <pre><code><span style="color:#546e7a"># Ver todas las conexiones de red activas</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.netscan
 
@@ -184,7 +184,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         </div>
 
         <div class="lesson-section" id="registros"><h2>8. Registro de Windows en RAM</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Registry en RAM</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Registry en RAM</span></div>
                 <pre><code><span style="color:#546e7a"># Listar hives del registro en memoria</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.registry.hivelist
 
@@ -199,7 +199,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         </div>
 
         <div class="lesson-section" id="malware"><h2>9. Detectar malware e inyección de código</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Detección de malware</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Detección de malware</span></div>
                 <pre><code><span style="color:#546e7a"># Detectar inyección de código en procesos</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.malfind
 
@@ -218,7 +218,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         </div>
 
         <div class="lesson-section" id="extraccion"><h2>10. Extraer archivos y strings</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Extracción</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Extracción</span></div>
                 <pre><code><span style="color:#546e7a"># Listar archivos en memoria</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw windows.filescan | grep -i "sospechoso"
 
@@ -235,7 +235,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         </div>
 
         <div class="lesson-section" id="timeline"><h2>11. Crear un timeline</h2>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-title">Timeline de eventos</span></div>
+            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Timeline de eventos</span></div>
                 <pre><code><span style="color:#546e7a"># Crear timeline con todos los artefactos temporales</span>
 <span style="color:#00e676">$</span> vol -f ram_dump.raw timeliner.Timeliner > timeline.csv
 
