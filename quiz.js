@@ -422,10 +422,29 @@ const CyberQuiz = (() => {
         });
     }
 
+    /**
+     * Actualiza el indicador de progreso global en index.html.
+     * Cuenta las lecciones completadas y actualiza la barra y el texto.
+     */
+    function updateCourseProgress() {
+        const TOTAL_LESSONS = 23;
+        const fill = document.getElementById('courseProgressFill');
+        const text = document.getElementById('courseProgressText');
+        if (!fill || !text) return;
+
+        const progress = getProgress();
+        const completed = Object.values(progress).filter(p => p.completed).length;
+        const pct = Math.round((completed / TOTAL_LESSONS) * 100);
+
+        fill.style.width = `${pct}%`;
+        text.textContent = `${completed} / ${TOTAL_LESSONS} lecciones completadas`;
+    }
+
     // Auto-apply badges if on index page
     document.addEventListener('DOMContentLoaded', () => {
         if (document.querySelector('.lessons-list')) {
             applyBadges();
+            updateCourseProgress();
         }
     });
 
