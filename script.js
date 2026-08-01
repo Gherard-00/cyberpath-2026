@@ -166,18 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (typewriterEl) typeEffect();
 
-    // --- Metric Checkboxes ---
-    document.querySelectorAll('.metric-item').forEach(item => {
-        item.addEventListener('click', () => {
-            item.classList.toggle('completed');
-            const check = item.querySelector('.metric-check');
-            if (item.classList.contains('completed')) {
-                check.textContent = '☑';
-            } else {
-                check.textContent = '☐';
-            }
-        });
-    });
+    // Metric checkboxes removed — no HTML elements use .metric-item.
+    // The CSS (.metric-item, .metric-check) is retained for potential future use.
 
     // --- Scroll Reveal Animation ---
     const revealElements = document.querySelectorAll(
