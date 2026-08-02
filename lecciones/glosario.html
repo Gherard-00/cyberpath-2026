@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta name="description" content="Glosario de terminos de ciberseguridad: definiciones claras de conceptos de redes, hacking etico, pentesting y forense digital usados en CyberPath 2026.">
+    <title>Glosario de Ciberseguridad — CyberPath 2026</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .glossary-page { max-width: 900px; margin: 6rem auto 2rem; padding: 0 2rem; }
+        .glossary-header { text-align: center; margin-bottom: 2.5rem; }
+        .glossary-header h1 { font-family: var(--font-heading); font-size: 2rem; color: var(--accent-cyan); margin-bottom: 0.5rem; }
+        .glossary-header p { color: var(--text-muted); }
+        .glossary-filter {
+            display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem;
+        }
+        .glossary-filter-btn {
+            padding: 0.4rem 1rem; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
+            background: var(--bg-card); color: var(--text-muted); border: 1px solid var(--border-color);
+            border-radius: 50px; cursor: pointer; transition: var(--transition-fast);
+        }
+        .glossary-filter-btn:hover, .glossary-filter-btn.active {
+            background: var(--accent-cyan-dim); color: var(--accent-cyan); border-color: rgba(0,229,255,0.3);
+        }
+        .glossary-group { margin-bottom: 2rem; }
+        .glossary-letter {
+            font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800;
+            color: var(--accent-cyan); margin-bottom: 1rem; padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        .glossary-term {
+            padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); margin-bottom: 0.75rem; transition: var(--transition-fast);
+        }
+        .glossary-term:hover { border-color: rgba(0,229,255,0.2); }
+        .glossary-term dt {
+            font-family: var(--font-heading); font-size: 1rem; font-weight: 700;
+            color: var(--text-primary); margin-bottom: 0.35rem;
+        }
+        .glossary-term dt .term-tag {
+            display: inline-block; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+            padding: 0.15rem 0.5rem; border-radius: 50px; margin-left: 0.5rem; vertical-align: middle;
+        }
+        .term-tag.redes { background: var(--accent-cyan-dim); color: var(--accent-cyan); }
+        .term-tag.linux { background: var(--accent-green-dim); color: var(--accent-green); }
+        .term-tag.web { background: var(--accent-orange-dim); color: var(--accent-orange); }
+        .term-tag.cripto { background: var(--accent-purple-dim); color: var(--accent-purple); }
+        .term-tag.pentest { background: var(--accent-red-dim); color: var(--accent-red); }
+        .term-tag.forense { background: rgba(0,176,255,0.15); color: #00b0ff; }
+        .term-tag.general { background: rgba(255,215,0,0.15); color: #ffd700; }
+        .glossary-term dd {
+            font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin: 0;
+        }
+        .glossary-term dd code {
+            font-family: var(--font-mono); font-size: 0.82rem;
+            background: rgba(0,229,255,0.08); color: var(--accent-orange);
+            padding: 0.1rem 0.3rem; border-radius: 3px;
+        }
+        .glossary-ref { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem; }
+        .glossary-ref a { color: var(--accent-cyan); text-decoration: none; }
+        .glossary-ref a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+
+    <div class="glossary-page">
+        <div class="glossary-header">
+            <h1>Glosario de Ciberseguridad</h1>
+            <p>Definiciones claras de los conceptos clave del curso. Haz clic en una categoria para filtrar.</p>
+        </div>
+
+        <div class="glossary-filter" id="glossaryFilter">
+            <button class="glossary-filter-btn active" data-filter="all">Todos</button>
+            <button class="glossary-filter-btn" data-filter="redes">Redes</button>
+            <button class="glossary-filter-btn" data-filter="linux">Linux</button>
+            <button class="glossary-filter-btn" data-filter="web">Web</button>
+            <button class="glossary-filter-btn" data-filter="cripto">Criptografia</button>
+            <button class="glossary-filter-btn" data-filter="pentest">Pentesting</button>
+            <button class="glossary-filter-btn" data-filter="forense">Forense</button>
+            <button class="glossary-filter-btn" data-filter="general">General</button>
+        </div>
+
+        <!-- A -->
+        <div class="glossary-group">
+            <div class="glossary-letter">A</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Active Directory (AD) <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Servicio de directorio de Microsoft que gestiona usuarios, equipos y politicas en redes Windows corporativas. Es uno de los objetivos principales en pentesting interno.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-13-active-directory.html">Leccion 13</a>, <a href="leccion-13a-windows-ad-fundamentos.html">Leccion 13A</a></div>
+                </div>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>ARP (Address Resolution Protocol) <span class="term-tag redes">Redes</span></dt>
+                    <dd>Protocolo que traduce direcciones IP a direcciones MAC en una red local. El <strong>ARP spoofing</strong> permite interceptar trafico en la misma red (ataque MitM).</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-01-redes.html">Leccion 01</a></div>
+                </div>
+                <div class="glossary-term" data-cat="forense">
+                    <dt>Autopsy <span class="term-tag forense">Forense</span></dt>
+                    <dd>Plataforma de analisis forense digital de codigo abierto. Permite examinar discos, recuperar archivos eliminados, analizar metadatos y crear timelines de actividad.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-18-autopsy.html">Leccion 18</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- B -->
+        <div class="glossary-group">
+            <div class="glossary-letter">B</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Brute Force <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Tecnica que prueba todas las combinaciones posibles de contrasenas hasta encontrar la correcta. Herramientas como <code>hydra</code> y <code>john</code> automatizan este proceso.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-12-password-cracking.html">Leccion 12</a></div>
+                </div>
+                <div class="glossary-term" data-cat="web">
+                    <dt>Burp Suite <span class="term-tag web">Web</span></dt>
+                    <dd>Proxy de interceptacion y suite de herramientas para testing de seguridad web. Permite capturar, modificar y reenviar peticiones HTTP entre el navegador y el servidor.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-10-burpsuite.html">Leccion 10</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- C -->
+        <div class="glossary-group">
+            <div class="glossary-letter">C</div>
+            <dl>
+                <div class="glossary-term" data-cat="general">
+                    <dt>CIA Triad (Confidencialidad, Integridad, Disponibilidad) <span class="term-tag general">General</span></dt>
+                    <dd>Los tres pilares fundamentales de la seguridad informatica. Toda medida de seguridad busca proteger al menos uno de estos principios.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-05-seguridad-conceptos.html">Leccion 05</a></div>
+                </div>
+                <div class="glossary-term" data-cat="cripto">
+                    <dt>Cifrado asimetrico <span class="term-tag cripto">Criptografia</span></dt>
+                    <dd>Sistema criptografico que usa un par de claves: una publica (para cifrar) y una privada (para descifrar). Ejemplos: RSA, ECC. Base de TLS/HTTPS y firmas digitales.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-06-criptografia.html">Leccion 06</a></div>
+                </div>
+                <div class="glossary-term" data-cat="general">
+                    <dt>CVE (Common Vulnerabilities and Exposures) <span class="term-tag general">General</span></dt>
+                    <dd>Identificador unico global para vulnerabilidades de seguridad conocidas. Formato: <code>CVE-YYYY-NNNNN</code>. Se usa en informes de auditoria y bases de datos como NVD.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-20-reportes.html">Leccion 20</a></div>
+                </div>
+                <div class="glossary-term" data-cat="general">
+                    <dt>CVSS (Common Vulnerability Scoring System) <span class="term-tag general">General</span></dt>
+                    <dd>Sistema estandar para calificar la severidad de vulnerabilidades en una escala de 0 a 10. Considera vector de ataque, complejidad, privilegios requeridos e impacto.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-20-reportes.html">Leccion 20</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- D -->
+        <div class="glossary-group">
+            <div class="glossary-letter">D</div>
+            <dl>
+                <div class="glossary-term" data-cat="redes">
+                    <dt>DNS (Domain Name System) <span class="term-tag redes">Redes</span></dt>
+                    <dd>Sistema que traduce nombres de dominio legibles (como google.com) a direcciones IP numericas. La enumeracion DNS es una de las primeras fases de reconocimiento.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-01-redes.html">Leccion 01</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- E -->
+        <div class="glossary-group">
+            <div class="glossary-letter">E</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Exploit <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Codigo o tecnica que aprovecha una vulnerabilidad para obtener acceso no autorizado, escalar privilegios o ejecutar comandos en un sistema objetivo.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-11-metasploit.html">Leccion 11</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- F -->
+        <div class="glossary-group">
+            <div class="glossary-letter">F</div>
+            <dl>
+                <div class="glossary-term" data-cat="redes">
+                    <dt>Firewall <span class="term-tag redes">Redes</span></dt>
+                    <dd>Sistema que filtra trafico de red segun reglas predefinidas. Puede ser de red (hardware/software) o de host (como <code>iptables</code> en Linux o Windows Defender Firewall).</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-05-seguridad-conceptos.html">Leccion 05</a></div>
+                </div>
+                <div class="glossary-term" data-cat="forense">
+                    <dt>Forensic Image (Imagen forense) <span class="term-tag forense">Forense</span></dt>
+                    <dd>Copia bit a bit de un dispositivo de almacenamiento que preserva toda la informacion, incluidos archivos eliminados y espacio no asignado. Se verifica con hash.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-16-forense-intro.html">Leccion 16</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- H -->
+        <div class="glossary-group">
+            <div class="glossary-letter">H</div>
+            <dl>
+                <div class="glossary-term" data-cat="cripto">
+                    <dt>Hash <span class="term-tag cripto">Criptografia</span></dt>
+                    <dd>Funcion unidireccional que convierte datos de cualquier tamano en una cadena de longitud fija. Algoritmos comunes: MD5 (inseguro), SHA-256, bcrypt. Se usa para verificar integridad y almacenar contrasenas.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-06-criptografia.html">Leccion 06</a>, <a href="leccion-12-password-cracking.html">Leccion 12</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- I -->
+        <div class="glossary-group">
+            <div class="glossary-letter">I</div>
+            <dl>
+                <div class="glossary-term" data-cat="web">
+                    <dt>IDOR (Insecure Direct Object Reference) <span class="term-tag web">Web</span></dt>
+                    <dd>Vulnerabilidad web donde un usuario puede acceder a recursos de otros usuarios manipulando identificadores en la URL o peticion (ej: <code>/perfil?id=123</code> → <code>id=124</code>).</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-09-web-hacking.html">Leccion 09</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- K -->
+        <div class="glossary-group">
+            <div class="glossary-letter">K</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Kerberoasting <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Tecnica de ataque contra Active Directory que solicita tickets de servicio Kerberos (TGS) para cuentas de servicio y los crackea offline para obtener contrasenas.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-13-active-directory.html">Leccion 13</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- M -->
+        <div class="glossary-group">
+            <div class="glossary-letter">M</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Metasploit <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Framework de pentesting que incluye exploits, payloads, encoders y herramientas de post-explotacion. Su consola principal es <code>msfconsole</code> y su payload mas conocido es Meterpreter.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-11-metasploit.html">Leccion 11</a></div>
+                </div>
+                <div class="glossary-term" data-cat="general">
+                    <dt>MITRE ATT&amp;CK <span class="term-tag general">General</span></dt>
+                    <dd>Base de conocimiento que clasifica tacticas, tecnicas y procedimientos (TTP) usados por adversarios reales. Organizada en matrices por plataforma (Enterprise, Mobile, Cloud).</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-15-redteam.html">Leccion 15</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- N -->
+        <div class="glossary-group">
+            <div class="glossary-letter">N</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Nmap <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Escaner de red y puertos. Identifica hosts activos, puertos abiertos, servicios en ejecucion y versiones. Ejemplo: <code>nmap -sV -sC -p- target</code>.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-08-nmap.html">Leccion 08</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- O -->
+        <div class="glossary-group">
+            <div class="glossary-letter">O</div>
+            <dl>
+                <div class="glossary-term" data-cat="web">
+                    <dt>OWASP Top 10 <span class="term-tag web">Web</span></dt>
+                    <dd>Lista de las 10 vulnerabilidades web mas criticas, mantenida por la fundacion OWASP. Incluye inyeccion, autenticacion rota, XSS, SSRF, entre otras.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-09-web-hacking.html">Leccion 09</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- P -->
+        <div class="glossary-group">
+            <div class="glossary-letter">P</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Payload <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Codigo que se ejecuta en el sistema objetivo despues de explotar una vulnerabilidad. Puede ser una shell reversa, un meterpreter, o un comando simple.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-11-metasploit.html">Leccion 11</a></div>
+                </div>
+                <div class="glossary-term" data-cat="general">
+                    <dt>Pentesting (Prueba de penetracion) <span class="term-tag general">General</span></dt>
+                    <dd>Simulacion autorizada de un ataque informatico para identificar vulnerabilidades en sistemas, redes o aplicaciones. Sigue metodologias como PTES o OWASP Testing Guide.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-07-etica-legal.html">Leccion 07</a>, <a href="leccion-20-reportes.html">Leccion 20</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- R -->
+        <div class="glossary-group">
+            <div class="glossary-letter">R</div>
+            <dl>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>Reverse Shell <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Conexion donde el sistema comprometido inicia la comunicacion hacia el atacante, evitando restricciones de firewall. Es el tipo de shell mas comun en pentesting.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-11-metasploit.html">Leccion 11</a>, <a href="leccion-15-redteam.html">Leccion 15</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- S -->
+        <div class="glossary-group">
+            <div class="glossary-letter">S</div>
+            <dl>
+                <div class="glossary-term" data-cat="web">
+                    <dt>SQL Injection (SQLi) <span class="term-tag web">Web</span></dt>
+                    <dd>Vulnerabilidad que permite inyectar consultas SQL maliciosas a traves de entradas de usuario no sanitizadas. Puede extraer, modificar o eliminar datos de la base de datos.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-09-web-hacking.html">Leccion 09</a>, <a href="leccion-08b-web-fundamentals.html">Leccion 08B</a></div>
+                </div>
+                <div class="glossary-term" data-cat="web">
+                    <dt>SSRF (Server-Side Request Forgery) <span class="term-tag web">Web</span></dt>
+                    <dd>Vulnerabilidad que permite hacer que el servidor realice peticiones HTTP a recursos internos. En cloud, se usa para acceder al servicio de metadata (<code>169.254.169.254</code>).</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-09-web-hacking.html">Leccion 09</a>, <a href="leccion-15b-cloud-security.html">Leccion 15B</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- T -->
+        <div class="glossary-group">
+            <div class="glossary-letter">T</div>
+            <dl>
+                <div class="glossary-term" data-cat="redes">
+                    <dt>TCP/IP <span class="term-tag redes">Redes</span></dt>
+                    <dd>Conjunto de protocolos que define como se transmiten datos en Internet. TCP garantiza entrega ordenada y confiable; IP maneja el direccionamiento y enrutamiento de paquetes.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-01-redes.html">Leccion 01</a></div>
+                </div>
+                <div class="glossary-term" data-cat="cripto">
+                    <dt>TLS (Transport Layer Security) <span class="term-tag cripto">Criptografia</span></dt>
+                    <dd>Protocolo criptografico que proporciona comunicacion segura sobre redes (HTTPS). Usa certificados X.509, intercambio de claves y cifrado simetrico para el canal de datos.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-06-criptografia.html">Leccion 06</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- V -->
+        <div class="glossary-group">
+            <div class="glossary-letter">V</div>
+            <dl>
+                <div class="glossary-term" data-cat="forense">
+                    <dt>Volatility <span class="term-tag forense">Forense</span></dt>
+                    <dd>Framework de analisis de memoria RAM. Permite extraer procesos, conexiones de red, credenciales y artefactos de malware de un volcado de memoria.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-17-volatility.html">Leccion 17</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- W -->
+        <div class="glossary-group">
+            <div class="glossary-letter">W</div>
+            <dl>
+                <div class="glossary-term" data-cat="forense">
+                    <dt>Wireshark <span class="term-tag forense">Forense</span></dt>
+                    <dd>Analizador de protocolos de red que captura y examina trafico en tiempo real. Permite filtrar por protocolo, IP, puerto y reconstruir sesiones completas.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-19-wireshark.html">Leccion 19</a></div>
+                </div>
+                <div class="glossary-term" data-cat="pentest">
+                    <dt>WPA2 <span class="term-tag pentest">Pentesting</span></dt>
+                    <dd>Protocolo de seguridad WiFi. En modo PSK (clave compartida), es vulnerable a ataques de diccionario si se captura el 4-way handshake mediante deautenticacion.</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-14-wifi-hacking.html">Leccion 14</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- X -->
+        <div class="glossary-group">
+            <div class="glossary-letter">X</div>
+            <dl>
+                <div class="glossary-term" data-cat="web">
+                    <dt>XSS (Cross-Site Scripting) <span class="term-tag web">Web</span></dt>
+                    <dd>Vulnerabilidad que permite inyectar codigo JavaScript en paginas web vistas por otros usuarios. Tipos: Reflected (en URL), Stored (en base de datos), DOM-based (en cliente).</dd>
+                    <div class="glossary-ref">Ver: <a href="leccion-09-web-hacking.html">Leccion 09</a></div>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Navigation -->
+        <div class="lesson-nav" style="margin-top:3rem">
+            <a href="../index.html" class="nav-link">← Volver al Temario</a>
+        </div>
+    </div>
+
+    <footer class="footer"><div class="container"><div class="footer-content"><p class="footer-quote">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script>
+    document.getElementById('glossaryFilter').addEventListener('click', function(e) {
+        if (!e.target.classList.contains('glossary-filter-btn')) return;
+        var filter = e.target.dataset.filter;
+        document.querySelectorAll('.glossary-filter-btn').forEach(function(btn) { btn.classList.remove('active'); });
+        e.target.classList.add('active');
+        document.querySelectorAll('.glossary-term').forEach(function(term) {
+            term.style.display = (filter === 'all' || term.dataset.cat === filter) ? '' : 'none';
+        });
+        document.querySelectorAll('.glossary-group').forEach(function(group) {
+            var visible = group.querySelectorAll('.glossary-term[style=""], .glossary-term:not([style])');
+            group.style.display = visible.length === 0 ? 'none' : '';
+        });
+    });
+    </script>
+</body></html>
