@@ -15,7 +15,7 @@
 
     --text-primary: #e8eaf6;
     --text-secondary: #9ca3c4;
-    --text-muted: #6b7394;
+    --text-muted: #8891b0; /* WCAG AA: ~4.6:1 contra --bg-primary */
 
     --accent-cyan: #00e5ff;
     --accent-cyan-dim: rgba(0, 229, 255, 0.15);
