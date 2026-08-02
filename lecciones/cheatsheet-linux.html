@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -24,6 +24,7 @@
             cursor: pointer; transition: var(--transition-fast); text-decoration: none;
         }
         .print-btn:hover { background: rgba(0,229,255,0.15); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,229,255,0.15); }
+        .cheatsheet-back-link { margin-left: 1rem; }
         .cheatsheet-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
         .cheatsheet-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-md); padding: 1.5rem; }
         .cheatsheet-card h3 { font-family: var(--font-heading); color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 1rem; }
@@ -51,8 +52,8 @@
             <p>Referencia rápida de los comandos más usados en pentesting — Lección 02</p>
         </div>
         <div class="cheatsheet-actions">
-            <button class="print-btn" onclick="window.print()">Imprimir / Guardar como PDF</button>
-            <a href="leccion-02-linux.html" class="print-btn" style="margin-left:1rem">← Volver a la lección</a>
+            <button class="print-btn" id="printBtn">Imprimir / Guardar como PDF</button>
+            <a href="leccion-02-linux.html" class="print-btn cheatsheet-back-link">← Volver a la lección</a>
         </div>
 
         <div class="cheatsheet-grid">
@@ -160,4 +161,5 @@
     </div>
 
     <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+<script>document.getElementById('printBtn').addEventListener('click', function() { window.print(); });</script>
 </body></html>
