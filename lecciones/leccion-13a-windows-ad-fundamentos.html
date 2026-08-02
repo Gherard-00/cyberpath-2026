@@ -268,25 +268,25 @@ S-1-5-21-...-<span style="color:#ff5252">519</span>  → Enterprise Admins</code
             <h3>PowerShell para Active Directory</h3>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Comandos de PowerShell para AD</span></div>
                 <pre><code><span style="color:#546e7a"># Ver información del dominio</span>
-<span style="color:#00e676">PS></span> Get-ADDomain
+<span style="color:#00e676">PS&gt;</span> Get-ADDomain
 
 <span style="color:#546e7a"># Listar todos los usuarios del dominio</span>
-<span style="color:#00e676">PS></span> Get-ADUser -Filter * -Properties * | Select Name, SamAccountName, Enabled
+<span style="color:#00e676">PS&gt;</span> Get-ADUser -Filter * -Properties * | Select Name, SamAccountName, Enabled
 
 <span style="color:#546e7a"># Listar todos los grupos</span>
-<span style="color:#00e676">PS></span> Get-ADGroup -Filter * | Select Name
+<span style="color:#00e676">PS&gt;</span> Get-ADGroup -Filter * | Select Name
 
 <span style="color:#546e7a"># Ver miembros de Domain Admins</span>
-<span style="color:#00e676">PS></span> Get-ADGroupMember "Domain Admins" | Select Name
+<span style="color:#00e676">PS&gt;</span> Get-ADGroupMember "Domain Admins" | Select Name
 
 <span style="color:#546e7a"># Buscar cuentas de servicio (con SPN)</span>
-<span style="color:#00e676">PS></span> Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
+<span style="color:#00e676">PS&gt;</span> Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
 
 <span style="color:#546e7a"># Ver GPOs aplicadas</span>
-<span style="color:#00e676">PS></span> Get-GPO -All | Select DisplayName, GpoStatus
+<span style="color:#00e676">PS&gt;</span> Get-GPO -All | Select DisplayName, GpoStatus
 
 <span style="color:#546e7a"># Ver la política de contraseñas</span>
-<span style="color:#00e676">PS></span> Get-ADDefaultDomainPasswordPolicy</code></pre>
+<span style="color:#00e676">PS&gt;</span> Get-ADDefaultDomainPasswordPolicy</code></pre>
                 <div class="explanation">
                     <p><strong>Importante:</strong> Cualquier usuario del dominio puede ejecutar la mayoría de estos comandos de consulta. 
                     Esta es la razón por la que la enumeración de AD es tan poderosa — el diseño del sistema permite que cualquier 

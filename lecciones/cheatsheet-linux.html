@@ -69,7 +69,7 @@
                         <tr><td><code>head / tail</code></td><td>Ver primeras/últimas líneas</td><td><code>tail -20 access.log</code></td></tr>
                         <tr><td><code>cp / mv / rm</code></td><td>Copiar / mover / eliminar</td><td><code>cp archivo.txt /tmp/</code></td></tr>
                         <tr><td><code>mkdir -p</code></td><td>Crear directorios (recursivo)</td><td><code>mkdir -p /opt/tools/custom</code></td></tr>
-                        <tr><td><code>find</code></td><td>Buscar archivos</td><td><code>find / -name "*.conf" 2>/dev/null</code></td></tr>
+                        <tr><td><code>find</code></td><td>Buscar archivos</td><td><code>find / -name "*.conf" 2&gt;/dev/null</code></td></tr>
                         <tr><td><code>locate</code></td><td>Búsqueda rápida en BD indexada</td><td><code>locate nmap</code></td></tr>
                         <tr><td><code>which / whereis</code></td><td>Ubicar un ejecutable</td><td><code>which python3</code></td></tr>
                     </tbody>
@@ -132,9 +132,9 @@
                     <thead><tr><th>Operador</th><th>Función</th><th>Ejemplo</th></tr></thead>
                     <tbody>
                         <tr><td><code>|</code></td><td>Pipe: salida de un comando como entrada del siguiente</td><td><code>cat file.txt | grep "error"</code></td></tr>
-                        <tr><td><code>></code></td><td>Redirigir salida (sobrescribe)</td><td><code>nmap 10.10.10.5 > scan.txt</code></td></tr>
-                        <tr><td><code>>></code></td><td>Redirigir salida (agrega al final)</td><td><code>echo "dato" >> log.txt</code></td></tr>
-                        <tr><td><code>2>/dev/null</code></td><td>Descartar errores</td><td><code>find / -name "*.bak" 2>/dev/null</code></td></tr>
+                        <tr><td><code>&gt;</code></td><td>Redirigir salida (sobrescribe)</td><td><code>nmap 10.10.10.5 &gt; scan.txt</code></td></tr>
+                        <tr><td><code>&gt;&gt;</code></td><td>Redirigir salida (agrega al final)</td><td><code>echo "dato" &gt;&gt; log.txt</code></td></tr>
+                        <tr><td><code>2&gt;/dev/null</code></td><td>Descartar errores</td><td><code>find / -name "*.bak" 2&gt;/dev/null</code></td></tr>
                         <tr><td><code>tee</code></td><td>Mostrar en pantalla Y guardar en archivo</td><td><code>nmap 10.10.10.5 | tee scan.txt</code></td></tr>
                     </tbody>
                 </table></div>
@@ -145,8 +145,8 @@
                 <div class="lesson-table-wrap"><table class="lesson-table">
                     <thead><tr><th>Comando</th><th>Función</th></tr></thead>
                     <tbody>
-                        <tr><td><code>find / -perm -4000 2>/dev/null</code></td><td>Buscar binarios SUID (escalada de privilegios)</td></tr>
-                        <tr><td><code>find / -writable 2>/dev/null</code></td><td>Buscar archivos/directorios escribibles</td></tr>
+                        <tr><td><code>find / -perm -4000 2&gt;/dev/null</code></td><td>Buscar binarios SUID (escalada de privilegios)</td></tr>
+                        <tr><td><code>find / -writable 2&gt;/dev/null</code></td><td>Buscar archivos/directorios escribibles</td></tr>
                         <tr><td><code>cat /etc/crontab</code></td><td>Ver tareas programadas (cron jobs)</td></tr>
                         <tr><td><code>ps aux</code></td><td>Ver todos los procesos corriendo</td></tr>
                         <tr><td><code>env</code></td><td>Ver variables de entorno</td></tr>

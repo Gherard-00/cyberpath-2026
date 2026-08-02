@@ -309,10 +309,10 @@
 <span style="color:#00e676">$</span> touch notas.txt
 
 <span style="color:#546e7a"># Crear un archivo con contenido</span>
-<span style="color:#00e676">$</span> echo "Mi primera nota" > notas.txt
+<span style="color:#00e676">$</span> echo "Mi primera nota" &gt; notas.txt
 
-<span style="color:#546e7a"># Agregar contenido sin borrar lo anterior (>>)</span>
-<span style="color:#00e676">$</span> echo "Segunda línea" >> notas.txt
+<span style="color:#546e7a"># Agregar contenido sin borrar lo anterior (&gt;&gt;)</span>
+<span style="color:#00e676">$</span> echo "Segunda línea" &gt;&gt; notas.txt
 
 <span style="color:#546e7a"># Crear un directorio</span>
 <span style="color:#00e676">$</span> mkdir herramientas
@@ -320,7 +320,7 @@
 <span style="color:#546e7a"># Crear directorios anidados de una vez</span>
 <span style="color:#00e676">$</span> mkdir -p proyectos/pentesting/reportes</code></pre>
                 <div class="explanation">
-                    <p><strong>Importante:</strong> <code>></code> <strong>sobreescribe</strong> el archivo (cuidado, borra todo lo anterior). <code>>></code> <strong>agrega al final</strong> sin borrar nada. Esta es una diferencia crítica.</p>
+                    <p><strong>Importante:</strong> <code>&gt;</code> <strong>sobreescribe</strong> el archivo (cuidado, borra todo lo anterior). <code>&gt;&gt;</code> <strong>agrega al final</strong> sin borrar nada. Esta es una diferencia crítica.</p>
                 </div>
             </div>
 
@@ -381,7 +381,7 @@
                     <span class="term-title">Buscar archivos y contenido</span>
                 </div>
                 <pre><code><span style="color:#546e7a"># Buscar un archivo por nombre en todo el sistema</span>
-<span style="color:#00e676">$</span> find / -name "passwd" 2>/dev/null
+<span style="color:#00e676">$</span> find / -name "passwd" 2&gt;/dev/null
 
 <span style="color:#546e7a"># Buscar archivos por extensión</span>
 <span style="color:#00e676">$</span> find /home -name "*.txt"
@@ -398,7 +398,7 @@
 <span style="color:#546e7a"># Buscar recursivamente en todos los archivos de un directorio</span>
 <span style="color:#00e676">$</span> grep -r "admin" /var/www/</code></pre>
                 <div class="explanation">
-                    <p><strong>¿Qué es <code>2>/dev/null</code>?</strong> Redirige los mensajes de error a la "nada". Cuando usas <code>find /</code> sin ser root, recibes muchos errores "permiso denegado" — con <code>2>/dev/null</code> los ocultas y solo ves los resultados útiles.</p>
+                    <p><strong>¿Qué es <code>2&gt;/dev/null</code>?</strong> Redirige los mensajes de error a la "nada". Cuando usas <code>find /</code> sin ser root, recibes muchos errores "permiso denegado" — con <code>2&gt;/dev/null</code> los ocultas y solo ves los resultados útiles.</p>
                 </div>
             </div>
 
@@ -530,7 +530,7 @@
                     es una mala configuración de seguridad.<br>
                     <strong>Archivos SUID (<code>-rwsr-xr-x</code>):</strong> El bit <code>s</code> significa que el archivo se ejecuta con los privilegios del propietario (generalmente root). 
                     Los archivos SUID mal configurados son uno de los principales vectores de <strong>escalada de privilegios</strong> en Linux.<br>
-                    Comando para buscar archivos SUID: <code>find / -perm -4000 2>/dev/null</code>
+                    Comando para buscar archivos SUID: <code>find / -perm -4000 2&gt;/dev/null</code>
                 </p>
             </div>
         </div>
@@ -892,7 +892,7 @@ fi
 
 <span style="color:#546e7a"># Verificar si un host está vivo</span>
 read -p "IP a verificar: " ip
-if ping -c 1 -W 2 "$ip" &> /dev/null; then
+if ping -c 1 -W 2 "$ip" &amp;&gt; /dev/null; then
     echo "$ip está ONLINE"
 else
     echo "❌ $ip está OFFLINE o no responde"
@@ -912,7 +912,7 @@ fi</code></pre>
 red=$1  <span style="color:#546e7a"># $1 = primer argumento que le pases al script</span>
 
 if [ -z "$red" ]; then
-    echo "Uso: $0 <red>"
+    echo "Uso: $0 &lt;red&gt;"
     echo "Ejemplo: $0 192.168.1"
     exit 1
 fi
@@ -921,7 +921,7 @@ echo "🔍 Escaneando red $red.0/24..."
 echo ""
 
 for host in $(seq 1 254); do
-    ping -c 1 -W 1 "$red.$host" &> /dev/null
+    ping -c 1 -W 1 "$red.$host" &amp;&gt; /dev/null
     if [ $? -eq 0 ]; then
         echo "$red.$host está VIVO"
     fi
@@ -975,7 +975,7 @@ echo "Escaneo completado."</code></pre>
 <span style="color:#546e7a"># 4. Verifica que los permisos cambiaron</span>
 <span style="color:#546e7a"># 5. Lee el contenido de /etc/shadow (¿puedes? ¿por qué?)</span>
 <span style="color:#546e7a"># 6. Intenta leerlo con sudo. ¿Qué diferencia hay?</span>
-<span style="color:#546e7a"># 7. Busca archivos SUID en el sistema: find / -perm -4000 2>/dev/null</span></code></pre>
+<span style="color:#546e7a"># 7. Busca archivos SUID en el sistema: find / -perm -4000 2&gt;/dev/null</span></code></pre>
             </div>
 
             <h3>Reto 3: Investigación del sistema</h3>
@@ -992,10 +992,10 @@ echo "Escaneo completado."</code></pre>
 <span style="color:#546e7a"># 3. ¿Qué puertos están abiertos en tu máquina? (ss -tulnp)</span>
 <span style="color:#546e7a"># 4. ¿Qué procesos están consumiendo más CPU? (top o htop)</span>
 <span style="color:#546e7a"># 5. ¿Cuántos archivos .conf hay en /etc?</span>
-<span style="color:#546e7a">#    (find /etc -name "*.conf" 2>/dev/null | wc -l)</span>
+<span style="color:#546e7a">#    (find /etc -name "*.conf" 2&gt;/dev/null | wc -l)</span>
 <span style="color:#546e7a"># 6. ¿Qué dice el archivo /etc/hostname?</span>
 <span style="color:#546e7a"># 7. ¿Puedes encontrar la palabra "password" en algún archivo de /etc?</span>
-<span style="color:#546e7a">#    (grep -r "password" /etc/ 2>/dev/null)</span></code></pre>
+<span style="color:#546e7a">#    (grep -r "password" /etc/ 2&gt;/dev/null)</span></code></pre>
             </div>
 
             <h3>Reto 4: Tu primer script real</h3>
@@ -1014,7 +1014,7 @@ echo "Escaneo completado."</code></pre>
 <span style="color:#546e7a"># 7. Muestre los últimos 10 comandos del historial</span>
 <span style="color:#546e7a"># 8. Guarde TODO el resultado en un archivo "recon_output.txt"</span>
 
-<span style="color:#546e7a"># Pista: usa redirección con > y >> para guardar en archivo</span>
+<span style="color:#546e7a"># Pista: usa redirección con &gt; y &gt;&gt; para guardar en archivo</span>
 <span style="color:#546e7a"># Pista: usa tee para mostrar en pantalla Y guardar a la vez:</span>
 <span style="color:#546e7a">#   echo "dato" | tee -a archivo.txt</span></code></pre>
             </div>
@@ -1024,7 +1024,7 @@ echo "Escaneo completado."</code></pre>
                 <p>Antes de pasar a la siguiente lección, asegúrate de poder responder estas preguntas:</p>
                 <ul>
                     <li>¿Cómo navegas por el sistema de archivos? (<code>cd</code>, <code>ls</code>, <code>pwd</code>)</li>
-                    <li>¿Cuál es la diferencia entre <code>></code> y <code>>></code>?</li>
+                    <li>¿Cuál es la diferencia entre <code>&gt;</code> y <code>&gt;&gt;</code>?</li>
                     <li>¿Qué significan los permisos <code>rwxr-xr--</code>? ¿Y <code>chmod 755</code>?</li>
                     <li>¿Cómo encuentras archivos SUID en el sistema?</li>
                     <li>¿Qué información contiene <code>/etc/passwd</code> y <code>/etc/shadow</code>?</li>
@@ -1111,7 +1111,7 @@ echo "Escaneo completado."</code></pre>
                 question: "¿Qué comando encuentras archivos con el bit SUID activado en todo el sistema?",
                 options: [
                     "ls -la /usr/bin/",
-                    "find / -perm -4000 2>/dev/null",
+                    "find / -perm -4000 2&gt;/dev/null",
                     "grep SUID /etc/passwd",
                     "chmod +s /bin/*"
                 ],

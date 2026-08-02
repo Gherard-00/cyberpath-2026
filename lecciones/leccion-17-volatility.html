@@ -69,16 +69,16 @@
             </table></div>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Captura de RAM</span></div>
                 <pre><code><span style="color:#546e7a"># Windows: DumpIt (ejecutar como Admin, solo doble clic)</span>
-<span style="color:#ffcc02">C:\></span> DumpIt.exe /Q /O ram_dump.raw
+<span style="color:#ffcc02">C:\&gt;</span> DumpIt.exe /Q /O ram_dump.raw
 
 <span style="color:#546e7a"># Windows: WinPMEM</span>
-<span style="color:#ffcc02">C:\></span> winpmem_mini_x64.exe ram_dump.raw
+<span style="color:#ffcc02">C:\&gt;</span> winpmem_mini_x64.exe ram_dump.raw
 
 <span style="color:#546e7a"># Linux: LiME (módulo de kernel)</span>
 <span style="color:#00e676">$</span> sudo insmod lime.ko "path=/evidencia/ram.raw format=raw"
 
 <span style="color:#546e7a"># SIEMPRE calcular hash inmediatamente</span>
-<span style="color:#00e676">$</span> sha256sum ram_dump.raw > hash_ram.txt</code></pre>
+<span style="color:#00e676">$</span> sha256sum ram_dump.raw &gt; hash_ram.txt</code></pre>
             </div>
         </div>
 
@@ -237,7 +237,7 @@ NtBuildLab          19041.1.amd64fre.vb_release.191206-1406</span>
         <div class="lesson-section" id="timeline"><h2>11. Crear un timeline</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Timeline de eventos</span></div>
                 <pre><code><span style="color:#546e7a"># Crear timeline con todos los artefactos temporales</span>
-<span style="color:#00e676">$</span> vol -f ram_dump.raw timeliner.Timeliner > timeline.csv
+<span style="color:#00e676">$</span> vol -f ram_dump.raw timeliner.Timeliner &gt; timeline.csv
 
 <span style="color:#546e7a"># Filtrar por rango de tiempo del incidente</span>
 <span style="color:#00e676">$</span> grep "2026-07-10 15:4" timeline.csv

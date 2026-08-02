@@ -250,29 +250,29 @@ a1b2c3d4...  kali-linux-2026.1.iso
 <span style="color:#00e676">$</span> gpg --list-keys
 
 <span style="color:#546e7a"># Exportar tu clave pública (para compartir)</span>
-<span style="color:#00e676">$</span> gpg --export --armor tu@email.com > mi_clave_publica.asc
+<span style="color:#00e676">$</span> gpg --export --armor tu@email.com &gt; mi_clave_publica.asc
 
 <span style="color:#546e7a"># Cifrar un archivo para ti mismo</span>
 <span style="color:#00e676">$</span> gpg -e -r tu@email.com secreto.txt
 <span style="color:#546e7a"># Genera: secreto.txt.gpg (cifrado)</span>
 
 <span style="color:#546e7a"># Descifrar</span>
-<span style="color:#00e676">$</span> gpg -d secreto.txt.gpg > descifrado.txt</code></pre>
+<span style="color:#00e676">$</span> gpg -d secreto.txt.gpg &gt; descifrado.txt</code></pre>
             </div>
 
             <h3>Ejercicio 2: Verificar integridad de archivos</h3>
             <div class="lesson-terminal">
                 <div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Verificar hashes</span></div>
                 <pre><code><span style="color:#546e7a"># Crear un archivo y generar su hash</span>
-<span style="color:#00e676">$</span> echo "Datos importantes" > datos.txt
-<span style="color:#00e676">$</span> sha256sum datos.txt > datos.sha256
+<span style="color:#00e676">$</span> echo "Datos importantes" &gt; datos.txt
+<span style="color:#00e676">$</span> sha256sum datos.txt &gt; datos.sha256
 
 <span style="color:#546e7a"># Verificar que no fue modificado</span>
 <span style="color:#00e676">$</span> sha256sum -c datos.sha256
 datos.txt: OK
 
 <span style="color:#546e7a"># Modificar el archivo</span>
-<span style="color:#00e676">$</span> echo "Modificado" >> datos.txt
+<span style="color:#00e676">$</span> echo "Modificado" &gt;&gt; datos.txt
 
 <span style="color:#546e7a"># Verificar de nuevo</span>
 <span style="color:#00e676">$</span> sha256sum -c datos.sha256

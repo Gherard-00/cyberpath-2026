@@ -187,7 +187,7 @@
 <span style="color:#546e7a"># - Consultas a dominios recién registrados (DGA)</span>
 
 <span style="color:#546e7a"># Buscar consultas DNS con subdominios largos (posible exfiltración)</span>
-<span style="color:#ffcc02">dns.qry.name.len > 50</span></code></pre>
+<span style="color:#ffcc02">dns.qry.name.len &gt; 50</span></code></pre>
             </div>
         </div>
 
@@ -231,7 +231,7 @@
 <span style="color:#546e7a"># Si ves picos de tráfico a intervalos regulares → beaconing</span>
 
 <span style="color:#546e7a"># Buscar ICMP con payloads grandes (posible tunnel)</span>
-<span style="color:#ffcc02">icmp && data.len > 100</span></code></pre>
+<span style="color:#ffcc02">icmp && data.len &gt; 100</span></code></pre>
             </div>
         </div>
 
