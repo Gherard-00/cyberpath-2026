@@ -43,8 +43,10 @@ ciberseguridad/
     ├── leccion-18-autopsy.html
     ├── leccion-19-wireshark.html
     ├── leccion-20-reportes.html          # Fase 5: Profesionalización
+    ├── glosario.html                     # Glosario interactivo de términos
     ├── cheatsheet-linux.html
     └── cheatsheet-puertos.html
+├── docs/                                 # Documentos complementarios (PDF)
 ```
 
 ## Cómo abrir el curso
