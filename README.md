@@ -1,12 +1,14 @@
 # CyberPath 2026
 
-Curso completo de ciberseguridad en español: desde cero hasta nivel experto en hacking ético, pentesting y forense digital.
+Curso completo de ciberseguridad en español: desde cero hasta nivel experto en hacking ético, pentesting, Blue Team, SOC, DFIR y GRC.
+
+🌐 **Enlace oficial permanente (24/7):** [https://gherard-00.github.io/cyberpath-2026/](https://gherard-00.github.io/cyberpath-2026/)
 
 ## Qué es este proyecto
 
 CyberPath 2026 es una plataforma educativa construida como sitio estático puro (HTML + CSS + JavaScript vanilla, sin frameworks ni backend). Está dirigida a personas sin experiencia previa que se forman de manera autodidacta.
 
-El curso se organiza en **6 fases progresivas** con **23 lecciones**, **2 cheatsheets de referencia** y un **sistema de evaluación interactivo** con persistencia de progreso.
+El curso se organiza en **8 fases progresivas** con **31 lecciones**, **2 cheatsheets de referencia**, **glosario técnico** y un **sistema de evaluación interactivo (CyberQuiz)** con persistencia de progreso y evidencias prácticas.
 
 ## Estructura del proyecto
 
