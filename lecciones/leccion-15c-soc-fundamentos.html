@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 15C: SOC y Fundamentos de Blue Team — Niveles de analista, Triage de alertas y análisis de phishing.">
+    <title>Lección 15C: SOC y Blue Team — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 15C</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge phase-4">Fase 4 — Blue Team y SOC</div>
+            <h1>Fundamentos del SOC y Triage</h1>
+            <p class="lesson-intro">
+                El <strong>Security Operations Center (SOC)</strong> es el corazón de la ciberdefensa de una organización. 
+                Es el equipo encargado de monitorear, detectar y responder a incidentes 24/7. 
+                En esta lección aprenderás cómo funciona un SOC por dentro, los niveles de analistas y cómo se realiza el "Triage" de alertas.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-soc">¿Qué es un SOC?</a></li>
+                <li><a href="#niveles">Niveles de un SOC (N1, N2, N3)</a></li>
+                <li><a href="#triage">El Proceso de Triage</a></li>
+                <li><a href="#phishing">Análisis de Phishing en N1</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="que-es-soc"><h2>1. ¿Qué es un SOC?</h2>
+            <p class="lesson-text">Un SOC (Centro de Operaciones de Seguridad) es un equipo centralizado de analistas de seguridad, ingenieros y gestores de incidentes que protegen los activos de una empresa. Su objetivo es detectar y contener ataques en sus etapas iniciales.</p>
+        </div>
+
+        <div class="lesson-section" id="niveles"><h2>2. Niveles de un SOC</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Nivel</th><th>Rol</th><th>Responsabilidades</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>L1 / N1</strong></td><td>Analista de Triage</td><td>Monitoreo continuo. Recibe alertas del SIEM, analiza correos de phishing y determina si una alerta es un falso positivo o un incidente real. Si es real, la escala.</td></tr>
+                    <tr><td><strong>L2 / N2</strong></td><td>Analista de Incidentes</td><td>Investigación profunda (Deep Dive). Analiza el alcance del compromiso, rastrea al atacante en la red y contiene la amenaza (ej. aislando un host).</td></tr>
+                    <tr><td><strong>L3 / N3</strong></td><td>Threat Hunter / SME</td><td>Busca activamente amenazas ocultas que evadieron las defensas (Threat Hunting), ingeniería inversa de malware y creación de reglas de detección complejas.</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="triage"><h2>3. El Proceso de Triage</h2>
+            <p class="lesson-text">El <strong>Triage</strong> es el proceso de clasificar y priorizar alertas, similar a la sala de emergencias de un hospital. El analista N1 tiene poco tiempo para responder: "¿Es esto normal o es un ataque?".</p>
+            <ul>
+                <li><strong>True Positive (TP):</strong> Es un ataque real. ¡Escalar!</li>
+                <li><strong>False Positive (FP):</strong> Es comportamiento benigno que disparó una alerta (ej. un admin haciendo backup). ¡Cerrar!</li>
+                <li><strong>True Negative (TN):</strong> Tráfico benigno que no disparó alertas (Estado ideal).</li>
+                <li><strong>False Negative (FN):</strong> Un ataque real que NO disparó alertas (El peor escenario).</li>
+            </ul>
+        </div>
+
+        <div class="lesson-section" id="phishing"><h2>4. Análisis de Phishing (El día a día del N1)</h2>
+            <p class="lesson-text">Gran parte del trabajo de un L1 es analizar correos reportados por los usuarios. Pasos clave:</p>
+            <ul>
+                <li><strong>Cabeceras (Headers):</strong> Verificar el origen real del correo. Buscar fallos en SPF, DKIM y DMARC.</li>
+                <li><strong>Análisis de Enlaces:</strong> Extraer URLs ofuscadas y analizarlas en VirusTotal o URLScan.io sin hacer clic directamente.</li>
+                <li><strong>Análisis de Adjuntos:</strong> Extraer hashes de archivos adjuntos (PDFs, ZIPs, Macros de Office) y verificarlos en sandbox.</li>
+            </ul>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-15b-cloud-security.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15B: Cloud Security</span></a>
+            <a href="leccion-15d-siem-logs.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15D: SIEM y Logs</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+<script src="../script.js"></script>
+</body></html>

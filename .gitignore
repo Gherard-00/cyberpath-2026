@@ -27,3 +27,12 @@ package-lock.json
 # Binaries and archives
 cloudflared.exe
 *.zip
+
+# Python caches
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
+
+# Tunnel runtime
+tunnel_url.txt

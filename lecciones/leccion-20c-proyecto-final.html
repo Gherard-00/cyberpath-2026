@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta name="description" content="Lección 20C: Proyecto Final Integrador — Aplica todo lo aprendido en CyberPath 2026 en un entorno simulado empresarial real.">
+    <title>Lección 20C: Proyecto Final Integrador — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 6</span><span>›</span><span>Lección 20C</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge phase-6">Fase 6 — Profesionalización y Nivel Experto</div>
+            <h1>Proyecto Final Integrador</h1>
+            <p class="lesson-intro">
+                Llegaste a la cima. Este proyecto final está diseñado para poner a prueba <strong>todo</strong>
+                lo que has aprendido en el curso. Simularás un escenario corporativo completo donde actuarás
+                como atacante (Red Team), defensor (Blue Team/DFIR) y auditor (GRC). Este proyecto es ideal
+                para iniciar tu portafolio profesional.
+            </p>
+        </div>
+        
+        <div class="lesson-toc"><h3>Fases del Proyecto Final</h3>
+            <ol>
+                <li><a href="#escenario">El Escenario: "Operación: Fuga en CorpNet"</a></li>
+                <li><a href="#fase-red">Fase 1: Red Team (Compromiso)</a></li>
+                <li><a href="#fase-blue">Fase 2: Blue Team & DFIR (Investigación)</a></li>
+                <li><a href="#fase-grc">Fase 3: Reporte de Auditoría (GRC)</a></li>
+                <li><a href="#entregables">Entregables del Proyecto</a></li>
+                <li><a href="#practica">Cierre y Felicitaciones</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="escenario"><h2>1. El Escenario: "Operación: Fuga en CorpNet"</h2>
+            <p class="lesson-text">Eres contratado por <strong>CorpNet Logistics</strong>, una empresa logística ficticia, para realizar una auditoría de caja gris (Gray Box) y posterior análisis forense de su infraestructura de pruebas.</p>
+            <div class="lesson-callout"><strong>El Entorno Simulado:</strong>
+                <p>Para este proyecto, deberás levantar una máquina virtual vulnerable (por ejemplo, <em>Metasploitable 2</em> o <em>DVWA</em> en una VM local aislada). CorpNet tiene una aplicación web vulnerable de gestión de inventario y un servidor SMB con documentos de la empresa.</p>
+                <ul>
+                    <li><strong>IP del objetivo:</strong> Tu VM local vulnerable (ej: 192.168.1.50)</li>
+                    <li><strong>Reglas de Compromiso (RoE):</strong> Ataques de denegación de servicio (DoS) están prohibidos.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="fase-red"><h2>2. Fase 1: Red Team (Compromiso)</h2>
+            <p class="lesson-text">En esta fase actuarás como el atacante. Debes aplicar tus conocimientos de las Fases 2 y 3 del curso.</p>
+            <div class="lesson-callout"><strong>Misiones de Ataque:</strong>
+                <ol>
+                    <li><strong>OSINT & Recon:</strong> Ejecuta Nmap para mapear puertos y servicios. (Guarda los outputs).</li>
+                    <li><strong>Vulnerabilidad Web:</strong> Identifica y explota una inyección SQL o Command Injection en la app web para ganar acceso inicial.</li>
+                    <li><strong>Pivoteo/Escalada:</strong> Una vez dentro (shell), intenta escalar privilegios (root/SYSTEM) usando exploits conocidos de la VM.</li>
+                    <li><strong>Exfiltración:</strong> Simula la copia de un archivo sensible desde el servidor SMB a tu máquina Kali usando herramientas como Netcat o FTP.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="fase-blue"><h2>3. Fase 2: Blue Team & DFIR (Investigación)</h2>
+            <p class="lesson-text">Ahora te pones el sombrero de defensor. Durante tu ataque (Fase 1), debiste haber tenido <strong>Wireshark</strong> capturando el tráfico de red de tu interfaz host-only.</p>
+            <div class="lesson-callout"><strong>Misiones de Defensa:</strong>
+                <ol>
+                    <li><strong>Análisis de Red:</strong> Abre el PCAP en Wireshark. Localiza tu escaneo de Nmap y documenta los indicadores.</li>
+                    <li><strong>Identificación del Payload:</strong> Encuentra el paquete exacto donde ocurrió la inyección SQL o la transferencia del archivo exfiltrado (Usa <em>Follow TCP Stream</em>).</li>
+                    <li><strong>Extracción de Artefactos:</strong> Si simulaste la descarga de malware o herramientas, extráelas usando Wireshark y calcula su hash SHA-256.</li>
+                    <li><strong>Timeline:</strong> Crea una línea de tiempo cronológica de las acciones del atacante.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="fase-grc"><h2>4. Fase 3: Reporte de Auditoría (GRC)</h2>
+            <p class="lesson-text">Es momento de juntar la evidencia empírica en un documento profesional, usando los conocimientos de la Lección 20.</p>
+            <div class="lesson-callout"><strong>Redacción del Reporte:</strong>
+                <ul>
+                    <li>Redacta un <strong>Resumen Ejecutivo</strong> dirigido al CEO ficticio de CorpNet explicando el impacto de la fuga de datos.</li>
+                    <li>Usa la calculadora <strong>CVSS v3.1</strong> para puntuar al menos dos de las vulnerabilidades encontradas (ej: SQLi).</li>
+                    <li>Crea <strong>Fichas Técnicas</strong> para esas vulnerabilidades, incluyendo screenshots censurados de tu explotación (Burp Suite, Terminal).</li>
+                    <li>Redacta la <strong>Guía de Remediación</strong> especificando cómo los desarrolladores deben corregir el código.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="entregables"><h2>5. Entregables del Proyecto</h2>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Entregable</th><th>Formato sugerido</th><th>Destino</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Reporte Profesional</strong></td><td>PDF (Plantilla Word/LaTeX)</td><td>Portafolio (LinkedIn / Drive)</td></tr>
+                    <tr><td><strong>Write-up de la Máquina</strong></td><td>Markdown / Blog Post</td><td>GitHub / Medium</td></tr>
+                    <tr><td><strong>Timeline DFIR</strong></td><td>Hoja de cálculo (CSV)</td><td>Anexo en el repositorio</td></tr>
+                </tbody>
+            </table></div>
+            <p class="lesson-text">Sube este repositorio a tu GitHub con un buen <code>README.md</code>. Este proyecto demuestra que sabes <strong>atacar, investigar incidentes y redactar reportes corporativos</strong>. Es el mejor puente entre este curso y tu primera entrevista de trabajo.</p>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2>6. Cierre y Felicitaciones</h2>
+            <div class="lesson-callout"><strong>🎉 ¡MISIÓN CUMPLIDA!</strong>
+                <p>Al completar este Proyecto Integrador, oficialmente has terminado todo el currículo de <strong>CyberPath 2026</strong>. Has pasado desde entender qué es una IP, hasta realizar análisis forenses y entregar reportes de nivel profesional.</p>
+                <p>El camino de la ciberseguridad nunca termina. Mantente curioso, nunca dejes de practicar de forma ética, y nos vemos en la comunidad. <strong>¡Mucho éxito en tu carrera!</strong></p>
+            </div>
+
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-20b-portafolio-y-certificaciones.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 20B: Portafolio y Certificaciones</span></a>
+            <a href="../index.html" class="next"><span class="nav-label">Volver al inicio →</span><span class="nav-title">CyberPath 2026</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Cuál es el propósito principal del Proyecto Final Integrador?",
+                    "options": [
+                              "Ganar dinero hackeando una empresa real",
+                              "Memorizar comandos de terminal",
+                              "Demostrar habilidades empíricas de ataque, defensa y elaboración de reportes en un entorno simulado para crear un portafolio profesional",
+                              "Pasar un examen teórico múltiple opción"
+                    ],
+                    "correct": 2
+          },
+          {
+                    "question": "En la Fase de DFIR del proyecto, ¿qué herramienta usarás principalmente para investigar el ataque que realizaste previamente?",
+                    "options": [
+                              "Metasploit",
+                              "Wireshark (analizando el PCAP capturado)",
+                              "Nmap",
+                              "Burp Suite"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-20c'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-20c', quizQuestions);
+            const explanations = [
+                "El proyecto final está diseñado como un ejercicio 'end-to-end' que genera evidencia tangible para tu portafolio, demostrando que puedes ejecutar todo el ciclo de ciberseguridad.",
+                "Durante el ataque, debes capturar tráfico. En la fase DFIR usarás Wireshark sobre ese archivo PCAP para investigar y encontrar los indicadores de compromiso de tu propio ataque."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-20c';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
+        });
+    </script>
+<script src="../script.js"></script>
+</body></html>

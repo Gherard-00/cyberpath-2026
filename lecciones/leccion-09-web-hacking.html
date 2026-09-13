@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -45,6 +45,7 @@
                 <li><a href="#lfi-rfi">LFI / RFI — Inclusión de archivos</a></li>
                 <li><a href="#auth">Autenticación rota</a></li>
                 <li><a href="#otros">Otras vulnerabilidades del OWASP Top 10</a></li>
+                <li><a href="#mitigacion">El proceso de mitigación: SAST vs DAST</a></li>
                 <li><a href="#practica">Práctica: DVWA y WebGoat</a></li>
             </ol>
         </div>
@@ -233,9 +234,37 @@ https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
         </div>
 
         <!-- SECTION 9 -->
+        <div class="lesson-section" id="mitigacion">
+            <h2>9. El proceso de mitigación: SAST vs DAST</h2>
+            <p class="lesson-text">
+                Encontrar vulnerabilidades es solo la mitad del trabajo. Como profesional, debes saber cómo integrarte con el 
+                equipo de desarrollo para parchear los problemas de raíz utilizando el enfoque de <strong>DevSecOps</strong>.
+            </p>
+            <div class="lesson-table-wrap">
+                <table class="lesson-table">
+                    <thead><tr><th>Metodología</th><th>¿Qué es?</th><th>¿Cuándo se usa?</th><th>Ejemplo de Herramienta</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>SAST</strong> (Static Application Security Testing)</td><td>Análisis de <strong>código fuente</strong>. Escanea el código sin ejecutarlo buscando funciones inseguras, credenciales hardcodeadas, etc.</td><td>Durante la escritura del código (fase de desarrollo).</td><td>SonarQube, Semgrep</td></tr>
+                        <tr><td><strong>DAST</strong> (Dynamic Application Security Testing)</td><td>Análisis <strong>dinámico</strong>. Interactúa con la aplicación web en ejecución simulando ataques reales (cajas negras).</td><td>Cuando la app ya está compilada y desplegada en un entorno de pruebas.</td><td>OWASP ZAP, Burp Suite Pro</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="concept-box">
+                <h4>Reportando al Equipo de Desarrollo</h4>
+                <p>Cuando reportes una vulnerabilidad (como un XSS), no te limites a enviar un pantallazo del <code>alert(1)</code>. Un buen reporte de mitigación debe incluir:</p>
+                <ul>
+                    <li><strong>Descripción del riesgo:</strong> "Esto permite robar la sesión de los usuarios."</li>
+                    <li><strong>Pasos para reproducir (PoC):</strong> "Introduce este payload en el campo 'Nombre'."</li>
+                    <li><strong>Solución sugerida:</strong> "Implementar sanitización de input escapando entidades HTML antes de renderizar."</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECTION 10 -->
         <div class="warning-box"><h4>Practica responsable</h4><p>Todas las tecnicas de esta leccion deben practicarse exclusivamente en entornos autorizados: laboratorios locales, maquinas virtuales propias o plataformas como TryHackMe y HackTheBox. El acceso no autorizado a sistemas informaticos es un delito.</p></div>
         <div class="lesson-section" id="practica">
-            <h2>9. Práctica: DVWA y WebGoat</h2>
+            <h2>10. Práctica: DVWA y WebGoat</h2>
             <p class="lesson-text">
                 Para practicar hacking web de forma segura, usa estas aplicaciones vulnerables en tu laboratorio:
             </p>
@@ -267,6 +296,25 @@ https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
                     <li><a href="https://tryhackme.com/room/owaspjuiceshop" target="_blank" rel="noopener noreferrer">TryHackMe: Juice Shop</a><span class="lab-tag lab-tag-free">Gratis</span></li>
                     <li><a href="https://tryhackme.com/room/sqlinjectionlm" target="_blank" rel="noopener noreferrer">TryHackMe: SQL Injection</a><span class="lab-tag lab-tag-free">Gratis</span></li>
                 </ul>
+            </div>
+
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
             </div>
 
             <div class="quiz-box" id="quiz-container"></div>
@@ -336,6 +384,41 @@ https://site.com/page?file=../../../../var/log/apache2/access.log</code></pre>
             document.querySelectorAll('.quiz-question').forEach((q, i) => {
                 if (explanations[i]) q.dataset.explanation = explanations[i];
             });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-09';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
         });
     </script>
 <script src="../script.js"></script>

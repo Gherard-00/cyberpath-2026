@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -15,9 +15,9 @@
     <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
     <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
-        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 16</span></div>
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 5</span><span>›</span><span>Lección 16</span></div>
         <div class="lesson-hero">
-            <div class="lesson-phase-badge phase-4">Fase 4 — Informática Forense y DFIR</div>
+            <div class="lesson-phase-badge phase-5">Fase 5 — Informática Forense y DFIR</div>
             <h1>Fundamentos de Informática Forense</h1>
             <p class="lesson-intro">
                 Cuando ocurre un incidente de seguridad — un ransomware, una filtración de datos, un empleado desleal — 
@@ -33,9 +33,9 @@
                 <li><a href="#principios">Principios fundamentales</a></li>
                 <li><a href="#tipos-evidencia">Tipos de evidencia digital</a></li>
                 <li><a href="#cadena-custodia">Cadena de custodia</a></li>
-                <li><a href="#orden-volatilidad">Orden de volatilidad</a></li>
+                <li><a href="#orden-volatilidad">Orden de volatilidad (RFC 3227)</a></li>
                 <li><a href="#adquisicion">Adquisición de evidencia</a></li>
-                <li><a href="#integridad">Integridad: hashes y verificación</a></li>
+                <li><a href="#mobile-cloud">Desafíos Modernos: Móvil y Cloud</a></li>
                 <li><a href="#proceso">El proceso forense completo</a></li>
                 <li><a href="#herramientas">Herramientas esenciales</a></li>
                 <li><a href="#practica">Práctica</a></li>
@@ -93,19 +93,18 @@
             <p class="lesson-text">Si la cadena de custodia se rompe (alguien accedió sin registrar, la evidencia estuvo sin custodia), un juez puede <strong>invalidar toda la investigación</strong>.</p>
         </div>
 
-        <div class="lesson-section" id="orden-volatilidad"><h2>5. Orden de volatilidad</h2>
-            <p class="lesson-text">Cuando llegas a un incidente, debes recolectar evidencia en <strong>orden de volatilidad</strong> — primero lo que se pierde más rápido:</p>
+        <div class="lesson-section" id="orden-volatilidad"><h2>5. Orden de volatilidad (RFC 3227)</h2>
+            <p class="lesson-text">Cuando llegas a un incidente, debes recolectar evidencia en <strong>orden de volatilidad</strong> — primero lo que se pierde más rápido. El estándar internacional <strong>RFC 3227</strong> dicta la siguiente jerarquía:</p>
             <div class="lesson-diagram"><pre>
     Orden de recolección (de más a menos volátil):
     
-    1. 🔴 Registros del CPU, caché           → Se pierden inmediatamente
-    2. 🟠 Memoria RAM                        → Se pierde al apagar
-    3. 🟡 Estado de red (conexiones, ARP)     → Cambia constantemente
-    4. 🟢 Procesos en ejecución              → Cambian al interactuar
-    5. 🔵 Disco duro / SSD                   → Persiste (pero puede ser sobreescrito)
-    6. 🟣 Logs remotos / backups             → Persisten pero pueden ser rotados
-    7. ⬜ Medios físicos (CD, USB, papel)     → Estables
-            </pre><p class="diagram-caption">RFC 3227: Guidelines for Evidence Collection — siempre recolectar de lo más volátil a lo menos</p></div>
+    1. 🔴 Registros de la CPU y memoria caché      → Nivel 1 (Se pierde al milisegundo)
+    2. 🟠 Memoria física principal (RAM)           → Nivel 2 (Conexiones activas, malware en memoria, claves criptográficas)
+    3. 🟡 Estado de red y tablas de enrutamiento    → Nivel 3 (Tablas ARP, sockets abiertos)
+    4. 🟢 Procesos del sistema y memoria virtual   → Nivel 4 (Swap, archivos de paginación)
+    5. 🔵 Medios de almacenamiento secundario      → Nivel 5 (SSD, HDD, sistemas de archivos)
+    6. 🟣 Medios de respaldo y registros archivados→ Nivel 6 (Cintas magnéticas, logs remotos)
+            </pre><p class="diagram-caption">RFC 3227: Jamás apagar o reiniciar un sistema comprometido antes de extraer RAM, ya que destruye la evidencia de malware residente en memoria y conexiones C2.</p></div>
         </div>
 
         <div class="lesson-section" id="adquisicion"><h2>6. Adquisición de evidencia</h2>
@@ -145,19 +144,23 @@ Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
         </div>
 
         <div class="lesson-section" id="integridad"><h2>7. Integridad: hashes y verificación</h2>
-            <p class="lesson-text">Los <strong>hashes</strong> son la columna vertebral de la forense digital. Demuestran que la evidencia no ha sido alterada.</p>
-            <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Verificación de integridad</span></div>
-                <pre><code><span style="color:#546e7a"># Calcular hashes de la imagen forense</span>
-<span style="color:#00e676">$</span> md5sum disco_imagen.raw
-<span style="color:#00e676">$</span> sha256sum disco_imagen.raw
+            <p class="lesson-text">Los <strong>hashes</strong> (SHA-256) son la columna vertebral de la forense digital. Demuestran que la evidencia no ha sido alterada. Sin una firma criptográfica inalterable, un tribunal puede desechar la evidencia por completo.</p>
+        </div>
 
-<span style="color:#546e7a"># ANTES de analizar: verificar que el hash coincide</span>
-<span style="color:#00e676">$</span> sha256sum disco_imagen.raw
-<span style="color:#ffcc02">a1b2c3d4e5f6...  disco_imagen.raw</span>
-<span style="color:#546e7a"># ¿Coincide con el hash original? → Evidencia íntegra</span>
-
-<span style="color:#546e7a"># Si el hash cambia → ❌ La evidencia fue modificada</span>
-<span style="color:#546e7a"># Esto invalida el análisis en un tribunal</span></code></pre>
+        <div class="lesson-section" id="mobile-cloud"><h2>8. Desafíos Modernos: Móvil y Cloud Forensics</h2>
+            <p class="lesson-text">La informática forense ha evolucionado más allá de los discos duros estáticos.</p>
+            <div class="lesson-callout"><strong>Forense Móvil (Android / iOS):</strong>
+                <ul>
+                    <li><strong>BFU (Before First Unlock):</strong> El dispositivo se reinició y el usuario no ha puesto su PIN. Las claves de cifrado están bloqueadas en el hardware (Secure Enclave / TEE). Casi imposible extraer datos.</li>
+                    <li><strong>AFU (After First Unlock):</strong> El usuario ya desbloqueó el teléfono al menos una vez. Las claves están en la RAM y se puede extraer el sistema de archivos completo (Full File System).</li>
+                    <li><strong>Inactivity Reboot (iOS 18+):</strong> Si un iPhone incautado no se desbloquea en 72 horas, el hardware fuerza un reinicio autónomo, pasando de estado AFU (extraíble) a BFU (bloqueado). La extracción debe ser urgente.</li>
+                </ul>
+            </div>
+            <div class="lesson-callout"><strong>Forense Cloud (AWS / Azure / GCP):</strong>
+                <ul>
+                    <li>Al no haber acceso físico al disco, se depende de instantáneas lógicas (<strong>Snapshots</strong> de volúmenes EBS/Managed Disks).</li>
+                    <li>La evidencia clave suele estar en los <strong>Logs del Plano de Control</strong> (ej. <em>AWS CloudTrail</em> para ver quién creó un usuario IAM) y de red (<em>VPC Flow Logs</em>).</li>
+                </ul>
             </div>
         </div>
 
@@ -215,11 +218,28 @@ Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
                 </ul>
             </div>
 
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
             <div class="quiz-box" id="quiz-container"></div>
         </div>
 
         <div class="lesson-nav">
-            <a href="leccion-15b-cloud-security.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15B: Cloud Security 101</span></a>
+            <a href="leccion-15g-respuesta-incidentes.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15G: Respuesta a Incidentes</span></a>
             <a href="leccion-17-volatility.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 17: Volatility 3</span></a>
         </div>
     </main>
@@ -271,6 +291,41 @@ Destination: C:\DESKTOP-PC-20260711-143022.raw</span>
             document.querySelectorAll('.quiz-question').forEach((q, i) => {
                 if (explanations[i]) q.dataset.explanation = explanations[i];
             });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-16';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
         });
     </script>
 <script src="../script.js"></script>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 15E: Ingeniería de Detección — Uso de MITRE ATT&CK para Blue Team y escritura de reglas Sigma.">
+    <title>Lección 15E: Detección y Sigma — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 15E</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge phase-4">Fase 4 — Blue Team y SOC</div>
+            <h1>Detección: MITRE ATT&CK y Sigma</h1>
+            <p class="lesson-intro">
+                Los Blue Teams no crean alertas al azar. Utilizan metodologías formales para mapear sus coberturas contra adversarios conocidos. 
+                En esta lección veremos cómo el Blue Team utiliza <strong>MITRE ATT&CK</strong> para defenderse, y cómo escribir reglas universales con <strong>Sigma</strong>.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#mitre-blue">MITRE ATT&CK para Defensores</a></li>
+                <li><a href="#piramide">La Pirámide del Dolor</a></li>
+                <li><a href="#sigma">¿Qué es Sigma?</a></li>
+                <li><a href="#ejemplo-sigma">Estructura de una regla Sigma</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="mitre-blue"><h2>1. MITRE ATT&CK para Defensores</h2>
+            <p class="lesson-text">Si en Red Team usamos MITRE como catálogo de ataques, en Blue Team lo usamos como <strong>mapa de cobertura</strong>. Un equipo de <em>Detection Engineering</em> analiza cuáles técnicas (ej. T1059.001 - PowerShell) son más usadas por grupos cibercriminales, y prioriza la creación de alertas en el SIEM para esas técnicas específicas.</p>
+        </div>
+
+        <div class="lesson-section" id="piramide"><h2>2. La Pirámide del Dolor (Pyramid of Pain)</h2>
+            <p class="lesson-text">Concepto creado por David Bianco que describe qué tan difícil es para un atacante cambiar sus métodos cuando el Blue Team se los bloquea:</p>
+            <ul>
+                <li><strong>Hashes (Trivial):</strong> El atacante solo recompila el malware y el hash cambia.</li>
+                <li><strong>Direcciones IP (Fácil):</strong> El atacante usa otro proxy o VPN.</li>
+                <li><strong>Nombres de Dominio (Simple):</strong> Compran dominios nuevos por unos pocos dólares.</li>
+                <li><strong>Artefactos de red/host (Molesto):</strong> Requiere modificar configuraciones de sus herramientas C2.</li>
+                <li><strong>Herramientas (Desafiante):</strong> Si bloqueas Mimikatz, deben aprender y programar una herramienta nueva.</li>
+                <li><strong>TTPs (¡Duro!):</strong> (Tácticas, Técnicas y Procedimientos). Si detectas el <em>comportamiento</em> (ej. dumpeo de LSASS), no importa qué herramienta usen, serán detectados.</li>
+            </ul>
+        </div>
+
+        <div class="lesson-section" id="sigma"><h2>3. ¿Qué es Sigma?</h2>
+            <p class="lesson-text">Sigma es para los logs lo que YARA es para los archivos y Snort es para el tráfico de red. Es un formato genérico (YAML) que permite escribir reglas de detección de TTPs <strong>independientemente del SIEM</strong> que uses.</p>
+            <p class="lesson-text">Escribes una regla en Sigma y un convertidor (Sigmac) la transforma a búsquedas de Splunk, Elastic, QRadar, o cualquier otro SIEM automáticamente.</p>
+        </div>
+
+        <div class="lesson-section" id="ejemplo-sigma"><h2>4. Estructura de una regla Sigma</h2>
+            <div class="lesson-terminal"><div class="term-header"><span class="term-title">Ejemplo de detección de Whoami (Reconocimiento)</span></div>
+                <pre><code>title: Ejecución de comando Whoami
+status: experimental
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\whoami.exe'
+    condition: selection
+falsepositives:
+    - Scripts de administración de sistemas
+level: low
+tags:
+    - attack.discovery
+    - attack.t1033</code></pre>
+            </div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-15d-siem-logs.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15D: SIEM</span></a>
+            <a href="leccion-15f-threat-hunting.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15F: Threat Hunting</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+<script src="../script.js"></script>
+</body></html>

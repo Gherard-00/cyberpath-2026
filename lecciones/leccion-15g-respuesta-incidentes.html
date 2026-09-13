@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 15G: Respuesta a Incidentes (IR) — Ciclo de vida NIST SP 800-61, Erradicación y Contención.">
+    <title>Lección 15G: Respuesta a Incidentes — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 15G</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge phase-4">Fase 4 — Blue Team y SOC</div>
+            <h1>Respuesta a Incidentes (NIST SP 800-61)</h1>
+            <p class="lesson-intro">
+                Cuando el SOC confirma que se ha producido una brecha real, entra en acción el equipo de <strong>Respuesta a Incidentes (IR)</strong>. 
+                Actuar bajo pánico destruye evidencias y permite al atacante persistir. Es crucial seguir una metodología paso a paso.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#ciclo">El ciclo de vida del incidente (NIST)</a></li>
+                <li><a href="#preparacion">1. Preparación</a></li>
+                <li><a href="#deteccion">2. Detección y Análisis</a></li>
+                <li><a href="#contencion">3. Contención, Erradicación y Recuperación</a></li>
+                <li><a href="#post">4. Actividad Post-Incidente</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="ciclo"><h2>1. El ciclo de vida del incidente</h2>
+            <p class="lesson-text">El estándar global es la guía de manejo de incidentes de seguridad informática NIST SP 800-61 Rev. 2. Está dividido en 4 fases.</p>
+        </div>
+
+        <div class="lesson-section" id="preparacion"><h2>2. Preparación (Fase 1)</h2>
+            <p class="lesson-text">Se hace antes de que ocurra el ataque. Incluye capacitar al equipo, desplegar EDR/SIEM, configurar copias de seguridad offline, y tener los contactos de emergencia a la mano.</p>
+        </div>
+
+        <div class="lesson-section" id="deteccion"><h2>3. Detección y Análisis (Fase 2)</h2>
+            <p class="lesson-text">El SOC detecta la anomalía (ej. un ransomware cifrando archivos). Se debe confirmar que es un incidente real, determinar el "Punto Cero" (cómo entró) y medir el impacto inicial.</p>
+        </div>
+
+        <div class="lesson-section" id="contencion"><h2>4. Contención, Erradicación y Recuperación (Fase 3)</h2>
+            <p class="lesson-text"><strong>¡Nunca apagues el servidor infectado inmediatamente!</strong> Apagarlo borra la memoria RAM (evidencia volátil). En su lugar:</p>
+            <ul>
+                <li><strong>Contención a corto plazo:</strong> Desconecta el cable de red o aísla la máquina desde el EDR.</li>
+                <li><strong>Erradicación:</strong> Eliminar al atacante y tapar el hueco (ej. parchear vulnerabilidad de VPN, borrar web shells, resetear TODAS las contraseñas).</li>
+                <li><strong>Recuperación:</strong> Restaurar sistemas desde backups limpios y reconectar a la red de producción.</li>
+            </ul>
+        </div>
+
+        <div class="lesson-section" id="post"><h2>5. Actividad Post-Incidente (Fase 4)</h2>
+            <p class="lesson-text">Lecciones aprendidas. ¿Qué hicimos bien? ¿Qué falló en la detección? ¿Qué reglas del SIEM debemos ajustar para que no vuelva a pasar?</p>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2>6. Práctica</h2>
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-15f-threat-hunting.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15F: Threat Hunting</span></a>
+            <a href="leccion-16-forense-intro.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 16: Forense Digital (Intro)</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [{
+            question: "¿Por qué no se debe apagar inmediatamente una máquina infectada durante un incidente?",
+            options: [
+                "Para no asustar a los usuarios",
+                "Porque se pierde el contenido de la memoria RAM, destruyendo evidencias vitales del atacante",
+                "Porque los atacantes pueden demandar a la empresa",
+                "Porque el antivirus necesita que esté prendida para desinfectar"
+            ],
+            correct: 1
+        }];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-15g'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => { CyberQuiz.init('leccion-15g', quizQuestions);
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-15g';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+ });
+    </script>
+<script src="../script.js"></script>
+</body></html>

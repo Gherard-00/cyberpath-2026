@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -15,9 +15,9 @@
     <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
     <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
-        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 5</span><span>›</span><span>Lección 20</span></div>
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 6</span><span>›</span><span>Lección 20</span></div>
         <div class="lesson-hero">
-            <div class="lesson-phase-badge phase-5">Fase 5 — Profesionalización y Nivel Experto</div>
+            <div class="lesson-phase-badge phase-6">Fase 6 — Profesionalización y Nivel Experto</div>
             <h1>Elaboración de Informes Profesionales de Auditoría</h1>
             <p class="lesson-intro">
                 Puedes ser el mejor hacker del mundo, pero si no sabes <strong>comunicar tus hallazgos</strong>, 
@@ -36,6 +36,7 @@
                 <li><a href="#ficha-tecnica">Fichas técnicas de hallazgos</a></li>
                 <li><a href="#evidencias">Cómo presentar evidencias</a></li>
                 <li><a href="#remediacion">Guías de remediación</a></li>
+                <li><a href="#dfir-reportes">Reportes de DFIR y Cloud (Diferencias)</a></li>
                 <li><a href="#errores">Errores comunes a evitar</a></li>
                 <li><a href="#plantilla">Plantilla completa</a></li>
                 <li><a href="#practica">Práctica</a></li>
@@ -206,7 +207,24 @@
             <div class="lesson-callout"><strong>Tip profesional:</strong> No digas solo "arreglar la vulnerabilidad". Di <strong>exactamente cómo</strong>, en qué archivo, en qué línea, con un ejemplo de código corregido si es posible. Esto diferencia a un pentester junior de un profesional.</div>
         </div>
 
-        <div class="lesson-section" id="errores"><h2>9. Errores comunes a evitar</h2>
+        <div class="lesson-section" id="dfir-reportes"><h2>9. Reportes de DFIR y Cloud (Diferencias)</h2>
+            <p class="lesson-text">Un reporte de <strong>Respuesta a Incidentes (DFIR)</strong> o de entornos <strong>Cloud</strong> tiene diferencias clave respecto a uno de Pentesting:</p>
+            <div class="lesson-callout"><strong>Elementos críticos en DFIR:</strong>
+                <ul>
+                    <li><strong>Timeline o Cronología:</strong> Es la sección más importante. Debe detallar minuto a minuto cómo entró el atacante, qué hizo y cuándo fue contenido.</li>
+                    <li><strong>Indicadores de Compromiso (IoCs):</strong> Lista estructurada de IPs, hashes, y dominios maliciosos para que el SOC los bloquee.</li>
+                    <li><strong>Cadena de Custodia:</strong> Documentación estricta de quién manejó qué evidencia y cuándo (crucial para procesos legales).</li>
+                </ul>
+            </div>
+            <div class="lesson-callout"><strong>Elementos críticos en Cloud:</strong>
+                <ul>
+                    <li><strong>Roles y Permisos:</strong> Documentar los ARNs de IAM comprometidos o mal configurados.</li>
+                    <li><strong>Responsabilidad Compartida:</strong> Aclarar si el fallo pertenece al proveedor cloud o al cliente.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="errores"><h2>10. Errores comunes a evitar</h2>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Error</th><th>Problema</th><th>Solución</th></tr></thead>
                 <tbody>
                     <tr><td><strong>Solo listar CVEs</strong></td><td>No explica el impacto real para la empresa</td><td>Contextualizar: "Esto permite que un atacante acceda a..."</td></tr>
@@ -220,7 +238,7 @@
             </table></div>
         </div>
 
-        <div class="lesson-section" id="plantilla"><h2>10. Plantilla completa</h2>
+        <div class="lesson-section" id="plantilla"><h2>11. Plantilla completa</h2>
             <div class="lesson-callout"><strong>Usa esta estructura para tus informes:</strong>
                 <ol>
                     <li><strong>Portada</strong>: Logo, título, cliente, fecha, clasificación (Confidencial), versión</li>
@@ -248,7 +266,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="practica"><h2>11. Práctica</h2>
+        <div class="lesson-section" id="practica"><h2>12. Práctica</h2>
             <div class="practice-box"><h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Entiendes por qué el informe es el producto más importante</li>
@@ -261,8 +279,8 @@
                     <li>Conoces las herramientas de reporting disponibles</li>
                 </ul>
             </div>
-            <div class="lesson-callout"><strong>🎉 ¡FELICIDADES!</strong>
-                <p>Has completado las <strong>20 lecciones del curso CyberPath 2026</strong>. Ahora tienes las bases teóricas y prácticas para iniciar tu carrera en ciberseguridad. Recuerda: esto es solo el comienzo. La ciberseguridad es un campo que requiere <strong>aprendizaje continuo</strong>, <strong>práctica constante</strong> y <strong>mentalidad curiosa</strong>. ¡Sigue adelante!</p>
+            <div class="lesson-callout"><strong>🎉 ¡FELICIDADES POR LLEGAR AQUÍ!</strong>
+                <p>Estás a solo dos pasos del final de tu ruta de profesionalización. Sigue con las lecciones de Portafolio y el Proyecto Final.</p>
             </div>
         
             <div class="external-labs">
@@ -273,12 +291,31 @@
                 </ul>
             </div>
 
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
+            </div>
+
             <div class="quiz-box" id="quiz-container"></div>
         </div>
 
         <div class="lesson-nav">
             <a href="leccion-19-wireshark.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 19: Wireshark</span></a>
-            <a href="../index.html" class="next"><span class="nav-label">Volver al inicio →</span><span class="nav-title">CyberPath 2026</span></a>
+            <a href="leccion-20b-portafolio-y-certificaciones.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 20B: Portafolio y Certificaciones</span></a>
         </div>
     </main>
     <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
@@ -329,6 +366,41 @@
             document.querySelectorAll('.quiz-question').forEach((q, i) => {
                 if (explanations[i]) q.dataset.explanation = explanations[i];
             });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-20';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
         });
     </script>
 <script src="../script.js"></script>

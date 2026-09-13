@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -15,9 +15,9 @@
     <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
     <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
-        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 18</span></div>
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 5</span><span>›</span><span>Lección 18</span></div>
         <div class="lesson-hero">
-            <div class="lesson-phase-badge phase-4">Fase 4 — Informática Forense y DFIR</div>
+            <div class="lesson-phase-badge phase-5">Fase 5 — Informática Forense y DFIR</div>
             <h1>Autopsy — Análisis forense de discos duros</h1>
             <p class="lesson-intro">
                 <strong>Autopsy</strong> es la plataforma forense de código abierto más utilizada en el mundo. 
@@ -88,6 +88,13 @@
         </div>
 
         <div class="lesson-section" id="cargar-imagen"><h2>4. Cargar una imagen de disco</h2>
+            <div class="lesson-callout"><strong>Formatos de imagen soportados:</strong>
+                <ul>
+                    <li><strong>E01 (Expert Witness Format)</strong>: El estándar de la industria. Comprime los datos e integra hashes MD5/SHA-1 internamente.</li>
+                    <li><strong>RAW/dd</strong>: Copia bit a bit pura sin cabeceras ni compresión. 100% compatible pero ocupa más espacio.</li>
+                    <li><strong>AFF4</strong>: Formato moderno de código abierto basado en ZIP64, soporta compresión rápida y múltiples flujos.</li>
+                </ul>
+            </div>
             <div class="lesson-callout"><strong>Agregar la evidencia:</strong>
                 <ol>
                     <li>En el caso creado → <strong>Add Data Source</strong></li>
@@ -142,18 +149,25 @@
             <p class="lesson-text">Para exportar un archivo recuperado: clic derecho → <strong>Extract File(s)</strong></p>
         </div>
 
-        <div class="lesson-section" id="artefactos"><h2>7. Artefactos de Windows</h2>
-            <p class="lesson-text">Autopsy extrae automáticamente artefactos forenses de Windows:</p>
+        <div class="lesson-section" id="artefactos"><h2>7. Sistema de Archivos y Artefactos de Windows</h2>
+            <p class="lesson-text">El núcleo del disco en Windows es NTFS. La <strong>$MFT (Master File Table)</strong> es la base de datos de cada archivo del volumen.</p>
+            <div class="lesson-callout"><strong>Atributos Críticos de la $MFT:</strong>
+                <ul>
+                    <li><strong>$STANDARD_INFORMATION:</strong> Marcas temporales MACB (Modified, Accessed, Created, MFT Modified). Estas son modificables por APIs (susceptibles a <strong>Timestomping</strong>).</li>
+                    <li><strong>$FILE_NAME:</strong> Marcas temporales manejadas por el kernel. Si las fechas de $FILE_NAME no coinciden con $STANDARD_INFORMATION, el atacante intentó falsificar la fecha (Timestomping).</li>
+                    <li><strong>$DATA:</strong> Contiene el archivo. Soporta <em>Alternate Data Streams (ADS)</em>, técnica usada para ocultar malware.</li>
+                    <li><strong>$UsnJrnl:</strong> Registra cambios en el volumen, clave para ver si se borró evidencia.</li>
+                </ul>
+            </div>
+            <p class="lesson-text">Autopsy extrae automáticamente otros artefactos forenses de Windows:</p>
             <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Artefacto</th><th>Qué revela</th><th>Ubicación</th></tr></thead>
                 <tbody>
                     <tr><td><strong>Prefetch</strong></td><td>Programas ejecutados + cuántas veces + última ejecución</td><td><code>C:\Windows\Prefetch\</code></td></tr>
-                    <tr><td><strong>Amcache</strong></td><td>Programas instalados/ejecutados con hash SHA-1</td><td><code>C:\Windows\appcompat\Programs\</code></td></tr>
-                    <tr><td><strong>Shimcache</strong></td><td>Archivos ejecutables que el sistema ha visto</td><td>Registry: SYSTEM hive</td></tr>
+                    <tr><td><strong>Amcache / Shimcache</strong></td><td>Programas instalados/ejecutados y archivos vistos</td><td>Registry Hives</td></tr>
                     <tr><td><strong>USB Devices</strong></td><td>USBs conectados: marca, modelo, serial, última conexión</td><td>Registry: SYSTEM hive</td></tr>
                     <tr><td><strong>UserAssist</strong></td><td>Programas ejecutados por el usuario desde el GUI</td><td>Registry: NTUSER.DAT</td></tr>
                     <tr><td><strong>Shellbags</strong></td><td>Carpetas navegadas (incluso de USBs ya desconectados)</td><td>Registry: UsrClass.dat</td></tr>
-                    <tr><td><strong>LNK files</strong></td><td>Accesos directos que revelan archivos accedidos</td><td><code>C:\Users\[user]\AppData\Roaming\Microsoft\Windows\Recent\</code></td></tr>
-                    <tr><td><strong>Jump Lists</strong></td><td>Archivos recientes por aplicación</td><td><code>C:\Users\[user]\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\</code></td></tr>
+                    <tr><td><strong>LNK files & Jump Lists</strong></td><td>Accesos directos que revelan archivos accedidos recientemente</td><td><code>C:\Users\[user]\AppData\Roaming\Microsoft\Windows\Recent\</code></td></tr>
                     <tr><td><strong>Event Logs</strong></td><td>Logins, logoffs, instalación de servicios, errores</td><td><code>C:\Windows\System32\winevt\Logs\</code></td></tr>
                 </tbody>
             </table></div>
@@ -245,6 +259,25 @@
                 </ul>
             </div>
 
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
+            </div>
+
             <div class="quiz-box" id="quiz-container"></div>
         </div>
 
@@ -301,6 +334,41 @@
             document.querySelectorAll('.quiz-question').forEach((q, i) => {
                 if (explanations[i]) q.dataset.explanation = explanations[i];
             });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-18';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
         });
     </script>
 <script src="../script.js"></script>

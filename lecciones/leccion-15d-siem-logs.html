@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 15D: SIEM y Logs — Wazuh, ELK, Splunk, Sysmon y recolección de telemetría.">
+    <title>Lección 15D: SIEM y Logs — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 15D</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge phase-4">Fase 4 — Blue Team y SOC</div>
+            <h1>SIEM y Recolección de Logs</h1>
+            <p class="lesson-intro">
+                Un SOC sin visibilidad es ciego. Para detectar ataques, necesitas recolectar la telemetría (logs) de toda tu organización en un solo lugar. 
+                Ese lugar es el <strong>SIEM (Security Information and Event Management)</strong>.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#que-es-siem">¿Qué es un SIEM?</a></li>
+                <li><a href="#soluciones">Splunk, ELK y Wazuh</a></li>
+                <li><a href="#sysmon">Sysmon y Windows Event Logs</a></li>
+                <li><a href="#normalizacion">Normalización y Parsing</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="que-es-siem"><h2>1. ¿Qué es un SIEM?</h2>
+            <p class="lesson-text">Un SIEM ingesta millones de logs generados por firewalls, servidores, antivirus y aplicaciones. Los analiza en tiempo real aplicando reglas de correlación y genera <strong>Alertas</strong> cuando detecta patrones sospechosos (ej. 5 intentos de login fallidos seguidos de 1 exitoso = posible fuerza bruta).</p>
+        </div>
+
+        <div class="lesson-section" id="soluciones"><h2>2. Soluciones SIEM del mercado</h2>
+            <ul>
+                <li><strong>Splunk:</strong> El líder de la industria (comercial). Su lenguaje SPL es estándar para muchos analistas.</li>
+                <li><strong>ELK Stack (Elasticsearch, Logstash, Kibana):</strong> Open source muy popular. Se usa a menudo con extensiones de seguridad (Elastic Security).</li>
+                <li><strong>Wazuh:</strong> SIEM y EDR open source basado en ELK. Excelente para despliegues gratuitos con reglas preconfiguradas.</li>
+                <li><strong>Microsoft Sentinel:</strong> SIEM nativo en la nube de Azure.</li>
+            </ul>
+        </div>
+
+        <div class="lesson-section" id="sysmon"><h2>3. Sysmon y Visibilidad en Endpoints</h2>
+            <p class="lesson-text">Los logs por defecto de Windows (Event Viewer) son insuficientes para detectar atacantes avanzados. Los Blue Teams instalan <strong>Sysmon (System Monitor)</strong> de Sysinternals.</p>
+            <p class="lesson-text">Sysmon enriquece enormemente la telemetría registrando eventos críticos con gran detalle:</p>
+            <ul>
+                <li><strong>Event ID 1:</strong> Creación de procesos (qué binario ejecutó a cuál, y con qué argumentos de línea de comandos).</li>
+                <li><strong>Event ID 3:</strong> Conexiones de red (procesos haciendo conexiones hacia afuera).</li>
+                <li><strong>Event ID 11:</strong> Creación de archivos (detecta malware escribiendo en disco).</li>
+            </ul>
+        </div>
+
+        <div class="lesson-section" id="normalizacion"><h2>4. Normalización y Parsing</h2>
+            <p class="lesson-text">Si un firewall Palo Alto llama a la IP de origen <code>src_ip</code> y un servidor Linux la llama <code>SourceAddress</code>, es imposible hacer búsquedas efectivas. El SIEM realiza el <strong>Parsing</strong> (extraer campos) y la <strong>Normalización</strong> (convertir todos los nombres a un esquema común, como Elastic Common Schema - ECS) para que una sola regla funcione para cualquier dispositivo.</p>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-15c-soc-fundamentos.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15C: SOC</span></a>
+            <a href="leccion-15e-deteccion-mitre-sigma.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15E: MITRE y Sigma</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+<script src="../script.js"></script>
+</body></html>

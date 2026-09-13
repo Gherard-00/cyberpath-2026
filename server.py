@@ -11,7 +11,7 @@ MAX_PAYLOAD_SIZE = 5 * 1024 * 1024  # 5 MB max payload
 class ProxyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def is_allowed_path(self, path):
         clean_path = path.split('?')[0].split('#')[0]
-        if clean_path in ['/', '/index.html', '/styles.css', '/script.js']:
+        if clean_path in ['/', '/index.html', '/styles.css', '/script.js', '/quiz.js', '/favicon.svg', '/robots.txt']:
             return True
         if clean_path.startswith('/lecciones/'):
             return True

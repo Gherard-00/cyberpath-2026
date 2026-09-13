@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -15,9 +15,9 @@
     <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
     <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
     <main class="lesson-page">
-        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 19</span></div>
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 5</span><span>›</span><span>Lección 19</span></div>
         <div class="lesson-hero">
-            <div class="lesson-phase-badge phase-4">Fase 4 — Informática Forense y DFIR</div>
+            <div class="lesson-phase-badge phase-5">Fase 5 — Informática Forense y DFIR</div>
             <h1>Wireshark — Análisis de tráfico de red y detección de amenazas</h1>
             <p class="lesson-intro">
                 <strong>Wireshark</strong> es el analizador de protocolos de red más utilizado del mundo. 
@@ -39,6 +39,7 @@
                 <li><a href="#dns">Analizar tráfico DNS</a></li>
                 <li><a href="#detectar-escaneos">Detectar escaneos de puertos (Nmap)</a></li>
                 <li><a href="#detectar-exfiltracion">Detectar exfiltración de datos</a></li>
+                <li><a href="#cloud-network">Cloud Forensics: VPC Flow Logs</a></li>
                 <li><a href="#extraer">Extraer archivos y credenciales</a></li>
                 <li><a href="#tshark">tshark: Wireshark en la terminal</a></li>
                 <li><a href="#practica">Práctica</a></li>
@@ -235,7 +236,18 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="extraer"><h2>11. Extraer archivos y credenciales</h2>
+        <div class="lesson-section" id="cloud-network"><h2>11. Cloud Forensics: VPC Flow Logs y Traffic Mirroring</h2>
+            <p class="lesson-text">En entornos en la nube (AWS, Azure, GCP) no puedes conectar un switch físico para capturar tráfico. Las plataformas cloud usan mecanismos virtuales:</p>
+            <div class="lesson-callout"><strong>Mecanismos Cloud:</strong>
+                <ul>
+                    <li><strong>VPC Flow Logs</strong>: Registran metadatos del tráfico IP (origen, destino, puertos, bytes) pero <strong>no el payload</strong> (contenido). Útil para ver picos de tráfico.</li>
+                    <li><strong>VPC Traffic Mirroring (AWS)</strong>: Permite clonar tráfico de una instancia (EC2) y enviarlo a un appliance de seguridad (IDS/IPS o recolector de PCAP) para que lo analices en Wireshark.</li>
+                </ul>
+            </div>
+            <p class="lesson-text">Cuando descargas PCAPs de la nube, a menudo vienen encapsulados en túneles (como VXLAN o GRE). Wireshark decodifica estos protocolos automáticamente para que puedas analizar el tráfico original de la instancia.</p>
+        </div>
+
+        <div class="lesson-section" id="extraer"><h2>12. Extraer archivos y credenciales</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Extracción</span></div>
                 <pre><code><span style="color:#546e7a"># Extraer TODOS los archivos transferidos por HTTP:</span>
 <span style="color:#546e7a"># File → Export Objects → HTTP → Save All</span>
@@ -257,7 +269,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="tshark"><h2>12. tshark: Wireshark en la terminal</h2>
+        <div class="lesson-section" id="tshark"><h2>13. tshark: Wireshark en la terminal</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">tshark</span></div>
                 <pre><code><span style="color:#546e7a"># Capturar tráfico en la terminal</span>
 <span style="color:#00e676">$</span> tshark -i eth0
@@ -282,7 +294,7 @@
             </div>
         </div>
 
-        <div class="lesson-section" id="practica"><h2>13. Práctica</h2>
+        <div class="lesson-section" id="practica"><h2>14. Práctica</h2>
             <div class="practice-box"><h4>¿Completaste esta lección?</h4>
                 <ul>
                     <li>Conoces la interfaz de Wireshark y sus paneles</li>
@@ -303,6 +315,25 @@
                     <li><a href="https://tryhackme.com/room/wiresharkpacketoperations" target="_blank" rel="noopener noreferrer">TryHackMe: Wireshark: Packet Operations</a><span class="lab-tag lab-tag-free">Gratis</span></li>
                     <li><a href="https://cyberdefenders.org/" target="_blank" rel="noopener noreferrer">CyberDefenders: Network Forensics</a><span class="lab-tag lab-tag-free">Gratis</span></li>
                 </ul>
+            </div>
+
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
             </div>
 
             <div class="quiz-box" id="quiz-container"></div>
@@ -361,6 +392,41 @@
             document.querySelectorAll('.quiz-question').forEach((q, i) => {
                 if (explanations[i]) q.dataset.explanation = explanations[i];
             });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-19';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
         });
     </script>
 <script src="../script.js"></script>

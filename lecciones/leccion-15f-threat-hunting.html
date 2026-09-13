@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lección 15F: Threat Hunting — Caza de amenazas proactiva asumiendo la brecha.">
+    <title>Lección 15F: Threat Hunting — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 4</span><span>›</span><span>Lección 15F</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge phase-4">Fase 4 — Blue Team y SOC</div>
+            <h1>Threat Hunting (Cacería de Amenazas)</h1>
+            <p class="lesson-intro">
+                El enfoque tradicional de seguridad es reactivo: esperas a que suene una alerta en el SIEM. 
+                El <strong>Threat Hunting</strong> es <em>proactivo</em>. Asume que el atacante <strong>ya está en la red</strong> 
+                y evadió los controles de seguridad. Tu trabajo es encontrarlo buscando comportamientos anómalos.
+            </p>
+        </div>
+
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#asumir-brecha">La Mentalidad de Asumir la Brecha</a></li>
+                <li><a href="#hipotesis">Cacería basada en Hipótesis</a></li>
+                <li><a href="#ioc-vs-ioa">IoC vs IoA</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="asumir-brecha"><h2>1. La Mentalidad de Asumir la Brecha</h2>
+            <p class="lesson-text">"Assume Breach" significa aceptar que un atacante avanzado siempre encontrará una manera de entrar. En lugar de confiar ciegamente en el Antivirus, un Threat Hunter analiza activamente grandes volúmenes de datos (logs de EDR, tráfico de red) usando analítica y estadística en busca de anomalías (ej. ¿Por qué el servidor de base de datos se está comunicando por el puerto 443 a una IP en Rusia a las 3:00 AM?).</p>
+        </div>
+
+        <div class="lesson-section" id="hipotesis"><h2>2. Cacería basada en Hipótesis</h2>
+            <p class="lesson-text">Una cacería nunca es ciega ("voy a buscar a ver qué encuentro"). Comienza con una hipótesis informada por la Inteligencia de Amenazas (CTI).</p>
+            <div class="lesson-callout"><strong>Ejemplo de Hipótesis:</strong>
+                <p><em>"Dado que leí reportes recientes sobre el grupo APT29 usando archivos LNK maliciosos en ZIPs para obtener acceso inicial, mi hipótesis es que alguien en nuestro departamento de RRHH pudo haber ejecutado uno. Voy a buscar procesos de Windows Script Host (wscript.exe) ejecutados desde la carpeta Temp por usuarios que no son de TI en los últimos 30 días."</em></p>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="ioc-vs-ioa"><h2>3. IoC vs IoA</h2>
+            <ul>
+                <li><strong>IoC (Indicadores de Compromiso):</strong> Pruebas de que <em>ya fuiste hackeado</em> (hashes de malware, IPs bloqueadas). Cazar por IoCs es buscar en el pasado.</li>
+                <li><strong>IoA (Indicadores de Ataque):</strong> Pruebas de <em>la intención del atacante en tiempo real</em> (uso inesperado de PowerShell, escaneos internos de red). Cazar por IoAs es detectar el ataque mientras ocurre.</li>
+            </ul>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-15e-deteccion-mitre-sigma.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15E: MITRE y Sigma</span></a>
+            <a href="leccion-15g-respuesta-incidentes.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15G: Respuesta a Incidentes</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+<script src="../script.js"></script>
+</body></html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -36,6 +36,7 @@
                 <li><a href="#planificacion">Planificación de una operación</a></li>
                 <li><a href="#reconocimiento">Reconocimiento (OSINT)</a></li>
                 <li><a href="#acceso-inicial">Acceso inicial y ejecución</a></li>
+                <li><a href="#ing-social">Ingeniería Social y Phishing Corporativo</a></li>
                 <li><a href="#movimiento">Movimiento lateral y escalada</a></li>
                 <li><a href="#persistencia">Persistencia y evasión</a></li>
                 <li><a href="#exfiltracion">Exfiltración de datos</a></li>
@@ -162,6 +163,28 @@
             </div>
         </div>
 
+        <div class="lesson-section" id="ing-social"><h2>7B. Ingeniería Social y Phishing Corporativo</h2>
+            <p class="lesson-text">La <strong>Ingeniería Social</strong> manipula a las personas para que entreguen información confidencial o realicen acciones perjudiciales (ej. instalar malware). Es el vector de acceso más exitoso para los atacantes reales.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Técnica</th><th>Descripción</th><th>Prevención</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Phishing</strong></td><td>Correos masivos fraudulentos que simulan ser entidades de confianza.</td><td>Filtros antispam, concientización, DMARC.</td></tr>
+                    <tr><td><strong>Spear Phishing</strong></td><td>Phishing dirigido a una persona específica (ej. CEO, RRHH) usando OSINT.</td><td>MFA, alertas de correos externos.</td></tr>
+                    <tr><td><strong>Vishing / Smishing</strong></td><td>Ingeniería social por voz (teléfono) o SMS.</td><td>Procesos de verificación de identidad.</td></tr>
+                    <tr><td><strong>Baiting</strong></td><td>Dejar USBs "perdidos" infectados cerca de la oficina.</td><td>Deshabilitar puertos USB, políticas de seguridad.</td></tr>
+                </tbody>
+            </table></div>
+            <div class="concept-box">
+                <h4>Spear Phishing Avanzado (El ataque perfecto)</h4>
+                <p>Un Red Teamer no envía un email genérico de "has ganado la lotería". En su lugar:</p>
+                <ol>
+                    <li>Usa LinkedIn para ver que la empresa usa "Workday" para RRHH.</li>
+                    <li>Registra un dominio similar como <code>workday-updates.com</code>.</li>
+                    <li>Envía un email al departamento de finanzas diciendo que deben actualizar sus beneficios de salud antes del viernes.</li>
+                    <li>Clona el portal de login con <strong>Evilginx2</strong> (herramienta que hace proxy reverso para robar tokens MFA).</li>
+                </ol>
+            </div>
+        </div>
+
         <div class="lesson-section" id="movimiento"><h2>8. Movimiento lateral y escalada</h2>
             <div class="lesson-terminal"><div class="term-header"><span class="dot red" aria-hidden="true"></span><span class="dot yellow" aria-hidden="true"></span><span class="dot green" aria-hidden="true"></span><span class="term-title">Movimiento lateral</span></div>
                 <pre><code><span style="color:#546e7a"># Moverse a otra máquina via WinRM</span>
@@ -279,6 +302,25 @@
                 </ul>
             </div>
 
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
+            </div>
+
             <div class="quiz-box" id="quiz-container"></div>
         </div>
 
@@ -335,6 +377,41 @@
             document.querySelectorAll('.quiz-question').forEach((q, i) => {
                 if (explanations[i]) q.dataset.explanation = explanations[i];
             });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-15';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
         });
     </script>
 <script src="../script.js"></script>

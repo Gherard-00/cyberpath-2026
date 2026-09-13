@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta name="description" content="Lección 20B: Portafolio y Certificaciones — Cómo construir un portafolio de ciberseguridad, elegir certificaciones clave y prepararse para entrevistas técnicas.">
+    <title>Lección 20B: Portafolio y Certificaciones — CyberPath 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="bg-grid" aria-hidden="true"></div><div class="bg-glow bg-glow-1" aria-hidden="true"></div><div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+    <nav class="navbar" id="navbar"><a href="../index.html" class="nav-brand" style="text-decoration:none"><div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="brand-text">Cyber<span class="accent">Path</span> 2026</span></a></nav>
+    <main class="lesson-page">
+        <div class="lesson-breadcrumb"><a href="../index.html">Inicio</a><span>›</span><span>Fase 6</span><span>›</span><span>Lección 20B</span></div>
+        <div class="lesson-hero">
+            <div class="lesson-phase-badge phase-6">Fase 6 — Profesionalización y Nivel Experto</div>
+            <h1>Portafolio y Certificaciones de Ciberseguridad</h1>
+            <p class="lesson-intro">
+                El mercado laboral de la ciberseguridad es competitivo. Un buen título no siempre es suficiente;
+                necesitas <strong>demostrar</strong> lo que sabes hacer. En esta lección aprenderás a construir
+                un <strong>portafolio sólido</strong>, elegir las <strong>certificaciones correctas</strong> para tu 
+                ruta (Red Team, Blue Team, GRC) y cómo enfrentar con éxito las entrevistas técnicas.
+            </p>
+        </div>
+        
+        <div class="lesson-toc"><h3>Contenido de esta lección</h3>
+            <ol>
+                <li><a href="#importancia">La importancia de la evidencia empírica</a></li>
+                <li><a href="#portafolio">Cómo construir un portafolio técnico</a></li>
+                <li><a href="#certificaciones">Certificaciones por área de especialización</a></li>
+                <li><a href="#entrevistas">Cómo prepararse para entrevistas técnicas</a></li>
+                <li><a href="#practica">Práctica</a></li>
+            </ol>
+        </div>
+
+        <div class="lesson-section" id="importancia"><h2>1. La importancia de la evidencia empírica</h2>
+            <p class="lesson-text">Los reclutadores técnicos (los que realmente evalúan si sabes o no) buscan <strong>evidencia empírica</strong>. Quieren ver código, reportes, scripts y análisis que demuestren tu capacidad de resolver problemas reales.</p>
+            <div class="lesson-callout"><strong>El "Círculo Vicioso" del Junior:</strong>
+                <p>"No me contratan porque no tengo experiencia, y no tengo experiencia porque no me contratan".</p>
+                <p><strong>Solución:</strong> La experiencia no solo viene del empleo formal. Escribir un script de Python para automatizar OSINT, publicar un CVE, hacer write-ups detallados de TryHackMe o HackTheBox, e investigar malware <strong>también cuenta como experiencia demostrable</strong>.</p>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="portafolio"><h2>2. Cómo construir un portafolio técnico</h2>
+            <p class="lesson-text">Tu portafolio (usualmente un repositorio de GitHub y un blog/Notion) es tu carta de presentación técnica.</p>
+            <div class="lesson-table-wrap"><table class="lesson-table"><thead><tr><th>Tipo de Proyecto</th><th>Ejemplo</th><th>Qué demuestra</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Herramientas Custom</strong></td><td>Script en Python que consume la API de VirusTotal</td><td>Habilidades de programación, automatización y uso de APIs.</td></tr>
+                    <tr><td><strong>Write-ups</strong></td><td>Solución detallada paso a paso de una máquina de HackTheBox</td><td>Metodología, capacidad de documentación y pensamiento lógico.</td></tr>
+                    <tr><td><strong>Análisis de Malware</strong></td><td>Desensamblado y análisis de comportamiento de una muestra</td><td>Conocimientos de DFIR, ingeniería inversa y sistemas operativos.</td></tr>
+                    <tr><td><strong>Reportes Simulados</strong></td><td>Reporte de auditoría ficticio pero profesional (usando plantillas de la Lección 20)</td><td>Habilidades de comunicación y negocio.</td></tr>
+                </tbody>
+            </table></div>
+            <div class="lesson-callout"><strong>Consejos para GitHub:</strong>
+                <ul>
+                    <li><strong>No subas código espagueti</strong>: Documenta tus proyectos con un buen <code>README.md</code>.</li>
+                    <li><strong>Muestra el "Por qué"</strong>: Explica qué problema resuelve tu herramienta.</li>
+                    <li><strong>Contribuye a Open Source</strong>: Hacer un pull request a herramientas populares suma muchísimos puntos.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="lesson-section" id="certificaciones"><h2>3. Certificaciones por área de especialización</h2>
+            <p class="lesson-text">Las certificaciones son filtros de RRHH y validadores de conocimiento técnico. No todas tienen el mismo valor. Aquí están las más respetadas en la industria (actualizadas a 2026):</p>
+            
+            <h3>Fundamentos (Para empezar)</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table">
+                <tbody>
+                    <tr><td><strong>CompTIA Security+</strong></td><td>El estándar de oro para entry-level. Cubre fundamentos, redes, criptografía y GRC. Ideal para pasar el primer filtro de RRHH.</td></tr>
+                    <tr><td><strong>eJPT (eLearnSecurity Junior Penetration Tester)</strong></td><td>Certificación práctica excelente para quienes inician en Pentesting. El examen es 100% práctico.</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Red Team / Pentesting</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table">
+                <tbody>
+                    <tr><td><strong>OSCP (Offensive Security Certified Professional)</strong></td><td>La certificación más demandada y respetada para Pentesters. Examen práctico de 24 horas.</td></tr>
+                    <tr><td><strong>PNPT (TCM Security)</strong></td><td>Excelente alternativa al OSCP, enfocada en metodologías modernas (Active Directory, OSINT).</td></tr>
+                    <tr><td><strong>OSWE / OSEP</strong></td><td>Certificaciones avanzadas de OffSec (Exploitation Web y Evasión Avanzada).</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Blue Team / SOC / DFIR</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table">
+                <tbody>
+                    <tr><td><strong>BTL1 (Blue Team Level 1)</strong></td><td>Certificación práctica brutal para analistas SOC. Cubre SIEM, Phishing, DFIR y Threat Hunting.</td></tr>
+                    <tr><td><strong>CySA+ (CompTIA)</strong></td><td>Certificación teórica/analítica para analistas de ciberseguridad.</td></tr>
+                    <tr><td><strong>GCFA / GCIA (SANS GIAC)</strong></td><td>El estándar élite de la industria, aunque extremadamente costosas.</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>GRC y Management</h3>
+            <div class="lesson-table-wrap"><table class="lesson-table">
+                <tbody>
+                    <tr><td><strong>CISSP (ISC2)</strong></td><td>El estándar dorado para management y arquitectura. Requiere 5 años de experiencia comprobable.</td></tr>
+                    <tr><td><strong>CISM / CISA (ISACA)</strong></td><td>Enfocadas en gestión de seguridad de la información y auditoría de sistemas.</td></tr>
+                </tbody>
+            </table></div>
+        </div>
+
+        <div class="lesson-section" id="entrevistas"><h2>4. Cómo prepararse para entrevistas técnicas</h2>
+            <div class="lesson-callout"><strong>El proceso típico:</strong>
+                <ol>
+                    <li><strong>Filtro de RRHH</strong>: Preguntas de comportamiento, validación de CV. (No uses jerga técnica extrema).</li>
+                    <li><strong>Prueba Técnica (CTF/Take-home)</strong>: Un pequeño reto práctico. (ej: analizar un PCAP o explotar una VM).</li>
+                    <li><strong>Entrevista Técnica en Vivo</strong>: Preguntas conceptuales.
+                        <ul>
+                            <li><em>"¿Qué pasa cuando escribes google.com en el navegador?"</em> (Quieren ver profundidad técnica: DNS, ARP, TCP Handshake, TLS).</li>
+                            <li><em>"¿Cómo mitigarías un XSS persistente?"</em></li>
+                            <li><em>"Explícame la diferencia entre Hash y Cifrado."</em></li>
+                        </ul>
+                    </li>
+                    <li><strong>Entrevista con el CISO/Manager</strong>: <em>Fit cultural</em>, resolución de conflictos y mentalidad.</li>
+                </ol>
+            </div>
+            <p class="lesson-text"><strong>El secreto:</strong> Si no sabes una respuesta, <strong>no inventes</strong>. Di: <em>"No conozco la herramienta X específicamente, pero entiendo que funciona bajo el concepto Y, por lo que yo abordaría el problema haciendo Z."</em> La honestidad intelectual es valorada.</p>
+        </div>
+
+        <div class="lesson-section" id="practica"><h2>5. Práctica</h2>
+            <div class="practice-box"><h4>Tu Plan de Acción</h4>
+                <ul>
+                    <li>Crea tu perfil de GitHub y organiza tus scripts/herramientas (asegúrate de incluir buenos READMEs).</li>
+                    <li>Inicia un blog (Medium, Hashnode o personal) y publica tu primer Write-up.</li>
+                    <li>Define tu ruta (Red, Blue, GRC) e investiga los costos/temarios de tu primera certificación objetivo.</li>
+                    <li>Actualiza tu perfil de LinkedIn usando keywords técnicas relevantes.</li>
+                </ul>
+            </div>
+        
+            <div class="external-labs">
+                <h4>Recursos recomendados</h4>
+                <ul>
+                    <li><a href="https://github.com/TCM-Security/PNPT-Study-Guide" target="_blank" rel="noopener noreferrer">Guía de Estudio PNPT</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                    <li><a href="https://pauljerimy.com/security-certification-roadmap/" target="_blank" rel="noopener noreferrer">Roadmap Interactivo de Certificaciones (Paul Jerimy)</a><span class="lab-tag lab-tag-free">Gratis</span></li>
+                </ul>
+            </div>
+
+            
+            <div class="lab-checklist" id="lab-checklist" style="margin-top: 2rem;">
+                <h4>Evidencia Práctica</h4>
+                <div class="checklist-items">
+                    <label class="checklist-item">
+                        <input type="checkbox" id="check-evidencia"> 
+                        <span>He completado los ejercicios y/o análisis de esta lección.</span>
+                    </label>
+                </div>
+                <div style="margin-top: 15px;">
+                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí tus notas, evidencias o hallazgos (Evidencia):</label>
+                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Comandos ejecutados, hashes, vulnerabilidades descubiertas..."></textarea>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
+                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
+                </div>
+            </div>
+
+            <div class="quiz-box" id="quiz-container"></div>
+        </div>
+
+        <div class="lesson-nav">
+            <a href="leccion-20-reportes.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 20: Reportes Profesionales</span></a>
+            <a href="leccion-20c-proyecto-final.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 20C: Proyecto Final Integrador</span></a>
+        </div>
+    </main>
+    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+          {
+                    "question": "¿Cuál es la certificación considerada el estándar de oro para quienes inician (entry-level) y cubre fundamentos de seguridad?",
+                    "options": [
+                              "CISSP",
+                              "CompTIA Security+",
+                              "OSCP",
+                              "BTL1"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "¿Por qué es importante tener un portafolio (como un GitHub y un blog) para roles junior?",
+                    "options": [
+                              "Para vender tus herramientas a las empresas",
+                              "Para proporcionar evidencia empírica de tus habilidades cuando no tienes experiencia laboral formal",
+                              "Porque es un requisito legal para las entrevistas",
+                              "Para ganar dinero con los write-ups"
+                    ],
+                    "correct": 1
+          },
+          {
+                    "question": "En una entrevista técnica, si te preguntan algo que no sabes, ¿qué deberías hacer?",
+                    "options": [
+                              "Inventar una respuesta que suene técnica",
+                              "Admitir que no lo sabes, pero explicar cómo investigarías o abordarías el problema basado en tus conceptos fundamentales",
+                              "Cambiar el tema rápidamente",
+                              "Terminar la entrevista"
+                    ],
+                    "correct": 1
+          }
+];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-20b'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-20b', quizQuestions);
+            const explanations = [
+                "CompTIA Security+ es ampliamente reconocida como la certificación base para ciberseguridad corporativa porque cubre fundamentos sólidos de GRC, redes, y operaciones.",
+                "El portafolio proporciona 'evidencia empírica'. Rompe el ciclo de no tener experiencia formal demostrando que ya puedes resolver problemas técnicos, automatizar tareas y documentar hallazgos.",
+                "Los entrevistadores buscan 'honestidad intelectual' y capacidad de resolución de problemas. Admitir desconocimiento pero mostrar metodología de investigación es mucho mejor que mentir."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+            // Logic for Evidence Checkbox and Textarea
+            const lessonId = 'leccion-20b';
+            const cb = document.getElementById('check-evidencia');
+            const txt = document.getElementById('evidencia-texto');
+            const btn = document.getElementById('btn-guardar-evidencia');
+            const msg = document.getElementById('evidencia-msg');
+            
+            if(cb && txt && btn && msg) {
+                let progress = CyberQuiz.getProgress();
+                if(progress[lessonId] && progress[lessonId].evidenceData) {
+                    cb.checked = progress[lessonId].evidenceData.checked;
+                    txt.value = progress[lessonId].evidenceData.text;
+                    if(cb.checked) {
+                        cb.closest('.checklist-item').classList.add('checked');
+                    }
+                }
+                
+                cb.addEventListener('change', () => {
+                    if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
+                    else cb.closest('.checklist-item').classList.remove('checked');
+                });
+                
+                btn.addEventListener('click', () => {
+                    let currentProgress = CyberQuiz.getProgress();
+                    if(!currentProgress[lessonId]) currentProgress[lessonId] = { completed: false, score: 0 };
+                    currentProgress[lessonId].evidenceData = {
+                        checked: cb.checked,
+                        text: txt.value
+                    };
+                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    msg.style.display = 'inline';
+                    setTimeout(() => msg.style.display = 'none', 2000);
+                });
+            }
+
+        });
+    </script>
+<script src="../script.js"></script>
+</body></html>
