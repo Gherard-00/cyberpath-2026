@@ -297,6 +297,11 @@ function initAIChatbot() {
                 appendMessage(msg.role, msg.content, false);
             }
         });
+    } else if (window.location.hostname.endsWith('github.io')) {
+        const systemMsg = messagesContainer.querySelector('.ai-message.system');
+        if (systemMsg) {
+            systemMsg.innerHTML = '👋 <strong>¡Bienvenido a CyberPath 2026 en GitHub Pages!</strong><br><br>Todo el temario (31 lecciones, cheatsheets, glosario y quizzes interactivos) está 100% funcional.<br><br><em>Nota:</em> El Mentor IA interactivo requiere el modelo local Ollama corriendo en tu equipo mediante <code>arrancar_curso.bat</code> o túnel SSH.';
+        }
     }
 
     // Alternar visibilidad del chat
@@ -472,6 +477,10 @@ function initAIChatbot() {
                 throw new Error('FILE_PROTOCOL_ERROR');
             }
 
+            if (window.location.hostname.endsWith('github.io')) {
+                throw new Error('GITHUB_PAGES_HOSTING');
+            }
+
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -537,7 +546,9 @@ function initAIChatbot() {
             document.getElementById(loadingId)?.remove();
             
             let msgToShow = `Error: ${error.message || 'No se pudo conectar con el servidor proxy.'}`;
-            if (error.message === 'FILE_PROTOCOL_ERROR' || window.location.protocol === 'file:') {
+            if (error.message === 'GITHUB_PAGES_HOSTING' || window.location.hostname.endsWith('github.io')) {
+                msgToShow = '🌐 <strong>El Mentor IA solo funciona en la versión local o túnel SSH:</strong><br><br>GitHub Pages es un hosting estático y no puede ejecutar el backend de IA ni comunicarse con tu GPU local.<br><br>Para chatear con el Mentor IA, corre <code>arrancar_curso.bat</code> en tu PC o comparte el túnel con <code>Compartir_Proyecto.bat</code>. ¡Todas las lecciones y cuestionarios funcionan libremente aquí!';
+            } else if (error.message === 'FILE_PROTOCOL_ERROR' || window.location.protocol === 'file:') {
                 msgToShow = '⚠️ Estás viendo la página como archivo local (file://). Para usar el Mentor IA, debes ingresar a http://127.0.0.1:8000 en la barra de direcciones.';
             } else if (error.message.includes('504') || error.message.includes('Timeout')) {
                 msgToShow = '⌛ Ollama está tardando en cargar el modelo en memoria. Por favor espera unos segundos e intenta nuevamente tu pregunta.';

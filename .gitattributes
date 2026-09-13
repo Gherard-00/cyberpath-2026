@@ -1,0 +1,26 @@
+# Normalización de fines de línea automática para todos los entornos
+* text=auto
+
+# Archivos de texto específicos con LF
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.svg text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+
+# Scripts de Windows con CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Archivos binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
