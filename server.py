@@ -3,8 +3,8 @@ import urllib.request
 import urllib.error
 import os
 
-PORT = 8000
-HOST = "0.0.0.0"
+PORT = int(os.environ.get("PORT", 8000))
+HOST = os.environ.get("HOST", "127.0.0.1")
 OLLAMA_URL = "http://127.0.0.1:11434"
 MAX_PAYLOAD_SIZE = 5 * 1024 * 1024  # 5 MB max payload
 
