@@ -9,6 +9,14 @@ OLLAMA_URL = "http://127.0.0.1:11434"
 MAX_PAYLOAD_SIZE = 5 * 1024 * 1024  # 5 MB max payload
 
 class ProxyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def is_allowed_path(self, path):
+        clean_path = path.split('?')[0].split('#')[0]
+        if clean_path in ['/', '/index.html', '/styles.css', '/script.js']:
+            return True
+        if clean_path.startswith('/lecciones/'):
+            return True
+        return False
+
     def end_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, HEAD')
@@ -18,6 +26,18 @@ class ProxyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_OPTIONS(self):
         self.send_response(200, "OK")
         self.end_headers()
+
+    def do_GET(self):
+        if not self.is_allowed_path(self.path):
+            self.send_error(403, "Acceso denegado a archivos internos")
+            return
+        super().do_GET()
+
+    def do_HEAD(self):
+        if not self.is_allowed_path(self.path):
+            self.send_error(403, "Acceso denegado a archivos internos")
+            return
+        super().do_HEAD()
 
     def do_POST(self):
         # Strict route filtering: Only allow /api/chat
