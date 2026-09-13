@@ -427,7 +427,8 @@ const CyberQuiz = (() => {
      * Cuenta las lecciones completadas y actualiza la barra y el texto.
      */
     function updateCourseProgress() {
-        const TOTAL_LESSONS = 23;
+        const lessonCards = document.querySelectorAll('.lesson-card');
+        const TOTAL_LESSONS = lessonCards.length > 0 ? lessonCards.length : 23;
         const fill = document.getElementById('courseProgressFill');
         const text = document.getElementById('courseProgressText');
         if (!fill || !text) return;
