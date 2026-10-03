@@ -1,266 +1,451 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
-    <meta name="description" content="Lección 07b: Fundamentos de Gobernanza, Riesgo y Cumplimiento (GRC), marcos NIST CSF 2.0 e ISO 27001, y metodología de auditoría.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';"
+    />
+    <meta
+      name="description"
+      content="Lección 07b: Fundamentos de Gobernanza, Riesgo y Cumplimiento (GRC), marcos NIST CSF 2.0 e ISO 27001, y metodología de auditoría."
+    />
     <title>Lección 07b: Fundamentos de GRC — CyberPath 2026</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-    <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
     <div class="bg-grid" aria-hidden="true"></div>
     <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
     <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
 
     <nav class="navbar" id="navbar">
-        <a href="../index.html" class="nav-brand" style="text-decoration:none">
-            <div class="brand-icon"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-            <span class="brand-text">Cyber<span class="accent">Path</span> 2026</span>
-        </a>
+      <a href="../index.html" class="nav-brand" style="text-decoration: none">
+        <div class="brand-icon">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+        </div>
+        <span class="brand-text"
+          >Cyber<span class="accent">Path</span> 2026</span
+        >
+      </a>
     </nav>
 
     <main class="lesson-page">
-        <div class="lesson-breadcrumb">
-            <a href="../index.html">Inicio</a><span>›</span><span>Fase 1</span><span>›</span><span>Lección 07b</span>
-        </div>
+      <div class="lesson-breadcrumb">
+        <a href="../index.html">Inicio</a><span>›</span><span>Fase 1</span
+        ><span>›</span><span>Lección 07b</span>
+      </div>
 
-        <div class="lesson-hero">
-            <div class="lesson-phase-badge phase-1">Fase 1 — Introducción a la Ciberseguridad</div>
-            <h1>Fundamentos de GRC y Metodología de Auditoría</h1>
-            <p class="lesson-intro">
-                La ciberseguridad no es solo técnica; requiere un marco estructural que oriente los esfuerzos hacia los objetivos de negocio.
-                Aprende qué es <strong>Gobernanza, Riesgo y Cumplimiento (GRC)</strong>, los marcos internacionales clave como 
-                <strong>NIST CSF 2.0 e ISO/IEC 27001</strong> y cómo se planifica una <strong>auditoría de sistemas</strong>.
-            </p>
+      <div class="lesson-hero">
+        <div class="lesson-phase-badge phase-1">
+          Fase 1 — Introducción a la Ciberseguridad
         </div>
+        <h1>Fundamentos de GRC y Metodología de Auditoría</h1>
+        <p class="lesson-intro">
+          La ciberseguridad no es solo técnica; requiere un marco estructural
+          que oriente los esfuerzos hacia los objetivos de negocio. Aprende qué
+          es <strong>Gobernanza, Riesgo y Cumplimiento (GRC)</strong>, los
+          marcos internacionales clave como
+          <strong>NIST CSF 2.0 e ISO/IEC 27001</strong> y cómo se planifica una
+          <strong>auditoría de sistemas</strong>.
+        </p>
+      </div>
 
-        <div class="lesson-toc">
-            <h3>Contenido de esta lección</h3>
-            <ol>
-                <li><a href="#concepto">Conceptos Clave de GRC</a></li>
-                <li><a href="#nist">NIST Cybersecurity Framework 2.0</a></li>
-                <li><a href="#iso">Estándar ISO/IEC 27001:2022</a></li>
-                <li><a href="#auditoria">Metodología de Auditoría</a></li>
-                <li><a href="#practica">Práctica Guiada: Análisis de Trazabilidad</a></li>
-                <li><a href="#reto">Mini-reto opcional</a></li>
-            </ol>
+      <div class="lesson-toc">
+        <h3>Contenido de esta lección</h3>
+        <ol>
+          <li><a href="#concepto">Conceptos Clave de GRC</a></li>
+          <li><a href="#nist">NIST Cybersecurity Framework 2.0</a></li>
+          <li><a href="#iso">Estándar ISO/IEC 27001:2022</a></li>
+          <li><a href="#auditoria">Metodología de Auditoría</a></li>
+          <li>
+            <a href="#practica">Práctica Guiada: Análisis de Trazabilidad</a>
+          </li>
+          <li><a href="#reto">Mini-reto opcional</a></li>
+        </ol>
+      </div>
+
+      <!-- SECTION 1 -->
+      <div class="lesson-section" id="concepto">
+        <h2>1. Conceptos Clave de GRC</h2>
+        <p class="lesson-text">
+          GRC integra tres disciplinas esenciales que garantizan que una
+          organización opere de forma segura y ética:
+        </p>
+        <ul>
+          <li>
+            <strong>Gobernanza:</strong> Estructura organizativa. La alta
+            dirección define políticas, asigna recursos y supervisa operaciones.
+          </li>
+          <li>
+            <strong>Riesgo:</strong> Evaluación del impacto. Se calcula con:
+            <code>Riesgo = Probabilidad × Impacto</code>.<br />
+            El <em>Apetito de Riesgo</em> define qué nivel se tolera. Las
+            opciones son: Mitigar (controles), Transferir (seguros), Evitar
+            (cancelar procesos) o Aceptar (riesgo residual).
+          </li>
+          <li>
+            <strong>Cumplimiento:</strong> Acatar regulaciones gubernamentales,
+            leyes y estándares de la industria aplicables.
+          </li>
+        </ul>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="lesson-section" id="nist">
+        <h2>2. NIST Cybersecurity Framework 2.0</h2>
+        <p class="lesson-text">
+          El NIST CSF es un marco ampliamente adoptado (actualizado en 2024).
+          Organiza la estrategia en su "Core" compuesto por 6 funciones:
+        </p>
+        <div class="lesson-table-wrap">
+          <table class="lesson-table">
+            <thead>
+              <tr>
+                <th>Función</th>
+                <th>Propósito</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Gobernar (Govern)</strong></td>
+                <td>
+                  Establece estrategia, roles, políticas y supervisión general.
+                  Eje transversal.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Identificar (Identify)</strong></td>
+                <td>
+                  Reconocimiento de activos, proveedores y vulnerabilidades
+                  (inventario).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Proteger (Protect)</strong></td>
+                <td>
+                  Despliegue de salvaguardas (autenticación, firewalls,
+                  cifrado).
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Detectar (Detect)</strong></td>
+                <td>
+                  Monitoreo continuo para identificar anomalías operativas.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Responder (Respond)</strong></td>
+                <td>
+                  Planes de mitigación y contención de incidentes de seguridad.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Recuperar (Recover)</strong></td>
+                <td>
+                  Restauración de sistemas mediante copias de seguridad y
+                  resiliencia.
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <p class="lesson-text">
+          También usa <em>Tiers</em> (niveles de madurez del 1 al 4) y
+          <em>Perfiles</em> para trazar una hoja de ruta desde el estado actual
+          al estado objetivo.
+        </p>
+      </div>
 
-        <!-- SECTION 1 -->
-        <div class="lesson-section" id="concepto">
-            <h2>1. Conceptos Clave de GRC</h2>
-            <p class="lesson-text">
-                GRC integra tres disciplinas esenciales que garantizan que una organización opere de forma segura y ética:
-            </p>
+      <!-- SECTION 3 -->
+      <div class="lesson-section" id="iso">
+        <h2>3. Estándar ISO/IEC 27001:2022</h2>
+        <p class="lesson-text">
+          Estándar internacional para implementar un Sistema de Gestión de
+          Seguridad de la Información (SGSI). Su "Anexo A" (versión 2022)
+          contiene <strong>93 controles</strong> en 4 áreas:
+        </p>
+        <ul>
+          <li>
+            <strong>Organizacionales:</strong> Políticas, gestión de inventario
+            y relaciones con proveedores.
+          </li>
+          <li>
+            <strong>Personas:</strong> Acuerdos de confidencialidad, trabajo a
+            distancia y capacitación.
+          </li>
+          <li>
+            <strong>Físicos:</strong> Acceso a oficinas, servidores y seguridad
+            del entorno.
+          </li>
+          <li>
+            <strong>Tecnológicos:</strong> Controles técnicos como cifrado,
+            autenticación robusta y gestión de malware.
+          </li>
+        </ul>
+        <div class="concept-box">
+          <h4>Declaración de Aplicabilidad (SoA)</h4>
+          <p>
+            Documento obligatorio que detalla cuáles de los 93 controles aplican
+            a la empresa, su estado de implementación y la justificación si
+            alguno no se aplica.
+          </p>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="lesson-section" id="auditoria">
+        <h2>4. Metodología de Auditoría de Sistemas</h2>
+        <p class="lesson-text">
+          La auditoría es estructurada y se divide en 4 fases operativas:
+        </p>
+        <ol>
+          <li>
+            <strong>Planificación y Alcance:</strong> Carta de auditoría,
+            definición del alcance y reunión de apertura.
+          </li>
+          <li>
+            <strong>Ejecución y Evidencia:</strong>
             <ul>
-                <li><strong>Gobernanza:</strong> Estructura organizativa. La alta dirección define políticas, asigna recursos y supervisa operaciones.</li>
-                <li><strong>Riesgo:</strong> Evaluación del impacto. Se calcula con: <code>Riesgo = Probabilidad × Impacto</code>.<br>
-                El <em>Apetito de Riesgo</em> define qué nivel se tolera. Las opciones son: Mitigar (controles), Transferir (seguros), Evitar (cancelar procesos) o Aceptar (riesgo residual).</li>
-                <li><strong>Cumplimiento:</strong> Acatar regulaciones gubernamentales, leyes y estándares de la industria aplicables.</li>
+              <li>
+                <em>Prueba de Diseño:</em> Verificar si el control teóricamente
+                sirve.
+              </li>
+              <li>
+                <em>Prueba de Eficacia:</em> Verificar si el control se ejecutó
+                en la realidad.
+              </li>
             </ul>
-        </div>
+          </li>
+          <li>
+            <strong>Análisis de Brechas:</strong> Clasificación de hallazgos en:
+            <em>No Conformidad Mayor</em> (ausencia de control esencial),
+            <em>No Conformidad Menor</em> (desviación aislada), u
+            <em>Oportunidad de Mejora</em>.
+          </li>
+          <li>
+            <strong>Reporte y Seguimiento:</strong> Plan de Acción Correctiva y
+            Preventiva (CAPA).
+          </li>
+        </ol>
+      </div>
 
-        <!-- SECTION 2 -->
-        <div class="lesson-section" id="nist">
-            <h2>2. NIST Cybersecurity Framework 2.0</h2>
-            <p class="lesson-text">
-                El NIST CSF es un marco ampliamente adoptado (actualizado en 2024). Organiza la estrategia en su "Core" compuesto por 6 funciones:
-            </p>
-            <div class="lesson-table-wrap">
-                <table class="lesson-table">
-                    <thead><tr><th>Función</th><th>Propósito</th></tr></thead>
-                    <tbody>
-                        <tr><td><strong>Gobernar (Govern)</strong></td><td>Establece estrategia, roles, políticas y supervisión general. Eje transversal.</td></tr>
-                        <tr><td><strong>Identificar (Identify)</strong></td><td>Reconocimiento de activos, proveedores y vulnerabilidades (inventario).</td></tr>
-                        <tr><td><strong>Proteger (Protect)</strong></td><td>Despliegue de salvaguardas (autenticación, firewalls, cifrado).</td></tr>
-                        <tr><td><strong>Detectar (Detect)</strong></td><td>Monitoreo continuo para identificar anomalías operativas.</td></tr>
-                        <tr><td><strong>Responder (Respond)</strong></td><td>Planes de mitigación y contención de incidentes de seguridad.</td></tr>
-                        <tr><td><strong>Recuperar (Recover)</strong></td><td>Restauración de sistemas mediante copias de seguridad y resiliencia.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <p class="lesson-text">
-                También usa <em>Tiers</em> (niveles de madurez del 1 al 4) y <em>Perfiles</em> para trazar una hoja de ruta desde el estado actual al estado objetivo.
-            </p>
-        </div>
+      <!-- SECTION 5 (PRÁCTICA) -->
+      <div class="lesson-section" id="practica">
+        <h2>5. Práctica Guiada: Análisis de Trazabilidad</h2>
+        <p class="lesson-text">
+          En esta práctica conectarás el marco NIST CSF con un control ISO. La
+          subcategoría <code>PR.AA-01</code> de NIST habla de "Gestión de
+          identidades y credenciales".<br />
+          <strong>Tu tarea:</strong> Identificar y proponer qué tecnología (ej.
+          Directorio Activo, MFA) utilizarías para satisfacer esta política.
+        </p>
 
-        <!-- SECTION 3 -->
-        <div class="lesson-section" id="iso">
-            <h2>3. Estándar ISO/IEC 27001:2022</h2>
-            <p class="lesson-text">
-                Estándar internacional para implementar un Sistema de Gestión de Seguridad de la Información (SGSI). Su "Anexo A" (versión 2022) contiene <strong>93 controles</strong> en 4 áreas:
-            </p>
-            <ul>
-                <li><strong>Organizacionales:</strong> Políticas, gestión de inventario y relaciones con proveedores.</li>
-                <li><strong>Personas:</strong> Acuerdos de confidencialidad, trabajo a distancia y capacitación.</li>
-                <li><strong>Físicos:</strong> Acceso a oficinas, servidores y seguridad del entorno.</li>
-                <li><strong>Tecnológicos:</strong> Controles técnicos como cifrado, autenticación robusta y gestión de malware.</li>
-            </ul>
-            <div class="concept-box">
-                <h4>Declaración de Aplicabilidad (SoA)</h4>
-                <p>
-                    Documento obligatorio que detalla cuáles de los 93 controles aplican a la empresa, su estado de implementación y la justificación si alguno no se aplica.
-                </p>
-            </div>
+        <div class="lab-checklist" id="lab-checklist">
+          <h4>Evidencia Práctica</h4>
+          <div class="checklist-items">
+            <label class="checklist-item">
+              <input type="checkbox" id="check-trazabilidad" />
+              <span
+                >He analizado la correspondencia de controles y propuesto una
+                solución tecnológica.</span
+              >
+            </label>
+          </div>
+          <div style="margin-top: 15px">
+            <label
+              for="evidencia-texto"
+              style="display: block; margin-bottom: 5px; font-weight: 600"
+              >Pega aquí el resultado de tu análisis (Evidencia):</label
+            >
+            <textarea
+              id="evidencia-texto"
+              rows="4"
+              style="
+                width: 100%;
+                padding: 10px;
+                border-radius: 6px;
+                border: 1px solid var(--border-color);
+                background: var(--bg-tertiary);
+                color: var(--text-color);
+                font-family: monospace;
+                resize: vertical;
+              "
+              placeholder="Ej: Para el control PR.AA-01, propongo implementar..."
+            ></textarea>
+          </div>
+          <div style="margin-top: 10px">
+            <button
+              class="quiz-btn quiz-btn-primary"
+              id="btn-guardar-evidencia"
+            >
+              Guardar Evidencia
+            </button>
+            <span
+              id="evidencia-msg"
+              style="
+                margin-left: 10px;
+                color: var(--accent-green);
+                display: none;
+              "
+              >¡Guardado!</span
+            >
+          </div>
         </div>
+      </div>
 
-        <!-- SECTION 4 -->
-        <div class="lesson-section" id="auditoria">
-            <h2>4. Metodología de Auditoría de Sistemas</h2>
-            <p class="lesson-text">La auditoría es estructurada y se divide en 4 fases operativas:</p>
-            <ol>
-                <li><strong>Planificación y Alcance:</strong> Carta de auditoría, definición del alcance y reunión de apertura.</li>
-                <li><strong>Ejecución y Evidencia:</strong> 
-                    <ul>
-                        <li><em>Prueba de Diseño:</em> Verificar si el control teóricamente sirve.</li>
-                        <li><em>Prueba de Eficacia:</em> Verificar si el control se ejecutó en la realidad.</li>
-                    </ul>
-                </li>
-                <li><strong>Análisis de Brechas:</strong> Clasificación de hallazgos en: 
-                    <em>No Conformidad Mayor</em> (ausencia de control esencial), 
-                    <em>No Conformidad Menor</em> (desviación aislada), u 
-                    <em>Oportunidad de Mejora</em>.
-                </li>
-                <li><strong>Reporte y Seguimiento:</strong> Plan de Acción Correctiva y Preventiva (CAPA).</li>
-            </ol>
+      <!-- SECTION 6 (RETO) -->
+      <div class="lesson-section" id="reto">
+        <h2>6. Mini-reto opcional</h2>
+        <div class="practice-box">
+          <h4>Elaboración de un Hallazgo</h4>
+          <p>
+            Imagina que auditas una empresa y descubres que un ex empleado
+            despedido hace un mes todavía tiene activa su cuenta de Active
+            Directory (pudiendo acceder a la VPN). Redacta un hallazgo e indica
+            si crees que es una "No Conformidad Mayor" o "Menor", y justifícalo
+            basándote en el riesgo (Probabilidad × Impacto).
+          </p>
         </div>
+      </div>
 
-        <!-- SECTION 5 (PRÁCTICA) -->
-        <div class="lesson-section" id="practica">
-            <h2>5. Práctica Guiada: Análisis de Trazabilidad</h2>
-            <p class="lesson-text">
-                En esta práctica conectarás el marco NIST CSF con un control ISO. La subcategoría <code>PR.AA-01</code> de NIST habla de "Gestión de identidades y credenciales".<br>
-                <strong>Tu tarea:</strong> Identificar y proponer qué tecnología (ej. Directorio Activo, MFA) utilizarías para satisfacer esta política.
-            </p>
-            
-            <div class="lab-checklist" id="lab-checklist">
-                <h4>Evidencia Práctica</h4>
-                <div class="checklist-items">
-                    <label class="checklist-item">
-                        <input type="checkbox" id="check-trazabilidad"> 
-                        <span>He analizado la correspondencia de controles y propuesto una solución tecnológica.</span>
-                    </label>
-                </div>
-                <div style="margin-top: 15px;">
-                    <label for="evidencia-texto" style="display:block; margin-bottom:5px; font-weight:600;">Pega aquí el resultado de tu análisis (Evidencia):</label>
-                    <textarea id="evidencia-texto" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-color); font-family: monospace; resize: vertical;" placeholder="Ej: Para el control PR.AA-01, propongo implementar..."></textarea>
-                </div>
-                <div style="margin-top: 10px;">
-                    <button class="quiz-btn quiz-btn-primary" id="btn-guardar-evidencia">Guardar Evidencia</button>
-                    <span id="evidencia-msg" style="margin-left: 10px; color: var(--accent-green); display:none;">¡Guardado!</span>
-                </div>
-            </div>
-        </div>
+      <div class="quiz-box" id="quiz-container"></div>
 
-        <!-- SECTION 6 (RETO) -->
-        <div class="lesson-section" id="reto">
-            <h2>6. Mini-reto opcional</h2>
-            <div class="practice-box">
-                <h4>Elaboración de un Hallazgo</h4>
-                <p>Imagina que auditas una empresa y descubres que un ex empleado despedido hace un mes todavía tiene activa su cuenta de Active Directory (pudiendo acceder a la VPN). 
-                Redacta un hallazgo e indica si crees que es una "No Conformidad Mayor" o "Menor", y justifícalo basándote en el riesgo (Probabilidad × Impacto).</p>
-            </div>
-        </div>
-
-        <div class="quiz-box" id="quiz-container"></div>
-        
-        <div class="lesson-nav">
-            <a href="leccion-07-etica-legal.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 07: Ética y Legalidad</span></a>
-            <a href="leccion-08-nmap.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 08: Nmap</span></a>
-        </div>
+      <div class="lesson-nav">
+        <a href="leccion-07-etica-legal.html"
+          ><span class="nav-label">← Anterior</span
+          ><span class="nav-title">Lección 07: Ética y Legalidad</span></a
+        >
+        <a href="leccion-08-nmap.html" class="next"
+          ><span class="nav-label">Siguiente →</span
+          ><span class="nav-title">Lección 08: Nmap</span></a
+        >
+      </div>
     </main>
 
-    <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026 — Curso Completo de Ciberseguridad</p></div></div></footer>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <p
+            style="
+              color: var(--text-muted);
+              font-size: 0.85rem;
+              text-align: center;
+            "
+          >
+            CyberPath 2026 — Curso Completo de Ciberseguridad
+          </p>
+        </div>
+      </div>
+    </footer>
 
     <script src="../quiz.js"></script>
     <script>
-        const quizQuestions = [
-            {
-                "question": "¿Cuáles son las 6 funciones Core del marco NIST CSF 2.0?",
-                "options": [
-                    "Identificar, Proteger, Detectar, Analizar, Mitigar, Recuperar",
-                    "Gobernar, Identificar, Proteger, Detectar, Responder, Recuperar",
-                    "Planificar, Hacer, Verificar, Actuar, Detectar, Responder",
-                    "Gobernar, Prevenir, Actuar, Identificar, Proteger, Sancionar"
-                ],
-                "correct": 1
-            },
-            {
-                "question": "En el estándar ISO 27001:2022, ¿qué es la Declaración de Aplicabilidad (SoA)?",
-                "options": [
-                    "Un manual técnico de uso",
-                    "El contrato de confidencialidad con los empleados",
-                    "El documento que detalla cuáles de los 93 controles aplican a la empresa y su justificación",
-                    "El registro de accesos del firewall"
-                ],
-                "correct": 2
-            },
-            {
-                "question": "Durante una auditoría de sistemas, ¿cuál es la diferencia entre la Prueba de Diseño y la Prueba de Eficacia?",
-                "options": [
-                    "La prueba de diseño la hace TI, y la de eficacia Recursos Humanos",
-                    "La de diseño verifica si el control es teóricamente adecuado; la de eficacia verifica si se cumplió realmente en la práctica",
-                    "Son dos nombres para lo mismo",
-                    "La de diseño es para software y la de eficacia para hardware"
-                ],
-                "correct": 1
-            }
+      const quizQuestions = [
+        {
+          question: "¿Cuáles son las 6 funciones Core del marco NIST CSF 2.0?",
+          options: [
+            "Identificar, Proteger, Detectar, Analizar, Mitigar, Recuperar",
+            "Gobernar, Identificar, Proteger, Detectar, Responder, Recuperar",
+            "Planificar, Hacer, Verificar, Actuar, Detectar, Responder",
+            "Gobernar, Prevenir, Actuar, Identificar, Proteger, Sancionar",
+          ],
+          correct: 1,
+        },
+        {
+          question:
+            "En el estándar ISO 27001:2022, ¿qué es la Declaración de Aplicabilidad (SoA)?",
+          options: [
+            "Un manual técnico de uso",
+            "El contrato de confidencialidad con los empleados",
+            "El documento que detalla cuáles de los 93 controles aplican a la empresa y su justificación",
+            "El registro de accesos del firewall",
+          ],
+          correct: 2,
+        },
+        {
+          question:
+            "Durante una auditoría de sistemas, ¿cuál es la diferencia entre la Prueba de Diseño y la Prueba de Eficacia?",
+          options: [
+            "La prueba de diseño la hace TI, y la de eficacia Recursos Humanos",
+            "La de diseño verifica si el control es teóricamente adecuado; la de eficacia verifica si se cumplió realmente en la práctica",
+            "Son dos nombres para lo mismo",
+            "La de diseño es para software y la de eficacia para hardware",
+          ],
+          correct: 1,
+        },
+      ];
+      window._quizQuestions = window._quizQuestions || {};
+      window._quizQuestions["leccion-07b"] = quizQuestions;
+      document.addEventListener("DOMContentLoaded", () => {
+        CyberQuiz.init("leccion-07b", quizQuestions);
+        const explanations = [
+          "En 2024 se introdujo la función Gobernar (Govern) en NIST CSF 2.0, sumándose a Identificar, Proteger, Detectar, Responder y Recuperar.",
+          "El SoA (Statement of Applicability) es fundamental en la ISO 27001 porque declara formalmente qué controles del Anexo A se implementan y justifica los que se omiten.",
+          "Un control puede estar perfectamente escrito en una política (Prueba de Diseño aprobada) pero si nadie lo sigue (Prueba de Eficacia fallida), la seguridad es débil.",
         ];
-        window._quizQuestions = window._quizQuestions || {};
-        window._quizQuestions['leccion-07b'] = quizQuestions;
-        document.addEventListener('DOMContentLoaded', () => {
-            CyberQuiz.init('leccion-07b', quizQuestions);
-            const explanations = [
-                "En 2024 se introdujo la función Gobernar (Govern) en NIST CSF 2.0, sumándose a Identificar, Proteger, Detectar, Responder y Recuperar.",
-                "El SoA (Statement of Applicability) es fundamental en la ISO 27001 porque declara formalmente qué controles del Anexo A se implementan y justifica los que se omiten.",
-                "Un control puede estar perfectamente escrito en una política (Prueba de Diseño aprobada) pero si nadie lo sigue (Prueba de Eficacia fallida), la seguridad es débil."
-            ];
-            document.querySelectorAll('.quiz-question').forEach((q, i) => {
-                if (explanations[i]) q.dataset.explanation = explanations[i];
-            });
-            
-            // Logic for Evidence Checkbox and Textarea
-            const lessonId = 'leccion-07b';
-            const cb = document.getElementById('check-trazabilidad');
-            const txt = document.getElementById('evidencia-texto');
-            const btn = document.getElementById('btn-guardar-evidencia');
-            const msg = document.getElementById('evidencia-msg');
-            
-            // Load state
-            let progress = CyberQuiz.getProgress();
-            if(progress[lessonId] && progress[lessonId].evidenceData) {
-                cb.checked = progress[lessonId].evidenceData.checked;
-                txt.value = progress[lessonId].evidenceData.text;
-                if(cb.checked) {
-                    cb.closest('.checklist-item').classList.add('checked');
-                }
-            }
-            
-            cb.addEventListener('change', () => {
-                if(cb.checked) cb.closest('.checklist-item').classList.add('checked');
-                else cb.closest('.checklist-item').classList.remove('checked');
-            });
-            
-            btn.addEventListener('click', () => {
-                let currentProgress = CyberQuiz.getProgress();
-                if(!currentProgress[lessonId]) {
-                    currentProgress[lessonId] = {};
-                }
-                currentProgress[lessonId].evidenceData = {
-                    checked: cb.checked,
-                    text: txt.value
-                };
-                localStorage.setItem('cyberpath_progress', JSON.stringify(currentProgress));
-                msg.style.display = 'inline';
-                setTimeout(() => { msg.style.display = 'none'; }, 2000);
-            });
+        document.querySelectorAll(".quiz-question").forEach((q, i) => {
+          if (explanations[i]) q.dataset.explanation = explanations[i];
         });
+
+        // Logic for Evidence Checkbox and Textarea
+        const lessonId = "leccion-07b";
+        const cb = document.getElementById("check-trazabilidad");
+        const txt = document.getElementById("evidencia-texto");
+        const btn = document.getElementById("btn-guardar-evidencia");
+        const msg = document.getElementById("evidencia-msg");
+
+        // Load state
+        let progress = CyberQuiz.getProgress();
+        if (progress[lessonId] && progress[lessonId].evidenceData) {
+          cb.checked = progress[lessonId].evidenceData.checked;
+          txt.value = progress[lessonId].evidenceData.text;
+          if (cb.checked) {
+            cb.closest(".checklist-item").classList.add("checked");
+          }
+        }
+
+        cb.addEventListener("change", () => {
+          if (cb.checked)
+            cb.closest(".checklist-item").classList.add("checked");
+          else cb.closest(".checklist-item").classList.remove("checked");
+        });
+
+        btn.addEventListener("click", () => {
+          let currentProgress = CyberQuiz.getProgress();
+          if (!currentProgress[lessonId]) {
+            currentProgress[lessonId] = {};
+          }
+          currentProgress[lessonId].evidenceData = {
+            checked: cb.checked,
+            text: txt.value,
+          };
+          localStorage.setItem(
+            "cyberpath_progress",
+            JSON.stringify(currentProgress),
+          );
+          msg.style.display = "inline";
+          setTimeout(() => {
+            msg.style.display = "none";
+          }, 2000);
+        });
+      });
     </script>
-<script src="../script.js"></script>
-</body>
+    <script src="../script.js"></script>
+  </body>
 </html>
