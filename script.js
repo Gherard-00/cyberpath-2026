@@ -485,7 +485,7 @@ function initAIChatbot() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    model: 'dolphin-llama3:8b',
+                    model: 'dolphin3:8b',
                     messages: apiMessages,
                     stream: true,
                     options: {
