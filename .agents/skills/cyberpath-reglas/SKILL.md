@@ -1,18 +1,33 @@
 ---
 name: cyberpath-reglas
-description: Reglas estrictas y flujo de trabajo innegociable para modificaciones en CyberPath 2026.
+description: Reglas no negociables al modificar el proyecto CyberPath 2026. Aplícalas siempre
+  que se edite código, contenido o diseño de este curso, en cualquier sesión.
 ---
 
-# Reglas de Proyecto: CyberPath 2026
+# Reglas del proyecto CyberPath 2026
 
-Estas reglas son absolutas y no negociables. Se deben seguir en cualquier tarea, actualización o corrección del proyecto:
+## Nunca tocar sin permiso explícito del autor
+- La lógica de conexión con Ollama en server.py
+- La lógica funcional de quiz.js relacionada al chat
+- Arrancar_Curso.bat
 
-1. **Intocables:** Nunca modificar sin permiso explícito:
-   - La lógica de conexión con Ollama en `server.py`
-   - La lógica funcional de `quiz.js` relacionada al chat con Ollama y el sistema de evaluación
-   - El script de arranque `Arrancar_Curso.bat`
-2. **Seguridad del Servidor:** `server.py` **no debe exponer archivos internos del proyecto**. Solamente debe servir los recursos estrictamente necesarios para la aplicación (HTML/CSS/JS base, la carpeta `lecciones/`) y las rutas de API explícitamente autorizadas (como `/api/chat`).
-3. **Nomenclatura de Lecciones:** Nunca renombrar archivos de lecciones ya existentes. Toda lección nueva que se inserte en el currículo debe usar un sufijo de letra para no alterar la numeración de los archivos existentes (ejemplo: `07b`, `15c`, `15d`). Nunca se reutiliza ni se cambia un nombre de archivo HTML existente.
-4. **Verificación Estricta (QA):** Correr una verificación de enlaces rotos (comparar cada `href="lecciones/*.html"` contra los archivos que realmente existen) después de cada lote de cambios.
-5. **Conservadurismo de Código:** Ante la duda, preferir **NO tocar** código que ya funciona antes que intentar "mejorarlo".
-6. **Auditoría Respetada:** Si alguna tarea requiere tocar código o contenido ya marcado como "corregido y verificado" en una auditoría o lote previo, **detente y pregunta primero al usuario**.
+## Exposición de archivos
+server.py no debe exponer archivos internos del proyecto; solamente debe servir los recursos
+necesarios para la aplicación y las rutas de API explícitamente autorizadas.
+
+## Nombres de archivo
+Nunca renombrar lecciones existentes. Toda lección nueva usa sufijo de letra (07b, 15c,
+15d...), nunca se reutiliza ni se cambia un nombre de archivo existente.
+
+## Flujo obligatorio
+1. Confirma que hay un commit reciente del estado actual antes de empezar.
+2. Haz cambios en lotes pequeños y verificables.
+3. Después de cada lote: verifica que el sitio cargue, que el chat de Ollama responda, que
+   los quizzes funcionen, y que no haya enlaces rotos (comparar cada href de lección contra
+   los archivos que realmente existen).
+4. Haz commit de cada lote exitoso antes de continuar con el siguiente.
+
+## Ante la duda
+Preferir NO tocar código que ya funciona antes que "mejorarlo" si no es estrictamente
+necesario para el objetivo pedido. Si algo requiere tocar código ya marcado como "corregido y
+verificado" en una auditoría previa, detente y pregunta al autor primero.
