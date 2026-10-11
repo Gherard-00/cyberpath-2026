@@ -5,17 +5,20 @@
 
 /* --- CSS Variables --- */
 :root {
-    --bg-primary: #0a0e1a;
-    --bg-secondary: #0f1424;
-    --bg-card: #141929;
-    --bg-card-hover: #1a2035;
-    --bg-elevated: #1e2540;
+    /* Lote 1 rediseño: superficies obsidiana/slate más profundas y neutras */
+    --bg-primary: #080b12;
+    --bg-secondary: #0d111b;
+    --bg-card: #121722;
+    --bg-card-hover: #182030;
+    --bg-elevated: #1c2436;
 
-    --surface-primary: #141929;
+    --surface-primary: #121722;
 
-    --text-primary: #e8eaf6;
-    --text-secondary: #9ca3c4;
-    --text-muted: #8891b0; /* WCAG AA: ~4.6:1 contra --bg-primary */
+    /* Contraste verificado (fórmula WCAG 2.x) contra --bg-primary / --bg-card:
+       primary 16.8 / 15.3 | secondary 10.7 / 9.8 | muted 8.1 / 7.4 → AAA en texto normal */
+    --text-primary: #e9edf7;
+    --text-secondary: #b8bfd6;
+    --text-muted: #9ea6c2;
 
     --accent-cyan: #00e5ff;
     --accent-cyan-dim: rgba(0, 229, 255, 0.15);
@@ -30,11 +33,31 @@
     --accent-yellow: #ffd740;
     --accent-blue: #448aff;
 
+    /* Acentos tácticos adicionales (Lote 1) */
+    --accent-amber: #ffc24a;
+    --accent-amber-dim: rgba(255, 194, 74, 0.14);
+    --accent-terminal: #3dff9a;
+    --accent-terminal-dim: rgba(61, 255, 154, 0.12);
+
+    /* Franjas de carrera */
+    --track-foundation: var(--accent-terminal);
+    --track-specialization: var(--accent-amber);
+    --track-professional: var(--accent-cyan);
+
+    /* Niveles de dificultad */
+    --level-1: var(--accent-terminal);
+    --level-2: var(--accent-amber);
+    --level-3: #ff8a8a;
+
+    /* Accesibilidad: anillo de foco visible */
+    --focus-ring: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--accent-cyan);
+
     --gradient-primary: linear-gradient(135deg, #00e5ff, #b388ff);
     --gradient-hero: linear-gradient(135deg, #00e5ff 0%, #7c4dff 50%, #ff4081 100%);
     /* --gradient-card removed: was unused — H-20 */
 
-    --border-color: rgba(255, 255, 255, 0.06);
+    --border-color: rgba(255, 255, 255, 0.07);
+    --border-strong: rgba(255, 255, 255, 0.12);
     --border-glow: rgba(0, 229, 255, 0.2);
 
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -80,6 +103,23 @@ body {
     line-height: 1.7;
     overflow-x: hidden;
     position: relative;
+    /* Lote 1: legibilidad en bloques largos de texto técnico */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "cv11", "ss01";
+}
+
+/* Lote 1: foco visible por teclado en todo el sitio (no afecta clics de ratón) */
+:where(a, button, summary, input, textarea, select, [tabindex]):focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--radius-sm);
+}
+
+::selection {
+    background: rgba(0, 229, 255, 0.28);
+    color: var(--text-primary);
 }
 
 /* --- Background Effects --- */
@@ -1789,11 +1829,13 @@ body {
 }
 .lesson-meta {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 0.5rem;
 }
 .meta-tag {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     color: var(--accent-purple);
     background: var(--accent-purple-dim);
     padding: 0.15rem 0.5rem;
@@ -3177,4 +3219,436 @@ body {
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* ============================================
+   Rediseño UX/UI — Lote 1: Componentes del temario
+   Solo estilos. El marcado HTML lo agrega el Lote 2.
+   ============================================ */
+
+/* --- Contenedor tarjeta + acordeón ---
+   IMPORTANTE para el Lote 2:
+   - .lesson-card DEBE seguir siendo el <a href="lecciones/..."> porque
+     quiz.js (applyBadges / updateCourseProgress) lee su href y cuenta tarjetas.
+   - El <details class="prereq-accordion"> va como HERMANO del <a>, nunca dentro
+     (un elemento interactivo dentro de <a> es HTML inválido y rompe el teclado).
+   Estructura:
+   <div class="lesson-item">
+       <a class="lesson-card" href="...">...</a>
+       <details class="prereq-accordion">...</details>
+   </div> */
+.lesson-item {
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-med);
+}
+.lesson-item > .lesson-card:hover {
+    transform: none; /* el desplazamiento lo hace el contenedor completo */
+}
+.lesson-item:hover {
+    transform: translateX(6px);
+}
+.lesson-item:has(> .prereq-accordion) > .lesson-card {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* --- Dificultad: ●○○ / ●●○ / ●●● ---
+   <span class="difficulty" data-level="2" aria-label="Dificultad: intermedia">
+       <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+       <span class="difficulty-label">Intermedio</span>
+   </span> */
+.difficulty {
+    --difficulty-color: var(--level-1);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--difficulty-color);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    background: color-mix(in srgb, var(--difficulty-color) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--difficulty-color) 30%, transparent);
+}
+.difficulty[data-level="1"] { --difficulty-color: var(--level-1); }
+.difficulty[data-level="2"] { --difficulty-color: var(--level-2); }
+.difficulty[data-level="3"] { --difficulty-color: var(--level-3); }
+
+.difficulty-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    letter-spacing: 0.1em; /* por si se usan los glifos ●○○ como texto */
+    line-height: 1;
+}
+.difficulty-dots > i {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+}
+.difficulty[data-level="1"] .difficulty-dots > i:nth-child(-n+1),
+.difficulty[data-level="2"] .difficulty-dots > i:nth-child(-n+2),
+.difficulty[data-level="3"] .difficulty-dots > i {
+    background: currentColor;
+}
+
+/* --- Duración estimada --- */
+.duration-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+}
+.duration-tag::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+/* --- Certificación relacionada (informativa, no bloquea) --- */
+.cert-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--accent-cyan);
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    white-space: nowrap;
+}
+.cert-tag::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    border-radius: 1px;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+}
+
+/* --- Acordeón "Qué necesitas antes de esto" ---
+   Usa <details>/<summary> nativo: funciona con teclado (Enter/Espacio) sin JS.
+   <details class="prereq-accordion">
+       <summary>Qué necesitas antes de esto</summary>
+       <div class="prereq-body">
+           <ul class="prereq-list">
+               <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html">01</a></li>
+           </ul>
+       </div>
+   </details> */
+.prereq-accordion {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-top: 1px dashed var(--border-strong);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+.prereq-accordion > summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition: color var(--transition-fast);
+}
+.prereq-accordion > summary::-webkit-details-marker { display: none; }
+.prereq-accordion > summary::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--transition-fast);
+    flex-shrink: 0;
+}
+.prereq-accordion[open] > summary::before {
+    transform: rotate(45deg);
+}
+.prereq-accordion > summary:hover,
+.prereq-accordion[open] > summary {
+    color: var(--accent-cyan);
+}
+.prereq-body {
+    padding: 0 1.5rem 0.85rem;
+    animation: prereqReveal 0.25s ease-out;
+}
+.prereq-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.prereq-chip {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-strong);
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+a.prereq-chip:hover {
+    color: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+}
+.prereq-none {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+@keyframes prereqReveal {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 3 Franjas de carrera (capa visual, sin rutas nuevas) ---
+   <ol class="career-track" aria-label="Franjas de formación">
+       <li class="career-track__step is-done" data-track="foundation">
+           <span class="career-track__index">01</span>
+           <span class="career-track__name">Foundation</span>
+           <span class="career-track__phases">Fases 0–1</span>
+       </li>
+       <li class="career-track__step" data-track="specialization" aria-current="step">...</li>
+       <li class="career-track__step" data-track="professional">...</li>
+   </ol> */
+.career-track {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    counter-reset: none;
+}
+.career-track__step {
+    --track-color: var(--track-foundation);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 1rem 1.15rem 0.9rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--transition-med), box-shadow var(--transition-med);
+}
+.career-track__step[data-track="foundation"] { --track-color: var(--track-foundation); }
+.career-track__step[data-track="specialization"] { --track-color: var(--track-specialization); }
+.career-track__step[data-track="professional"] { --track-color: var(--track-professional); }
+
+.career-track__step::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--track-color);
+    opacity: 0.35;
+}
+.career-track__index {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--track-color);
+    letter-spacing: 0.08em;
+}
+.career-track__name {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.career-track__phases {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+.career-track__here {
+    align-self: flex-start;
+    margin-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bg-primary);
+    background: var(--track-color);
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+}
+.career-track__step.is-done::before { opacity: 1; }
+.career-track__step.is-current,
+.career-track__step[aria-current="step"] {
+    border-color: var(--track-color);
+    box-shadow: 0 0 0 1px var(--track-color) inset, 0 0 24px -8px var(--track-color);
+}
+.career-track__step.is-current::before,
+.career-track__step[aria-current="step"]::before {
+    opacity: 1;
+    height: 4px;
+}
+
+/* --- Progreso segmentado por Fase ---
+   Funciona con cualquier número de fases (7 hoy, 8 si se añade otra).
+   El ancho de .phase-progress__fill lo pone JS (style.width) en el Lote 3.
+   <div class="phase-progress" role="list" aria-label="Progreso por fase">
+       <div class="phase-progress__item" role="listitem" data-track="foundation">
+           <div class="phase-progress__head">
+               <span class="phase-progress__label">F0</span>
+               <span class="phase-progress__count">2/4</span>
+           </div>
+           <div class="phase-progress__track" role="progressbar"
+                aria-label="Fase 0" aria-valuemin="0" aria-valuemax="4" aria-valuenow="2">
+               <div class="phase-progress__fill"></div>
+           </div>
+       </div>
+   </div> */
+.phase-progress {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+    gap: 0.6rem 0.75rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+.phase-progress__item {
+    --track-color: var(--track-foundation);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+}
+.phase-progress__item[data-track="foundation"] { --track-color: var(--track-foundation); }
+.phase-progress__item[data-track="specialization"] { --track-color: var(--track-specialization); }
+.phase-progress__item[data-track="professional"] { --track-color: var(--track-professional); }
+
+.phase-progress__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+}
+.phase-progress__label {
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+.phase-progress__count {
+    color: var(--text-muted);
+}
+.phase-progress__track {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.phase-progress__fill {
+    height: 100%;
+    width: 0%;
+    background: var(--track-color);
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.phase-progress__item.is-complete .phase-progress__fill {
+    box-shadow: 0 0 10px var(--track-color);
+}
+.phase-progress__item.is-complete .phase-progress__label,
+.phase-progress__item.is-complete .phase-progress__count {
+    color: var(--track-color);
+}
+.phase-progress__summary {
+    grid-column: 1 / -1;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* --- Responsive: componentes del rediseño --- */
+@media (max-width: 768px) {
+    .lesson-item:hover { transform: none; }
+
+    .career-track {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    .career-track__step {
+        padding: 0.8rem 1rem 0.8rem 1.25rem;
+    }
+    .career-track__step::before {
+        inset: 0 auto 0 0;
+        width: 3px;
+        height: auto;
+    }
+    .career-track__step.is-current::before,
+    .career-track__step[aria-current="step"]::before {
+        width: 4px;
+        height: auto;
+    }
+
+    .phase-progress {
+        grid-template-columns: repeat(4, 1fr);
+        padding: 0.85rem 1rem;
+    }
+
+    .prereq-accordion > summary,
+    .prereq-body {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .prereq-accordion > summary {
+        min-height: 44px; /* área táctil mínima recomendada */
+    }
+}
+
+@media (max-width: 380px) {
+    .phase-progress { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- Movimiento reducido (accesibilidad) --- */
+@media (prefers-reduced-motion: reduce) {
+    .lesson-item,
+    .lesson-card,
+    .career-track__step,
+    .phase-progress__fill,
+    .prereq-accordion > summary::before {
+        transition: none;
+    }
+    .lesson-item:hover,
+    .lesson-card:hover { transform: none; }
+    .prereq-body { animation: none; }
+}
+
 
