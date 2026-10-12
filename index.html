@@ -50,8 +50,8 @@
                 <strong>Hacking Ético</strong>, <strong>Pentesting</strong> y <strong>Forense Digital</strong>.
             </p>
             <div class="hero-stats">
-                <div class="stat"><span class="stat-number" data-count="6">0</span><span class="stat-label">Fases</span></div>
-                <div class="stat"><span class="stat-number" data-count="23">0</span><span class="stat-label">Lecciones</span></div>
+                <div class="stat"><span class="stat-number" data-count="7">0</span><span class="stat-label">Fases</span></div>
+                <div class="stat"><span class="stat-number" data-count="31">0</span><span class="stat-label">Lecciones</span></div>
                 <div class="stat"><span class="stat-number" data-count="15">0</span><span class="stat-label">Herramientas</span></div>
             </div>
             <a href="#temario" class="btn btn-primary">
@@ -84,470 +84,972 @@
                     <div class="course-progress-bar">
                         <div class="course-progress-fill" id="courseProgressFill"></div>
                     </div>
-                    <span class="course-progress-text" id="courseProgressText">0 / 23 lecciones completadas</span>
+                    <span class="course-progress-text" id="courseProgressText">0 / 31 lecciones completadas</span>
                 </div>
             </div>
 
+            <!-- 3 FRANJAS DE CARRERA (capa visual; la franja actual la marca el Lote 3) -->
+            <ol class="career-track" id="careerTrack" aria-label="Franjas de formación">
+                <li class="career-track__step" data-track="foundation" data-phases="0,1">
+                    <span class="career-track__index" aria-hidden="true">01</span>
+                    <span class="career-track__name">Foundation</span>
+                    <span class="career-track__phases">Fases 0–1 · 8 lecciones</span>
+                </li>
+                <li class="career-track__step" data-track="specialization" data-phases="2,3">
+                    <span class="career-track__index" aria-hidden="true">02</span>
+                    <span class="career-track__name">Specialization</span>
+                    <span class="career-track__phases">Fases 2–3 · 11 lecciones</span>
+                </li>
+                <li class="career-track__step" data-track="professional" data-phases="4,5,6">
+                    <span class="career-track__index" aria-hidden="true">03</span>
+                    <span class="career-track__name">Professional</span>
+                    <span class="career-track__phases">Fases 4–6 · 12 lecciones</span>
+                </li>
+            </ol>
+
             <!-- FASE 0 -->
-            <div class="course-phase">
+            <div class="course-phase" data-phase="0" data-track="foundation">
                 <div class="course-phase-header">
-                    <div class="phase-marker beginner"></div>
+                    <div class="phase-marker beginner" aria-hidden="true"></div>
                     <div>
                         <h3>Fase 0 — Cimientos Absolutos <span class="phase-time">(Meses 0–3)</span></h3>
                         <p>Aquí aprenderás todo lo que necesitas saber sobre redes, Linux y programación antes de tocar cualquier herramienta de hacking.</p>
                     </div>
                 </div>
                 <div class="lessons-list">
-                    <a href="lecciones/leccion-04-laboratorio.html" class="lesson-card">
-                        <span class="lesson-number">04</span>
-                        <div class="lesson-info">
-                            <h4>Montar tu Laboratorio Virtual — Tu entorno de práctica seguro</h4>
-                            <p>Aprende a instalar VirtualBox, configurar redes virtuales, montar Kali Linux, Metasploitable y Active Directory paso a paso.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">100% Práctica</span>
-                                <span class="meta-tag">~2 horas</span>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-04-laboratorio.html" class="lesson-card">
+                            <span class="lesson-number">04</span>
+                            <div class="lesson-info">
+                                <h4>Montar tu Laboratorio Virtual — Tu entorno de práctica seguro</h4>
+                                <p>Aprende a instalar VirtualBox, configurar redes virtuales, montar Kali Linux, Metasploitable y Active Directory paso a paso.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">100% Práctica</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CompTIA A+ / Linux+</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-01-redes.html" class="lesson-card">
-                        <span class="lesson-number">01</span>
-                        <div class="lesson-info">
-                            <h4>Redes y TCP/IP — Cómo se comunican las computadoras</h4>
-                            <p>Aprende qué es una red, cómo viajan los datos, qué son los puertos, TCP vs UDP, DNS, HTTP y cómo funciona Internet por dentro.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <span class="prereq-none">Comienzo de ruta</span>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-02-linux.html" class="lesson-card">
-                        <span class="lesson-number">02</span>
-                        <div class="lesson-info">
-                            <h4>Linux desde Cero — Tu sistema operativo de trabajo</h4>
-                            <p>Aprende a instalar Linux, manejar la terminal, archivos, permisos, procesos, y scripting en Bash. Todo con ejemplos reales explicados.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~4 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-01-redes.html" class="lesson-card">
+                            <span class="lesson-number">01</span>
+                            <div class="lesson-info">
+                                <h4>Redes y TCP/IP — Cómo se comunican las computadoras</h4>
+                                <p>Aprende qué es una red, cómo viajan los datos, qué son los puertos, TCP vs UDP, DNS, HTTP y cómo funciona Internet por dentro.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CompTIA Network+ / CCNA</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-03-programacion.html" class="lesson-card">
-                        <span class="lesson-number">03</span>
-                        <div class="lesson-info">
-                            <h4>Python para Ciberseguridad — Programación orientada a hacking</h4>
-                            <p>Aprende Python desde cero con enfoque en seguridad: sockets, automatización, parsing de logs y creación de herramientas.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~4 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-04-laboratorio.html" aria-label="Lección 04: Montar tu Laboratorio Virtual" title="Lección 04: Montar tu Laboratorio Virtual">04</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-02-linux.html" class="lesson-card">
+                            <span class="lesson-number">02</span>
+                            <div class="lesson-info">
+                                <h4>Linux desde Cero — Tu sistema operativo de trabajo</h4>
+                                <p>Aprende a instalar Linux, manejar la terminal, archivos, permisos, procesos, y scripting en Bash. Todo con ejemplos reales explicados.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~4 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">LPIC-1 / Linux+</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-04-laboratorio.html" aria-label="Lección 04: Montar tu Laboratorio Virtual" title="Lección 04: Montar tu Laboratorio Virtual">04</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-03-programacion.html" class="lesson-card">
+                            <span class="lesson-number">03</span>
+                            <div class="lesson-info">
+                                <h4>Python para Ciberseguridad — Programación orientada a hacking</h4>
+                                <p>Aprende Python desde cero con enfoque en seguridad: sockets, automatización, parsing de logs y creación de herramientas.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~4 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">Python Institute PCAP</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
 
             <!-- FASE 1 -->
-            <div class="course-phase">
+            <div class="course-phase" data-phase="1" data-track="foundation">
                 <div class="course-phase-header">
-                    <div class="phase-marker beginner-2"></div>
+                    <div class="phase-marker beginner-2" aria-hidden="true"></div>
                     <div>
                         <h3>Fase 1 — Introducción a la Ciberseguridad <span class="phase-time">(Meses 3–6)</span></h3>
                         <p>Aquí aprenderás los conceptos fundamentales de seguridad informática, criptografía y darás tus primeros pasos en hacking ético.</p>
                     </div>
                 </div>
                 <div class="lessons-list">
-                    <a href="lecciones/leccion-05-seguridad-conceptos.html" class="lesson-card">
-                        <span class="lesson-number">05</span>
-                        <div class="lesson-info">
-                            <h4>Fundamentos de Seguridad Informática</h4>
-                            <p>Qué es la seguridad informática, la tríada CIA, tipos de amenazas, malware, ingeniería social, y cómo piensa un atacante.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría</span>
-                                <span class="meta-tag">~2 horas</span>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-05-seguridad-conceptos.html" class="lesson-card">
+                            <span class="lesson-number">05</span>
+                            <div class="lesson-info">
+                                <h4>Fundamentos de Seguridad Informática</h4>
+                                <p>Qué es la seguridad informática, la tríada CIA, tipos de amenazas, malware, ingeniería social, y cómo piensa un atacante.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CompTIA Security+</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-06-criptografia.html" class="lesson-card">
-                        <span class="lesson-number">06</span>
-                        <div class="lesson-info">
-                            <h4>Criptografía Esencial — Cómo se protege la información</h4>
-                            <p>Cifrado simétrico vs asimétrico, funciones hash, firmas digitales. Práctica con GPG y OpenSSL.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-07-etica-legal.html" class="lesson-card">
-                        <span class="lesson-number">07</span>
-                        <div class="lesson-info">
-                            <h4>Ética y Legalidad del Hacking</h4>
-                            <p>Qué está permitido, qué no, cómo obtener autorización, código de ética, y diferencia entre hacker ético y cibercriminal.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría</span>
-                                <span class="meta-tag">~1 hora</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-06-criptografia.html" class="lesson-card">
+                            <span class="lesson-number">06</span>
+                            <div class="lesson-info">
+                                <h4>Criptografía Esencial — Cómo se protege la información</h4>
+                                <p>Cifrado simétrico vs asimétrico, funciones hash, firmas digitales. Práctica con GPG y OpenSSL.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CompTIA Security+</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-07b-grc-fundamentos.html" class="lesson-card">
-                        <span class="lesson-number">07B</span>
-                        <div class="lesson-info">
-                            <h4>Fundamentos de GRC y Metodología de Auditoría</h4>
-                            <p>Gobernanza, Riesgo, Cumplimiento, NIST CSF 2.0, ISO 27001 y cómo se planifica y ejecuta una auditoría real.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~1 hora</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-03-programacion.html" aria-label="Lección 03: Python para Ciberseguridad" title="Lección 03: Python para Ciberseguridad">03</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-07-etica-legal.html" class="lesson-card">
+                            <span class="lesson-number">07</span>
+                            <div class="lesson-info">
+                                <h4>Ética y Legalidad del Hacking</h4>
+                                <p>Qué está permitido, qué no, cómo obtener autorización, código de ética, y diferencia entre hacker ético y cibercriminal.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~1 hora</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">Certified Ethical Hacker (CEH)</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-05-seguridad-conceptos.html" aria-label="Lección 05: Fundamentos de Seguridad Informática" title="Lección 05: Fundamentos de Seguridad Informática">05</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-07b-grc-fundamentos.html" class="lesson-card">
+                            <span class="lesson-number">07B</span>
+                            <div class="lesson-info">
+                                <h4>Fundamentos de GRC y Metodología de Auditoría</h4>
+                                <p>Gobernanza, Riesgo, Cumplimiento, NIST CSF 2.0, ISO 27001 y cómo se planifica y ejecuta una auditoría real.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~1 hora</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">ISACA CISA / CRISC Base</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-05-seguridad-conceptos.html" aria-label="Lección 05: Fundamentos de Seguridad Informática" title="Lección 05: Fundamentos de Seguridad Informática">05</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-07-etica-legal.html" aria-label="Lección 07: Ética y Legalidad del Hacking" title="Lección 07: Ética y Legalidad del Hacking">07</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
 
             <!-- FASE 2 -->
-            <div class="course-phase">
+            <div class="course-phase" data-phase="2" data-track="specialization">
                 <div class="course-phase-header">
-                    <div class="phase-marker intermediate"></div>
+                    <div class="phase-marker intermediate" aria-hidden="true"></div>
                     <div>
                         <h3>Fase 2 — Pentesting Fundamental <span class="phase-time">(Meses 6–18)</span></h3>
                         <p>Aquí aprenderás a usar las herramientas reales de pentesting: cómo escanear redes, encontrar vulnerabilidades, explotarlas y reportar hallazgos.</p>
                     </div>
                 </div>
                 <div class="lessons-list">
-                    <a href="lecciones/leccion-08-nmap.html" class="lesson-card">
-                        <span class="lesson-number">08</span>
-                        <div class="lesson-info">
-                            <h4>Nmap — Escaneo de redes y descubrimiento de servicios</h4>
-                            <p>Cómo funciona un escaneo de puertos, tipos de escaneo (SYN, TCP, UDP), scripts NSE, detección de servicios y sistemas operativos.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-08-nmap.html" class="lesson-card">
+                            <span class="lesson-number">08</span>
+                            <div class="lesson-info">
+                                <h4>Nmap — Escaneo de redes y descubrimiento de servicios</h4>
+                                <p>Cómo funciona un escaneo de puertos, tipos de escaneo (SYN, TCP, UDP), scripts NSE, detección de servicios y sistemas operativos.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">eJPTv2 / CEH</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-08b-web-fundamentals.html" class="lesson-card">
-                        <span class="lesson-number">08B</span>
-                        <div class="lesson-info">
-                            <h4>Fundamentos de Desarrollo Web — Lo que necesitas antes de hackear webs</h4>
-                            <p>Cómo funciona una app web: HTML, JavaScript, HTTP, bases de datos SQL y el flujo completo de una petición. Prerrequisito para Web Hacking.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Ejemplos</span>
-                                <span class="meta-tag">~2 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-09-web-hacking.html" class="lesson-card">
-                        <span class="lesson-number">09</span>
-                        <div class="lesson-info">
-                            <h4>Hacking Web — OWASP Top 10 explicado y practicado</h4>
-                            <p>Inyección SQL, XSS, CSRF, IDOR: qué son, cómo funcionan, cómo explotarlos y cómo defenderse. Todo con ejemplos reales.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~4 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-08b-web-fundamentals.html" class="lesson-card">
+                            <span class="lesson-number">08B</span>
+                            <div class="lesson-info">
+                                <h4>Fundamentos de Desarrollo Web — Lo que necesitas antes de hackear webs</h4>
+                                <p>Cómo funciona una app web: HTML, JavaScript, HTTP, bases de datos SQL y el flujo completo de una petición. Prerrequisito para Web Hacking.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Ejemplos</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">W3C Web Dev / eWPT Base</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-10-burpsuite.html" class="lesson-card">
-                        <span class="lesson-number">10</span>
-                        <div class="lesson-info">
-                            <h4>Burp Suite — Pentesting de aplicaciones web</h4>
-                            <p>Cómo interceptar peticiones HTTP, usar el Repeater para probar IDOR, usar Intruder para fuerza bruta, y analizar respuestas.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">100% Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-11-metasploit.html" class="lesson-card">
-                        <span class="lesson-number">11</span>
-                        <div class="lesson-info">
-                            <h4>Metasploit — Framework de explotación de vulnerabilidades</h4>
-                            <p>Cómo funciona Metasploit, cómo buscar y usar exploits, payloads, Meterpreter, post-explotación y escalada de privilegios.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-09-web-hacking.html" class="lesson-card">
+                            <span class="lesson-number">09</span>
+                            <div class="lesson-info">
+                                <h4>Hacking Web — OWASP Top 10 explicado y practicado</h4>
+                                <p>Inyección SQL, XSS, CSRF, IDOR: qué son, cómo funcionan, cómo explotarlos y cómo defenderse. Todo con ejemplos reales.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~4 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">eWPT / Burp Certified</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-12-password-cracking.html" class="lesson-card">
-                        <span class="lesson-number">12</span>
-                        <div class="lesson-info">
-                            <h4>Cracking de Contraseñas — Hydra, John the Ripper y Hashcat</h4>
-                            <p>Cómo funcionan los hashes, tipos de ataques de fuerza bruta, diccionarios, y cómo crackear contraseñas paso a paso.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~2 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-08-nmap.html" aria-label="Lección 08: Nmap" title="Lección 08: Nmap">08</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-08b-web-fundamentals.html" aria-label="Lección 08B: Fundamentos de Desarrollo Web" title="Lección 08B: Fundamentos de Desarrollo Web">08B</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-10-burpsuite.html" class="lesson-card">
+                            <span class="lesson-number">10</span>
+                            <div class="lesson-info">
+                                <h4>Burp Suite — Pentesting de aplicaciones web</h4>
+                                <p>Cómo interceptar peticiones HTTP, usar el Repeater para probar IDOR, usar Intruder para fuerza bruta, y analizar respuestas.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">100% Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">PortSwigger BSCP / eWPT</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-09-web-hacking.html" aria-label="Lección 09: Hacking Web" title="Lección 09: Hacking Web">09</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-11-metasploit.html" class="lesson-card">
+                            <span class="lesson-number">11</span>
+                            <div class="lesson-info">
+                                <h4>Metasploit — Framework de explotación de vulnerabilidades</h4>
+                                <p>Cómo funciona Metasploit, cómo buscar y usar exploits, payloads, Meterpreter, post-explotación y escalada de privilegios.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">eJPTv2 / OSCP Base</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-04-laboratorio.html" aria-label="Lección 04: Montar tu Laboratorio Virtual" title="Lección 04: Montar tu Laboratorio Virtual">04</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-08-nmap.html" aria-label="Lección 08: Nmap" title="Lección 08: Nmap">08</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-12-password-cracking.html" class="lesson-card">
+                            <span class="lesson-number">12</span>
+                            <div class="lesson-info">
+                                <h4>Cracking de Contraseñas — Hydra, John the Ripper y Hashcat</h4>
+                                <p>Cómo funcionan los hashes, tipos de ataques de fuerza bruta, diccionarios, y cómo crackear contraseñas paso a paso.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CEH / OSCP</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-06-criptografia.html" aria-label="Lección 06: Criptografía Esencial" title="Lección 06: Criptografía Esencial">06</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
 
             <!-- FASE 3 -->
-            <div class="course-phase">
+            <div class="course-phase" data-phase="3" data-track="specialization">
                 <div class="course-phase-header">
-                    <div class="phase-marker advanced"></div>
+                    <div class="phase-marker advanced" aria-hidden="true"></div>
                     <div>
                         <h3>Fase 3 — Red Team y Técnicas Avanzadas <span class="phase-time">(Meses 18–36)</span></h3>
                         <p>Aquí aprenderás a simular ataques reales: Active Directory, movimiento lateral, evasión de defensas y operaciones de Red Team.</p>
                     </div>
                 </div>
                 <div class="lessons-list">
-                    <a href="lecciones/leccion-13a-windows-ad-fundamentos.html" class="lesson-card">
-                        <span class="lesson-number">13A</span>
-                        <div class="lesson-info">
-                            <h4>Fundamentos de Windows y Active Directory</h4>
-                            <p>Estructura de dominios, usuarios, grupos, GPOs, Domain Controllers y PowerShell para AD. Prerrequisito para ataques a AD.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-13a-windows-ad-fundamentos.html" class="lesson-card">
+                            <span class="lesson-number">13A</span>
+                            <div class="lesson-info">
+                                <h4>Fundamentos de Windows y Active Directory</h4>
+                                <p>Estructura de dominios, usuarios, grupos, GPOs, Domain Controllers y PowerShell para AD. Prerrequisito para ataques a AD.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CompTIA Server+ / MS Identity</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-13-active-directory.html" class="lesson-card">
-                        <span class="lesson-number">13</span>
-                        <div class="lesson-info">
-                            <h4>Active Directory — Ataques a entornos corporativos</h4>
-                            <p>Qué es AD, cómo funciona Kerberos, ataques como Kerberoasting, Pass-the-Hash, Golden Ticket y cómo usar BloodHound.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~4 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-04-laboratorio.html" aria-label="Lección 04: Montar tu Laboratorio Virtual" title="Lección 04: Montar tu Laboratorio Virtual">04</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-14-wifi-hacking.html" class="lesson-card">
-                        <span class="lesson-number">14</span>
-                        <div class="lesson-info">
-                            <h4>Hacking WiFi — Auditoría de redes inalámbricas</h4>
-                            <p>Cómo funciona WPA/WPA2, captura de handshakes con Aircrack-ng, ataques de deautenticación y cracking de claves.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~2 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-13-active-directory.html" class="lesson-card">
+                            <span class="lesson-number">13</span>
+                            <div class="lesson-info">
+                                <h4>Active Directory — Ataques a entornos corporativos</h4>
+                                <p>Qué es AD, cómo funciona Kerberos, ataques como Kerberoasting, Pass-the-Hash, Golden Ticket y cómo usar BloodHound.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="3">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Avanzado</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~4 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CRTP / OSCP / CPTS</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-15-redteam.html" class="lesson-card">
-                        <span class="lesson-number">15</span>
-                        <div class="lesson-info">
-                            <h4>Red Team — Simulación de ataques reales con MITRE ATT&CK</h4>
-                            <p>Cómo planificar y ejecutar un ejercicio de Red Team completo: reconocimiento, explotación, pivoteo, persistencia y reporte.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~4 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-13a-windows-ad-fundamentos.html" aria-label="Lección 13A: Fundamentos de Windows y Active Directory" title="Lección 13A: Fundamentos de Windows y Active Directory">13A</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-11-metasploit.html" aria-label="Lección 11: Metasploit" title="Lección 11: Metasploit">11</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-15b-cloud-security.html" class="lesson-card">
-                        <span class="lesson-number">15B</span>
-                        <div class="lesson-info">
-                            <h4>Cloud Security 101 — Seguridad en AWS, Azure y GCP</h4>
-                            <p>Modelo de responsabilidad compartida, IAM, buckets expuestos, SSRF al metadata service y herramientas de auditoría cloud.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-14-wifi-hacking.html" class="lesson-card">
+                            <span class="lesson-number">14</span>
+                            <div class="lesson-info">
+                                <h4>Hacking WiFi — Auditoría de redes inalámbricas</h4>
+                                <p>Cómo funciona WPA/WPA2, captura de handshakes con Aircrack-ng, ataques de deautenticación y cracking de claves.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">OffSec OSWP</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-15-redteam.html" class="lesson-card">
+                            <span class="lesson-number">15</span>
+                            <div class="lesson-info">
+                                <h4>Red Team — Simulación de ataques reales con MITRE ATT&CK</h4>
+                                <p>Cómo planificar y ejecutar un ejercicio de Red Team completo: reconocimiento, explotación, pivoteo, persistencia y reporte.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="3">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Avanzado</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~4 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CRTO / OSEP</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-11-metasploit.html" aria-label="Lección 11: Metasploit" title="Lección 11: Metasploit">11</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-13-active-directory.html" aria-label="Lección 13: Active Directory" title="Lección 13: Active Directory">13</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-15b-cloud-security.html" class="lesson-card">
+                            <span class="lesson-number">15B</span>
+                            <div class="lesson-info">
+                                <h4>Cloud Security 101 — Seguridad en AWS, Azure y GCP</h4>
+                                <p>Modelo de responsabilidad compartida, IAM, buckets expuestos, SSRF al metadata service y herramientas de auditoría cloud.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">AWS Security / Azure SC-900</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-05-seguridad-conceptos.html" aria-label="Lección 05: Fundamentos de Seguridad Informática" title="Lección 05: Fundamentos de Seguridad Informática">05</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-08b-web-fundamentals.html" aria-label="Lección 08B: Fundamentos de Desarrollo Web" title="Lección 08B: Fundamentos de Desarrollo Web">08B</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
 
             <!-- FASE 4 -->
-            <div class="course-phase">
+            <div class="course-phase" data-phase="4" data-track="professional">
                 <div class="course-phase-header">
-                    <div class="phase-marker advanced"></div>
+                    <div class="phase-marker advanced" aria-hidden="true"></div>
                     <div>
                         <h3>Fase 4 — Blue Team y SOC <span class="phase-time">(Defensa Activa)</span></h3>
                         <p>Aprende a defender la infraestructura: detección con SIEM, reglas Sigma, Threat Hunting y Respuesta a Incidentes.</p>
                     </div>
                 </div>
                 <div class="lessons-list">
-                    <a href="lecciones/leccion-15c-soc-fundamentos.html" class="lesson-card">
-                        <span class="lesson-number">15C</span>
-                        <div class="lesson-info">
-                            <h4>Fundamentos del SOC y Triage</h4>
-                            <p>Niveles L1/L2/L3, proceso de triage de alertas, y análisis de phishing.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-15c-soc-fundamentos.html" class="lesson-card">
+                            <span class="lesson-number">15C</span>
+                            <div class="lesson-info">
+                                <h4>Fundamentos del SOC y Triage</h4>
+                                <p>Niveles L1/L2/L3, proceso de triage de alertas, y análisis de phishing.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">Blue Team Level 1 (BTL1)</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-15d-siem-logs.html" class="lesson-card">
-                        <span class="lesson-number">15D</span>
-                        <div class="lesson-info">
-                            <h4>SIEM y Recolección de Logs</h4>
-                            <p>Splunk, ELK, Wazuh, Sysmon y Windows Event Logs.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~4 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-05-seguridad-conceptos.html" aria-label="Lección 05: Fundamentos de Seguridad Informática" title="Lección 05: Fundamentos de Seguridad Informática">05</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-15e-deteccion-mitre-sigma.html" class="lesson-card">
-                        <span class="lesson-number">15E</span>
-                        <div class="lesson-info">
-                            <h4>Detección: MITRE ATT&CK y Sigma</h4>
-                            <p>Casos de uso para defensores y escritura de reglas genéricas de detección.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría</span>
-                                <span class="meta-tag">~2 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-15d-siem-logs.html" class="lesson-card">
+                            <span class="lesson-number">15D</span>
+                            <div class="lesson-info">
+                                <h4>SIEM y Recolección de Logs</h4>
+                                <p>Splunk, ELK, Wazuh, Sysmon y Windows Event Logs.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~4 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CompTIA CySA+ / Splunk Core</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-15f-threat-hunting.html" class="lesson-card">
-                        <span class="lesson-number">15F</span>
-                        <div class="lesson-info">
-                            <h4>Threat Hunting</h4>
-                            <p>Cacería de amenazas proactiva, hipótesis y mentalidad de "asumir la brecha".</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-15c-soc-fundamentos.html" aria-label="Lección 15C: Fundamentos del SOC y Triage" title="Lección 15C: Fundamentos del SOC y Triage">15C</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-15g-respuesta-incidentes.html" class="lesson-card">
-                        <span class="lesson-number">15G</span>
-                        <div class="lesson-info">
-                            <h4>Respuesta a Incidentes (NIST SP 800-61)</h4>
-                            <p>Contención, erradicación y recuperación frente a una brecha confirmada.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-15e-deteccion-mitre-sigma.html" class="lesson-card">
+                            <span class="lesson-number">15E</span>
+                            <div class="lesson-info">
+                                <h4>Detección: MITRE ATT&CK y Sigma</h4>
+                                <p>Casos de uso para defensores y escritura de reglas genéricas de detección.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">BTL1 / CySA+</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-15-redteam.html" aria-label="Lección 15: Red Team" title="Lección 15: Red Team">15</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-15d-siem-logs.html" aria-label="Lección 15D: SIEM y Recolección de Logs" title="Lección 15D: SIEM y Recolección de Logs">15D</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-15f-threat-hunting.html" class="lesson-card">
+                            <span class="lesson-number">15F</span>
+                            <div class="lesson-info">
+                                <h4>Threat Hunting</h4>
+                                <p>Cacería de amenazas proactiva, hipótesis y mentalidad de "asumir la brecha".</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="3">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Avanzado</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">SANS SEC555 (GCDA) / BTL2</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-15d-siem-logs.html" aria-label="Lección 15D: SIEM y Recolección de Logs" title="Lección 15D: SIEM y Recolección de Logs">15D</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-15e-deteccion-mitre-sigma.html" aria-label="Lección 15E: Detección: MITRE ATT&amp;CK y Sigma" title="Lección 15E: Detección: MITRE ATT&amp;CK y Sigma">15E</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-15g-respuesta-incidentes.html" class="lesson-card">
+                            <span class="lesson-number">15G</span>
+                            <div class="lesson-info">
+                                <h4>Respuesta a Incidentes (NIST SP 800-61)</h4>
+                                <p>Contención, erradicación y recuperación frente a una brecha confirmada.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">EC-Council ECIH / GCIH</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-07b-grc-fundamentos.html" aria-label="Lección 07B: Fundamentos de GRC y Metodología de Auditoría" title="Lección 07B: Fundamentos de GRC y Metodología de Auditoría">07B</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-15c-soc-fundamentos.html" aria-label="Lección 15C: Fundamentos del SOC y Triage" title="Lección 15C: Fundamentos del SOC y Triage">15C</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
 
             <!-- FASE 5 -->
-            <div class="course-phase">
+            <div class="course-phase" data-phase="5" data-track="professional">
                 <div class="course-phase-header">
-                    <div class="phase-marker forensic"></div>
+                    <div class="phase-marker forensic" aria-hidden="true"></div>
                     <div>
                         <h3>Fase 5 — Informática Forense y DFIR <span class="phase-time">(En paralelo)</span></h3>
                         <p>Aquí aprenderás a investigar incidentes de seguridad: analizar memoria RAM, discos duros, tráfico de red y generar reportes forenses.</p>
                     </div>
                 </div>
                 <div class="lessons-list">
-                    <a href="lecciones/leccion-16-forense-intro.html" class="lesson-card">
-                        <span class="lesson-number">16</span>
-                        <div class="lesson-info">
-                            <h4>Fundamentos de Informática Forense</h4>
-                            <p>Qué es la forense digital, cadena de custodia, adquisición de evidencia, integridad con hashes y el proceso forense completo.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría</span>
-                                <span class="meta-tag">~2 horas</span>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-16-forense-intro.html" class="lesson-card">
+                            <span class="lesson-number">16</span>
+                            <div class="lesson-info">
+                                <h4>Fundamentos de Informática Forense</h4>
+                                <p>Qué es la forense digital, cadena de custodia, adquisición de evidencia, integridad con hashes y el proceso forense completo.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">CHFI (Computer Forensic)</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-17-volatility.html" class="lesson-card">
-                        <span class="lesson-number">17</span>
-                        <div class="lesson-info">
-                            <h4>Volatility 3 — Análisis forense de memoria RAM</h4>
-                            <p>Cómo capturar RAM, analizar procesos, detectar rootkits, inyecciones de código, conexiones de red y extraer malware.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~4 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-05-seguridad-conceptos.html" aria-label="Lección 05: Fundamentos de Seguridad Informática" title="Lección 05: Fundamentos de Seguridad Informática">05</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-18-autopsy.html" class="lesson-card">
-                        <span class="lesson-number">18</span>
-                        <div class="lesson-info">
-                            <h4>Autopsy — Análisis forense de discos duros</h4>
-                            <p>Cómo crear un caso forense, cargar imágenes de disco, buscar archivos borrados, construir timelines y generar reportes.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-17-volatility.html" class="lesson-card">
+                            <span class="lesson-number">17</span>
+                            <div class="lesson-info">
+                                <h4>Volatility 3 — Análisis forense de memoria RAM</h4>
+                                <p>Cómo capturar RAM, analizar procesos, detectar rootkits, inyecciones de código, conexiones de red y extraer malware.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="3">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Avanzado</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~4 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">SANS GCFA / CHFI</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-19-wireshark.html" class="lesson-card">
-                        <span class="lesson-number">19</span>
-                        <div class="lesson-info">
-                            <h4>Wireshark — Análisis de tráfico de red y detección de amenazas</h4>
-                            <p>Cómo capturar paquetes, usar filtros de visualización, detectar escaneos, fugas de datos y reconstruir conversaciones.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Práctica</span>
-                                <span class="meta-tag">~3 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-02-linux.html" aria-label="Lección 02: Linux desde Cero" title="Lección 02: Linux desde Cero">02</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-16-forense-intro.html" aria-label="Lección 16: Fundamentos de Informática Forense" title="Lección 16: Fundamentos de Informática Forense">16</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-18-autopsy.html" class="lesson-card">
+                            <span class="lesson-number">18</span>
+                            <div class="lesson-info">
+                                <h4>Autopsy — Análisis forense de discos duros</h4>
+                                <p>Cómo crear un caso forense, cargar imágenes de disco, buscar archivos borrados, construir timelines y generar reportes.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">Autopsy Basics / EnCE</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-16-forense-intro.html" aria-label="Lección 16: Fundamentos de Informática Forense" title="Lección 16: Fundamentos de Informática Forense">16</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-19-wireshark.html" class="lesson-card">
+                            <span class="lesson-number">19</span>
+                            <div class="lesson-info">
+                                <h4>Wireshark — Análisis de tráfico de red y detección de amenazas</h4>
+                                <p>Cómo capturar paquetes, usar filtros de visualización, detectar escaneos, fugas de datos y reconstruir conversaciones.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Práctica</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">Wireshark WCNA / BTL1</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-01-redes.html" aria-label="Lección 01: Redes y TCP/IP" title="Lección 01: Redes y TCP/IP">01</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-15c-soc-fundamentos.html" aria-label="Lección 15C: Fundamentos del SOC y Triage" title="Lección 15C: Fundamentos del SOC y Triage">15C</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
 
             <!-- FASE 6 -->
-            <div class="course-phase">
+            <div class="course-phase" data-phase="6" data-track="professional">
                 <div class="course-phase-header">
-                    <div class="phase-marker expert"></div>
+                    <div class="phase-marker expert" aria-hidden="true"></div>
                     <div>
                         <h3>Fase 6 — Profesionalización y Nivel Experto <span class="phase-time">(3+ años)</span></h3>
                         <p>Aquí aprenderás a escribir informes profesionales, prepararte para certificaciones y desarrollar tu mentalidad de experto.</p>
                     </div>
                 </div>
                 <div class="lessons-list">
-                    <a href="lecciones/leccion-20-reportes.html" class="lesson-card">
-                        <span class="lesson-number">20</span>
-                        <div class="lesson-info">
-                            <h4>Elaboración de Informes Profesionales de Auditoría</h4>
-                            <p>Cómo escribir un resumen ejecutivo, documentar hallazgos con CVSS, crear fichas técnicas y redactar guías de remediación.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Teoría + Plantillas</span>
-                                <span class="meta-tag">~3 horas</span>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-20-reportes.html" class="lesson-card">
+                            <span class="lesson-number">20</span>
+                            <div class="lesson-info">
+                                <h4>Elaboración de Informes Profesionales de Auditoría</h4>
+                                <p>Cómo escribir un resumen ejecutivo, documentar hallazgos con CVSS, crear fichas técnicas y redactar guías de remediación.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Teoría + Plantillas</span>
+                                    <span class="difficulty" data-level="2">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Intermedio</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~3 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">OSCP / PNPT Reporting</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-20b-portafolio-y-certificaciones.html" class="lesson-card">
-                        <span class="lesson-number">20B</span>
-                        <div class="lesson-info">
-                            <h4>Portafolio y Certificaciones de Ciberseguridad</h4>
-                            <p>Cómo construir un portafolio de ciberseguridad, elegir certificaciones clave y prepararse para entrevistas técnicas.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Desarrollo Profesional</span>
-                                <span class="meta-tag">~2 horas</span>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-07b-grc-fundamentos.html" aria-label="Lección 07B: Fundamentos de GRC y Metodología de Auditoría" title="Lección 07B: Fundamentos de GRC y Metodología de Auditoría">07B</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-09-web-hacking.html" aria-label="Lección 09: Hacking Web" title="Lección 09: Hacking Web">09</a></li>
+                                    <li><a class="prereq-chip" href="lecciones/leccion-11-metasploit.html" aria-label="Lección 11: Metasploit" title="Lección 11: Metasploit">11</a></li>
+                                </ul>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
-                    <a href="lecciones/leccion-20c-proyecto-final.html" class="lesson-card">
-                        <span class="lesson-number">20C</span>
-                        <div class="lesson-info">
-                            <h4>Proyecto Final Integrador</h4>
-                            <p>Aplica todo lo aprendido en CyberPath 2026 en un entorno simulado empresarial real. Ataca, defiende y reporta.</p>
-                            <div class="lesson-meta">
-                                <span class="meta-tag">Proyecto Práctico</span>
-                                <span class="meta-tag">~10+ horas</span>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-20b-portafolio-y-certificaciones.html" class="lesson-card">
+                            <span class="lesson-number">20B</span>
+                            <div class="lesson-info">
+                                <h4>Portafolio y Certificaciones de Ciberseguridad</h4>
+                                <p>Cómo construir un portafolio de ciberseguridad, elegir certificaciones clave y prepararse para entrevistas técnicas.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Desarrollo Profesional</span>
+                                    <span class="difficulty" data-level="1">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Principiante</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~2 horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">Career Development</span>
+                                </div>
                             </div>
-                        </div>
-                        <span class="lesson-arrow">→</span>
-                    </a>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <ul class="prereq-list" aria-label="Lecciones previas recomendadas">
+                                    <li><a class="prereq-chip" href="lecciones/leccion-20-reportes.html" aria-label="Lección 20: Elaboración de Informes Profesionales de Auditoría" title="Lección 20: Elaboración de Informes Profesionales de Auditoría">20</a></li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="lesson-item">
+                        <a href="lecciones/leccion-20c-proyecto-final.html" class="lesson-card">
+                            <span class="lesson-number">20C</span>
+                            <div class="lesson-info">
+                                <h4>Proyecto Final Integrador</h4>
+                                <p>Aplica todo lo aprendido en CyberPath 2026 en un entorno simulado empresarial real. Ataca, defiende y reporta.</p>
+                                <div class="lesson-meta">
+                                    <span class="meta-tag">Proyecto Práctico</span>
+                                    <span class="difficulty" data-level="3">
+                                        <span class="difficulty-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                                        <span class="difficulty-label">Avanzado</span>
+                                    </span>
+                                    <span class="duration-tag" title="Duración estimada">~10+ horas</span>
+                                    <span class="cert-tag" title="Certificación relacionada (orientativa)">Capstone CyberPath Master</span>
+                                </div>
+                            </div>
+                            <span class="lesson-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <details class="prereq-accordion">
+                            <summary>Qué necesitas antes de esto</summary>
+                            <div class="prereq-body">
+                                <span class="prereq-none">Todas las lecciones anteriores (Fases 0–6)</span>
+                            </div>
+                        </details>
+                    </div>
                 </div>
             </div>
         </div>
