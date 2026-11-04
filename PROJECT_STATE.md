@@ -1,8 +1,8 @@
 # PROJECT_STATE — CyberPath 2026 (`c:\Users\ROG\ciberseguridad`)
 
 ## 1. Cápsula Ejecutiva de Reanudación Rápida (Líneas 1–35 | <400 Tokens)
-- **Estado Global**: ✅ **100% COMPLETADO, AUDITADO Y COMMITEADO — Lotes 1, 2, 3 y 4 (4A, 4B, 4C, 4D) finalizados con 0 enlaces rotos (330 enlaces en 35 páginas), 31/31 quizzes operativos y estética táctica HUD completa**.
-- **Última Actualización**: 2026-11-04 (Auditoría profunda QA y cierre integral del Lote 4).
+- **Estado Global**: ✅ **100% COMPLETADO, AUDITADO Y SINCRONIZADO CON GITHUB — Lotes 1, 2, 3 y 4 (4A-4D) finalizados con 0 enlaces rotos (397 enlaces en 35 páginas), 31/31 quizzes operativos, README.md sincronizado y preparado para despliegue GitHub Pages**.
+- **Última Actualización**: 2026-11-04 (Auditoría QA exhaustiva, README sincronizado y sincronización GitHub Pages).
 - **Lotes Ejecutados y Commits**:
   - `2a844fe` — **Reglas**: Directivas `cyberpath-reglas` en `.agents/rules/` y `.agents/skills/`.
   - `33391bb` — **Lote 1 (`styles.css`)**: Tokens dark mode táctico, `.lesson-item`, `.difficulty`, `.duration-tag`, `.cert-tag`, `.prereq-accordion`, `.career-track`, `.phase-progress`.
@@ -12,10 +12,11 @@
   - `d221c6d` — **Lote 4B (`index.html`, `script.js`, `lecciones/docs/`)**: Enlace `#recursos` en `#navLinks`, `data-suffix="+"` en Herramientas, PDFs servidos desde `lecciones/docs/` (HTTP 200), preservación global de `evidenceData` en `localStorage.setItem`, restauración de `data-explanation` con `MutationObserver` tras `CyberQuiz.retry`, `#scrollProgress` en páginas interiores y fix de bloques `<pre><code>` en `formatMarkdown`.
   - `60f18b9` — **Lote 4C (`lecciones/leccion-*.html`)**: Quizzes interactivos de 3 preguntas con `explanations` en Fase 4 (`15c..15g`) habilitando el `31 / 31` y unificación de `'cyberpath_progress'` en las 10 lecciones con Evidencia Práctica.
   - `929de2d` — **Lote 4D / QA Fixes (`script.js`, `lecciones/leccion-*.html`)**: Reintento funcional en lecciones ya aprobadas sin tocar `quiz.js`, blindaje de código en línea (`**kwargs`) en `formatMarkdown`, JSON estricto en `explanations` de `leccion-07b`, eliminación de `#b388ff` inline en `leccion-08b` y enlace `#evaluacion` en TOC de `15c..15f`.
+  - `755a16f` — **Docs**: Actualizar PROJECT_STATE.md con cierre de auditoría QA.
 - **Archivos Intocables Verificados (`git diff` vacío)**:
   - `server.py`, `quiz.js`, `Arrancar_Curso.bat` y nombres de archivos existentes en `lecciones/leccion-*.html`.
 - **Siguiente Paso Exacto**:
-  - Proyecto 100% entregado y verificado. Listo para nuevas iteraciones o lecciones adicionales a solicitud del autor.
+  - Push a `origin/master` y verificación del despliegue en GitHub Pages.
 
 ---
 
