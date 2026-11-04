@@ -81,7 +81,7 @@
                 </div>
             </div>
 
-            <div class="quiz-box" id="quiz-container"></div>
+            <div class="quiz-box quiz-section" id="quiz-container"></div>
         </div>
 
         <div class="lesson-nav">
@@ -92,19 +92,51 @@
     <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
     <script src="../quiz.js"></script>
     <script>
-        const quizQuestions = [{
-            question: "¿Por qué no se debe apagar inmediatamente una máquina infectada durante un incidente?",
-            options: [
-                "Para no asustar a los usuarios",
-                "Porque se pierde el contenido de la memoria RAM, destruyendo evidencias vitales del atacante",
-                "Porque los atacantes pueden demandar a la empresa",
-                "Porque el antivirus necesita que esté prendida para desinfectar"
-            ],
-            correct: 1
-        }];
+        const quizQuestions = [
+            {
+                question: "¿Por qué no se debe apagar inmediatamente una máquina infectada durante un incidente?",
+                options: [
+                    "Para no asustar a los usuarios",
+                    "Porque se pierde el contenido de la memoria RAM, destruyendo evidencias volátiles vitales del atacante",
+                    "Porque los atacantes pueden demandar a la empresa",
+                    "Porque el antivirus necesita que esté prendida para desinfectar"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Cuáles son las 4 fases del ciclo de vida de Respuesta a Incidentes según NIST SP 800-61?",
+                options: [
+                    "Reconocimiento, Escaneo, Explotación y Post-Explotación",
+                    "Preparación, Detección y Análisis, Contención/Erradicación/Recuperación, y Actividad Post-Incidente",
+                    "Diseño, Codificación, Pruebas y Despliegue",
+                    "Compra, Instalación, Monitoreo y Descarte"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es una medida adecuada de contención a corto plazo ante un host comprometido por ransomware?",
+                options: [
+                    "Formatear el disco duro inmediatamente sin hacer copias ni capturar evidencias",
+                    "Aislar el host de la red (desde el EDR o desconectando la interfaz de red) manteniendo el equipo encendido para preservar la RAM",
+                    "Ignorar la alerta hasta el final del mes",
+                    "Subir todos los archivos del servidor a una carpeta compartida pública"
+                ],
+                correct: 1
+            }
+        ];
         window._quizQuestions = window._quizQuestions || {};
         window._quizQuestions['leccion-15g'] = quizQuestions;
-        document.addEventListener('DOMContentLoaded', () => { CyberQuiz.init('leccion-15g', quizQuestions);
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-15g', quizQuestions);
+            const explanations = [
+                "La memoria RAM contiene procesos activos, conexiones de red abiertas, claves de cifrado e inyecciones en memoria que desaparecen al apagar el equipo.",
+                "NIST SP 800-61 Rev. 2 estructura la respuesta a incidentes en: 1) Preparación, 2) Detección y Análisis, 3) Contención, Erradicación y Recuperación, y 4) Actividad Post-Incidente (Lecciones aprendidas).",
+                "El aislamiento de red frena la propagación lateral y la comunicación C2 sin destruir la evidencia volátil necesaria para el análisis forense."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+
             // Logic for Evidence Checkbox and Textarea
             const lessonId = 'leccion-15g';
             const cb = document.getElementById('check-evidencia');
@@ -134,12 +166,12 @@
                         checked: cb.checked,
                         text: txt.value
                     };
-                    localStorage.setItem('cyberQuizProgress', JSON.stringify(currentProgress));
+                    localStorage.setItem('cyberpath_progress', JSON.stringify(currentProgress));
                     msg.style.display = 'inline';
                     setTimeout(() => msg.style.display = 'none', 2000);
                 });
             }
- });
+        });
     </script>
 <script src="../script.js"></script>
 </body></html>

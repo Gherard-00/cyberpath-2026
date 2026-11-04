@@ -52,11 +52,63 @@
             </ul>
         </div>
 
+        <div class="lesson-section" id="evaluacion"><h2>4. Evaluación</h2>
+            <div class="quiz-box quiz-section" id="quiz-container"></div>
+        </div>
+
         <div class="lesson-nav">
             <a href="leccion-15e-deteccion-mitre-sigma.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15E: MITRE y Sigma</span></a>
             <a href="leccion-15g-respuesta-incidentes.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15G: Respuesta a Incidentes</span></a>
         </div>
     </main>
     <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "¿Qué significa la premisa de 'Asumir la Brecha' (Assume Breach) en Threat Hunting?",
+                options: [
+                    "Apagar todos los servidores preventivamente cada fin de semana",
+                    "Partir del supuesto de que un adversario ya evadió las defensas perimetrales y buscar proactivamente su actividad en la red",
+                    "Esperar pasivamente a que el antivirus genere una alerta crítica",
+                    "Confiar en que el firewall bloquea el 100% de los ataques"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Cómo debe iniciarse una cacería de amenazas (Threat Hunt) estructurada?",
+                options: [
+                    "Formulando una hipótesis comprobable basada en inteligencia de amenazas (CTI), TTPs de MITRE ATT&CK o anomalías del entorno",
+                    "Borrando los logs antiguos del SIEM sin revisarlos",
+                    "Reinstalando el sistema operativo de todos los usuarios al azar",
+                    "Deshabilitando las reglas de Sysmon para ahorrar disco"
+                ],
+                correct: 0
+            },
+            {
+                question: "¿Cuál es la diferencia clave entre un IoC (Indicador de Compromiso) y un IoA (Indicador de Ataque)?",
+                options: [
+                    "No existe diferencia, ambos son direcciones MAC",
+                    "El IoC es un artefacto estático forense (hash, IP, dominio) y el IoA se enfoca en el comportamiento e intención del atacante en ejecución",
+                    "El IoC solo aplica en Linux y el IoA solo en Windows",
+                    "El IoA es únicamente el nombre del archivo comprimido"
+                ],
+                correct: 1
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-15f'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-15f', quizQuestions);
+            const explanations = [
+                "El Threat Hunting es proactivo: asume que el atacante ya está dentro sin haber disparado alertas y busca rastros de su presencia en la telemetría.",
+                "Una cacería efectiva parte de una hipótesis clara (por ejemplo, buscar ejecución de wscript.exe desde carpetas temporales tras reportes de campañas APT).",
+                "Los IoCs (hashes, IPs) cambian fácilmente; los IoAs detectan la secuencia de acciones que un atacante debe realizar para cumplir su objetivo (ejecución anómala, persistencia, movimiento lateral)."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
 <script src="../script.js"></script>
 </body></html>

@@ -61,11 +61,63 @@
             <p class="lesson-text">Si un firewall Palo Alto llama a la IP de origen <code>src_ip</code> y un servidor Linux la llama <code>SourceAddress</code>, es imposible hacer búsquedas efectivas. El SIEM realiza el <strong>Parsing</strong> (extraer campos) y la <strong>Normalización</strong> (convertir todos los nombres a un esquema común, como Elastic Common Schema - ECS) para que una sola regla funcione para cualquier dispositivo.</p>
         </div>
 
+        <div class="lesson-section" id="evaluacion"><h2>5. Evaluación</h2>
+            <div class="quiz-box quiz-section" id="quiz-container"></div>
+        </div>
+
         <div class="lesson-nav">
             <a href="leccion-15c-soc-fundamentos.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15C: SOC</span></a>
             <a href="leccion-15e-deteccion-mitre-sigma.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15E: MITRE y Sigma</span></a>
         </div>
     </main>
     <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "¿Qué evento registra el Event ID 1 de Sysmon en sistemas Windows?",
+                options: [
+                    "Cierre de sesión de un usuario remoto",
+                    "Creación de procesos, incluyendo el binario padre y la línea de comandos completa",
+                    "Cambio de hora del reloj del sistema",
+                    "Desconexión física de un monitor"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Para qué sirve la normalización de logs (como Elastic Common Schema - ECS) dentro de un SIEM?",
+                options: [
+                    "Para comprimir imágenes y videos dentro de la base de datos",
+                    "Para traducir campos de distintos fabricantes a un esquema común y correlacionarlos con una sola regla",
+                    "Para ocultar las direcciones IP de los atacantes por privacidad",
+                    "Para desactivar el firewall cuando hay mucho tráfico"
+                ],
+                correct: 1
+            },
+            {
+                question: "¿Cuál de las siguientes herramientas es una plataforma SIEM y XDR open source ampliamente usada en laboratorios y producción?",
+                options: [
+                    "Wazuh",
+                    "Hashcat",
+                    "Gobuster",
+                    "Hydra"
+                ],
+                correct: 0
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-15d'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-15d', quizQuestions);
+            const explanations = [
+                "Sysmon Event ID 1 registra la creación de cada proceso junto con sus argumentos completos de línea de comandos, hashes y proceso padre (ParentImage), vital para detectar ejecución maliciosa.",
+                "La normalización unifica los nombres de campos (por ejemplo, src_ip o SourceAddress a source.ip) para que las consultas y reglas de correlación funcionen sobre cualquier fuente de logs.",
+                "Wazuh es una solución SIEM y XDR de código abierto muy utilizada por equipos Blue Team para recolección de telemetría, detección de intrusiones y respuesta activa."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
 <script src="../script.js"></script>
 </body></html>

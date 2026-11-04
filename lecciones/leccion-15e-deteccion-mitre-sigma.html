@@ -75,11 +75,63 @@ tags:
             </div>
         </div>
 
+        <div class="lesson-section" id="evaluacion"><h2>5. Evaluación</h2>
+            <div class="quiz-box quiz-section" id="quiz-container"></div>
+        </div>
+
         <div class="lesson-nav">
             <a href="leccion-15d-siem-logs.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15D: SIEM</span></a>
             <a href="leccion-15f-threat-hunting.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15F: Threat Hunting</span></a>
         </div>
     </main>
     <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "Según la Pirámide del Dolor de David Bianco, ¿qué elemento es el más difícil de modificar para un atacante cuando el Blue Team lo detecta?",
+                options: [
+                    "Los valores hash (MD5/SHA256) de los binarios",
+                    "Las direcciones IP de salida",
+                    "Los nombres de dominio registrados",
+                    "Las TTPs (Tácticas, Técnicas y Procedimientos / comportamiento del adversario)"
+                ],
+                correct: 3
+            },
+            {
+                question: "¿Cuál es el propósito principal del formato de reglas Sigma en Ingeniería de Detección?",
+                options: [
+                    "Cifrar discos duros en servidores Linux",
+                    "Describir detecciones sobre logs en un formato YAML universal convertible a múltiples SIEMs",
+                    "Reemplazar el protocolo TCP/IP en redes locales",
+                    "Generar diccionarios de contraseñas para fuerza bruta"
+                ],
+                correct: 1
+            },
+            {
+                question: "En una regla Sigma, ¿qué sección define el origen de telemetría (por ejemplo, process_creation en Windows) y cuál define la lógica de coincidencia?",
+                options: [
+                    "logsource y detection",
+                    "header y body",
+                    "input y output",
+                    "source y sink"
+                ],
+                correct: 0
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-15e'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-15e', quizQuestions);
+            const explanations = [
+                "Mientras que cambiar un hash o una IP es trivial para el atacante, detectar sus TTPs (como el volcado de memoria de LSASS) lo obliga a reinventar por completo su método de ataque.",
+                "Sigma es un formato abierto basado en YAML que permite escribir una regla de detección una sola vez y traducirla a consultas de Splunk, Elastic, Sentinel o QRadar.",
+                "Toda regla Sigma especifica en 'logsource' qué tipo de log analiza (producto/categoría) y en 'detection' los selectores y la condición booleana que disparan la alerta."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
 <script src="../script.js"></script>
 </body></html>

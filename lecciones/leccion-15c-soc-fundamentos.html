@@ -68,11 +68,63 @@
             </ul>
         </div>
 
+        <div class="lesson-section" id="evaluacion"><h2>5. Evaluación</h2>
+            <div class="quiz-box quiz-section" id="quiz-container"></div>
+        </div>
+
         <div class="lesson-nav">
             <a href="leccion-15b-cloud-security.html"><span class="nav-label">← Anterior</span><span class="nav-title">Lección 15B: Cloud Security</span></a>
             <a href="leccion-15d-siem-logs.html" class="next"><span class="nav-label">Siguiente →</span><span class="nav-title">Lección 15D: SIEM y Logs</span></a>
         </div>
     </main>
     <footer class="footer"><div class="container"><div class="footer-content"><p style="color:var(--text-muted);font-size:0.85rem;text-align:center">CyberPath 2026</p></div></div></footer>
+    <script src="../quiz.js"></script>
+    <script>
+        const quizQuestions = [
+            {
+                question: "¿Cuál es la responsabilidad principal de un analista SOC de Nivel 1 (L1 / N1)?",
+                options: [
+                    "Desarrollar exploits zero-day para el equipo de Red Team",
+                    "Realizar monitoreo continuo y triage de alertas para distinguir falsos positivos de incidentes reales",
+                    "Administrar el presupuesto anual de TI de toda la empresa",
+                    "Reemplazar el hardware físico de los servidores en el data center"
+                ],
+                correct: 1
+            },
+            {
+                question: "Durante el proceso de Triage, ¿qué representa un Falso Negativo (FN)?",
+                options: [
+                    "Una actividad legítima de administración que disparó una alerta por error",
+                    "Tráfico normal que no generó ninguna alerta",
+                    "Un ataque real que ocurrió en la red pero NO disparó ninguna alerta de seguridad",
+                    "Un ataque real detectado y bloqueado correctamente por el EDR"
+                ],
+                correct: 2
+            },
+            {
+                question: "Al analizar un correo sospechoso de phishing en N1, ¿qué registros de las cabeceras permiten verificar la autenticidad del remitente?",
+                options: [
+                    "SPF, DKIM y DMARC",
+                    "ARP, ICMP y DHCP",
+                    "HTML, CSS y JavaScript",
+                    "RAID, LVM y EXT4"
+                ],
+                correct: 0
+            }
+        ];
+        window._quizQuestions = window._quizQuestions || {};
+        window._quizQuestions['leccion-15c'] = quizQuestions;
+        document.addEventListener('DOMContentLoaded', () => {
+            CyberQuiz.init('leccion-15c', quizQuestions);
+            const explanations = [
+                "El analista L1/N1 es la primera línea de defensa en el SOC: monitorea las colas del SIEM, analiza reportes de phishing y escala los incidentes reales (True Positives) a L2.",
+                "El Falso Negativo (FN) es el escenario más peligroso para un SOC: el ataque es real pero los controles no generaron alerta, permitiendo al adversario operar sin ser detectado.",
+                "SPF valida qué servidores pueden enviar correo en nombre de un dominio, DKIM añade una firma criptográfica al mensaje y DMARC define la política de rechazo y reporte."
+            ];
+            document.querySelectorAll('.quiz-question').forEach((q, i) => {
+                if (explanations[i]) q.dataset.explanation = explanations[i];
+            });
+        });
+    </script>
 <script src="../script.js"></script>
 </body></html>
