@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "engram": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "engram-mcp-server@1.14.0",
+        "--project-root=C:\\Users\\ROG\\ciberseguridad"
+      ],
+      "_engram_version": "1.14.0"
+    }
+  }
+}

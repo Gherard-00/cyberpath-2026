@@ -36,3 +36,6 @@ __pycache__/
 
 # Tunnel runtime
 tunnel_url.txt
+
+# Engram AI agent memory
+.engram/
