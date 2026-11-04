@@ -80,16 +80,80 @@
                 <span class="section-tag">Temario del Curso</span>
                 <h2 class="section-title">Lecciones <span class="gradient-text">Paso a Paso</span></h2>
                 <p class="section-desc">Cada lección te enseña la teoría completa, te explica cada concepto y te guía con ejercicios prácticos. Haz clic en una lección para comenzar.</p>
-                <div class="course-progress" id="courseProgress" aria-label="Progreso del curso">
-                    <div class="course-progress-bar">
-                        <div class="course-progress-fill" id="courseProgressFill"></div>
+                <!-- PROGRESO SEGMENTADO POR FASE (Lote 3). Conteos, anchos y aria-valuenow los actualiza script.js
+                     leyendo CyberQuiz.getProgress(). #courseProgressText se conserva por retrocompatibilidad con quiz.js. -->
+                <div class="phase-progress" id="phaseProgress">
+                    <div class="phase-progress__list" role="list" aria-label="Progreso por fase">
+                        <div class="phase-progress__item" role="listitem" data-phase="0" data-phase-bar="0" data-track="foundation">
+                            <div class="phase-progress__head">
+                                <span class="phase-progress__label" title="Fase 0 — Cimientos Absolutos">F0</span>
+                                <span class="phase-progress__count">0/4</span>
+                            </div>
+                            <div class="phase-progress__track" role="progressbar" aria-label="Fase 0 · Cimientos Absolutos (Foundation)" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" aria-valuetext="0 de 4 lecciones">
+                                <div class="phase-progress__fill"></div>
+                            </div>
+                        </div>
+                        <div class="phase-progress__item" role="listitem" data-phase="1" data-phase-bar="1" data-track="foundation">
+                            <div class="phase-progress__head">
+                                <span class="phase-progress__label" title="Fase 1 — Introducción a la Ciberseguridad">F1</span>
+                                <span class="phase-progress__count">0/4</span>
+                            </div>
+                            <div class="phase-progress__track" role="progressbar" aria-label="Fase 1 · Introducción a la Ciberseguridad (Foundation)" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" aria-valuetext="0 de 4 lecciones">
+                                <div class="phase-progress__fill"></div>
+                            </div>
+                        </div>
+                        <div class="phase-progress__item" role="listitem" data-phase="2" data-phase-bar="2" data-track="specialization">
+                            <div class="phase-progress__head">
+                                <span class="phase-progress__label" title="Fase 2 — Pentesting Fundamental">F2</span>
+                                <span class="phase-progress__count">0/6</span>
+                            </div>
+                            <div class="phase-progress__track" role="progressbar" aria-label="Fase 2 · Pentesting Fundamental (Specialization)" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-valuetext="0 de 6 lecciones">
+                                <div class="phase-progress__fill"></div>
+                            </div>
+                        </div>
+                        <div class="phase-progress__item" role="listitem" data-phase="3" data-phase-bar="3" data-track="specialization">
+                            <div class="phase-progress__head">
+                                <span class="phase-progress__label" title="Fase 3 — Red Team y Técnicas Avanzadas">F3</span>
+                                <span class="phase-progress__count">0/5</span>
+                            </div>
+                            <div class="phase-progress__track" role="progressbar" aria-label="Fase 3 · Red Team y Técnicas Avanzadas (Specialization)" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-valuetext="0 de 5 lecciones">
+                                <div class="phase-progress__fill"></div>
+                            </div>
+                        </div>
+                        <div class="phase-progress__item" role="listitem" data-phase="4" data-phase-bar="4" data-track="professional">
+                            <div class="phase-progress__head">
+                                <span class="phase-progress__label" title="Fase 4 — Blue Team y SOC">F4</span>
+                                <span class="phase-progress__count">0/5</span>
+                            </div>
+                            <div class="phase-progress__track" role="progressbar" aria-label="Fase 4 · Blue Team y SOC (Professional)" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" aria-valuetext="0 de 5 lecciones">
+                                <div class="phase-progress__fill"></div>
+                            </div>
+                        </div>
+                        <div class="phase-progress__item" role="listitem" data-phase="5" data-phase-bar="5" data-track="professional">
+                            <div class="phase-progress__head">
+                                <span class="phase-progress__label" title="Fase 5 — Informática Forense y DFIR">F5</span>
+                                <span class="phase-progress__count">0/4</span>
+                            </div>
+                            <div class="phase-progress__track" role="progressbar" aria-label="Fase 5 · Informática Forense y DFIR (Professional)" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" aria-valuetext="0 de 4 lecciones">
+                                <div class="phase-progress__fill"></div>
+                            </div>
+                        </div>
+                        <div class="phase-progress__item" role="listitem" data-phase="6" data-phase-bar="6" data-track="professional">
+                            <div class="phase-progress__head">
+                                <span class="phase-progress__label" title="Fase 6 — Profesionalización y Nivel Experto">F6</span>
+                                <span class="phase-progress__count">0/3</span>
+                            </div>
+                            <div class="phase-progress__track" role="progressbar" aria-label="Fase 6 · Profesionalización y Nivel Experto (Professional)" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-valuetext="0 de 3 lecciones">
+                                <div class="phase-progress__fill"></div>
+                            </div>
+                        </div>
                     </div>
-                    <span class="course-progress-text" id="courseProgressText">0 / 31 lecciones completadas</span>
+                    <p class="phase-progress__summary" id="courseProgressText">0 / 31 lecciones completadas</p>
                 </div>
             </div>
 
             <!-- 3 FRANJAS DE CARRERA (capa visual; la franja actual la marca el Lote 3) -->
-            <ol class="career-track" id="careerTrack" aria-label="Franjas de formación">
+            <ol class="career-track" id="careerTrack" role="list" aria-label="Franjas de formación">
                 <li class="career-track__step" data-track="foundation" data-phases="0,1">
                     <span class="career-track__index" aria-hidden="true">01</span>
                     <span class="career-track__name">Foundation</span>

@@ -3518,28 +3518,37 @@ a.prereq-chip:hover {
 
 /* --- Progreso segmentado por Fase ---
    Funciona con cualquier número de fases (7 hoy, 8 si se añade otra).
-   El ancho de .phase-progress__fill lo pone JS (style.width) en el Lote 3.
-   <div class="phase-progress" role="list" aria-label="Progreso por fase">
-       <div class="phase-progress__item" role="listitem" data-track="foundation">
-           <div class="phase-progress__head">
-               <span class="phase-progress__label">F0</span>
-               <span class="phase-progress__count">2/4</span>
-           </div>
-           <div class="phase-progress__track" role="progressbar"
-                aria-label="Fase 0" aria-valuemin="0" aria-valuemax="4" aria-valuenow="2">
-               <div class="phase-progress__fill"></div>
+   El ancho de .phase-progress__fill, el conteo y aria-valuenow los pone script.js (Lote 3).
+   role="list" va en .phase-progress__list (no en el contenedor) para que el resumen
+   no sea un hijo inválido de la lista.
+   <div class="phase-progress" id="phaseProgress">
+       <div class="phase-progress__list" role="list" aria-label="Progreso por fase">
+           <div class="phase-progress__item" role="listitem" data-phase="0" data-track="foundation">
+               <div class="phase-progress__head">
+                   <span class="phase-progress__label">F0</span>
+                   <span class="phase-progress__count">2/4</span>
+               </div>
+               <div class="phase-progress__track" role="progressbar"
+                    aria-label="Fase 0" aria-valuemin="0" aria-valuemax="4" aria-valuenow="2">
+                   <div class="phase-progress__fill"></div>
+               </div>
            </div>
        </div>
+       <p class="phase-progress__summary" id="courseProgressText">2 / 31 lecciones completadas</p>
    </div> */
 .phase-progress {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
-    gap: 0.6rem 0.75rem;
+    gap: 0.6rem;
     margin-top: 1.5rem;
     padding: 1rem 1.25rem;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
+}
+.phase-progress__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+    gap: 0.6rem 0.75rem;
 }
 .phase-progress__item {
     --track-color: var(--track-foundation);
@@ -3589,6 +3598,7 @@ a.prereq-chip:hover {
 }
 .phase-progress__summary {
     grid-column: 1 / -1;
+    margin: 0;
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: var(--text-muted);
@@ -3619,8 +3629,10 @@ a.prereq-chip:hover {
     }
 
     .phase-progress {
-        grid-template-columns: repeat(4, 1fr);
         padding: 0.85rem 1rem;
+    }
+    .phase-progress__list {
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .prereq-accordion > summary,
@@ -3634,7 +3646,7 @@ a.prereq-chip:hover {
 }
 
 @media (max-width: 380px) {
-    .phase-progress { grid-template-columns: repeat(2, 1fr); }
+    .phase-progress__list { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* --- Movimiento reducido (accesibilidad) --- */

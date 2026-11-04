@@ -214,10 +214,158 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keyboard navigation for phase tabs removed — phase tabs
     // no longer exist in the current layout.
 
+    // --- Progreso por Fase + Franja actual (Lote 3) ---
+    // Aislado para que un fallo aquí nunca impida iniciar el chat.
+    try {
+        initPhaseProgress();
+    } catch (e) {
+        console.error('Error al pintar el progreso por fase:', e);
+    }
+
     // --- AI Chatbot Integration (Ollama) ---
     initAIChatbot();
 
 });
+
+/* ============================================
+   Progreso por Fase y Franja de carrera (Lote 3)
+   Lee CyberQuiz.getProgress() (quiz.js, solo lectura) y actualiza:
+   - .phase-progress__item[data-phase]: conteo X/Y, ancho del fill,
+     aria-valuenow/valuemax y .is-complete al 100 %.
+   - #careerTrack: .is-done en franjas completas; .is-current +
+     aria-current="step" + "ESTÁS AQUÍ" en la franja de la primera
+     fase incompleta.
+   - #courseProgressText: "X / N lecciones completadas".
+   ============================================ */
+
+/** Mismo patrón que applyBadges() de quiz.js para obtener el id de lección (case-insensitive). */
+const LESSON_ID_PATTERN = /leccion-(\d{2}[a-z]?)/i;
+
+/**
+ * Lee el progreso guardado sin romper si quiz.js no está cargado.
+ * @returns {Object<string, {completed?: boolean}>}
+ */
+function readCourseProgress() {
+    if (typeof CyberQuiz === 'undefined' || typeof CyberQuiz.getProgress !== 'function') {
+        return {};
+    }
+    const progress = CyberQuiz.getProgress();
+    return progress && typeof progress === 'object' ? progress : {};
+}
+
+/**
+ * Calcula, por fase, cuántas lecciones del temario están completadas.
+ * Solo cuenta las tarjetas .lesson-card (no los chips de prerrequisitos).
+ * @returns {Array<{phase: string, track: string, total: number, done: number}>}
+ */
+function computePhaseStats(progress) {
+    const normalized = {};
+    if (progress && typeof progress === 'object') {
+        for (const [k, v] of Object.entries(progress)) {
+            normalized[k.toLowerCase()] = v;
+        }
+    }
+    return Array.from(document.querySelectorAll('.course-phase[data-phase]')).map(phaseEl => {
+        const cards = phaseEl.querySelectorAll('.lesson-card[href]');
+        let done = 0;
+        cards.forEach(card => {
+            const match = card.getAttribute('href').match(LESSON_ID_PATTERN);
+            if (match && normalized[`leccion-${match[1].toLowerCase()}`]?.completed) done++;
+        });
+        return {
+            phase: phaseEl.dataset.phase,
+            track: phaseEl.dataset.track || '',
+            total: cards.length,
+            done
+        };
+    });
+}
+
+function initPhaseProgress() {
+    const container = document.getElementById('phaseProgress');
+    // script.js también se carga en las lecciones: solo actúa en el temario.
+    if (!container) return;
+
+    const render = () => {
+        const stats = computePhaseStats(readCourseProgress());
+        // Una fase sin lecciones no bloquea el avance.
+        const isComplete = s => s.done >= s.total;
+
+        let doneTotal = 0;
+        let lessonTotal = 0;
+
+        stats.forEach(s => {
+            doneTotal += s.done;
+            lessonTotal += s.total;
+
+            const item = container.querySelector(
+                `.phase-progress__item[data-phase="${s.phase}"], .phase-progress__item[data-phase-bar="${s.phase}"]`
+            );
+            if (!item) return;
+            const pct = s.total > 0 ? Math.round((s.done / s.total) * 100) : 0;
+
+            const count = item.querySelector('.phase-progress__count');
+            if (count) count.textContent = `${s.done}/${s.total}`;
+
+            const bar = item.querySelector('.phase-progress__track');
+            if (bar) {
+                bar.setAttribute('aria-valuemin', '0');
+                bar.setAttribute('aria-valuemax', String(s.total));
+                bar.setAttribute('aria-valuenow', String(s.done));
+                bar.setAttribute('aria-valuetext', `${s.done} de ${s.total} lecciones`);
+            }
+
+            const fill = item.querySelector('.phase-progress__fill');
+            if (fill) fill.style.width = `${pct}%`;
+
+            item.classList.toggle('is-complete', s.total > 0 && isComplete(s));
+        });
+
+        const summary = document.getElementById('courseProgressText');
+        if (summary) summary.textContent = `${doneTotal} / ${lessonTotal} lecciones completadas`;
+
+        // Franja actual = franja de la primera fase incompleta.
+        // Si todas las fases del curso están 100% completas, mantener actual / "ESTÁS AQUÍ" en Professional.
+        const firstIncomplete = stats.find(s => !isComplete(s));
+        const currentTrack = firstIncomplete
+            ? firstIncomplete.track
+            : (stats.length > 0 ? stats[stats.length - 1].track : 'professional');
+
+        document.querySelectorAll('#careerTrack .career-track__step[data-track]').forEach(step => {
+            const track = step.dataset.track;
+            const trackPhases = stats.filter(s => s.track === track);
+            const trackDone = trackPhases.length > 0 && trackPhases.every(isComplete);
+            const isCurrent = track === currentTrack;
+
+            step.classList.toggle('is-done', trackDone);
+            step.classList.toggle('is-current', isCurrent);
+            if (isCurrent) {
+                step.setAttribute('aria-current', 'step');
+            } else {
+                step.removeAttribute('aria-current');
+            }
+
+            step.querySelectorAll('.career-track__here').forEach(el => el.remove());
+            if (isCurrent) {
+                const tag = document.createElement('span');
+                tag.className = 'career-track__here';
+                tag.textContent = 'ESTÁS AQUÍ';
+                step.appendChild(tag);
+            }
+        });
+    };
+
+    render();
+
+    // Mantener sincronizado si el progreso cambia en otra pestaña
+    // o si el navegador restaura la página desde la caché (botón Atrás).
+    window.addEventListener('storage', e => {
+        if (e.key === null || e.key === 'cyberpath_progress') render();
+    });
+    window.addEventListener('pageshow', e => {
+        if (e.persisted) render();
+    });
+}
 
 function initAIChatbot() {
     // 1. Inyectar HTML del Chatbot con controles extendidos
