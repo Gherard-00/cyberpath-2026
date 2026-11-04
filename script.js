@@ -6,7 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Navbar Scroll Effect ---
     const navbar = document.getElementById('navbar');
-    const scrollProgress = document.getElementById('scrollProgress');
+    let scrollProgress = document.getElementById('scrollProgress');
+    if (navbar && !scrollProgress) {
+        const navProgressWrap = document.createElement('div');
+        navProgressWrap.className = 'nav-progress';
+        scrollProgress = document.createElement('div');
+        scrollProgress.className = 'nav-progress-bar';
+        scrollProgress.id = 'scrollProgress';
+        navProgressWrap.appendChild(scrollProgress);
+        navbar.appendChild(navProgressWrap);
+    }
 
     if (navbar && scrollProgress) {
         window.addEventListener('scroll', () => {
@@ -15,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Progress bar
             const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (window.scrollY / totalHeight) * 100;
+            const progress = totalHeight > 0
+                ? Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100))
+                : 0;
             scrollProgress.style.width = `${progress}%`;
         });
     }
@@ -73,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         statNumbers.forEach(stat => {
             const target = parseInt(stat.dataset.count);
+            const suffix = stat.dataset.suffix || '';
             const duration = 2000;
             const increment = target / (duration / 16);
             let current = 0;
@@ -83,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     stat.textContent = Math.ceil(current);
                     requestAnimationFrame(updateCounter);
                 } else {
-                    stat.textContent = target + '+';
+                    stat.textContent = target + suffix;
                 }
             };
             updateCounter();
@@ -170,10 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // The CSS (.metric-item, .metric-check) is retained for potential future use.
 
     // --- Scroll Reveal Animation ---
-    const revealElements = document.querySelectorAll(
-        '.module-card, .tool-card, .lab-card, .cert-card, .prereq-card, ' +
-        '.community-card, .weekly-block, .forensic-step'
-    );
+    const revealElements = document.querySelectorAll('.course-phase, .resource-card');
 
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -201,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const offset = navbar.offsetHeight + 20;
+                const offset = navbar ? navbar.offsetHeight + 20 : 20;
                 const position = target.offsetTop - offset;
                 window.scrollTo({
                     top: position,
@@ -213,6 +222,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Keyboard navigation for phase tabs removed — phase tabs
     // no longer exist in the current layout.
+
+    // --- Hook global de localStorage y restauración de explicaciones de Quiz ---
+    try {
+        installProgressStorageHook();
+        initQuizExplanationObserver();
+    } catch (e) {
+        console.error('Error al inicializar hooks de progreso/quiz:', e);
+    }
 
     // --- Progreso por Fase + Franja actual (Lote 3) ---
     // Aislado para que un fallo aquí nunca impida iniciar el chat.
@@ -422,31 +439,109 @@ function updatePhaseProgress() {
     });
 }
 
-function initPhaseProgress() {
-    const container = document.getElementById('phaseProgress');
-    if (!container) return;
+let phaseHighlightTimer = null;
 
-    if (typeof window !== 'undefined') {
-        window.updatePhaseProgress = updatePhaseProgress;
+function clearPhaseHighlights() {
+    if (phaseHighlightTimer) {
+        clearTimeout(phaseHighlightTimer);
+        phaseHighlightTimer = null;
     }
-
-    updatePhaseProgress();
-
-    if (phaseProgressListenersBound) return;
-    phaseProgressListenersBound = true;
-
-    // Mantener sincronizado si el progreso cambia en otra pestaña
-    // o si el navegador restaura la página desde BFCache (botón Atrás).
-    window.addEventListener('storage', e => {
-        if (e.key === null || e.key === 'cyberpath_progress') updatePhaseProgress();
+    document.querySelectorAll('.course-phase.is-highlighted').forEach(el => {
+        el.classList.remove('is-highlighted');
     });
-    window.addEventListener('pageshow', e => {
-        if (e.persisted) updatePhaseProgress();
+    document.querySelectorAll('.phase-progress__item.is-selected, #careerTrack .career-track__step.is-selected').forEach(el => {
+        el.classList.remove('is-selected');
+    });
+}
+
+function scrollToPhaseElement(targetEl) {
+    if (!targetEl || typeof targetEl.scrollIntoView !== 'function') return;
+    let smooth = true;
+    try {
+        if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+            smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+    } catch (e) {
+        smooth = true;
+    }
+    targetEl.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+}
+
+function bindPhaseNavigation() {
+    document.querySelectorAll('#phaseProgress .phase-progress__item[data-phase]').forEach(item => {
+        if (item.dataset.navBound === '1') return;
+        item.dataset.navBound = '1';
+
+        const activatePhase = () => {
+            const phase = item.dataset.phase;
+            const track = item.dataset.track;
+            const target = document.querySelector(`.course-phase[data-phase="${phase}"]`);
+            if (!target) return;
+
+            clearPhaseHighlights();
+            item.classList.add('is-selected');
+            if (track) {
+                const trackStep = document.querySelector(`#careerTrack .career-track__step[data-track="${track}"]`);
+                if (trackStep) trackStep.classList.add('is-selected');
+            }
+            target.classList.add('is-highlighted');
+            scrollToPhaseElement(target);
+
+            phaseHighlightTimer = setTimeout(() => {
+                clearPhaseHighlights();
+            }, 1800);
+        };
+
+        item.addEventListener('click', activatePhase);
+        item.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                e.preventDefault();
+                activatePhase();
+            }
+        });
     });
 
-    // Sincronizar también si localStorage se modifica en la misma pestaña sin recargar.
+    document.querySelectorAll('#careerTrack .career-track__step[data-track]').forEach(step => {
+        if (step.dataset.navBound === '1') return;
+        step.dataset.navBound = '1';
+
+        const activateTrack = () => {
+            const track = step.dataset.track;
+            const phases = Array.from(document.querySelectorAll(`.course-phase[data-track="${track}"]`));
+            if (phases.length === 0) return;
+
+            clearPhaseHighlights();
+            step.classList.add('is-selected');
+            document.querySelectorAll(`#phaseProgress .phase-progress__item[data-track="${track}"]`).forEach(bar => {
+                bar.classList.add('is-selected');
+            });
+            phases.forEach(p => p.classList.add('is-highlighted'));
+            scrollToPhaseElement(phases[0]);
+
+            phaseHighlightTimer = setTimeout(() => {
+                clearPhaseHighlights();
+            }, 1800);
+        };
+
+        step.addEventListener('click', activateTrack);
+        step.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                e.preventDefault();
+                activateTrack();
+            }
+        });
+    });
+}
+
+let storageHookInstalled = false;
+
+function installProgressStorageHook() {
+    if (storageHookInstalled) return;
     try {
         if (typeof localStorage !== 'undefined' && typeof localStorage.setItem === 'function') {
+            const origGetItem = typeof localStorage.getItem === 'function'
+                ? localStorage.getItem.bind(localStorage)
+                : null;
             const origSetItem = localStorage.setItem.bind(localStorage);
             const origRemoveItem = typeof localStorage.removeItem === 'function'
                 ? localStorage.removeItem.bind(localStorage)
@@ -456,7 +551,41 @@ function initPhaseProgress() {
                 : null;
 
             localStorage.setItem = function (key, value) {
-                origSetItem(key, value);
+                let finalValue = value;
+                if (key === 'cyberpath_progress' && typeof value === 'string' && origGetItem) {
+                    try {
+                        const prevRaw = origGetItem('cyberpath_progress');
+                        if (prevRaw) {
+                            const prev = JSON.parse(prevRaw);
+                            const next = JSON.parse(value);
+                            if (
+                                prev && typeof prev === 'object' && !Array.isArray(prev) &&
+                                next && typeof next === 'object' && !Array.isArray(next)
+                            ) {
+                                let merged = false;
+                                for (const [k, prevEntry] of Object.entries(prev)) {
+                                    if (
+                                        prevEntry &&
+                                        typeof prevEntry === 'object' &&
+                                        prevEntry.evidenceData !== undefined &&
+                                        next[k] &&
+                                        typeof next[k] === 'object' &&
+                                        next[k].evidenceData === undefined
+                                    ) {
+                                        next[k].evidenceData = prevEntry.evidenceData;
+                                        merged = true;
+                                    }
+                                }
+                                if (merged) {
+                                    finalValue = JSON.stringify(next);
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        // Conservar el valor original si el JSON no es válido
+                    }
+                }
+                origSetItem(key, finalValue);
                 if (key === 'cyberpath_progress') updatePhaseProgress();
             };
             if (origRemoveItem) {
@@ -471,10 +600,85 @@ function initPhaseProgress() {
                     updatePhaseProgress();
                 };
             }
+            storageHookInstalled = true;
         }
     } catch (e) {
         // Ignorar si el entorno restringe sobrescribir métodos de localStorage
     }
+}
+
+function initQuizExplanationObserver() {
+    const quizContainer = document.getElementById('quiz-container');
+    if (!quizContainer) return;
+
+    let cachedExplanations = [];
+
+    const captureOrRestoreExplanations = () => {
+        const questions = quizContainer.querySelectorAll('.quiz-question');
+        if (questions.length === 0) return;
+
+        questions.forEach((q, i) => {
+            if (q.dataset.explanation) {
+                cachedExplanations[i] = q.dataset.explanation;
+            }
+        });
+
+        if (cachedExplanations.length === 0) {
+            document.querySelectorAll('script:not([src])').forEach(scr => {
+                const match = scr.textContent.match(/const\s+explanations\s*=\s*(\[[\s\S]*?\])\s*;/);
+                if (match) {
+                    try {
+                        const parsed = JSON.parse(match[1]);
+                        if (Array.isArray(parsed)) cachedExplanations = parsed;
+                    } catch (e) {
+                        // Ignorar si no es JSON estricto
+                    }
+                }
+            });
+        }
+
+        questions.forEach((q, i) => {
+            if (!q.dataset.explanation && cachedExplanations[i]) {
+                q.dataset.explanation = cachedExplanations[i];
+            }
+        });
+    };
+
+    captureOrRestoreExplanations();
+
+    if (typeof MutationObserver === 'function' && quizContainer.dataset.explanationObsBound !== '1') {
+        quizContainer.dataset.explanationObsBound = '1';
+        const obs = new MutationObserver(() => {
+            captureOrRestoreExplanations();
+        });
+        obs.observe(quizContainer, { childList: true });
+    }
+}
+
+function initPhaseProgress() {
+    installProgressStorageHook();
+
+    const container = document.getElementById('phaseProgress');
+    if (!container) return;
+
+    if (typeof window !== 'undefined') {
+        window.updatePhaseProgress = updatePhaseProgress;
+    }
+
+    updatePhaseProgress();
+    bindPhaseNavigation();
+
+    if (phaseProgressListenersBound) return;
+    phaseProgressListenersBound = true;
+
+    // Mantener sincronizado si el progreso cambia en otra pestaña
+    // o si el navegador restaura la página desde BFCache (botón Atrás).
+    window.addEventListener('storage', e => {
+        if (e.key === null || e.key === 'cyberpath_progress') updatePhaseProgress();
+    });
+    window.addEventListener('pageshow', e => {
+        if (e.persisted) updatePhaseProgress();
+    });
 }
 
 function initAIChatbot() {
@@ -635,17 +839,22 @@ function initAIChatbot() {
     // Formateador Anti-XSS y Markdown Seguro
     function formatMarkdown(text) {
         // 1. Escapar HTML estricto para prevenir XSS de payloads en lecciones
-        let safe = text
+        let safe = String(text || '')
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
 
-        // 2. Formatear bloques de código multilínea ```código``` con botón de copiar
-        safe = safe.replace(/```([\s\S]*?)```/g, (match, code) => {
+        // 2. Extraer bloques de código multilínea ```lang\ncódigo``` a placeholders
+        //    para evitar que inline-code, negritas o \n -> <br> alteren <pre><code>
+        const codeBlocks = [];
+        safe = safe.replace(/```(?:[a-zA-Z0-9_-]+[ \t]*\r?\n)?([\s\S]*?)```/g, (match, code) => {
             const cleanCode = code.trim();
-            return `<pre><code>${cleanCode}</code><button class="ai-code-copy-btn" onclick="copyAiCode(this)">Copiar</button></pre>`;
+            const html = `<pre><code>${cleanCode}</code><button class="ai-code-copy-btn" onclick="copyAiCode(this)">Copiar</button></pre>`;
+            const token = `\x00CODEBLOCK_${codeBlocks.length}\x00`;
+            codeBlocks.push(html);
+            return token;
         });
 
         // 3. Formatear código en línea `código`
@@ -654,8 +863,11 @@ function initAIChatbot() {
         // 4. Formatear negritas **texto**
         safe = safe.replace(/\*\*([\s\S]*?)\*\*/g, '<strong>$1</strong>');
 
-        // 5. Formatear saltos de línea
+        // 5. Formatear saltos de línea fuera de <pre>
         safe = safe.replace(/\n/g, '<br>');
+
+        // 6. Restaurar bloques <pre><code>
+        safe = safe.replace(/\x00CODEBLOCK_(\d+)\x00/g, (m, idx) => codeBlocks[Number(idx)] || '');
 
         return safe;
     }
@@ -708,7 +920,7 @@ function initAIChatbot() {
         // Extraer contexto dinámico de la lección activa
         const pageTitle = document.title;
         let pageContent = "";
-        const mainEl = document.querySelector('main') || document.querySelector('.container') || document.body;
+        const mainEl = document.querySelector('main, .cheatsheet-page, .glossary-page, #temario .container') || document.querySelector('.container') || document.body;
         if (mainEl) {
             pageContent = mainEl.innerText.substring(0, 4000);
         }

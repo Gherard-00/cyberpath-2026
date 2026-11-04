@@ -31,6 +31,7 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="#hero" class="nav-link active">Inicio</a></li>
             <li><a href="#temario" class="nav-link">Temario</a></li>
+            <li><a href="#recursos" class="nav-link">Recursos</a></li>
         </ul>
         <div class="nav-progress"><div class="nav-progress-bar" id="scrollProgress"></div></div>
     </nav>
@@ -52,7 +53,7 @@
             <div class="hero-stats">
                 <div class="stat"><span class="stat-number" data-count="7">0</span><span class="stat-label">Fases</span></div>
                 <div class="stat"><span class="stat-number" data-count="31">0</span><span class="stat-label">Lecciones</span></div>
-                <div class="stat"><span class="stat-number" data-count="15">0</span><span class="stat-label">Herramientas</span></div>
+                <div class="stat"><span class="stat-number" data-count="15" data-suffix="+">0</span><span class="stat-label">Herramientas</span></div>
             </div>
             <a href="#temario" class="btn btn-primary">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -84,7 +85,7 @@
                      leyendo CyberQuiz.getProgress(). #courseProgressText se conserva por retrocompatibilidad con quiz.js. -->
                 <div class="phase-progress" id="phaseProgress">
                     <div class="phase-progress__list" role="list" aria-label="Progreso por fase">
-                        <div class="phase-progress__item" role="listitem" data-phase="0" data-phase-bar="0" data-track="foundation">
+                        <div class="phase-progress__item" role="listitem" tabindex="0" aria-controls="phase-0" title="Ir a Fase 0 — Cimientos Absolutos" data-phase="0" data-phase-bar="0" data-track="foundation">
                             <div class="phase-progress__head">
                                 <span class="phase-progress__label" title="Fase 0 — Cimientos Absolutos">F0</span>
                                 <span class="phase-progress__count">0/4</span>
@@ -93,7 +94,7 @@
                                 <div class="phase-progress__fill"></div>
                             </div>
                         </div>
-                        <div class="phase-progress__item" role="listitem" data-phase="1" data-phase-bar="1" data-track="foundation">
+                        <div class="phase-progress__item" role="listitem" tabindex="0" aria-controls="phase-1" title="Ir a Fase 1 — Introducción a la Ciberseguridad" data-phase="1" data-phase-bar="1" data-track="foundation">
                             <div class="phase-progress__head">
                                 <span class="phase-progress__label" title="Fase 1 — Introducción a la Ciberseguridad">F1</span>
                                 <span class="phase-progress__count">0/4</span>
@@ -102,7 +103,7 @@
                                 <div class="phase-progress__fill"></div>
                             </div>
                         </div>
-                        <div class="phase-progress__item" role="listitem" data-phase="2" data-phase-bar="2" data-track="specialization">
+                        <div class="phase-progress__item" role="listitem" tabindex="0" aria-controls="phase-2" title="Ir a Fase 2 — Pentesting Fundamental" data-phase="2" data-phase-bar="2" data-track="specialization">
                             <div class="phase-progress__head">
                                 <span class="phase-progress__label" title="Fase 2 — Pentesting Fundamental">F2</span>
                                 <span class="phase-progress__count">0/6</span>
@@ -111,7 +112,7 @@
                                 <div class="phase-progress__fill"></div>
                             </div>
                         </div>
-                        <div class="phase-progress__item" role="listitem" data-phase="3" data-phase-bar="3" data-track="specialization">
+                        <div class="phase-progress__item" role="listitem" tabindex="0" aria-controls="phase-3" title="Ir a Fase 3 — Red Team y Técnicas Avanzadas" data-phase="3" data-phase-bar="3" data-track="specialization">
                             <div class="phase-progress__head">
                                 <span class="phase-progress__label" title="Fase 3 — Red Team y Técnicas Avanzadas">F3</span>
                                 <span class="phase-progress__count">0/5</span>
@@ -120,7 +121,7 @@
                                 <div class="phase-progress__fill"></div>
                             </div>
                         </div>
-                        <div class="phase-progress__item" role="listitem" data-phase="4" data-phase-bar="4" data-track="professional">
+                        <div class="phase-progress__item" role="listitem" tabindex="0" aria-controls="phase-4" title="Ir a Fase 4 — Blue Team y SOC" data-phase="4" data-phase-bar="4" data-track="professional">
                             <div class="phase-progress__head">
                                 <span class="phase-progress__label" title="Fase 4 — Blue Team y SOC">F4</span>
                                 <span class="phase-progress__count">0/5</span>
@@ -129,7 +130,7 @@
                                 <div class="phase-progress__fill"></div>
                             </div>
                         </div>
-                        <div class="phase-progress__item" role="listitem" data-phase="5" data-phase-bar="5" data-track="professional">
+                        <div class="phase-progress__item" role="listitem" tabindex="0" aria-controls="phase-5" title="Ir a Fase 5 — Informática Forense y DFIR" data-phase="5" data-phase-bar="5" data-track="professional">
                             <div class="phase-progress__head">
                                 <span class="phase-progress__label" title="Fase 5 — Informática Forense y DFIR">F5</span>
                                 <span class="phase-progress__count">0/4</span>
@@ -138,7 +139,7 @@
                                 <div class="phase-progress__fill"></div>
                             </div>
                         </div>
-                        <div class="phase-progress__item" role="listitem" data-phase="6" data-phase-bar="6" data-track="professional">
+                        <div class="phase-progress__item" role="listitem" tabindex="0" aria-controls="phase-6" title="Ir a Fase 6 — Profesionalización y Nivel Experto" data-phase="6" data-phase-bar="6" data-track="professional">
                             <div class="phase-progress__head">
                                 <span class="phase-progress__label" title="Fase 6 — Profesionalización y Nivel Experto">F6</span>
                                 <span class="phase-progress__count">0/3</span>
@@ -154,17 +155,17 @@
 
             <!-- 3 FRANJAS DE CARRERA (capa visual; la franja actual la marca el Lote 3) -->
             <ol class="career-track" id="careerTrack" role="list" aria-label="Franjas de formación">
-                <li class="career-track__step" data-track="foundation" data-phases="0,1">
+                <li class="career-track__step" tabindex="0" aria-controls="phase-0 phase-1" title="Ir a franja Foundation (Fases 0–1)" data-track="foundation" data-phases="0,1">
                     <span class="career-track__index" aria-hidden="true">01</span>
                     <span class="career-track__name">Foundation</span>
                     <span class="career-track__phases">Fases 0–1 · 8 lecciones</span>
                 </li>
-                <li class="career-track__step" data-track="specialization" data-phases="2,3">
+                <li class="career-track__step" tabindex="0" aria-controls="phase-2 phase-3" title="Ir a franja Specialization (Fases 2–3)" data-track="specialization" data-phases="2,3">
                     <span class="career-track__index" aria-hidden="true">02</span>
                     <span class="career-track__name">Specialization</span>
                     <span class="career-track__phases">Fases 2–3 · 11 lecciones</span>
                 </li>
-                <li class="career-track__step" data-track="professional" data-phases="4,5,6">
+                <li class="career-track__step" tabindex="0" aria-controls="phase-4 phase-5 phase-6" title="Ir a franja Professional (Fases 4–6)" data-track="professional" data-phases="4,5,6">
                     <span class="career-track__index" aria-hidden="true">03</span>
                     <span class="career-track__name">Professional</span>
                     <span class="career-track__phases">Fases 4–6 · 12 lecciones</span>
@@ -172,7 +173,7 @@
             </ol>
 
             <!-- FASE 0 -->
-            <div class="course-phase" data-phase="0" data-track="foundation">
+            <div class="course-phase" id="phase-0" data-phase="0" data-track="foundation">
                 <div class="course-phase-header">
                     <div class="phase-marker beginner" aria-hidden="true"></div>
                     <div>
@@ -291,7 +292,7 @@
             </div>
 
             <!-- FASE 1 -->
-            <div class="course-phase" data-phase="1" data-track="foundation">
+            <div class="course-phase" id="phase-1" data-phase="1" data-track="foundation">
                 <div class="course-phase-header">
                     <div class="phase-marker beginner-2" aria-hidden="true"></div>
                     <div>
@@ -415,7 +416,7 @@
             </div>
 
             <!-- FASE 2 -->
-            <div class="course-phase" data-phase="2" data-track="specialization">
+            <div class="course-phase" id="phase-2" data-phase="2" data-track="specialization">
                 <div class="course-phase-header">
                     <div class="phase-marker intermediate" aria-hidden="true"></div>
                     <div>
@@ -594,7 +595,7 @@
             </div>
 
             <!-- FASE 3 -->
-            <div class="course-phase" data-phase="3" data-track="specialization">
+            <div class="course-phase" id="phase-3" data-phase="3" data-track="specialization">
                 <div class="course-phase-header">
                     <div class="phase-marker advanced" aria-hidden="true"></div>
                     <div>
@@ -747,7 +748,7 @@
             </div>
 
             <!-- FASE 4 -->
-            <div class="course-phase" data-phase="4" data-track="professional">
+            <div class="course-phase" id="phase-4" data-phase="4" data-track="professional">
                 <div class="course-phase-header">
                     <div class="phase-marker advanced" aria-hidden="true"></div>
                     <div>
@@ -900,7 +901,7 @@
             </div>
 
             <!-- FASE 5 -->
-            <div class="course-phase" data-phase="5" data-track="professional">
+            <div class="course-phase" id="phase-5" data-phase="5" data-track="professional">
                 <div class="course-phase-header">
                     <div class="phase-marker forensic" aria-hidden="true"></div>
                     <div>
@@ -1024,7 +1025,7 @@
             </div>
 
             <!-- FASE 6 -->
-            <div class="course-phase" data-phase="6" data-track="professional">
+            <div class="course-phase" id="phase-6" data-phase="6" data-track="professional">
                 <div class="course-phase-header">
                     <div class="phase-marker expert" aria-hidden="true"></div>
                     <div>
@@ -1128,21 +1129,21 @@
                 <p class="section-desc">Documentos descargables que complementan el curso.</p>
             </div>
             <div class="resources-grid">
-                <a href="docs/Resumen Ejecutivo.pdf" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <a href="lecciones/docs/Resumen Ejecutivo.pdf" class="resource-card" target="_blank" rel="noopener noreferrer">
                     <span class="resource-icon">PDF</span>
                     <div class="resource-info">
                         <h4>Resumen Ejecutivo</h4>
                         <p>Vision general del programa de formacion en ciberseguridad.</p>
                     </div>
                 </a>
-                <a href="docs/Ruta Completa de Ciberseguridad - Documentos de Google.pdf" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <a href="lecciones/docs/Ruta Completa de Ciberseguridad - Documentos de Google.pdf" class="resource-card" target="_blank" rel="noopener noreferrer">
                     <span class="resource-icon">PDF</span>
                     <div class="resource-info">
                         <h4>Ruta Completa de Ciberseguridad</h4>
                         <p>Documento detallado con la ruta de aprendizaje completa.</p>
                     </div>
                 </a>
-                <a href="docs/Ruta completa de ciberseguridad 2026  de cero a experto en hacking ético, pentesting y forense digital.pdf" class="resource-card" target="_blank" rel="noopener noreferrer">
+                <a href="lecciones/docs/Ruta completa de ciberseguridad 2026  de cero a experto en hacking ético, pentesting y forense digital.pdf" class="resource-card" target="_blank" rel="noopener noreferrer">
                     <span class="resource-icon">PDF</span>
                     <div class="resource-info">
                         <h4>Guia de Cero a Experto</h4>
