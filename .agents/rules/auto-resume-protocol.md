@@ -23,3 +23,9 @@ Para que ningún corte de cuota o cambio de modelo pierda trabajo:
      * Quizzes (`quiz.js`) y proxy de chat (`/api/chat` con Ollama) operativos.
    - Realizar **commit atómico** del lote inmediatamente.
    - Actualizar las primeras 35 líneas de `PROJECT_STATE.md` y registrar el checkpoint en Engram reflejando el hash del commit y el siguiente paso exacto.
+
+## 3. Orquestación Autónoma de Extremo a Extremo (PROHIBIDO pedir cambio manual de modelo)
+1. **Cero Interrupciones por Cambio de Modelo**: Queda **ESTRICTAMENTE PROHIBIDO** detenerse al terminar un lote para pedirle al usuario que cambie manualmente de modelo (p. ej., de Opus a Sonnet/Gemini o viceversa).
+2. **Delegación a Subagentes Especializados**: El agente activo debe completar el ciclo entero de extremo a extremo delegando y coordinando subagentes especializados (implementación, diseño táctico UX/UI anti-clichés de IA, integración interactiva, auditoría QA integral y commits atómicos) hasta entregar el proyecto 100% verificado, pulido y commiteado.
+3. **Estética Táctica Profesional (Cero Clichés de IA)**: Mantener siempre la estética táctica de consola/HUD (cian técnico `#00e5ff`, verde terminal `#3dff9a`, ámbar táctico `#ffc24a`, superficies obsidiana/slate y bordes de precisión), evitando gradientes genéricos rosa/violeta típicos de plantillas de IA.
+
