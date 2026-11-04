@@ -241,6 +241,26 @@ document.addEventListener('DOMContentLoaded', () => {
 /** Mismo patrón que applyBadges() de quiz.js para obtener el id de lección (case-insensitive). */
 const LESSON_ID_PATTERN = /leccion-(\d{2}[a-z]?)/i;
 
+/** Evita registrar listeners duplicados si initPhaseProgress() se invoca más de una vez. */
+let phaseProgressListenersBound = false;
+
+/**
+ * Normaliza el mapa de progreso a claves en minúsculas.
+ * @param {Object} progress
+ * @returns {Object<string, {completed?: boolean}>}
+ */
+function normalizeProgressMap(progress) {
+    const normalized = {};
+    if (progress && typeof progress === 'object' && !Array.isArray(progress)) {
+        for (const [k, v] of Object.entries(progress)) {
+            if (v && typeof v === 'object') {
+                normalized[k.toLowerCase()] = v;
+            }
+        }
+    }
+    return normalized;
+}
+
 /**
  * Lee el progreso guardado sin romper si quiz.js no está cargado.
  * @returns {Object<string, {completed?: boolean}>}
@@ -250,7 +270,52 @@ function readCourseProgress() {
         return {};
     }
     const progress = CyberQuiz.getProgress();
-    return progress && typeof progress === 'object' ? progress : {};
+    return progress && typeof progress === 'object' && !Array.isArray(progress) ? progress : {};
+}
+
+/**
+ * Sincroniza los badges visuales (.completed y .lesson-completed-badge) de las tarjetas
+ * .lesson-card al volver desde BFCache (pageshow), cambiar otra pestaña (storage),
+ * usar claves con sufijo en mayúsculas (ej. leccion-07B) o reiniciar el progreso.
+ * @param {Object} progress
+ */
+function syncLessonCardBadges(progress) {
+    if (typeof CyberQuiz !== 'undefined' && typeof CyberQuiz.applyBadges === 'function') {
+        try {
+            CyberQuiz.applyBadges();
+        } catch (e) {
+            // Continuar con la sincronización normalizada
+        }
+    }
+    const normalized = normalizeProgressMap(progress);
+    document.querySelectorAll('.lesson-card[href]').forEach(card => {
+        const href = card.getAttribute('href');
+        if (!href) return;
+        const match = href.match(LESSON_ID_PATTERN);
+        if (!match) return;
+
+        const isDone = normalized[`leccion-${match[1].toLowerCase()}`]?.completed === true;
+        const numberEl = card.querySelector('.lesson-number');
+
+        if (isDone) {
+            card.classList.add('completed');
+            if (numberEl && !numberEl.querySelector('.lesson-completed-badge')) {
+                numberEl.style.position = 'relative';
+                const badge = document.createElement('span');
+                badge.className = 'lesson-completed-badge';
+                badge.textContent = '\u2713';
+                numberEl.appendChild(badge);
+            }
+        } else {
+            card.classList.remove('completed');
+            if (numberEl) {
+                const staleBadge = numberEl.querySelector('.lesson-completed-badge');
+                if (staleBadge && typeof staleBadge.remove === 'function') {
+                    staleBadge.remove();
+                }
+            }
+        }
+    });
 }
 
 /**
@@ -259,18 +324,13 @@ function readCourseProgress() {
  * @returns {Array<{phase: string, track: string, total: number, done: number}>}
  */
 function computePhaseStats(progress) {
-    const normalized = {};
-    if (progress && typeof progress === 'object') {
-        for (const [k, v] of Object.entries(progress)) {
-            normalized[k.toLowerCase()] = v;
-        }
-    }
+    const normalized = normalizeProgressMap(progress);
     return Array.from(document.querySelectorAll('.course-phase[data-phase]')).map(phaseEl => {
         const cards = phaseEl.querySelectorAll('.lesson-card[href]');
         let done = 0;
         cards.forEach(card => {
             const match = card.getAttribute('href').match(LESSON_ID_PATTERN);
-            if (match && normalized[`leccion-${match[1].toLowerCase()}`]?.completed) done++;
+            if (match && normalized[`leccion-${match[1].toLowerCase()}`]?.completed === true) done++;
         });
         return {
             phase: phaseEl.dataset.phase,
@@ -281,90 +341,140 @@ function computePhaseStats(progress) {
     });
 }
 
-function initPhaseProgress() {
+/**
+ * Recalcula y pinta el progreso segmentado por fase (#phaseProgress),
+ * el resumen (#courseProgressText), la franja activa (#careerTrack)
+ * y los badges de completado de las tarjetas (.lesson-card).
+ */
+function updatePhaseProgress() {
     const container = document.getElementById('phaseProgress');
     // script.js también se carga en las lecciones: solo actúa en el temario.
     if (!container) return;
 
-    const render = () => {
-        const stats = computePhaseStats(readCourseProgress());
-        // Una fase sin lecciones no bloquea el avance.
-        const isComplete = s => s.done >= s.total;
+    const progress = readCourseProgress();
+    syncLessonCardBadges(progress);
 
-        let doneTotal = 0;
-        let lessonTotal = 0;
+    const stats = computePhaseStats(progress);
+    // Una fase sin lecciones no bloquea el avance.
+    const isComplete = s => s.done >= s.total;
 
-        stats.forEach(s => {
-            doneTotal += s.done;
-            lessonTotal += s.total;
+    let doneTotal = 0;
+    let lessonTotal = 0;
 
-            const item = container.querySelector(
-                `.phase-progress__item[data-phase="${s.phase}"], .phase-progress__item[data-phase-bar="${s.phase}"]`
-            );
-            if (!item) return;
-            const pct = s.total > 0 ? Math.round((s.done / s.total) * 100) : 0;
+    stats.forEach(s => {
+        doneTotal += s.done;
+        lessonTotal += s.total;
 
-            const count = item.querySelector('.phase-progress__count');
-            if (count) count.textContent = `${s.done}/${s.total}`;
+        const item = container.querySelector(
+            `.phase-progress__item[data-phase="${s.phase}"], .phase-progress__item[data-phase-bar="${s.phase}"]`
+        );
+        if (!item) return;
+        const pct = s.total > 0 ? Math.round((s.done / s.total) * 100) : 0;
 
-            const bar = item.querySelector('.phase-progress__track');
-            if (bar) {
-                bar.setAttribute('aria-valuemin', '0');
-                bar.setAttribute('aria-valuemax', String(s.total));
-                bar.setAttribute('aria-valuenow', String(s.done));
-                bar.setAttribute('aria-valuetext', `${s.done} de ${s.total} lecciones`);
-            }
+        const count = item.querySelector('.phase-progress__count');
+        if (count) count.textContent = `${s.done}/${s.total}`;
 
-            const fill = item.querySelector('.phase-progress__fill');
-            if (fill) fill.style.width = `${pct}%`;
+        const bar = item.querySelector('.phase-progress__track');
+        if (bar) {
+            bar.setAttribute('aria-valuemin', '0');
+            bar.setAttribute('aria-valuemax', String(s.total));
+            bar.setAttribute('aria-valuenow', String(s.done));
+            bar.setAttribute('aria-valuetext', `${s.done} de ${s.total} lecciones`);
+        }
 
-            item.classList.toggle('is-complete', s.total > 0 && isComplete(s));
-        });
+        const fill = item.querySelector('.phase-progress__fill');
+        if (fill) fill.style.width = `${pct}%`;
 
-        const summary = document.getElementById('courseProgressText');
-        if (summary) summary.textContent = `${doneTotal} / ${lessonTotal} lecciones completadas`;
+        item.classList.toggle('is-complete', s.total > 0 && isComplete(s));
+    });
 
-        // Franja actual = franja de la primera fase incompleta.
-        // Si todas las fases del curso están 100% completas, mantener actual / "ESTÁS AQUÍ" en Professional.
-        const firstIncomplete = stats.find(s => !isComplete(s));
-        const currentTrack = firstIncomplete
-            ? firstIncomplete.track
-            : (stats.length > 0 ? stats[stats.length - 1].track : 'professional');
+    const summary = document.getElementById('courseProgressText');
+    if (summary) summary.textContent = `${doneTotal} / ${lessonTotal} lecciones completadas`;
 
-        document.querySelectorAll('#careerTrack .career-track__step[data-track]').forEach(step => {
-            const track = step.dataset.track;
-            const trackPhases = stats.filter(s => s.track === track);
-            const trackDone = trackPhases.length > 0 && trackPhases.every(isComplete);
-            const isCurrent = track === currentTrack;
+    // Franja actual = franja de la primera fase incompleta.
+    // Si todas las fases del curso están 100% completas, mantener actual / "ESTÁS AQUÍ" en Professional.
+    const firstIncomplete = stats.find(s => !isComplete(s));
+    const currentTrack = firstIncomplete
+        ? firstIncomplete.track
+        : (stats.length > 0 ? stats[stats.length - 1].track : 'professional');
 
-            step.classList.toggle('is-done', trackDone);
-            step.classList.toggle('is-current', isCurrent);
-            if (isCurrent) {
-                step.setAttribute('aria-current', 'step');
-            } else {
-                step.removeAttribute('aria-current');
-            }
+    document.querySelectorAll('#careerTrack .career-track__step[data-track]').forEach(step => {
+        const track = step.dataset.track;
+        const trackPhases = stats.filter(s => s.track === track);
+        const trackDone = trackPhases.length > 0 && trackPhases.every(isComplete);
+        const isCurrent = track === currentTrack;
 
-            step.querySelectorAll('.career-track__here').forEach(el => el.remove());
-            if (isCurrent) {
-                const tag = document.createElement('span');
-                tag.className = 'career-track__here';
-                tag.textContent = 'ESTÁS AQUÍ';
-                step.appendChild(tag);
-            }
-        });
-    };
+        step.classList.toggle('is-done', trackDone);
+        step.classList.toggle('is-current', isCurrent);
+        if (isCurrent) {
+            step.setAttribute('aria-current', 'step');
+        } else {
+            step.removeAttribute('aria-current');
+        }
 
-    render();
+        step.querySelectorAll('.career-track__here').forEach(el => el.remove());
+        if (isCurrent) {
+            const tag = document.createElement('span');
+            tag.className = 'career-track__here';
+            tag.textContent = 'ESTÁS AQUÍ';
+            step.appendChild(tag);
+        }
+    });
+}
+
+function initPhaseProgress() {
+    const container = document.getElementById('phaseProgress');
+    if (!container) return;
+
+    if (typeof window !== 'undefined') {
+        window.updatePhaseProgress = updatePhaseProgress;
+    }
+
+    updatePhaseProgress();
+
+    if (phaseProgressListenersBound) return;
+    phaseProgressListenersBound = true;
 
     // Mantener sincronizado si el progreso cambia en otra pestaña
-    // o si el navegador restaura la página desde la caché (botón Atrás).
+    // o si el navegador restaura la página desde BFCache (botón Atrás).
     window.addEventListener('storage', e => {
-        if (e.key === null || e.key === 'cyberpath_progress') render();
+        if (e.key === null || e.key === 'cyberpath_progress') updatePhaseProgress();
     });
     window.addEventListener('pageshow', e => {
-        if (e.persisted) render();
+        if (e.persisted) updatePhaseProgress();
     });
+
+    // Sincronizar también si localStorage se modifica en la misma pestaña sin recargar.
+    try {
+        if (typeof localStorage !== 'undefined' && typeof localStorage.setItem === 'function') {
+            const origSetItem = localStorage.setItem.bind(localStorage);
+            const origRemoveItem = typeof localStorage.removeItem === 'function'
+                ? localStorage.removeItem.bind(localStorage)
+                : null;
+            const origClear = typeof localStorage.clear === 'function'
+                ? localStorage.clear.bind(localStorage)
+                : null;
+
+            localStorage.setItem = function (key, value) {
+                origSetItem(key, value);
+                if (key === 'cyberpath_progress') updatePhaseProgress();
+            };
+            if (origRemoveItem) {
+                localStorage.removeItem = function (key) {
+                    origRemoveItem(key);
+                    if (key === 'cyberpath_progress') updatePhaseProgress();
+                };
+            }
+            if (origClear) {
+                localStorage.clear = function () {
+                    origClear();
+                    updatePhaseProgress();
+                };
+            }
+        }
+    } catch (e) {
+        // Ignorar si el entorno restringe sobrescribir métodos de localStorage
+    }
 }
 
 function initAIChatbot() {
