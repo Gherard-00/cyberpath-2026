@@ -1,8 +1,8 @@
 # PROJECT_STATE — CyberPath 2026 (`c:\Users\ROG\ciberseguridad`)
 
 ## 1. Cápsula Ejecutiva de Reanudación Rápida (Líneas 1–35 | <400 Tokens)
-- **Estado Global**: ✅ **100% COMPLETADO, AUDITADO Y SINCRONIZADO CON GITHUB — Lotes 1, 2, 3 y 4 (4A-4D) finalizados con 0 enlaces rotos (397 enlaces en 35 páginas), 31/31 quizzes operativos, README.md sincronizado y preparado para despliegue GitHub Pages**.
-- **Última Actualización**: 2026-11-04 (Auditoría QA exhaustiva, README sincronizado y sincronización GitHub Pages).
+- **Estado Global**: ✅ **100% COMPLETADO, AUDITADO Y EN VIVO EN GITHUB PAGES — Lotes 1, 2, 3 y 4 (4A-4D) desplegados y sincronizados en origin/master, 0 enlaces rotos (397 enlaces en 35 páginas), 31/31 quizzes operativos y verificación E2E headless en vivo aprobada**.
+- **Última Actualización**: 2026-11-04 (Despliegue GitHub Pages exitoso, verificación headless CDP en vivo y sincronización de documentación).
 - **Lotes Ejecutados y Commits**:
   - `2a844fe` — **Reglas**: Directivas `cyberpath-reglas` en `.agents/rules/` y `.agents/skills/`.
   - `33391bb` — **Lote 1 (`styles.css`)**: Tokens dark mode táctico, `.lesson-item`, `.difficulty`, `.duration-tag`, `.cert-tag`, `.prereq-accordion`, `.career-track`, `.phase-progress`.
@@ -13,10 +13,11 @@
   - `60f18b9` — **Lote 4C (`lecciones/leccion-*.html`)**: Quizzes interactivos de 3 preguntas con `explanations` en Fase 4 (`15c..15g`) habilitando el `31 / 31` y unificación de `'cyberpath_progress'` en las 10 lecciones con Evidencia Práctica.
   - `929de2d` — **Lote 4D / QA Fixes (`script.js`, `lecciones/leccion-*.html`)**: Reintento funcional en lecciones ya aprobadas sin tocar `quiz.js`, blindaje de código en línea (`**kwargs`) en `formatMarkdown`, JSON estricto en `explanations` de `leccion-07b`, eliminación de `#b388ff` inline en `leccion-08b` y enlace `#evaluacion` en TOC de `15c..15f`.
   - `755a16f` — **Docs**: Actualizar PROJECT_STATE.md con cierre de auditoría QA.
+  - `8ce92c4` — **Docs**: Sincronizar temario de 7 fases, 3 franjas y opciones de despliegue en `README.md`.
 - **Archivos Intocables Verificados (`git diff` vacío)**:
   - `server.py`, `quiz.js`, `Arrancar_Curso.bat` y nombres de archivos existentes en `lecciones/leccion-*.html`.
 - **Siguiente Paso Exacto**:
-  - Push a `origin/master` y verificación del despliegue en GitHub Pages.
+  - Proyecto 100% desplegado, auditado y operativo en vivo en GitHub Pages (`https://gherard-00.github.io/cyberpath-2026/`). Disponible para nuevas iteraciones o requerimientos del autor.
 
 ---
 
