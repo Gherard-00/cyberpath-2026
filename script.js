@@ -534,6 +534,7 @@ function bindPhaseNavigation() {
 }
 
 let storageHookInstalled = false;
+let bypassCompletedOnRetry = false;
 
 function installProgressStorageHook() {
     if (storageHookInstalled) return;
@@ -549,6 +550,28 @@ function installProgressStorageHook() {
             const origClear = typeof localStorage.clear === 'function'
                 ? localStorage.clear.bind(localStorage)
                 : null;
+
+            if (origGetItem) {
+                localStorage.getItem = function (key) {
+                    const raw = origGetItem(key);
+                    if (key === 'cyberpath_progress' && bypassCompletedOnRetry && raw) {
+                        try {
+                            const parsed = JSON.parse(raw);
+                            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                                for (const entry of Object.values(parsed)) {
+                                    if (entry && typeof entry === 'object') {
+                                        entry.completed = false;
+                                    }
+                                }
+                                return JSON.stringify(parsed);
+                            }
+                        } catch (e) {
+                            // Devolver valor original si falla el parseo
+                        }
+                    }
+                    return raw;
+                };
+            }
 
             localStorage.setItem = function (key, value) {
                 let finalValue = value;
@@ -613,7 +636,24 @@ function initQuizExplanationObserver() {
 
     let cachedExplanations = [];
 
+    const parseInlineExplanations = () => {
+        if (cachedExplanations.length > 0) return;
+        document.querySelectorAll('script:not([src])').forEach(scr => {
+            const match = scr.textContent.match(/const\s+explanations\s*=\s*(\[[\s\S]*?\])\s*;/);
+            if (match) {
+                try {
+                    const sanitized = match[1].replace(/,\s*\]$/, ']');
+                    const parsed = JSON.parse(sanitized);
+                    if (Array.isArray(parsed)) cachedExplanations = parsed;
+                } catch (e) {
+                    // Ignorar si no es JSON válido
+                }
+            }
+        });
+    };
+
     const captureOrRestoreExplanations = () => {
+        parseInlineExplanations();
         const questions = quizContainer.querySelectorAll('.quiz-question');
         if (questions.length === 0) return;
 
@@ -622,20 +662,6 @@ function initQuizExplanationObserver() {
                 cachedExplanations[i] = q.dataset.explanation;
             }
         });
-
-        if (cachedExplanations.length === 0) {
-            document.querySelectorAll('script:not([src])').forEach(scr => {
-                const match = scr.textContent.match(/const\s+explanations\s*=\s*(\[[\s\S]*?\])\s*;/);
-                if (match) {
-                    try {
-                        const parsed = JSON.parse(match[1]);
-                        if (Array.isArray(parsed)) cachedExplanations = parsed;
-                    } catch (e) {
-                        // Ignorar si no es JSON estricto
-                    }
-                }
-            });
-        }
 
         questions.forEach((q, i) => {
             if (!q.dataset.explanation && cachedExplanations[i]) {
@@ -646,12 +672,46 @@ function initQuizExplanationObserver() {
 
     captureOrRestoreExplanations();
 
-    if (typeof MutationObserver === 'function' && quizContainer.dataset.explanationObsBound !== '1') {
+    if (typeof CyberQuiz !== 'undefined' && typeof CyberQuiz.retry === 'function' && !CyberQuiz.retry._wrappedByScript) {
+        const origRetry = CyberQuiz.retry.bind(CyberQuiz);
+        const wrappedRetry = function (lessonId) {
+            bypassCompletedOnRetry = true;
+            try {
+                return origRetry(lessonId);
+            } finally {
+                bypassCompletedOnRetry = false;
+            }
+        };
+        wrappedRetry._wrappedByScript = true;
+        try {
+            CyberQuiz.retry = wrappedRetry;
+        } catch (e) {
+            // Ignorar si el objeto es de solo lectura
+        }
+    }
+
+    if (quizContainer.dataset.explanationObsBound !== '1') {
         quizContainer.dataset.explanationObsBound = '1';
-        const obs = new MutationObserver(() => {
-            captureOrRestoreExplanations();
-        });
-        obs.observe(quizContainer, { childList: true });
+
+        quizContainer.addEventListener('click', e => {
+            if (e.target && typeof e.target.closest === 'function' && e.target.closest('.quiz-btn-retry')) {
+                bypassCompletedOnRetry = true;
+                setTimeout(() => {
+                    bypassCompletedOnRetry = false;
+                }, 0);
+            }
+        }, true);
+
+        quizContainer.addEventListener('click', () => {
+            bypassCompletedOnRetry = false;
+        }, false);
+
+        if (typeof MutationObserver === 'function') {
+            const obs = new MutationObserver(() => {
+                captureOrRestoreExplanations();
+            });
+            obs.observe(quizContainer, { childList: true });
+        }
     }
 }
 
@@ -857,8 +917,12 @@ function initAIChatbot() {
             return token;
         });
 
-        // 3. Formatear código en línea `código`
-        safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
+        // 3. Extraer código en línea `código` a placeholders antes de negritas y <br>
+        safe = safe.replace(/`([^`\n]+)`/g, (match, code) => {
+            const token = `\x00CODEBLOCK_${codeBlocks.length}\x00`;
+            codeBlocks.push(`<code>${code}</code>`);
+            return token;
+        });
 
         // 4. Formatear negritas **texto**
         safe = safe.replace(/\*\*([\s\S]*?)\*\*/g, '<strong>$1</strong>');
@@ -866,7 +930,7 @@ function initAIChatbot() {
         // 5. Formatear saltos de línea fuera de <pre>
         safe = safe.replace(/\n/g, '<br>');
 
-        // 6. Restaurar bloques <pre><code>
+        // 6. Restaurar bloques <pre><code> y <code> en línea
         safe = safe.replace(/\x00CODEBLOCK_(\d+)\x00/g, (m, idx) => codeBlocks[Number(idx)] || '');
 
         return safe;
