@@ -11,6 +11,7 @@
   - `7628fef` — **Lote 4A (`styles.css`, `cheatsheet-*.html`)**: Variables `--bg-tertiary` y `--text-color`, unificación de `.lesson-card.completed`, `.phase-marker` con `--phase-track-color`, `.lesson-phase-badge.phase-6`, estilos `.lesson-callout`, eliminación total de residuos violeta/rosa, `@media print` y `prefers-reduced-motion`.
   - `d221c6d` — **Lote 4B (`index.html`, `script.js`, `lecciones/docs/`)**: Enlace `#recursos` en `#navLinks`, `data-suffix="+"` en Herramientas, PDFs servidos desde `lecciones/docs/` (HTTP 200), preservación global de `evidenceData` en `localStorage.setItem`, restauración de `data-explanation` con `MutationObserver` tras `CyberQuiz.retry`, `#scrollProgress` en páginas interiores y fix de bloques `<pre><code>` en `formatMarkdown`.
   - `60f18b9` — **Lote 4C (`lecciones/leccion-*.html`)**: Quizzes interactivos de 3 preguntas con `explanations` en Fase 4 (`15c..15g`) habilitando el `31 / 31` y unificación de `'cyberpath_progress'` en las 10 lecciones con Evidencia Práctica.
+  - `929de2d` — **Lote 4D / QA Fixes (`script.js`, `lecciones/leccion-*.html`)**: Reintento funcional en lecciones ya aprobadas sin tocar `quiz.js`, blindaje de código en línea (`**kwargs`) en `formatMarkdown`, JSON estricto en `explanations` de `leccion-07b`, eliminación de `#b388ff` inline en `leccion-08b` y enlace `#evaluacion` en TOC de `15c..15f`.
 - **Archivos Intocables Verificados (`git diff` vacío)**:
   - `server.py`, `quiz.js`, `Arrancar_Curso.bat` y nombres de archivos existentes en `lecciones/leccion-*.html`.
 - **Siguiente Paso Exacto**:
